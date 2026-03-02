@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Settings - Earnify Admin</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="sidebar">
+  <h2>Earnify Admin</h2>
+  <a href="/admin/dashboard">📊 Dashboard</a>
+  <a href="/admin/users">👥 Users</a>
+  <a href="/admin/resources">📚 Resources</a>
+  <a href="/admin/analytics">📈 Analytics</a>
+  <a href="/admin/settings">⚙️ Settings</a>
+</div>
+
+<div class="main">
+  <h1>System Settings</h1>
+
+  <div class="settings-container">
+    <div class="settings-card">
+      <h3>Application Info</h3>
+      <div class="info-row">
+        <span>App Name:</span>
+        <strong>Earnify</strong>
+      </div>
+      <div class="info-row">
+        <span>Version:</span>
+        <strong>1.0.0</strong>
+      </div>
+      <div class="info-row">
+        <span>Backend:</span>
+        <strong>Supabase</strong>
+      </div>
+      <div class="info-row">
+        <span>Server:</span>
+        <strong>Express.js</strong>
+      </div>
+    </div>
+
+    <div class="settings-card">
+      <h3>Database Status</h3>
+      <div class="info-row">
+        <span>Connection:</span>
+        <strong class="status-active">Connected</strong>
+      </div>
+      <div class="info-row">
+        <span>Total Records:</span>
+        <strong id="totalRecords">0</strong>
+      </div>
+    </div>
+
+    <div class="settings-card">
+      <h3>Quick Actions</h3>
+      <button class="action-btn" onclick="refreshData()">🔄 Refresh Data</button>
+      <button class="action-btn" onclick="exportData()">📥 Export Users</button>
+    </div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Analytics - Earnify Admin</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="sidebar">
+  <h2>Earnify Admin</h2>
+  <a href="/admin/dashboard">📊 Dashboard</a>
+  <a href="/admin/users">👥 Users</a>
+  <a href="/admin/resources">📚 Resources</a>
+  <a href="/admin/analytics">📈 Analytics</a>
+  <a href="/admin/settings">⚙️ Settings</a>
+</div>
+
+<div class="main">
+  <h1>Analytics Overview</h1>
+
+  <div class="cards">
+    <div class="card">
+      <h3>User Growth</h3>
+      <p id="growthRate">+0%</p>
+    </div>
+    <div class="card">
+      <h3>Active Rate</h3>
+      <p id="activeRate">0%</p>
+    </div>
+    <div class="card">
+      <h3>Block Rate</h3>
+      <p id="blockRate">0%</p>
+    </div>
+  </div>
+
+  <div class="analytics-section">
+    <h2>User Statistics</h2>
+    <div class="stat-grid">
+      <div class="stat-item">
+        <span class="stat-label">Male Users:</span>
+        <span class="stat-value" id="maleCount">0</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">Female Users:</span>
+        <span class="stat-value" id="femaleCount">0</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">Total Active:</span>
+        <span class="stat-value" id="totalActive">0</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">Total Blocked:</span>
+        <span class="stat-value" id="totalBlocked">0</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
