@@ -6,8 +6,18 @@ async function loadUsers() {
   const users = await res.json();
 
   const table = document.getElementById("userTable");
+  const emptyState = document.getElementById("emptyState");
+  
   if (!table) return;
 
+  if (users.length === 0) {
+    table.style.display = 'none';
+    if (emptyState) emptyState.style.display = 'block';
+    return;
+  }
+
+  table.style.display = 'table-row-group';
+  if (emptyState) emptyState.style.display = 'none';
   table.innerHTML = "";
 
   users.forEach(user => {
@@ -252,6 +262,16 @@ async function editResource(id) {
       document.getElementById('editTitle').value = resource.title;
       document.getElementById('editDescription').value = resource.description;
       document.getElementById('editPrice').value = resource.price;
+      
+      // Show last uploaded file based on resource type
+      const fileTypes = {
+        pdf: 'PDF file',
+        excel: 'Excel file', 
+        exam: 'Exam material',
+        freelance: 'Service file'
+      };
+      document.getElementById('lastFileName').textContent = fileTypes[resource.type] || 'File uploaded';
+      
       document.getElementById('editModal').style.display = 'flex';
     }
   } catch (error) {

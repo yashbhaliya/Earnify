@@ -15,8 +15,37 @@ const upload = multer({ storage: multer.memoryStorage() });
 
 const supabase = createClient(
   process.env.SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_ROLE_KEY
+  process.env.SUPABASE_SERVICE_ROLE_KEY,
+  {
+    auth: {
+      persistSession: false
+    },
+    db: {
+      schema: 'public'
+    },
+    global: {
+      headers: {
+        'User-Agent': 'Earnify-Admin/1.0.0'
+      }
+    }
+  }
 );
+
+// Test database connection
+async function testConnection() {
+  try {
+    const { data, error } = await supabase.from('resources').select('count', { count: 'exact', head: true });
+    if (error) {
+      console.error('Database connection failed:', error.message);
+    } else {
+      console.log('Database connection successful');
+    }
+  } catch (err) {
+    console.error('Connection test failed:', err.message);
+  }
+}
+
+testConnection();
 
 // Get All Users - Return empty array since table doesn't exist
 app.get("/api/users", async (req, res) => {
@@ -40,7 +69,7 @@ app.get("/api/resources", async (req, res) => {
     if (error) throw error;
     res.json(data || []);
   } catch (err) {
-    console.error('Error fetching resources:', err);
+    console.error('Error fetching resources:', err.message || err);
     res.json([]);
   }
 });
