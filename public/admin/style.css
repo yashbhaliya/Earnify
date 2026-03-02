@@ -43,6 +43,7 @@ body {
   background: linear-gradient(90deg, rgba(251, 191, 36, 0.15) 0%, transparent 100%);
   border-left-color: #fbbf24;
   color: #fbbf24;
+  transform: translateX(5px);
 }
 
 .main {
@@ -102,8 +103,8 @@ body {
 }
 
 .card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
 .card {
@@ -164,8 +165,8 @@ button:first-child {
 
 button:first-child:hover {
   background: linear-gradient(135deg, #059669 0%, #047857 100%);
-  transform: scale(1.05);
-  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+  transform: scale(1.02);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
 }
 
 button:nth-child(2) {
@@ -176,8 +177,8 @@ button:nth-child(2) {
 
 button:nth-child(2):hover {
   background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
-  transform: scale(1.05);
-  box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
+  transform: scale(1.02);
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
 }
 
 button:last-child {
@@ -188,8 +189,8 @@ button:last-child {
 
 button:last-child:hover {
   background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
-  transform: scale(1.05);
-  box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+  transform: scale(1.02);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
 }
 
 .badge {
@@ -245,8 +246,8 @@ button:last-child:hover {
 }
 
 .stat-item:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(59, 130, 246, 0.15);
 }
 
 .stat-label {
@@ -1162,4 +1163,105 @@ button:last-child:hover {
 
 .premium-table button:last-child:hover {
   box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
+}
+.table-container {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  overflow: hidden;
+  margin-top: 20px;
+}
+
+.users-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.users-table th {
+  background: #f8f9fa;
+  padding: 15px;
+  text-align: left;
+  font-weight: 600;
+  border-bottom: 2px solid #dee2e6;
+}
+
+.users-table td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.users-table tr:hover {
+  background: #f8f9fa;
+}
+.table-container {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
+  overflow: hidden;
+  margin-top: 20px;
+  padding: 2px;
+}
+
+.users-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.users-table th {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 15px;
+  text-align: left;
+  font-weight: 600;
+  border: none;
+}
+
+.users-table td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #e9ecef;
+  color: #495057;
+}
+
+.users-table tr:hover {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+}
+.quick-actions {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.quick-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 14px;
+  width: 140px;
+  justify-content: center;
+  transition: all 0.3s;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+}
+
+.quick-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+}
+
+.quick-btn.export {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+}
+
+.quick-btn.export:hover {
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
 }
