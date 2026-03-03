@@ -152,19 +152,22 @@ async function loadResources(type) {
     
     const icons = { pdf: '📄', excel: '📊', exam: '📝', freelance: '💼' };
     
-    grid.innerHTML = filtered.map(r => `
+    grid.innerHTML = filtered.map(r => {
+      const hasFile = r.fileUrl || r.fileurl;
+      return `
       <div class="resource-card">
         <div class="resource-type-badge">${icons[r.type]} ${r.type.toUpperCase()}</div>
         <h3>${r.title}</h3>
         <p>${r.description}</p>
         <div class="resource-price">₹${r.price}</div>
+        ${!hasFile ? '<div style="color: #f59e0b; font-size: 12px; margin: 5px 0;">⚠️ No file uploaded</div>' : ''}
         <div class="resource-actions">
-          <button onclick="viewResource(${r.id})">View</button>
+          <button onclick="openFile(${r.id})" class="download-btn" ${!hasFile ? 'style="opacity:0.5"' : ''}>Open</button>
           <button onclick="editResource(${r.id})">Edit</button>
           <button onclick="deleteResource(${r.id})">Delete</button>
         </div>
       </div>
-    `).join('');
+    `}).join('');
   } catch (err) {
     console.error('Error loading resources:', err);
     grid.innerHTML = '<p style="color: white; padding: 20px;">Error loading resources. Please check server.</p>';
@@ -230,6 +233,33 @@ function closeViewModal() {
 
 function closeEditModal() {
   document.getElementById('editModal').style.display = 'none';
+}
+
+async function openFile(id) {
+  try {
+    const res = await fetch(RESOURCE_API);
+    const resources = await res.json();
+    const resource = resources.find(r => r.id === id);
+    
+    console.log('Resource data:', resource);
+    
+    if (!resource) {
+      alert('Resource not found');
+      return;
+    }
+    
+    // Check both fileUrl and fileurl (case sensitivity)
+    const url = resource.fileUrl || resource.fileurl;
+    
+    if (url && url !== '#' && url !== 'null') {
+      window.open(url, '_blank');
+    } else {
+      alert('No file uploaded yet. Click Edit to upload a file for this resource.');
+    }
+  } catch (error) {
+    console.error('Error opening file:', error);
+    alert('Error opening file');
+  }
 }
 
 async function viewResource(id) {

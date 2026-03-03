@@ -8,44 +8,23 @@ require("dotenv").config();
 const app = express();
 app.use(cors());
 app.use(express.json());
-// Serve only admin static files
 app.use('/admin', express.static(path.join(__dirname, 'public/admin')));
 
 const upload = multer({ storage: multer.memoryStorage() });
 
 const supabase = createClient(
   process.env.SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_ROLE_KEY,
-  {
-    auth: {
-      persistSession: false
-    },
-    db: {
-      schema: 'public'
-    },
-    global: {
-      headers: {
-        'User-Agent': 'Earnify-Admin/1.0.0'
-      }
-    }
-  }
+  process.env.SUPABASE_SERVICE_ROLE_KEY
 );
 
-// Test database connection
-async function testConnection() {
-  try {
-    const { data, error } = await supabase.from('resources').select('count', { count: 'exact', head: true });
-    if (error) {
-      console.error('Database connection failed:', error.message);
-    } else {
-      console.log('Database connection successful');
-    }
-  } catch (err) {
-    console.error('Connection test failed:', err.message);
-  }
+// Add fileUrl column to resources table
+async function ensureFileUrlColumn() {
+  const { error } = await supabase.rpc('exec_sql', {
+    sql: 'ALTER TABLE resources ADD COLUMN IF NOT EXISTS "fileUrl" TEXT;'
+  }).catch(() => {
+    console.log('Note: Add fileUrl column manually in Supabase if not exists');
+  });
 }
-
-testConnection();
 
 // Get All Users - Return empty array since table doesn't exist
 app.get("/api/users", async (req, res) => {
@@ -65,7 +44,7 @@ app.delete("/api/users/:id", async (req, res) => {
 // Get All Resources
 app.get("/api/resources", async (req, res) => {
   try {
-    const { data, error } = await supabase.from("resources").select("id, type, title, description, price");
+    const { data, error } = await supabase.from("resources").select("*");
     if (error) throw error;
     res.json(data || []);
   } catch (err) {
@@ -80,62 +59,34 @@ app.post("/api/resources", upload.single('file'), async (req, res) => {
     const { type, title, description, price } = req.body;
     const file = req.file;
     
-    console.log('Upload request:', { type, title, description, price, hasFile: !!file });
-    
     if (!file) {
       return res.status(400).json({ error: 'No file uploaded' });
     }
     
-    // Upload file to Supabase storage
     const fileName = `${Date.now()}-${file.originalname}`;
-    console.log('Attempting to upload file:', fileName, 'Type:', file.mimetype, 'Size:', file.size);
     
-    let uploadData = null;
-    let uploadError = null;
-    
-    try {
-      const result = await supabase.storage
-        .from('resources')
-        .upload(fileName, file.buffer, {
-          contentType: file.mimetype,
-          upsert: false
-        });
-      
-      uploadData = result.data;
-      uploadError = result.error;
+    // Upload to Supabase Storage with public access
+    const { error: uploadError } = await supabase.storage
+      .from('resources')
+      .upload(fileName, file.buffer, {
+        contentType: file.mimetype,
+        cacheControl: '3600',
+        upsert: false
+      });
 
-      if (uploadError) {
-        console.error('File upload failed:', uploadError);
-        console.error('Error code:', uploadError.statusCode);
-        console.error('Error message:', uploadError.message);
-        
-        // Check if bucket exists
-        const { data: buckets, error: bucketError } = await supabase.storage.listBuckets();
-        console.log('Available buckets:', buckets);
-        if (bucketError) console.error('Bucket list error:', bucketError);
-      } else {
-        console.log('File uploaded successfully:', uploadData);
-        console.log('File path:', uploadData.path);
-      }
-    } catch (storageError) {
-      console.error('Storage operation failed:', storageError);
-      uploadError = storageError;
+    if (uploadError) {
+      console.error('Upload error:', uploadError);
+      return res.status(500).json({ error: 'File upload failed: ' + uploadError.message });
     }
 
-    // Get public URL if upload succeeded
-    let fileUrl = null;
-    if (!uploadError) {
-      const { data: urlData } = supabase.storage
-        .from('resources')
-        .getPublicUrl(fileName);
-      fileUrl = urlData.publicUrl;
-    }
-    
-    // Insert resource data without file columns
+    const { data: { publicUrl } } = supabase.storage
+      .from('resources')
+      .getPublicUrl(fileName);
+
     const { data, error } = await supabase
       .from("resources")
-      .insert([{ type, title, description, price }])
-      .select("id, type, title, description, price");
+      .insert([{ type, title, description, price, fileurl: publicUrl }])
+      .select();
 
     if (error) {
       console.error('Database error:', error);
@@ -157,32 +108,22 @@ app.put("/api/resources/:id", upload.single('file'), async (req, res) => {
     
     let updateData = { title, description, price };
     
-    // If file is uploaded, handle file upload to storage
     if (file) {
-      console.log('Updating resource with new file:', file.originalname);
-      
       const fileName = `${Date.now()}-${file.originalname}`;
-      let uploadData = null;
-      let uploadError = null;
       
-      try {
-        const result = await supabase.storage
-          .from('resources')
-          .upload(fileName, file.buffer, {
-            contentType: file.mimetype,
-            upsert: false
-          });
-        
-        uploadData = result.data;
-        uploadError = result.error;
+      const { error: uploadError } = await supabase.storage
+        .from('resources')
+        .upload(fileName, file.buffer, {
+          contentType: file.mimetype,
+          cacheControl: '3600',
+          upsert: false
+        });
 
-        if (uploadError) {
-          console.error('File upload failed during update:', uploadError);
-        } else {
-          console.log('File uploaded successfully during update:', uploadData);
-        }
-      } catch (storageError) {
-        console.error('Storage operation failed during update:', storageError);
+      if (!uploadError) {
+        const { data: { publicUrl } } = supabase.storage
+          .from('resources')
+          .getPublicUrl(fileName);
+        updateData.fileurl = publicUrl;
       }
     }
     
@@ -190,7 +131,7 @@ app.put("/api/resources/:id", upload.single('file'), async (req, res) => {
       .from("resources")
       .update(updateData)
       .eq("id", req.params.id)
-      .select("id, type, title, description, price");
+      .select();
     
     if (error) {
       console.error('Update error:', error);
