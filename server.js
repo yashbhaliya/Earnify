@@ -26,9 +26,70 @@ async function ensureFileUrlColumn() {
   });
 }
 
-// Get All Users - Return empty array since table doesn't exist
+// User Signup
+app.post("/api/auth/signup", async (req, res) => {
+  try {
+    const { name, email, password } = req.body;
+    
+    // Check if user exists
+    const { data: existingUser } = await supabase
+      .from('users')
+      .select('email')
+      .eq('email', email)
+      .single();
+    
+    if (existingUser) {
+      return res.status(400).json({ error: 'User already exists' });
+    }
+    
+    // Insert new user
+    const { data, error } = await supabase
+      .from('users')
+      .insert([{ name, email, password }])
+      .select();
+    
+    if (error) throw error;
+    
+    res.json({ success: true, user: data[0] });
+  } catch (err) {
+    console.error('Signup error:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// User Login
+app.post("/api/auth/login", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    
+    const { data: user, error } = await supabase
+      .from('users')
+      .select('*')
+      .eq('email', email)
+      .eq('password', password)
+      .single();
+    
+    if (error || !user) {
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+    
+    res.json({ success: true, user });
+  } catch (err) {
+    console.error('Login error:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Get All Users from Supabase
 app.get("/api/users", async (req, res) => {
-  res.json([]);
+  try {
+    const { data, error } = await supabase.from('users').select('*');
+    if (error) throw error;
+    res.json(data || []);
+  } catch (err) {
+    console.error('Error fetching users:', err);
+    res.json([]);
+  }
 });
 
 // Update User Status - Disabled
@@ -36,9 +97,16 @@ app.put("/api/users/:id", async (req, res) => {
   res.status(404).json({ error: 'Users table not found' });
 });
 
-// Delete User - Disabled
+// Delete User
 app.delete("/api/users/:id", async (req, res) => {
-  res.status(404).json({ error: 'Users table not found' });
+  try {
+    const { error } = await supabase.from('users').delete().eq('id', req.params.id);
+    if (error) throw error;
+    res.json({ message: 'User deleted' });
+  } catch (err) {
+    console.error('Error deleting user:', err);
+    res.status(500).json({ error: err.message });
+  }
 });
 
 // Get All Resources
@@ -103,8 +171,11 @@ app.post("/api/resources", upload.single('file'), async (req, res) => {
 // Update Resource
 app.put("/api/resources/:id", upload.single('file'), async (req, res) => {
   try {
-    const { title, description, price } = req.body;
+    let { title, description, price } = req.body;
     const file = req.file;
+    
+    // Remove currency symbol from price
+    price = String(price).replace(/[^0-9]/g, '');
     
     let updateData = { title, description, price };
     
@@ -155,9 +226,12 @@ app.delete("/api/resources/:id", async (req, res) => {
   res.json({ message: "Resource deleted" });
 });
 
-// Default route
+// Serve public files
+app.use(express.static('public'));
+
+// Default route - Landing page
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "admin", "dashboard.html"));
+  res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
 // Admin routes

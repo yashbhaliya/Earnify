@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Earnify - Your Learning Marketplace</title>
+  <link rel="stylesheet" href="landing.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container">
+      <h1 class="logo">💰 Earnify</h1>
+      <div class="nav-links">
+        <a href="#resources">Resources</a>
+        <a href="#about">About</a>
+        <button id="loginBtn" class="admin-btn" onclick="showLoginModal()">Login</button>
+        <button id="signupBtn" class="admin-btn" onclick="showSignupModal()">Sign Up</button>
+        <button id="logoutBtn" class="admin-btn" onclick="logout()" style="display:none;">Logout</button>
+      </div>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="container">
+      <h1>Learn, Grow & Earn</h1>
+      <p>Access premium study materials, templates, and services</p>
+      <a href="#resources" class="cta-btn">Browse Resources</a>
+    </div>
+  </section>
+
+  <section id="resources" class="resources-section">
+    <div class="container">
+      <h2>Available Resources</h2>
+      <div class="filter-tabs">
+        <button class="filter-btn active" onclick="filterResources('all')">All</button>
+        <button class="filter-btn" onclick="filterResources('pdf')">📄 PDF Notes</button>
+        <button class="filter-btn" onclick="filterResources('excel')">📊 Excel</button>
+        <button class="filter-btn" onclick="filterResources('exam')">📝 Exam Prep</button>
+        <button class="filter-btn" onclick="filterResources('freelance')">💼 Services</button>
+      </div>
+      <div id="resourcesGrid" class="resources-grid"></div>
+    </div>
+  </section>
+
+  <section id="about" class="about-section">
+    <div class="container">
+      <h2>About Earnify</h2>
+      <p>Your one-stop marketplace for quality educational resources and professional services.</p>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2024 Earnify. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <div id="loginModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeLoginModal()">&times;</span>
+      <h2>Login</h2>
+      <form id="loginForm" onsubmit="handleLogin(event)">
+        <input type="email" id="loginEmail" placeholder="Email" required>
+        <input type="password" id="loginPassword" placeholder="Password" required>
+        <button type="submit">Login</button>
+      </form>
+      <p style="text-align:center; margin-top:1rem; color:#666;">Don't have an account? <a href="#" onclick="switchToSignup()" style="color:#1e3c72;">Sign Up</a></p>
+    </div>
+  </div>
+
+  <div id="signupModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeSignupModal()">&times;</span>
+      <h2>Sign Up</h2>
+      <form id="signupForm" onsubmit="handleSignup(event)">
+        <input type="text" id="signupName" placeholder="Full Name" required>
+        <input type="email" id="signupEmail" placeholder="Email" required>
+        <input type="password" id="signupPassword" placeholder="Password" required>
+        <input type="password" id="signupConfirmPassword" placeholder="Confirm Password" required>
+        <button type="submit">Sign Up</button>
+      </form>
+      <p style="text-align:center; margin-top:1rem; color:#666;">Already have an account? <a href="#" onclick="switchToLogin()" style="color:#1e3c72;">Login</a></p>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const supabaseUrl = 'https://emnrgsgerfjvndexomro.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVtbnJnc2dlcmZqdm5kZXhvbXJvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI0MjAyMTAsImV4cCI6MjA4Nzk5NjIxMH0.uXr8lipxLbB4D_5JwQkpLzc-HudQw23tOFBfV4C6hqY';
+    const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+  </script>
+  <script src="landing.js"></script>
+</body>
+</html>

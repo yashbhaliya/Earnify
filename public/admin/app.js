@@ -7,6 +7,9 @@ async function loadUsers() {
 
   const table = document.getElementById("userTable");
   const emptyState = document.getElementById("emptyState");
+  const sidebarCount = document.getElementById("sidebarUserCount");
+  
+  if (sidebarCount) sidebarCount.textContent = users.length;
   
   if (!table) return;
 
@@ -25,11 +28,8 @@ async function loadUsers() {
       <tr>
         <td>${user.name}</td>
         <td>${user.email}</td>
-        <td>${user.gender}</td>
-        <td><span class="badge ${user.status.toLowerCase()}">${user.status}</span></td>
+        <td><span class="badge active">Active</span></td>
         <td>
-          <button onclick="updateStatus('${user.id}','Active')">Activate</button>
-          <button onclick="updateStatus('${user.id}','Blocked')">Block</button>
           <button onclick="deleteUser('${user.id}')">Delete</button>
         </td>
       </tr>
@@ -59,6 +59,9 @@ async function loadDashboard() {
     const res = await fetch(API);
     const users = await res.json();
     
+    const sidebarCount = document.getElementById("sidebarUserCount");
+    if (sidebarCount) sidebarCount.textContent = users.length;
+    
     // Handle error response or non-array data
     if (!Array.isArray(users)) {
       console.error('Users data is not an array:', users);
@@ -68,16 +71,9 @@ async function loadDashboard() {
       return;
     }
 
-    document.getElementById("totalUsers").innerText =
-      "Total Users: " + users.length;
-
-    document.getElementById("activeUsers").innerText =
-      "Active Users: " +
-      users.filter(u => u.status === "Active").length;
-
-    document.getElementById("blockedUsers").innerText =
-      "Blocked Users: " +
-      users.filter(u => u.status === "Blocked").length;
+    document.getElementById("totalUsers").innerText = "Total Users: " + users.length;
+    document.getElementById("activeUsers").innerText = "Active Users: " + users.length;
+    document.getElementById("blockedUsers").innerText = "Blocked Users: 0";
   } catch (error) {
     console.error('Error loading dashboard:', error);
     document.getElementById("totalUsers").innerText = "Total Users: Error";
@@ -89,6 +85,9 @@ async function loadDashboard() {
 async function loadAnalytics() {
   const res = await fetch(API);
   const users = await res.json();
+
+  const sidebarCount = document.getElementById("sidebarUserCount");
+  if (sidebarCount) sidebarCount.textContent = users.length;
 
   const total = users.length;
   const active = users.filter(u => u.status === "Active").length;
@@ -110,6 +109,10 @@ async function loadAnalytics() {
 async function loadSettings() {
   const res = await fetch(API);
   const users = await res.json();
+  
+  const sidebarCount = document.getElementById("sidebarUserCount");
+  if (sidebarCount) sidebarCount.textContent = users.length;
+  
   if (document.getElementById("totalRecords")) {
     document.getElementById("totalRecords").innerText = users.length;
   }
@@ -137,6 +140,16 @@ function showTab(type) {
 async function loadResources(type) {
   const grid = document.getElementById(type + 'Grid');
   if (!grid) return;
+  
+  // Update sidebar count
+  try {
+    const userRes = await fetch(API);
+    const users = await userRes.json();
+    const sidebarCount = document.getElementById("sidebarUserCount");
+    if (sidebarCount) sidebarCount.textContent = users.length;
+  } catch (err) {
+    console.error('Error loading user count:', err);
+  }
   
   try {
     const res = await fetch(RESOURCE_API);
