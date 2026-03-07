@@ -13,10 +13,12 @@ function updateUI() {
     document.getElementById('loginBtn').style.display = 'none';
     document.getElementById('signupBtn').style.display = 'none';
     document.getElementById('logoutBtn').style.display = 'inline-block';
+    document.getElementById('dashboardLink').style.display = 'inline-block';
   } else {
     document.getElementById('loginBtn').style.display = 'inline-block';
     document.getElementById('signupBtn').style.display = 'inline-block';
     document.getElementById('logoutBtn').style.display = 'none';
+    document.getElementById('dashboardLink').style.display = 'none';
   }
 }
 
@@ -66,8 +68,7 @@ async function handleLogin(e) {
     }
     
     localStorage.setItem('userLoggedIn', 'true');
-    localStorage.setItem('userEmail', email);
-    localStorage.setItem('userName', data.user.name);
+    localStorage.setItem('currentUser', JSON.stringify(data.user));
     isLoggedIn = true;
     closeLoginModal();
     updateUI();
@@ -120,8 +121,7 @@ async function handleSignup(e) {
 
 function logout() {
   localStorage.removeItem('userLoggedIn');
-  localStorage.removeItem('userEmail');
-  localStorage.removeItem('userName');
+  localStorage.removeItem('currentUser');
   isLoggedIn = false;
   updateUI();
   alert('Logged out successfully!');
@@ -178,10 +178,13 @@ function filterResources(type) {
 }
 
 function buyResource(id) {
-  const resource = allResources.find(r => r.id === id);
-  if (resource) {
-    alert(`Purchase ${resource.title} for ₹${resource.price}\n\nPayment integration coming soon!`);
+  if (!isLoggedIn) {
+    alert('Please login to purchase resources');
+    showLoginModal();
+    return;
   }
+  
+  window.location.href = '/payment.html';
 }
 
 // Load resources and check login on page load

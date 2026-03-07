@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Payment - Earnify</title>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    .resource-card { border: 1px solid #ddd; padding: 20px; margin: 10px 0; border-radius: 8px; }
+    .buy-btn { background: #8b5cf6; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; }
+    .buy-btn:hover { background: #7c3aed; }
+  </style>
+</head>
+<body>
+  <h1>Purchase Resources</h1>
+  <div id="resources"></div>
+
+  <script>
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    const isLoggedIn = localStorage.getItem('userLoggedIn') === 'true';
+    
+    if (!currentUser || !isLoggedIn) {
+      alert('Please login first');
+      window.location.href = '/';
+      throw new Error('Not logged in'); // Stop script execution
+    }
+
+    async function loadResources() {
+      const response = await fetch('/api/resources');
+      const resources = await response.json();
+      
+      const container = document.getElementById('resources');
+      container.innerHTML = resources.map(resource => `
+        <div class="resource-card">
+          <h3>${resource.title}</h3>
+          <p>${resource.description}</p>
+          <p><strong>Price: ₹${resource.price}</strong></p>
+          <button class="buy-btn" onclick="buyResource(${resource.id}, ${resource.price}, '${resource.title}')">
+            Buy Now
+          </button>
+        </div>
+      `).join('');
+    }
+
+    async function buyResource(resourceId, price, title) {
+      try {
+        console.log('Starting payment for:', { resourceId, price, title });
+        
+        // Create order
+        const orderResponse = await fetch('/api/payment/create-order', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            amount: price,
+            receipt: `receipt_${resourceId}_${Date.now()}`
+          })
+        });
+        
+        if (!orderResponse.ok) {
+          const errorText = await orderResponse.text();
+          console.error('Order creation failed:', errorText);
+          throw new Error(`Failed to create order: ${errorText}`);
+        }
+        
+        const order = await orderResponse.json();
+        console.log('Order created:', order);
+        
+        // Get Razorpay key from server
+        const keyResponse = await fetch('/api/payment/key');
+        if (!keyResponse.ok) {
+          throw new Error('Failed to get payment key');
+        }
+        const keyData = await keyResponse.json();
+        
+        if (!keyData.key) {
+          throw new Error('Payment key not configured');
+        }
+        
+        // Open Razorpay checkout
+        const options = {
+          key: keyData.key,
+          amount: order.amount,
+          currency: order.currency,
+          name: 'Earnify',
+          description: title,
+          order_id: order.id,
+          handler: async function(response) {
+            try {
+              console.log('Payment response:', response);
+              
+              // Verify payment
+              const verifyResponse = await fetch('/api/payment/verify', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  razorpay_order_id: response.razorpay_order_id,
+                  razorpay_payment_id: response.razorpay_payment_id,
+                  razorpay_signature: response.razorpay_signature,
+                  resourceId: resourceId,
+                  userId: currentUser.id
+                })
+              });
+              
+              if (!verifyResponse.ok) {
+                const errorText = await verifyResponse.text();
+                console.error('Verification failed:', errorText);
+                throw new Error(`Verification failed: ${errorText}`);
+              }
+              
+              const result = await verifyResponse.json();
+              console.log('Verification result:', result);
+              
+              if (result.success) {
+                // Store purchase in localStorage
+                const purchases = JSON.parse(localStorage.getItem('userPurchases') || '[]');
+                purchases.push({
+                  id: Date.now(),
+                  resourceId: resourceId,
+                  title: title,
+                  price: price,
+                  payment_id: response.razorpay_payment_id,
+                  order_id: response.razorpay_order_id,
+                  status: 'completed',
+                  date: new Date().toISOString()
+                });
+                localStorage.setItem('userPurchases', JSON.stringify(purchases));
+                
+                alert('Payment successful! You can now access this resource.');
+                window.location.href = '/dashboard.html';
+              } else {
+                alert('Payment verification failed: ' + (result.error || 'Unknown error'));
+              }
+            } catch (error) {
+              console.error('Payment verification error:', error);
+              alert('Payment verification failed: ' + error.message);
+            }
+          },
+          prefill: {
+            name: currentUser.name || '',
+            email: currentUser.email || ''
+          },
+          modal: {
+            ondismiss: function() {
+              console.log('Payment modal dismissed');
+              alert('Payment cancelled by user');
+            }
+          },
+          theme: {
+            color: '#8b5cf6'
+          }
+        };
+        
+        console.log('Opening Razorpay with options:', options);
+        const rzp = new Razorpay(options);
+        rzp.on('payment.failed', function (response) {
+          console.error('Payment failed:', response.error);
+          alert('Payment failed: ' + response.error.description);
+        });
+        rzp.open();
+      } catch (error) {
+        console.error('Payment error:', error);
+        alert('Payment failed: ' + error.message);
+      }
+    }
+
+    loadResources();
+  </script>
+</body>
+</html>

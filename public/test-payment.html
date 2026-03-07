@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Payment Test - Earnify</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        .success { background-color: #d4edda; border-color: #c3e6cb; }
+        .error { background-color: #f8d7da; border-color: #f5c6cb; }
+        .info { background-color: #d1ecf1; border-color: #bee5eb; }
+        button { padding: 10px 20px; margin: 5px; background: #007bff; color: white; border: none; border-radius: 3px; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        pre { background: #f8f9fa; padding: 10px; border-radius: 3px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h1>Payment System Test</h1>
+    
+    <div class="test-section info">
+        <h3>Environment Check</h3>
+        <button onclick="checkEnvironment()">Check Configuration</button>
+        <div id="env-result"></div>
+    </div>
+    
+    <div class="test-section info">
+        <h3>Test Payment Order Creation</h3>
+        <button onclick="testOrderCreation()">Test Order Creation</button>
+        <div id="order-result"></div>
+    </div>
+    
+    <div class="test-section info">
+        <h3>Database Connection Test</h3>
+        <button onclick="testDatabase()">Test Database</button>
+        <div id="db-result"></div>
+    </div>
+
+    <script>
+        async function checkEnvironment() {
+            const resultDiv = document.getElementById('env-result');
+            resultDiv.innerHTML = '<p>Checking configuration...</p>';
+            
+            try {
+                const response = await fetch('/api/payment/key');
+                const data = await response.json();
+                
+                if (response.ok && data.key) {
+                    resultDiv.innerHTML = `
+                        <div class="success">
+                            <h4>✅ Configuration OK</h4>
+                            <p>Razorpay Key ID: ${data.key.substring(0, 10)}...</p>
+                        </div>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `
+                        <div class="error">
+                            <h4>❌ Configuration Error</h4>
+                            <p>Error: ${data.error || 'Unknown error'}</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <div class="error">
+                        <h4>❌ Network Error</h4>
+                        <p>Error: ${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+        
+        async function testOrderCreation() {
+            const resultDiv = document.getElementById('order-result');
+            resultDiv.innerHTML = '<p>Testing order creation...</p>';
+            
+            try {
+                const response = await fetch('/api/payment/create-order', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        amount: 100,
+                        receipt: `test_${Date.now()}`
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok && data.id) {
+                    resultDiv.innerHTML = `
+                        <div class="success">
+                            <h4>✅ Order Creation Successful</h4>
+                            <pre>${JSON.stringify(data, null, 2)}</pre>
+                        </div>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `
+                        <div class="error">
+                            <h4>❌ Order Creation Failed</h4>
+                            <p>Error: ${data.error || 'Unknown error'}</p>
+                            <pre>${JSON.stringify(data, null, 2)}</pre>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <div class="error">
+                        <h4>❌ Network Error</h4>
+                        <p>Error: ${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+        
+        async function testDatabase() {
+            const resultDiv = document.getElementById('db-result');
+            resultDiv.innerHTML = '<p>Testing database connection...</p>';
+            
+            try {
+                const response = await fetch('/api/resources');
+                const data = await response.json();
+                
+                if (response.ok) {
+                    resultDiv.innerHTML = `
+                        <div class="success">
+                            <h4>✅ Database Connection OK</h4>
+                            <p>Found ${data.length} resources</p>
+                        </div>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `
+                        <div class="error">
+                            <h4>❌ Database Connection Failed</h4>
+                            <p>Error: ${data.error || 'Unknown error'}</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <div class="error">
+                        <h4>❌ Network Error</h4>
+                        <p>Error: ${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>

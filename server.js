@@ -2,6 +2,8 @@ const express = require("express");
 const cors = require("cors");
 const path = require("path");
 const multer = require("multer");
+const Razorpay = require("razorpay");
+const crypto = require("crypto");
 const { createClient } = require("@supabase/supabase-js");
 require("dotenv").config();
 
@@ -16,6 +18,11 @@ const supabase = createClient(
   process.env.SUPABASE_URL,
   process.env.SUPABASE_SERVICE_ROLE_KEY
 );
+
+const razorpay = new Razorpay({
+  key_id: process.env.RAZORPAY_KEY_ID,
+  key_secret: process.env.RAZORPAY_KEY_SECRET,
+});
 
 // Add fileUrl column to resources table
 async function ensureFileUrlColumn() {
@@ -226,6 +233,76 @@ app.delete("/api/resources/:id", async (req, res) => {
   res.json({ message: "Resource deleted" });
 });
 
+// Get Razorpay Key
+app.get("/api/payment/key", (req, res) => {
+  if (!process.env.RAZORPAY_KEY_ID) {
+    return res.status(500).json({ error: "Razorpay key not configured" });
+  }
+  res.json({ key: process.env.RAZORPAY_KEY_ID });
+});
+
+// Create Razorpay Order
+app.post("/api/payment/create-order", async (req, res) => {
+  try {
+    const { amount, currency = "INR", receipt } = req.body;
+    
+    if (!amount || amount <= 0) {
+      return res.status(400).json({ error: "Invalid amount" });
+    }
+    
+    if (!process.env.RAZORPAY_KEY_ID || !process.env.RAZORPAY_KEY_SECRET) {
+      return res.status(500).json({ error: "Razorpay credentials not configured" });
+    }
+    
+    const options = {
+      amount: Math.round(amount * 100), // Convert to paise and ensure integer
+      currency,
+      receipt: receipt || `receipt_${Date.now()}`,
+    };
+    
+    console.log('Creating Razorpay order with options:', options);
+    const order = await razorpay.orders.create(options);
+    console.log('Order created successfully:', order.id);
+    
+    res.json(order);
+  } catch (error) {
+    console.error('Order creation error:', error);
+    res.status(500).json({ error: error.message || 'Failed to create order' });
+  }
+});
+
+// Verify Payment
+app.post("/api/payment/verify", async (req, res) => {
+  try {
+    const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
+    
+    if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
+      return res.status(400).json({ error: "Missing payment parameters" });
+    }
+    
+    const sign = razorpay_order_id + "|" + razorpay_payment_id;
+    const expectedSign = crypto
+      .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
+      .update(sign.toString())
+      .digest("hex");
+    
+    if (razorpay_signature === expectedSign) {
+      console.log('Payment verified successfully:', razorpay_payment_id);
+      res.json({ success: true, message: "Payment verified successfully" });
+    } else {
+      res.status(400).json({ error: "Invalid payment signature" });
+    }
+  } catch (error) {
+    console.error('Payment verification error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Get User Payments - Disabled (payments table not configured)
+app.get("/api/payments/:userId", async (req, res) => {
+  res.json([]);
+});
+
 // Serve public files
 app.use(express.static('public'));
 
@@ -253,6 +330,19 @@ app.get("/admin/analytics", (req, res) => {
 
 app.get("/admin/settings", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "admin", "settings.html"));
+});
+
+// User routes
+app.get("/payment.html", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "payment.html"));
+});
+
+app.get("/dashboard.html", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "dashboard.html"));
+});
+
+app.get("/test-payment.html", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "test-payment.html"));
 });
 
 // Block direct access to public folder (after admin routes)

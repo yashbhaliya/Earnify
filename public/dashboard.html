@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dashboard - Earnify</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    .nav { background: #8b5cf6; padding: 15px; color: white; margin-bottom: 20px; }
+    .nav a { color: white; text-decoration: none; margin-right: 20px; }
+    .purchase-card { border: 1px solid #ddd; padding: 15px; margin: 10px 0; border-radius: 8px; }
+    .status { padding: 5px 10px; border-radius: 15px; font-size: 12px; }
+    .completed { background: #10b981; color: white; }
+  </style>
+</head>
+<body>
+  <div class="nav">
+    <h2>Earnify Dashboard</h2>
+    <a href="/#resources">Browse Resources</a>
+    <a href="/payment.html">Buy Resources</a>
+    <a href="#" onclick="logout()">Logout</a>
+  </div>
+
+  <h1>My Purchases</h1>
+  <div id="purchases"></div>
+
+  <script>
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    if (!currentUser) {
+      alert('Please login first');
+      window.location.href = '/';
+    }
+
+    async function loadPurchases() {
+      try {
+        const purchases = JSON.parse(localStorage.getItem('userPurchases') || '[]');
+        console.log('Loaded purchases:', purchases);
+        
+        const container = document.getElementById('purchases');
+        if (purchases.length === 0) {
+          container.innerHTML = `
+            <p>No purchases yet. <a href="/payment.html">Buy resources</a></p>
+            <button onclick="addTestPurchase()">Add Test Purchase</button>
+          `;
+          return;
+        }
+        
+        container.innerHTML = purchases.map(purchase => `
+          <div class="purchase-card">
+            <h3>${purchase.title}</h3>
+            <p>Price: ₹${purchase.price}</p>
+            <p>Payment ID: ${purchase.payment_id}</p>
+            <p>Date: ${new Date(purchase.date).toLocaleDateString()}</p>
+            <span class="status completed">${purchase.status}</span>
+          </div>
+        `).join('');
+      } catch (error) {
+        console.error('Error loading purchases:', error);
+        document.getElementById('purchases').innerHTML = '<p>Error loading purchases</p>';
+      }
+    }
+    
+    function addTestPurchase() {
+      const purchases = JSON.parse(localStorage.getItem('userPurchases') || '[]');
+      purchases.push({
+        id: Date.now(),
+        resourceId: 1,
+        title: 'Test Resource',
+        price: 100,
+        payment_id: 'test_payment_123',
+        order_id: 'test_order_123',
+        status: 'completed',
+        date: new Date().toISOString()
+      });
+      localStorage.setItem('userPurchases', JSON.stringify(purchases));
+      loadPurchases();
+    }
+
+    function logout() {
+      localStorage.removeItem('currentUser');
+      localStorage.removeItem('userLoggedIn');
+      localStorage.removeItem('userPurchases');
+      window.location.href = '/';
+    }
+
+    loadPurchases();
+  </script>
+</body>
+</html>
