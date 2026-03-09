@@ -9,16 +9,18 @@ function checkLoginStatus() {
 }
 
 function updateUI() {
+  const loginBtn = document.getElementById('loginBtn');
+  const signupBtn = document.getElementById('signupBtn');
+  const logoutBtn = document.getElementById('logoutBtn');
+  
   if (isLoggedIn) {
-    document.getElementById('loginBtn').style.display = 'none';
-    document.getElementById('signupBtn').style.display = 'none';
-    document.getElementById('logoutBtn').style.display = 'inline-block';
-    document.getElementById('dashboardLink').style.display = 'inline-block';
+    if (loginBtn) loginBtn.style.display = 'none';
+    if (signupBtn) signupBtn.style.display = 'none';
+    if (logoutBtn) logoutBtn.style.display = 'inline-block';
   } else {
-    document.getElementById('loginBtn').style.display = 'inline-block';
-    document.getElementById('signupBtn').style.display = 'inline-block';
-    document.getElementById('logoutBtn').style.display = 'none';
-    document.getElementById('dashboardLink').style.display = 'none';
+    if (loginBtn) loginBtn.style.display = 'inline-block';
+    if (signupBtn) signupBtn.style.display = 'inline-block';
+    if (logoutBtn) logoutBtn.style.display = 'none';
   }
 }
 

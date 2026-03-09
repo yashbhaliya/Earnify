@@ -90,6 +90,7 @@
           name: 'Earnify',
           description: title,
           order_id: order.id,
+          timeout: 300,
           handler: async function(response) {
             try {
               console.log('Payment response:', response);
@@ -118,7 +119,7 @@
               
               if (result.success) {
                 alert('Payment successful! You can now access this resource.');
-                window.location.href = '/dashboard.html';
+                window.location.href = 'dashboard.html';
               } else {
                 alert('Payment verification failed: ' + (result.error || 'Unknown error'));
               }

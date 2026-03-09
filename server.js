@@ -421,20 +421,16 @@ app.get("/admin/settings", (req, res) => {
 });
 
 // User routes
+app.get("/dashboard.html", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "dashboard.html"));
+});
+
 app.get("/details.html", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "details.html"));
 });
 
 app.get("/payment.html", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "payment.html"));
-});
-
-app.get("/dashboard.html", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "dashboard.html"));
-});
-
-app.get("/test-payment.html", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "test-payment.html"));
 });
 
 // Serve public files

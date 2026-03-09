@@ -2,27 +2,91 @@
 <html>
 <head>
   <title>Dashboard - Earnify</title>
+  <link rel="stylesheet" href="landing.css">
   <style>
-    body { font-family: Arial, sans-serif; margin: 20px; }
-    .nav { background: #8b5cf6; padding: 15px; color: white; margin-bottom: 20px; }
-    .nav a { color: white; text-decoration: none; margin-right: 20px; }
-    .purchase-card { border: 1px solid #ddd; padding: 15px; margin: 10px 0; border-radius: 8px; }
-    .status { padding: 5px 10px; border-radius: 15px; font-size: 12px; }
+    body { margin: 0; background: #f8fafc; }
+    .purchase-card { 
+      background: white;
+      border: 1px solid #e2e8f0; 
+      padding: 20px; 
+      margin: 15px 0; 
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+      transition: transform 0.3s;
+    }
+    .purchase-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+    }
+    .purchase-card h3 {
+      color: #1e293b;
+      margin-bottom: 10px;
+    }
+    .purchase-card p {
+      color: #64748b;
+      margin: 8px 0;
+    }
+    .status { 
+      padding: 6px 14px; 
+      border-radius: 20px; 
+      font-size: 12px;
+      font-weight: 600;
+      display: inline-block;
+      margin-top: 10px;
+    }
     .completed { background: #10b981; color: white; }
+    .pending { background: #f59e0b; color: white; }
+    .failed { background: #ef4444; color: white; }
+    .content-wrapper { padding: 3rem 0; min-height: 80vh; }
+    .container h1 {
+      color: #1e293b;
+      margin-bottom: 30px;
+      font-size: 32px;
+    }
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    }
+    .empty-state p {
+      color: #64748b;
+      font-size: 18px;
+    }
+    .empty-state a {
+      color: #3b82f6;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .price-tag {
+      color: #10b981;
+      font-weight: 700;
+      font-size: 18px;
+    }
   </style>
 </head>
 <body>
-  <div class="nav">
-    <h2>Earnify Dashboard</h2>
-    <a href="index.html">Home</a>
-    <a href="dashboard.html">Dashboard</a>
-    <a href="payment.html">Buy Resources</a>
-    <a href="details.html">Details</a>
-    <a href="#" onclick="logout()">Logout</a>
-  </div>
+  <nav class="navbar">
+    <div class="container">
+      <a href="index.html" style="text-decoration: none; color: inherit;"><h1 class="logo">💰 Earnify</h1></a>
+      <div class="nav-links">
+        <a href="index.html#resources">Resources</a>
+        <a href="index.html#about">About</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="payment.html">Buy</a>
+        <a href="details.html">Details</a>
+        <button id="logoutBtn" class="admin-btn" onclick="logout()">Logout</button>
+      </div>
+    </div>
+  </nav>
 
-  <h1>My Purchases</h1>
-  <div id="purchases"></div>
+  <div class="content-wrapper">
+    <div class="container">
+      <h1>My Purchases</h1>
+      <div id="purchases"></div>
+    </div>
+  </div>
 
   <script>
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -34,31 +98,61 @@
     async function loadPurchases() {
       try {
         const response = await fetch(`/api/payments/${currentUser.id}`);
+        
+        if (!response.ok) {
+          console.warn('API not available, showing empty state');
+          const container = document.getElementById('purchases');
+          container.innerHTML = `
+            <div class="empty-state">
+              <h2>🛒 No Purchases Yet</h2>
+              <p>You haven't made any purchases. <a href="payment.html">Browse our resources</a> to get started!</p>
+            </div>
+          `;
+          return;
+        }
+        
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+          console.warn('API not available, showing empty state');
+          const container = document.getElementById('purchases');
+          container.innerHTML = `
+            <div class="empty-state">
+              <h2>🛒 No Purchases Yet</h2>
+              <p>You haven't made any purchases. <a href="payment.html">Browse our resources</a> to get started!</p>
+            </div>
+          `;
+          return;
+        }
+        
         const purchases = await response.json();
         console.log('Loaded purchases:', purchases);
         
         const container = document.getElementById('purchases');
         if (purchases.length === 0) {
           container.innerHTML = `
-            <p>No purchases yet. <a href="/#resources">Browse resources</a></p>
-            <button onclick="testPayment()">Test Add Payment</button>
+            <div class="empty-state">
+              <h2>🛒 No Purchases Yet</h2>
+              <p>You haven't made any purchases. <a href="payment.html">Browse our resources</a> to get started!</p>
+            </div>
           `;
           return;
         }
         
         container.innerHTML = purchases.map(purchase => `
           <div class="purchase-card">
-            <h3>${purchase.resources?.title || 'Resource'}</h3>
-            <p>Type: ${purchase.resources?.type || 'N/A'}</p>
-            <p>Price: ₹${purchase.resources?.price || 'N/A'}</p>
-            <p>Payment ID: ${purchase.payment_id}</p>
-            <p>Date: ${new Date(purchase.created_at).toLocaleDateString()}</p>
-            <span class="status completed">${purchase.status}</span>
+            <h3>📦 ${purchase.resources?.title || 'Resource'}</h3>
+            <p><strong>Type:</strong> ${purchase.resources?.type || 'N/A'}</p>
+            <p class="price-tag"><strong>Price:</strong> ₹${purchase.resources?.price || 'N/A'}</p>
+            <p><strong>Payment ID:</strong> ${purchase.payment_id}</p>
+            <p><strong>Order ID:</strong> ${purchase.order_id || 'N/A'}</p>
+            <p><strong>Date:</strong> ${new Date(purchase.created_at).toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+            <span class="status ${purchase.status.toLowerCase()}">${purchase.status.toUpperCase()}</span>
+            ${purchase.resources?.file_url ? `<br><br><a href="${purchase.resources.file_url}" download class="download-btn" style="background: #3b82f6; color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; display: inline-block; margin-top: 10px;">📥 Download</a>` : ''}
           </div>
         `).join('');
       } catch (error) {
         console.error('Error loading purchases:', error);
-        document.getElementById('purchases').innerHTML = '<p>Error loading purchases</p>';
+        document.getElementById('purchases').innerHTML = '<div class="empty-state"><h2>🛒 No Purchases Yet</h2><p>You haven\'t made any purchases. <a href="payment.html">Browse our resources</a> to get started!</p></div>';
       }
     }
 
