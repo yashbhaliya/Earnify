@@ -345,7 +345,7 @@ app.get("/api/payments/:userId", async (req, res) => {
     // Get resources separately
     const { data: resources, error: resourcesError } = await supabase
       .from("resources")
-      .select("id, title, type, price");
+      .select("id, title, type, price, fileurl");
     
     if (resourcesError) {
       console.error('Resources fetch error:', resourcesError);

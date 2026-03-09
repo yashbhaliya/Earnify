@@ -2,23 +2,57 @@
 <html>
 <head>
   <title>Payment - Earnify</title>
+  <link rel="stylesheet" href="landing.css">
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   <style>
-    body { font-family: Arial, sans-serif; margin: 20px; }
-    .resource-card { border: 1px solid #ddd; padding: 20px; margin: 10px 0; border-radius: 8px; }
-    .buy-btn { background: #8b5cf6; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; }
+    #resources { 
+      max-width: 1200px; 
+      margin: 0 auto; 
+      padding: 20px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+    .resource-card { 
+      border: 1px solid #e2e8f0; 
+      padding: 20px; 
+      border-radius: 12px; 
+      background: white;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+      transition: transform 0.3s;
+    }
+    .resource-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+    }
+    .buy-btn { 
+      background: #8b5cf6; 
+      color: white; 
+      padding: 10px 20px; 
+      border: none; 
+      border-radius: 8px; 
+      cursor: pointer;
+      width: 100%;
+      font-weight: 600;
+      margin-top: 10px;
+    }
     .buy-btn:hover { background: #7c3aed; }
   </style>
 </head>
 <body>
-  <nav style="background: #8b5cf6; padding: 15px; color: white; margin-bottom: 20px;">
-    <a href="index.html" style="color: white; text-decoration: none; margin-right: 20px;">Home</a>
-    <a href="dashboard.html" style="color: white; text-decoration: none; margin-right: 20px;">Dashboard</a>
-    <a href="payment.html" style="color: white; text-decoration: none; margin-right: 20px;">Buy</a>
-    <a href="details.html" style="color: white; text-decoration: none; margin-right: 20px;">Details</a>
-    <a href="#" onclick="logout()" style="color: white; text-decoration: none;">Logout</a>
+  <nav class="navbar">
+    <div class="container">
+      <a href="index.html" style="text-decoration: none; color: inherit;"><h1 class="logo">💰 Earnify</h1></a>
+      <div class="nav-links">
+        <a href="index.html#resources">Resources</a>
+        <a href="index.html#about">About</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="payment.html">Buy</a>
+        <button id="logoutBtn" class="admin-btn" onclick="logout()" style="display:none;">Logout</button>
+      </div>
+    </div>
   </nav>
-  <h1>Purchase Resources</h1>
+  <h1 style="padding: 20px; margin: 0;">Purchase Resources</h1>
   <div id="resources"></div>
 
   <script>
