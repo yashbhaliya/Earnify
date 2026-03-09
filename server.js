@@ -274,7 +274,9 @@ app.post("/api/payment/create-order", async (req, res) => {
 // Verify Payment
 app.post("/api/payment/verify", async (req, res) => {
   try {
-    const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
+    const { razorpay_order_id, razorpay_payment_id, razorpay_signature, resourceId, userId } = req.body;
+    
+    console.log('Payment verification request:', { razorpay_order_id, razorpay_payment_id, resourceId, userId });
     
     if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
       return res.status(400).json({ error: "Missing payment parameters" });
@@ -288,6 +290,34 @@ app.post("/api/payment/verify", async (req, res) => {
     
     if (razorpay_signature === expectedSign) {
       console.log('Payment verified successfully:', razorpay_payment_id);
+      
+      // Save payment to database
+      if (resourceId && userId) {
+        try {
+          const { data, error } = await supabase
+            .from("payments")
+            .insert([{
+              user_id: parseInt(userId),
+              resource_id: parseInt(resourceId),
+              payment_id: razorpay_payment_id,
+              order_id: razorpay_order_id,
+              status: "completed"
+            }])
+            .select();
+          
+          if (error) {
+            console.error('Database save error:', error);
+            return res.status(500).json({ error: 'Payment verified but failed to save: ' + error.message });
+          } else {
+            console.log('Payment saved to database:', data[0]);
+            return res.json({ success: true, message: "Payment verified and saved", payment: data[0] });
+          }
+        } catch (dbError) {
+          console.error('Database operation failed:', dbError);
+          return res.status(500).json({ error: 'Database error: ' + dbError.message });
+        }
+      }
+      
       res.json({ success: true, message: "Payment verified successfully" });
     } else {
       res.status(400).json({ error: "Invalid payment signature" });
@@ -298,13 +328,71 @@ app.post("/api/payment/verify", async (req, res) => {
   }
 });
 
-// Get User Payments - Disabled (payments table not configured)
+// Get User Payments
 app.get("/api/payments/:userId", async (req, res) => {
-  res.json([]);
+  try {
+    // Get payments
+    const { data: payments, error: paymentsError } = await supabase
+      .from("payments")
+      .select("*")
+      .eq("user_id", req.params.userId);
+    
+    if (paymentsError) {
+      console.error('Payments fetch error:', paymentsError);
+      return res.json([]);
+    }
+    
+    // Get resources separately
+    const { data: resources, error: resourcesError } = await supabase
+      .from("resources")
+      .select("id, title, type, price");
+    
+    if (resourcesError) {
+      console.error('Resources fetch error:', resourcesError);
+      return res.json(payments || []);
+    }
+    
+    // Manually join data
+    const paymentsWithResources = (payments || []).map(payment => {
+      const resource = resources.find(r => r.id === payment.resource_id);
+      return {
+        ...payment,
+        resources: resource || null
+      };
+    });
+    
+    res.json(paymentsWithResources);
+  } catch (error) {
+    console.error('Error fetching payments:', error);
+    res.json([]);
+  }
 });
 
-// Serve public files
-app.use(express.static('public'));
+// Test endpoint to add payment
+app.post("/api/test-payment", async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from("payments")
+      .insert([{
+        user_id: 1,
+        resource_id: 1,
+        payment_id: 'test_payment_' + Date.now(),
+        order_id: 'test_order_' + Date.now(),
+        status: "completed"
+      }])
+      .select();
+    
+    if (error) {
+      console.error('Test payment error:', error);
+      return res.status(500).json({ error: error.message });
+    }
+    
+    res.json({ success: true, payment: data[0] });
+  } catch (error) {
+    console.error('Test payment failed:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
 
 // Default route - Landing page
 app.get("/", (req, res) => {
@@ -345,11 +433,12 @@ app.get("/test-payment.html", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "test-payment.html"));
 });
 
+// Serve public files
+app.use(express.static('public'));
+
 // Block direct access to public folder (after admin routes)
 app.use('/public', (req, res) => {
   res.status(403).json({ error: 'Access denied' });
 });
 
-app.listen(process.env.PORT, () =>
-  console.log("Server running on port 5000")
-);
+app.listen(process.env.PORT, () => console.log("Server running on port 5000"));

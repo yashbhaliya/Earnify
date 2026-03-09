@@ -31,24 +31,26 @@
 
     async function loadPurchases() {
       try {
-        const purchases = JSON.parse(localStorage.getItem('userPurchases') || '[]');
+        const response = await fetch(`/api/payments/${currentUser.id}`);
+        const purchases = await response.json();
         console.log('Loaded purchases:', purchases);
         
         const container = document.getElementById('purchases');
         if (purchases.length === 0) {
           container.innerHTML = `
-            <p>No purchases yet. <a href="/payment.html">Buy resources</a></p>
-            <button onclick="addTestPurchase()">Add Test Purchase</button>
+            <p>No purchases yet. <a href="/#resources">Browse resources</a></p>
+            <button onclick="testPayment()">Test Add Payment</button>
           `;
           return;
         }
         
         container.innerHTML = purchases.map(purchase => `
           <div class="purchase-card">
-            <h3>${purchase.title}</h3>
-            <p>Price: ₹${purchase.price}</p>
+            <h3>${purchase.resources?.title || 'Resource'}</h3>
+            <p>Type: ${purchase.resources?.type || 'N/A'}</p>
+            <p>Price: ₹${purchase.resources?.price || 'N/A'}</p>
             <p>Payment ID: ${purchase.payment_id}</p>
-            <p>Date: ${new Date(purchase.date).toLocaleDateString()}</p>
+            <p>Date: ${new Date(purchase.created_at).toLocaleDateString()}</p>
             <span class="status completed">${purchase.status}</span>
           </div>
         `).join('');
@@ -57,28 +59,30 @@
         document.getElementById('purchases').innerHTML = '<p>Error loading purchases</p>';
       }
     }
-    
-    function addTestPurchase() {
-      const purchases = JSON.parse(localStorage.getItem('userPurchases') || '[]');
-      purchases.push({
-        id: Date.now(),
-        resourceId: 1,
-        title: 'Test Resource',
-        price: 100,
-        payment_id: 'test_payment_123',
-        order_id: 'test_order_123',
-        status: 'completed',
-        date: new Date().toISOString()
-      });
-      localStorage.setItem('userPurchases', JSON.stringify(purchases));
-      loadPurchases();
-    }
 
     function logout() {
       localStorage.removeItem('currentUser');
       localStorage.removeItem('userLoggedIn');
       localStorage.removeItem('userPurchases');
       window.location.href = '/';
+    }
+    
+    async function testPayment() {
+      try {
+        const response = await fetch('/api/test-payment', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' }
+        });
+        const result = await response.json();
+        if (result.success) {
+          alert('Test payment added!');
+          loadPurchases();
+        } else {
+          alert('Failed to add test payment: ' + result.error);
+        }
+      } catch (error) {
+        alert('Error: ' + error.message);
+      }
     }
 
     loadPurchases();

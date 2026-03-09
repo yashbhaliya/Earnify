@@ -110,20 +110,6 @@
               console.log('Verification result:', result);
               
               if (result.success) {
-                // Store purchase in localStorage
-                const purchases = JSON.parse(localStorage.getItem('userPurchases') || '[]');
-                purchases.push({
-                  id: Date.now(),
-                  resourceId: resourceId,
-                  title: title,
-                  price: price,
-                  payment_id: response.razorpay_payment_id,
-                  order_id: response.razorpay_order_id,
-                  status: 'completed',
-                  date: new Date().toISOString()
-                });
-                localStorage.setItem('userPurchases', JSON.stringify(purchases));
-                
                 alert('Payment successful! You can now access this resource.');
                 window.location.href = '/dashboard.html';
               } else {
