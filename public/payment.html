@@ -11,6 +11,13 @@
   </style>
 </head>
 <body>
+  <nav style="background: #8b5cf6; padding: 15px; color: white; margin-bottom: 20px;">
+    <a href="index.html" style="color: white; text-decoration: none; margin-right: 20px;">Home</a>
+    <a href="dashboard.html" style="color: white; text-decoration: none; margin-right: 20px;">Dashboard</a>
+    <a href="payment.html" style="color: white; text-decoration: none; margin-right: 20px;">Buy</a>
+    <a href="details.html" style="color: white; text-decoration: none; margin-right: 20px;">Details</a>
+    <a href="#" onclick="logout()" style="color: white; text-decoration: none;">Logout</a>
+  </nav>
   <h1>Purchase Resources</h1>
   <div id="resources"></div>
 
@@ -146,6 +153,12 @@
         console.error('Payment error:', error);
         alert('Payment failed: ' + error.message);
       }
+    }
+
+    function logout() {
+      localStorage.removeItem('currentUser');
+      localStorage.removeItem('userLoggedIn');
+      window.location.href = 'index.html';
     }
 
     loadResources();
