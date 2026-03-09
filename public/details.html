@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resource Details - Earnify</title>
+  <link rel="stylesheet" href="details.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container">
+      <h1 class="logo">💰 Earnify</h1>
+      <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/dashboard.html" id="dashboardLink" style="display:none;">Dashboard</a>
+        <button id="logoutBtn" class="admin-btn" onclick="logout()" style="display:none;">Logout</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="details-wrapper">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="/">Home</a> <span>/</span> <span id="breadcrumbTitle">Resource Details</span>
+      </div>
+      <div class="details-grid">
+        <div class="details-main">
+          <div id="resourceDetails"></div>
+        </div>
+        <div class="details-sidebar">
+          <div class="purchase-card" id="purchaseCard"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <script src="details.js"></script>
+</body>
+</html>

@@ -421,6 +421,10 @@ app.get("/admin/settings", (req, res) => {
 });
 
 // User routes
+app.get("/details.html", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "details.html"));
+});
+
 app.get("/payment.html", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "payment.html"));
 });

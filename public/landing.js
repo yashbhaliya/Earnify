@@ -150,12 +150,12 @@ function displayResources(resources) {
   const icons = { pdf: '📄', excel: '📊', exam: '📝', freelance: '💼' };
   
   grid.innerHTML = resources.map(r => `
-    <div class="resource-card">
+    <div class="resource-card" onclick="viewDetails(${r.id})" style="cursor: pointer;">
       <span class="resource-type">${icons[r.type] || '📦'} ${r.type.toUpperCase()}</span>
       <h3>${r.title}</h3>
       <p>${r.description}</p>
       <div class="resource-price">₹${r.price}</div>
-      <button class="buy-btn" onclick="buyResource(${r.id})">Buy Now</button>
+      <button class="buy-btn" onclick="event.stopPropagation(); buyResource(${r.id})">Buy Now</button>
     </div>
   `).join('');
 }
@@ -177,14 +177,13 @@ function filterResources(type) {
   displayResources(filtered);
 }
 
+function viewDetails(id) {
+  console.log('Navigating to details page for resource:', id);
+  window.location.href = `details.html?id=${id}`;
+}
+
 function buyResource(id) {
-  if (!isLoggedIn) {
-    alert('Please login to purchase resources');
-    showLoginModal();
-    return;
-  }
-  
-  window.location.href = '/payment.html';
+  window.location.href = `details.html?id=${id}`;
 }
 
 // Load resources and check login on page load

@@ -7,7 +7,7 @@
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   display: flex;
-  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #7e22ce 100%);
+  background: #F8FAFC;
   min-height: 100vh;
 }
 
@@ -71,7 +71,7 @@ body {
   border-radius: 15px;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
   transition: transform 0.3s, box-shadow 0.3s;
-  border-left: 5px solid #3b82f6;
+  border-left: 5px solid #2563EB;
   position: relative;
   overflow: hidden;
 }
@@ -83,7 +83,7 @@ body {
   right: 0;
   width: 100px;
   height: 100px;
-  background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
 }
 
 .card:nth-child(2) {
@@ -122,7 +122,7 @@ table {
 }
 
 thead {
-  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
 }
 
 th {
@@ -223,7 +223,7 @@ button:last-child:hover {
 }
 
 .analytics-section h2 {
-  color: #1e3c72;
+  color: #2563EB;
   margin-bottom: 20px;
   font-size: 24px;
 }
@@ -256,7 +256,7 @@ button:last-child:hover {
 }
 
 .stat-value {
-  color: #1e3c72;
+  color: #2563EB;
   font-size: 24px;
   font-weight: 700;
 }
@@ -275,7 +275,7 @@ button:last-child:hover {
 }
 
 .settings-card h3 {
-  color: #1e3c72;
+  color: #2563EB;
   margin-bottom: 20px;
   font-size: 20px;
 }
@@ -308,7 +308,7 @@ button:last-child:hover {
 .action-btn {
   width: 100%;
   margin: 10px 0;
-  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
   color: white;
   padding: 12px;
   font-size: 15px;
@@ -316,7 +316,7 @@ button:last-child:hover {
 }
 
 .action-btn:hover {
-  background: linear-gradient(135deg, #2a5298 0%, #1e3c72 100%);
+  background: linear-gradient(135deg, #1D4ED8 0%, #2563EB 100%);
   box-shadow: 0 6px 20px rgba(30, 60, 114, 0.4);
 }
 
@@ -332,7 +332,7 @@ button:last-child:hover {
 .card p {
   font-size: 32px;
   font-weight: 700;
-  background: linear-gradient(135deg, #1e3c72 0%, #7e22ce 100%);
+  background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -348,8 +348,8 @@ button:last-child:hover {
 .tab-btn {
   padding: 12px 24px;
   background: white;
-  border: 2px solid #1e3c72;
-  color: #1e3c72;
+  border: 2px solid #2563EB;
+  color: #2563EB;
   border-radius: 8px;
   cursor: pointer;
   font-weight: 600;
@@ -357,7 +357,7 @@ button:last-child:hover {
 }
 
 .tab-btn.active {
-  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
   color: white;
 }
 
@@ -408,11 +408,11 @@ button:last-child:hover {
   padding: 25px;
   border-radius: 15px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-  border-top: 4px solid #1e3c72;
+  border-top: 4px solid #2563EB;
 }
 
 .resource-card h3 {
-  color: #1e3c72;
+  color: #2563EB;
   margin-bottom: 10px;
 }
 
@@ -460,7 +460,7 @@ button:last-child:hover {
 }
 
 .close:hover {
-  color: #1e3c72;
+  color: #2563EB;
 }
 
 #resourceForm input,
@@ -481,7 +481,7 @@ button:last-child:hover {
 #resourceForm button {
   width: 100%;
   padding: 14px;
-  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
   color: white;
   border: none;
   border-radius: 8px;
@@ -573,7 +573,7 @@ button:last-child:hover {
 }
 
 #viewModal h2 {
-  color: #1e3c72;
+  color: #2563EB;
   margin-bottom: 25px;
   font-size: 28px;
   text-align: center;
@@ -619,7 +619,7 @@ button:last-child:hover {
 
 #viewType {
   background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
-  color: #1e3c72 !important;
+  color: #2563EB !important;
   padding: 6px 12px;
   border-radius: 20px;
   font-size: 12px;
@@ -634,7 +634,7 @@ button:last-child:hover {
 }
 
 #editModal h2 {
-  color: #1e3c72;
+  color: #2563EB;
   margin-bottom: 25px;
   font-size: 28px;
   text-align: center;
@@ -657,7 +657,7 @@ button:last-child:hover {
 #editForm input:focus,
 #editForm textarea:focus {
   outline: none;
-  border-color: #1e3c72;
+  border-color: #2563EB;
   background: white;
   box-shadow: 0 0 0 3px rgba(30, 60, 114, 0.1);
 }
@@ -740,7 +740,7 @@ button:last-child:hover {
 
 #codeEditor:focus {
   outline: none;
-  border-color: #1e3c72;
+  border-color: #2563EB;
   background: white;
 }
 
@@ -763,7 +763,7 @@ button:last-child:hover {
   border: 1px solid #fecaca;
 }
 .resource-type-badge {
-  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
   color: white;
   padding: 4px 8px;
   border-radius: 12px;
@@ -811,7 +811,7 @@ button:last-child:hover {
 }
 
 .last-file-info span {
-  color: #1e3c72;
+  color: #2563EB;
   font-weight: 600;
 }
 .premium-container {
@@ -829,7 +829,7 @@ button:last-child:hover {
 }
 
 .premium-header h2 {
-  color: #1e3c72;
+  color: #2563EB;
   margin-bottom: 10px;
 }
 
@@ -845,7 +845,7 @@ button:last-child:hover {
 }
 
 .preview-navbar {
-  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
   padding: 15px 20px;
   display: flex;
   justify-content: space-between;
@@ -870,7 +870,7 @@ button:last-child:hover {
 }
 
 .preview-hero {
-  background: linear-gradient(135deg, #7e22ce 0%, #1e3c72 100%);
+  background: linear-gradient(135deg, #1E40AF 0%, #2563EB 100%);
   color: white;
   text-align: center;
   padding: 60px 20px;
@@ -892,7 +892,7 @@ button:last-child:hover {
 
 .preview-resources h2 {
   text-align: center;
-  color: #1e3c72;
+  color: #2563EB;
   margin-bottom: 30px;
 }
 
@@ -917,7 +917,7 @@ button:last-child:hover {
 }
 
 .preview-card h3 {
-  color: #1e3c72;
+  color: #2563EB;
   margin-bottom: 8px;
   font-size: 16px;
 }
@@ -953,7 +953,7 @@ button:last-child:hover {
 }
 
 .premium-preview h2 {
-  color: #1e3c72;
+  color: #2563EB;
   margin-bottom: 10px;
   text-align: center;
 }
@@ -1115,7 +1115,7 @@ button:last-child:hover {
 }
 
 .premium-empty-state h3 {
-  color: #1e3c72;
+  color: #2563EB;
   font-size: 24px;
   margin-bottom: 10px;
   font-weight: 700;
@@ -1157,7 +1157,7 @@ button:last-child:hover {
 }
 
 .premium-table button:last-child {
-  background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+  background: linear-gradient(135deg, #1D4ED8 0%, #7c3aed 100%);
   box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
 }
 
@@ -1194,7 +1194,7 @@ button:last-child:hover {
   background: #f8f9fa;
 }
 .table-container {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
   border-radius: 12px;
   box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
   overflow: hidden;
@@ -1211,7 +1211,7 @@ button:last-child:hover {
 }
 
 .users-table th {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
   color: white;
   padding: 15px;
   text-align: left;
