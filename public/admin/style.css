@@ -2112,3 +2112,63 @@ body.light-mode #viewContent span {
 .empty-state p {
   font-weight: 500;
 }
+
+/* Pagination Styles */
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 30px;
+  padding: 20px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.pagination-info {
+  color: #64748b;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.pagination-buttons {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.pagination-buttons button {
+  padding: 8px 16px;
+  background: white;
+  border: 2px solid #e2e8f0;
+  color: #64748b;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s;
+  font-size: 14px;
+}
+
+.pagination-buttons button:hover:not(:disabled) {
+  background: #3b82f6;
+  color: white;
+  border-color: #3b82f6;
+  transform: translateY(-1px);
+}
+
+.pagination-buttons button.active {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  color: white;
+  border-color: #3b82f6;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+}
+
+.pagination-buttons button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.pagination-buttons span {
+  color: #94a3b8;
+  padding: 0 4px;
+}

@@ -197,6 +197,8 @@ async function loadResources(type) {
   }
 }
 
+
+
 function getTypeIcon(type) {
   const icons = {
     pdf: '📄',

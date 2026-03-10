@@ -2,6 +2,8 @@ const API = 'http://localhost:5000/api/resources';
 let allResources = [];
 let currentFilter = 'all';
 let isLoggedIn = false;
+let currentPage = 1;
+const itemsPerPage = 12;
 
 // Check login status on page load
 document.addEventListener('DOMContentLoaded', () => {
@@ -261,12 +263,17 @@ function displayResources(resources, userPurchases = []) {
   
   if (!resources || resources.length === 0) {
     grid.innerHTML = '<p style="text-align: center; color: #666;">No resources available yet.</p>';
+    const paginationDiv = document.querySelector('.pagination');
+    if (paginationDiv) paginationDiv.innerHTML = '';
     return;
   }
   
   const purchasedIds = userPurchases.map(p => p.resource_id);
+  const totalPages = Math.ceil(resources.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const paginatedResources = resources.slice(startIndex, startIndex + itemsPerPage);
   
-  grid.innerHTML = resources.map(resource => {
+  grid.innerHTML = paginatedResources.map(resource => {
     const isPurchased = purchasedIds.includes(resource.id);
     const icons = { pdf: '📄', excel: '📊', exam: '📝', freelance: '💼' };
     const icon = icons[resource.type] || '📦';
@@ -285,10 +292,51 @@ function displayResources(resources, userPurchases = []) {
       </div>
     `;
   }).join('');
+  
+  renderPagination(totalPages);
+}
+
+function renderPagination(totalPages) {
+  let paginationDiv = document.querySelector('.pagination');
+  if (!paginationDiv) {
+    paginationDiv = document.createElement('div');
+    paginationDiv.className = 'pagination';
+    document.querySelector('.resources-section .container').appendChild(paginationDiv);
+  }
+  
+  let html = '<div class="pagination-buttons">';
+  html += `<button onclick="changePage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}>← Prev</button>`;
+  
+  for (let i = 1; i <= totalPages; i++) {
+    html += `<button onclick="changePage(${i})" class="${i === currentPage ? 'active' : ''}">${i}</button>`;
+  }
+  
+  html += `<button onclick="changePage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''}>Next →</button>`;
+  html += '</div>';
+  paginationDiv.innerHTML = html;
+}
+
+function changePage(page) {
+  currentPage = page;
+  const filtered = currentFilter === 'all' ? allResources : allResources.filter(r => r.type === currentFilter);
+  
+  let userPurchases = [];
+  if (isLoggedIn) {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    if (currentUser) {
+      fetch(`http://localhost:5000/api/payments/${currentUser.id}`)
+        .then(res => res.ok ? res.json() : [])
+        .then(purchases => displayResources(filtered, purchases))
+        .catch(() => displayResources(filtered, []));
+      return;
+    }
+  }
+  displayResources(filtered, userPurchases);
 }
 
 function filterResources(type) {
   currentFilter = type;
+  currentPage = 1;
   
   // Update active button
   document.querySelectorAll('.filter-btn').forEach(btn => {
