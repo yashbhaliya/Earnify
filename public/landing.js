@@ -164,6 +164,36 @@ async function loadResources() {
   }
 }
 
+function searchResources() {
+  const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+  const filtered = allResources.filter(resource => {
+    const title = (resource.title || '').toLowerCase();
+    const type = (resource.type || '').toLowerCase();
+    const description = (resource.description || '').toLowerCase();
+    const price = (resource.price || '').toString();
+    
+    return title.includes(searchTerm) || 
+           type.includes(searchTerm) || 
+           description.includes(searchTerm) ||
+           price.includes(searchTerm);
+  });
+  
+  // Get user purchases if logged in
+  let userPurchases = [];
+  if (isLoggedIn) {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    if (currentUser) {
+      fetch(`http://localhost:5000/api/payments/${currentUser.id}`)
+        .then(res => res.ok ? res.json() : [])
+        .then(purchases => displayResources(filtered, purchases))
+        .catch(() => displayResources(filtered, []));
+      return;
+    }
+  }
+  
+  displayResources(filtered, userPurchases);
+}
+
 function displayResources(resources, userPurchases = []) {
   const grid = document.getElementById('resourcesGrid');
   

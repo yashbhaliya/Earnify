@@ -31,6 +31,26 @@ body {
   align-items: center;
 }
 
+.search-box {
+  flex: 1;
+  max-width: 400px;
+  margin: 0 20px;
+}
+
+.search-box input {
+  width: 100%;
+  padding: 10px 15px;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.search-box input:focus {
+  border-color: #2563EB;
+}
+
 .logo {
   font-size: 1.8rem;
   color: #2563EB;

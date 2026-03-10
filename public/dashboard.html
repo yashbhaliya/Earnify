@@ -72,12 +72,37 @@
       font-weight: 700;
       font-size: 18px;
     }
+    .search-box {
+      flex: 1;
+      max-width: 400px;
+      margin: 0 20px;
+    }
+    .search-box input {
+      width: 100%;
+      padding: 10px 15px;
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+    .search-box input:focus {
+      border-color: #667eea;
+    }
+    .navbar .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
   </style>
 </head>
 <body>
   <nav class="navbar">
     <div class="container">
       <a href="index.html" style="text-decoration: none; color: inherit;"><h1 class="logo">💰 Earnify</h1></a>
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="🔍 Search purchases by title, type, payment ID, order ID..." oninput="filterPurchases()">
+      </div>
       <div class="nav-links">
         <a href="index.html#resources">Resources</a>
         <a href="index.html#about">About</a>
@@ -97,35 +122,43 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script>
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    console.log('Current User:', currentUser);
+    
     if (!currentUser) {
       alert('Please login first');
       window.location.href = '/';
     }
 
+    let allPurchases = [];
+
     async function loadPurchases() {
       try {
+        console.log('Fetching purchases for user ID:', currentUser.id);
         const response = await fetch(`http://localhost:5000/api/payments/${currentUser.id}`);
+        console.log('Response status:', response.status);
         
         if (!response.ok) {
-          console.warn('API not available, showing empty state');
+          console.warn('API response not OK:', response.status, response.statusText);
           const container = document.getElementById('purchases');
           container.innerHTML = `
             <div class="empty-state">
               <h2>🛒 No Purchases Yet</h2>
-              <p>You haven't made any purchases. <a href="payment.html">Browse our resources</a> to get started!</p>
+              <p>You haven't made any purchases. <a href="index.html#resources">Browse our resources</a> to get started!</p>
             </div>
           `;
           return;
         }
         
         const contentType = response.headers.get('content-type');
+        console.log('Content-Type:', contentType);
+        
         if (!contentType || !contentType.includes('application/json')) {
-          console.warn('API not available, showing empty state');
+          console.warn('Invalid content type');
           const container = document.getElementById('purchases');
           container.innerHTML = `
             <div class="empty-state">
               <h2>🛒 No Purchases Yet</h2>
-              <p>You haven't made any purchases. <a href="payment.html">Browse our resources</a> to get started!</p>
+              <p>You haven't made any purchases. <a href="index.html#resources">Browse our resources</a> to get started!</p>
             </div>
           `;
           return;
@@ -133,19 +166,31 @@
         
         const purchases = await response.json();
         console.log('Loaded purchases:', purchases);
+        console.log('Number of purchases:', purchases.length);
+        allPurchases = purchases;
         
-        const container = document.getElementById('purchases');
-        if (purchases.length === 0) {
-          container.innerHTML = `
-            <div class="empty-state">
-              <h2>🛒 No Purchases Yet</h2>
-              <p>You haven't made any purchases. <a href="payment.html">Browse our resources</a> to get started!</p>
-            </div>
-          `;
-          return;
-        }
-        
-        container.innerHTML = purchases.map(purchase => `
+        displayPurchases(purchases);
+      } catch (error) {
+        console.error('Error loading purchases:', error);
+        document.getElementById('purchases').innerHTML = '<div class="empty-state"><h2>🛒 No Purchases Yet</h2><p>You haven\'t made any purchases. <a href="index.html#resources">Browse our resources</a> to get started!</p></div>';
+      }
+    }
+
+    function displayPurchases(purchases) {
+      const container = document.getElementById('purchases');
+      console.log('Displaying purchases:', purchases.length);
+      
+      if (purchases.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <h2>🛒 No Purchases Yet</h2>
+            <p>You haven't made any purchases. <a href="index.html#resources">Browse our resources</a> to get started!</p>
+          </div>
+        `;
+        return;
+      }
+      
+      container.innerHTML = purchases.map(purchase => `
           <div class="purchase-card">
             <h3>📦 ${purchase.resources?.title || 'Resource'}</h3>
             <p><strong>Type:</strong> ${purchase.resources?.type || 'N/A'}</p>
@@ -160,10 +205,26 @@
             </div>
           </div>
         `).join('');
-      } catch (error) {
-        console.error('Error loading purchases:', error);
-        document.getElementById('purchases').innerHTML = '<div class="empty-state"><h2>🛒 No Purchases Yet</h2><p>You haven\'t made any purchases. <a href="payment.html">Browse our resources</a> to get started!</p></div>';
-      }
+    }
+
+    function filterPurchases() {
+      const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+      const filtered = allPurchases.filter(purchase => {
+        const title = (purchase.resources?.title || '').toLowerCase();
+        const type = (purchase.resources?.type || '').toLowerCase();
+        const paymentId = (purchase.payment_id || '').toLowerCase();
+        const orderId = (purchase.order_id || '').toLowerCase();
+        const price = (purchase.resources?.price || '').toString();
+        const status = (purchase.status || '').toLowerCase();
+        
+        return title.includes(searchTerm) || 
+               type.includes(searchTerm) || 
+               paymentId.includes(searchTerm) || 
+               orderId.includes(searchTerm) ||
+               price.includes(searchTerm) ||
+               status.includes(searchTerm);
+      });
+      displayPurchases(filtered);
     }
 
     function logout() {
