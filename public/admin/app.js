@@ -2,56 +2,15 @@ const API = "http://localhost:5000/api/users";
 const RESOURCE_API = "http://localhost:5000/api/resources";
 
 async function loadUsers() {
-  const res = await fetch(API);
-  const users = await res.json();
-
-  const table = document.getElementById("userTable");
-  const emptyState = document.getElementById("emptyState");
-  const sidebarCount = document.getElementById("sidebarUserCount");
-  
-  if (sidebarCount) sidebarCount.textContent = users.length;
-  
-  if (!table) return;
-
-  if (users.length === 0) {
-    table.style.display = 'none';
-    if (emptyState) emptyState.style.display = 'block';
-    return;
-  }
-
-  table.style.display = 'table-row-group';
-  if (emptyState) emptyState.style.display = 'none';
-  table.innerHTML = "";
-
-  users.forEach(user => {
-    table.innerHTML += `
-      <tr>
-        <td>${user.name}</td>
-        <td>${user.email}</td>
-        <td><span class="badge active">Active</span></td>
-        <td>
-          <button onclick="deleteUser('${user.id}')">Delete</button>
-        </td>
-      </tr>
-    `;
-  });
+  // User management removed
 }
 
 async function updateStatus(id, status) {
-  await fetch(API + "/" + id, {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ status })
-  });
-  loadUsers();
+  // User management removed
 }
 
 async function deleteUser(id) {
-  if (!confirm("Delete this user?")) return;
-  await fetch(API + "/" + id, {
-    method: "DELETE"
-  });
-  loadUsers();
+  // User management removed
 }
 
 async function loadDashboard() {
@@ -62,59 +21,88 @@ async function loadDashboard() {
     const sidebarCount = document.getElementById("sidebarUserCount");
     if (sidebarCount) sidebarCount.textContent = users.length;
     
-    // Handle error response or non-array data
     if (!Array.isArray(users)) {
       console.error('Users data is not an array:', users);
       document.getElementById("totalUsers").innerText = "Total Users: Error";
       document.getElementById("activeUsers").innerText = "Active Users: Error";
-      document.getElementById("blockedUsers").innerText = "Blocked Users: Error";
+      document.getElementById("inactiveUsers").innerText = "Inactive Users: Error";
       return;
     }
 
+    const active = users.filter(u => u.status === "Active").length;
+    const inactive = users.filter(u => u.status === "Inactive" || u.status === "Blocked").length;
+
     document.getElementById("totalUsers").innerText = "Total Users: " + users.length;
-    document.getElementById("activeUsers").innerText = "Active Users: " + users.length;
-    document.getElementById("blockedUsers").innerText = "Blocked Users: 0";
+    document.getElementById("activeUsers").innerText = "Active Users: " + active;
+    document.getElementById("inactiveUsers").innerText = "Inactive Users: " + inactive;
   } catch (error) {
     console.error('Error loading dashboard:', error);
     document.getElementById("totalUsers").innerText = "Total Users: Error";
     document.getElementById("activeUsers").innerText = "Active Users: Error";
-    document.getElementById("blockedUsers").innerText = "Blocked Users: Error";
+    document.getElementById("inactiveUsers").innerText = "Inactive Users: Error";
   }
 }
 
 async function loadAnalytics() {
-  const res = await fetch(API);
-  const users = await res.json();
+  try {
+    const res = await fetch(API);
+    if (!res.ok) throw new Error('Failed to fetch analytics');
+    const users = await res.json();
 
-  const sidebarCount = document.getElementById("sidebarUserCount");
-  if (sidebarCount) sidebarCount.textContent = users.length;
+    const sidebarCount = document.getElementById("sidebarUserCount");
+    if (sidebarCount) sidebarCount.textContent = Array.isArray(users) ? users.length : 0;
 
-  const total = users.length;
-  const active = users.filter(u => u.status === "Active").length;
-  const blocked = users.filter(u => u.status === "Blocked").length;
-  const male = users.filter(u => u.gender === "Male").length;
-  const female = users.filter(u => u.gender === "Female").length;
+    if (!Array.isArray(users)) {
+      console.error('Invalid users data');
+      return;
+    }
 
-  if (document.getElementById("activeRate")) {
-    document.getElementById("activeRate").innerText = total ? Math.round((active/total)*100) + "%" : "0%";
-    document.getElementById("blockRate").innerText = total ? Math.round((blocked/total)*100) + "%" : "0%";
-    document.getElementById("growthRate").innerText = "+" + total;
-    document.getElementById("maleCount").innerText = male;
-    document.getElementById("femaleCount").innerText = female;
-    document.getElementById("totalActive").innerText = active;
-    document.getElementById("totalBlocked").innerText = blocked;
+    const total = users.length;
+    const active = users.filter(u => u.status === "Active").length;
+    const inactive = users.filter(u => u.status === "Inactive" || u.status === "Blocked").length;
+    const male = users.filter(u => u.gender === "Male").length;
+    const female = users.filter(u => u.gender === "Female").length;
+
+    if (document.getElementById("activeRate")) {
+      document.getElementById("activeRate").innerText = total ? Math.round((active/total)*100) + "%" : "0%";
+      document.getElementById("blockRate").innerText = total ? Math.round((inactive/total)*100) + "%" : "0%";
+      document.getElementById("growthRate").innerText = "+" + total;
+      document.getElementById("maleCount").innerText = male;
+      document.getElementById("femaleCount").innerText = female;
+      document.getElementById("totalActive").innerText = active;
+      document.getElementById("totalBlocked").innerText = inactive;
+    }
+  } catch (error) {
+    console.error('Error loading analytics:', error);
+    if (document.getElementById("activeRate")) {
+      document.getElementById("activeRate").innerText = "Error";
+      document.getElementById("blockRate").innerText = "Error";
+      document.getElementById("growthRate").innerText = "Error";
+      document.getElementById("maleCount").innerText = "0";
+      document.getElementById("femaleCount").innerText = "0";
+      document.getElementById("totalActive").innerText = "0";
+      document.getElementById("totalBlocked").innerText = "0";
+    }
   }
 }
 
 async function loadSettings() {
-  const res = await fetch(API);
-  const users = await res.json();
-  
-  const sidebarCount = document.getElementById("sidebarUserCount");
-  if (sidebarCount) sidebarCount.textContent = users.length;
-  
-  if (document.getElementById("totalRecords")) {
-    document.getElementById("totalRecords").innerText = users.length;
+  try {
+    const res = await fetch(API);
+    if (!res.ok) throw new Error('Failed to fetch settings');
+    const users = await res.json();
+    
+    const sidebarCount = document.getElementById("sidebarUserCount");
+    if (sidebarCount) sidebarCount.textContent = Array.isArray(users) ? users.length : 0;
+    
+    if (document.getElementById("totalRecords")) {
+      document.getElementById("totalRecords").innerText = Array.isArray(users) ? users.length : 0;
+    }
+  } catch (error) {
+    console.error('Error loading settings:', error);
+    if (document.getElementById("totalRecords")) {
+      document.getElementById("totalRecords").innerText = "Error";
+    }
   }
 }
 

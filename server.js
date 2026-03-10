@@ -81,12 +81,21 @@ app.post("/api/auth/login", async (req, res) => {
   }
 });
 
-// Get All Users from Supabase
+// Get All Users from Supabase Auth
 app.get("/api/users", async (req, res) => {
   try {
-    const { data, error } = await supabase.from('users').select('*');
+    const { data: { users }, error } = await supabase.auth.admin.listUsers();
     if (error) throw error;
-    res.json(data || []);
+    
+    const formattedUsers = (users || []).map(user => ({
+      id: user.id,
+      email: user.email,
+      name: user.user_metadata?.name || user.email?.split('@')[0] || 'User',
+      status: user.email_confirmed_at ? 'Active' : 'Pending',
+      created_at: user.created_at
+    }));
+    
+    res.json(formattedUsers);
   } catch (err) {
     console.error('Error fetching users:', err);
     res.json([]);
@@ -101,7 +110,7 @@ app.put("/api/users/:id", async (req, res) => {
 // Delete User
 app.delete("/api/users/:id", async (req, res) => {
   try {
-    const { error } = await supabase.from('users').delete().eq('id', req.params.id);
+    const { error } = await supabase.auth.admin.deleteUser(req.params.id);
     if (error) throw error;
     res.json({ message: 'User deleted' });
   } catch (err) {
