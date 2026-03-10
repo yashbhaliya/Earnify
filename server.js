@@ -33,6 +33,61 @@ async function ensureFileUrlColumn() {
   });
 }
 
+// Admin Signup
+app.post("/api/admin/signup", async (req, res) => {
+  try {
+    const { email, password, name } = req.body;
+    
+    if (!email || !password) {
+      return res.status(400).json({ error: 'Email and password are required' });
+    }
+    
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ error: 'Invalid email format' });
+    }
+    
+    // Validate password strength
+    if (password.length < 8) {
+      return res.status(400).json({ error: 'Password must be at least 8 characters' });
+    }
+    
+    const { data, error } = await supabase.auth.signUp({ 
+      email, 
+      password,
+      options: {
+        data: {
+          name: name || email.split('@')[0],
+          full_name: name || ''
+        }
+      }
+    });
+    
+    if (error) return res.status(400).json({ error: error.message });
+    res.json({ token: data.session?.access_token, message: "Admin registered successfully" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Admin Login
+app.post("/api/admin/login", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    
+    if (!email || !password) {
+      return res.status(400).json({ error: 'Email and password are required' });
+    }
+    
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) return res.status(400).json({ error: 'Invalid email or password' });
+    res.json({ token: data.session?.access_token, message: "Login successful" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // User Signup with Supabase Auth
 app.post("/api/auth/signup", async (req, res) => {
   try {
@@ -123,11 +178,15 @@ app.delete("/api/users/:id", async (req, res) => {
 app.get("/api/resources", async (req, res) => {
   try {
     const { data, error } = await supabase.from("resources").select("*");
-    if (error) throw error;
+    if (error) {
+      console.error('Supabase error fetching resources:', error);
+      return res.status(200).json([]);
+    }
     res.json(data || []);
   } catch (err) {
     console.error('Error fetching resources:', err.message || err);
-    res.json([]);
+    console.error('Stack:', err.stack);
+    res.status(200).json([]);
   }
 });
 

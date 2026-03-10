@@ -92,6 +92,37 @@
     const supabaseUrl = 'https://emnrgsgerfjvndexomro.supabase.co';
     const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVtbnJnc2dlcmZqdm5kZXhvbXJvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI0MjAyMTAsImV4cCI6MjA4Nzk5NjIxMH0.uXr8lipxLbB4D_5JwQkpLzc-HudQw23tOFBfV4C6hqY';
     const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+    
+    // Handle email confirmation token on page load
+    (async () => {
+      // Check for token in URL hash (from email confirmation - Supabase uses #)
+      const hashParams = new URLSearchParams(window.location.hash.substring(1));
+      const accessToken = hashParams.get('access_token');
+      const refreshToken = hashParams.get('refresh_token');
+      
+      if (accessToken && refreshToken) {
+        // Show success message and redirect to home
+        alert('Email verified successfully!');
+        // Clean URL and stay on home page
+        window.history.replaceState({}, document.title, window.location.pathname);
+        return;
+      }
+      
+      // Check if user is already logged in
+      const token = localStorage.getItem('adminToken');
+      if (token) {
+        try {
+          const { data: { user } } = await supabaseClient.auth.getUser(token);
+          if (user) {
+            document.getElementById('loginBtn').style.display = 'none';
+            document.getElementById('signupBtn').style.display = 'none';
+            document.getElementById('logoutBtn').style.display = 'inline-block';
+          }
+        } catch (e) {
+          localStorage.removeItem('adminToken');
+        }
+      }
+    })();
   </script>
   <script src="landing.js"></script>
 </body>

@@ -106,7 +106,8 @@ async function handleSignup(e) {
       email,
       password,
       options: {
-        data: { name }
+        data: { name },
+        emailRedirectTo: 'http://127.0.0.1:5500/public/index.html'
       }
     });
     

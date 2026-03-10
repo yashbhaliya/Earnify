@@ -10,11 +10,60 @@
 <div class="sidebar">
   <h2>Earnify Admin</h2>
   <a href="dashboard.html">📊 Dashboard</a>
-  <a href="users.html">👥 Users <span id="sidebarUserCount" style="background: #8b5cf6; padding: 2px 8px; border-radius: 12px; font-size: 12px; margin-left: 5px;">0</span></a>
   <a href="resources.html">📚 Resources</a>
   <a href="analytics.html">📈 Analytics</a>
   <a href="settings.html">⚙️ Settings</a>
   <a href="../index.html" style="margin-top: 20px; border-top: 1px solid #ddd; padding-top: 10px;">🏠 Main Site</a>
+  <div class="sidebar-auth">
+    <a onclick="openAuthModal('login')" class="auth-btn login-btn">🔐 Login</a>
+    <a onclick="openAuthModal('signup')" class="auth-btn signup-btn">✨ Sign Up</a>
+  </div>
+</div>
+
+<div id="authModal" class="auth-modal">
+  <div class="auth-modal-content">
+    <span class="close" onclick="closeAuthModal()">&times;</span>
+    <h2 id="authTitle">Admin Login</h2>
+    <p id="authSubtitle">Login to access admin dashboard</p>
+    <div id="authError" class="error-message"></div>
+    <div id="authSuccess" class="success-message"></div>
+    <form id="authLoginForm">
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="authLoginEmail" required placeholder="admin@earnify.com">
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="authLoginPassword" required placeholder="Enter password">
+      </div>
+      <button type="submit" class="btn-submit">Login</button>
+      <div class="toggle-form">
+        Don't have an account? <a onclick="toggleAuthForm()">Sign Up</a>
+      </div>
+    </form>
+    <form id="authSignupForm" class="hidden">
+      <div class="form-group">
+        <label>Full Name</label>
+        <input type="text" id="authSignupName" required placeholder="Enter your name">
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="authSignupEmail" required placeholder="admin@earnify.com">
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="authSignupPassword" required placeholder="Min 6 characters">
+      </div>
+      <div class="form-group">
+        <label>Confirm Password</label>
+        <input type="password" id="authSignupConfirm" required placeholder="Re-enter password">
+      </div>
+      <button type="submit" class="btn-submit">Sign Up</button>
+      <div class="toggle-form">
+        Already have an account? <a onclick="toggleAuthForm()">Login</a>
+      </div>
+    </form>
+  </div>
 </div>
 
 <div class="main">
@@ -118,6 +167,6 @@
 <script src="supabase-config.js"></script>
 <script src="app.js"></script>
 <script src="theme.js"></script>
-<script src="theme.js"></script>
+<script src="auth-modal.js"></script>
 </body>
 </html>

@@ -4,6 +4,10 @@
   box-sizing: border-box;
 }
 
+.hidden {
+  display: none !important;
+}
+
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   display: flex;
@@ -1261,6 +1265,191 @@ button:last-child:hover {
 
 .quick-btn.export:hover {
   box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+}
+
+/* Sidebar Auth Buttons */
+.sidebar-auth {
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  right: 0;
+  padding: 0 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-top: 2px solid #334155;
+  padding-top: 20px;
+}
+
+.auth-btn {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 20px !important;
+  border-radius: 8px !important;
+  font-weight: 600 !important;
+  text-align: center;
+  transition: all 0.3s !important;
+  border: none !important;
+  margin: 0 !important;
+}
+
+.login-btn {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%) !important;
+  color: white !important;
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+}
+
+.login-btn:hover {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
+  transform: translateY(-2px) translateX(0) !important;
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+}
+
+.signup-btn {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+  color: white !important;
+  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+}
+
+.signup-btn:hover {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
+  transform: translateY(-2px) translateX(0) !important;
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+}
+
+/* Auth Modal */
+.auth-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.auth-modal-content {
+  background: white;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  width: 90%;
+  max-width: 400px;
+  position: relative;
+}
+
+.auth-modal .close {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 30px;
+  cursor: pointer;
+  color: #64748b;
+}
+
+.auth-modal .close:hover {
+  color: #3b82f6;
+}
+
+.auth-modal h2 {
+  color: #3b82f6;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.auth-modal p {
+  color: #64748b;
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 14px;
+}
+
+.auth-modal .form-group {
+  margin-bottom: 20px;
+}
+
+.auth-modal .form-group label {
+  display: block;
+  color: #475569;
+  font-weight: 600;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.auth-modal .form-group input {
+  width: 100%;
+  padding: 12px 15px;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 14px;
+  transition: all 0.3s;
+}
+
+.auth-modal .form-group input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.auth-modal .btn-submit {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+}
+
+.auth-modal .btn-submit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
+}
+
+.auth-modal .toggle-form {
+  text-align: center;
+  margin-top: 20px;
+  color: #64748b;
+  font-size: 14px;
+}
+
+.auth-modal .toggle-form a {
+  color: #3b82f6;
+  text-decoration: none;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.auth-modal .toggle-form a:hover {
+  text-decoration: underline;
+}
+
+.auth-modal .error-message {
+  background: #fee2e2;
+  color: #991b1b;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 14px;
+  display: none;
+}
+
+.auth-modal .success-message {
+  background: #d1fae5;
+  color: #065f46;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 14px;
+  display: none;
 }
 
 /* Theme Toggle Button */
