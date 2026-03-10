@@ -5,6 +5,7 @@
   <link rel="stylesheet" href="landing.css">
   <style>
     body { margin: 0; background: #f8fafc; }
+    .content-wrapper { padding: 3rem 0; min-height: 80vh; }
     #purchases {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -45,7 +46,6 @@
     .completed { background: #10b981; color: white; }
     .pending { background: #f59e0b; color: white; }
     .failed { background: #ef4444; color: white; }
-    .content-wrapper { padding: 3rem 0; min-height: 80vh; }
     .container h1 {
       color: #1e293b;
       margin-bottom: 30px;
@@ -72,42 +72,33 @@
       font-weight: 700;
       font-size: 18px;
     }
-    .search-box {
-      flex: 1;
-      max-width: 400px;
-      margin: 0 20px;
-    }
-    .search-box input {
-      width: 100%;
-      padding: 10px 15px;
-      border: 2px solid #e2e8f0;
-      border-radius: 8px;
-      font-size: 14px;
-      outline: none;
-      transition: border-color 0.3s;
-    }
-    .search-box input:focus {
-      border-color: #667eea;
-    }
-    .navbar .container {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
   </style>
 </head>
 <body>
+
   <nav class="navbar">
     <div class="container">
       <a href="index.html" style="text-decoration: none; color: inherit;"><h1 class="logo">💰 Earnify</h1></a>
-      <div class="search-box">
-        <input type="text" id="searchInput" placeholder="🔍 Search purchases by title, type, payment ID, order ID..." oninput="filterPurchases()">
-      </div>
       <div class="nav-links">
         <a href="index.html#resources">Resources</a>
         <a href="index.html#about">About</a>
-        <a href="dashboard.html">Dashboard</a>
-        <button id="logoutBtn" class="admin-btn" onclick="logout()">Logout</button>
+        <a href="dashboard.html" style="color: #fbbf24;">Dashboard</a>
+        
+        <div id="userMenu" class="user-menu" style="display:flex;">
+          <button class="user-menu-btn" onclick="toggleUserDropdown()">
+            <span class="user-avatar">👤</span>
+            <span id="userName">User</span>
+            <span style="font-size:10px;">▼</span>
+          </button>
+          <div id="userDropdown" class="user-dropdown">
+            <div class="user-dropdown-header">
+              <div class="name" id="userDisplayName">User</div>
+              <div class="email" id="userEmail">user@email.com</div>
+            </div>
+            <a href="admin/resources.html"><span>👤</span> View Profile</a>
+            <a onclick="logout()"><span>🚪</span> Logout</a>
+          </div>
+        </div>
       </div>
     </div>
   </nav>
@@ -119,43 +110,30 @@
     </div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const supabaseUrl = 'https://emnrgsgerfjvndexomro.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVtbnJnc2dlcmZqdm5kZXhvbXJvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI0MjAyMTAsImV4cCI6MjA4Nzk5NjIxMH0.uXr8lipxLbB4D_5JwQkpLzc-HudQw23tOFBfV4C6hqY';
+    const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+  </script>
+  <script src="landing.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script>
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    console.log('Current User:', currentUser);
     
     if (!currentUser) {
       alert('Please login first');
-      window.location.href = '/';
+      window.location.href = 'index.html';
     }
 
     let allPurchases = [];
 
     async function loadPurchases() {
       try {
-        console.log('Fetching purchases for user ID:', currentUser.id);
         const response = await fetch(`http://localhost:5000/api/payments/${currentUser.id}`);
-        console.log('Response status:', response.status);
         
         if (!response.ok) {
-          console.warn('API response not OK:', response.status, response.statusText);
-          const container = document.getElementById('purchases');
-          container.innerHTML = `
-            <div class="empty-state">
-              <h2>🛒 No Purchases Yet</h2>
-              <p>You haven't made any purchases. <a href="index.html#resources">Browse our resources</a> to get started!</p>
-            </div>
-          `;
-          return;
-        }
-        
-        const contentType = response.headers.get('content-type');
-        console.log('Content-Type:', contentType);
-        
-        if (!contentType || !contentType.includes('application/json')) {
-          console.warn('Invalid content type');
-          const container = document.getElementById('purchases');
-          container.innerHTML = `
+          document.getElementById('purchases').innerHTML = `
             <div class="empty-state">
               <h2>🛒 No Purchases Yet</h2>
               <p>You haven't made any purchases. <a href="index.html#resources">Browse our resources</a> to get started!</p>
@@ -165,20 +143,15 @@
         }
         
         const purchases = await response.json();
-        console.log('Loaded purchases:', purchases);
-        console.log('Number of purchases:', purchases.length);
         allPurchases = purchases;
-        
         displayPurchases(purchases);
       } catch (error) {
-        console.error('Error loading purchases:', error);
         document.getElementById('purchases').innerHTML = '<div class="empty-state"><h2>🛒 No Purchases Yet</h2><p>You haven\'t made any purchases. <a href="index.html#resources">Browse our resources</a> to get started!</p></div>';
       }
     }
 
     function displayPurchases(purchases) {
       const container = document.getElementById('purchases');
-      console.log('Displaying purchases:', purchases.length);
       
       if (purchases.length === 0) {
         container.innerHTML = `
@@ -207,38 +180,16 @@
         `).join('');
     }
 
-    function filterPurchases() {
-      const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-      const filtered = allPurchases.filter(purchase => {
-        const title = (purchase.resources?.title || '').toLowerCase();
-        const type = (purchase.resources?.type || '').toLowerCase();
-        const paymentId = (purchase.payment_id || '').toLowerCase();
-        const orderId = (purchase.order_id || '').toLowerCase();
-        const price = (purchase.resources?.price || '').toString();
-        const status = (purchase.status || '').toLowerCase();
-        
-        return title.includes(searchTerm) || 
-               type.includes(searchTerm) || 
-               paymentId.includes(searchTerm) || 
-               orderId.includes(searchTerm) ||
-               price.includes(searchTerm) ||
-               status.includes(searchTerm);
-      });
-      displayPurchases(filtered);
-    }
-
     function logout() {
       localStorage.removeItem('currentUser');
       localStorage.removeItem('userLoggedIn');
-      localStorage.removeItem('userPurchases');
-      window.location.href = '/';
+      window.location.href = 'index.html';
     }
     
     function downloadReceipt(paymentId, orderId, title, price) {
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF();
       
-      // Header
       doc.setFontSize(20);
       doc.setTextColor(139, 92, 246);
       doc.text('EARNIFY', 105, 20, { align: 'center' });
@@ -247,12 +198,10 @@
       doc.setTextColor(0, 0, 0);
       doc.text('PAYMENT RECEIPT', 105, 30, { align: 'center' });
       
-      // Line
       doc.setDrawColor(139, 92, 246);
       doc.setLineWidth(0.5);
       doc.line(20, 35, 190, 35);
       
-      // Receipt Details
       doc.setFontSize(12);
       doc.setTextColor(60, 60, 60);
       
@@ -294,32 +243,12 @@
       doc.setTextColor(16, 185, 129);
       doc.text('COMPLETED', 70, y);
       
-      // Footer
       doc.setFontSize(10);
       doc.setTextColor(100, 100, 100);
       doc.text('Thank you for your purchase!', 105, 280, { align: 'center' });
       doc.text('www.earnify.com', 105, 285, { align: 'center' });
       
-      // Save PDF
       doc.save(`Receipt_${paymentId}.pdf`);
-    }
-    
-    async function testPayment() {
-      try {
-        const response = await fetch('/api/test-payment', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' }
-        });
-        const result = await response.json();
-        if (result.success) {
-          alert('Test payment added!');
-          loadPurchases();
-        } else {
-          alert('Failed to add test payment: ' + result.error);
-        }
-      } catch (error) {
-        alert('Error: ' + error.message);
-      }
     }
 
     loadPurchases();

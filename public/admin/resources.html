@@ -3,16 +3,30 @@
 <head>
   <title>Resources - Earnify Admin</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="light-theme.css">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
-<body>
+<body class="light-mode">
 
 <div class="sidebar">
   <h2>Earnify Admin</h2>
   <a href="resources.html">📚 Resources</a>
   <a href="statistics.html">📈 Statistics</a>
+  <a href="profile.html">👤 Profile</a>
   <a href="../index.html" style="margin-top: 20px; border-top: 1px solid #ddd; padding-top: 10px;">🏠 Main Site</a>
-  <a onclick="logout()" style="margin-top: 20px; border-radius: 20px;  border-top: 1px solid #ddd; padding-top: 10px;">🚪Logout</a>
+            <a onclick="logout()"><span>🚪</span> Logout</a>
+  
+  <!-- User Profile Section -->
+  <div class="sidebar-user" id="sidebarUser" style="display: none;">
+    <div class="user-info">
+      <div class="user-avatar" id="sidebarAvatar">👤</div>
+      <div class="user-details">
+        <div class="user-name" id="sidebarUserName">User</div>
+        <div class="user-email" id="sidebarUserEmail">user@email.com</div>
+      </div>
+    </div>
+    <a onclick="logout()" class="logout-link">🚪 Logout</a>
+  </div>
 </div>
 
 <div id="authModal" class="auth-modal">
@@ -178,9 +192,11 @@
       
       const sidebarUserName = document.getElementById('sidebarUserName');
       const sidebarUserEmail = document.getElementById('sidebarUserEmail');
+      const sidebarAvatar = document.getElementById('sidebarAvatar');
       
       if (sidebarUserName) sidebarUserName.textContent = userName;
       if (sidebarUserEmail) sidebarUserEmail.textContent = userEmail;
+      if (sidebarAvatar) sidebarAvatar.textContent = userName.charAt(0).toUpperCase();
     }
   })();
   
