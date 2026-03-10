@@ -74,42 +74,43 @@
 </div>
 
 <div class="main">
-  <h1>Statistics Overview</h1>
+  <h1>Purchase Statistics</h1>
 
   <div class="cards">
     <div class="card">
-      <h3>User Growth</h3>
-      <p id="growthRate">+0%</p>
+      <h3>Total Purchases</h3>
+      <p id="totalPurchases">0</p>
     </div>
     <div class="card">
-      <h3>Active Rate</h3>
-      <p id="activeRate">0%</p>
+      <h3>Total Revenue</h3>
+      <p id="totalRevenue">₹0</p>
     </div>
     <div class="card">
-      <h3>Block Rate</h3>
-      <p id="blockRate">0%</p>
+      <h3>Total Customers</h3>
+      <p id="totalCustomers">0</p>
     </div>
   </div>
 
   <div class="analytics-section">
-    <h2>User Statistics</h2>
-    <div class="stat-grid">
-      <div class="stat-item">
-        <span class="stat-label">Male Users:</span>
-        <span class="stat-value" id="maleCount">0</span>
-      </div>
-      <div class="stat-item">
-        <span class="stat-label">Female Users:</span>
-        <span class="stat-value" id="femaleCount">0</span>
-      </div>
-      <div class="stat-item">
-        <span class="stat-label">Total Active:</span>
-        <span class="stat-value" id="totalActive">0</span>
-      </div>
-      <div class="stat-item">
-        <span class="stat-label">Total Blocked:</span>
-        <span class="stat-value" id="totalBlocked">0</span>
-      </div>
+    <h2>Purchase Details by User</h2>
+    <div class="table-container">
+      <table class="users-table">
+        <thead>
+          <tr>
+            <th>User Email</th>
+            <th>Total Purchases</th>
+            <th>Total Amount</th>
+            <th>Resources Purchased</th>
+          </tr>
+        </thead>
+        <tbody id="purchaseTableBody">
+          <tr>
+            <td colspan="4" style="text-align: center; padding: 40px; color: #64748b;">
+              Loading purchase data...
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>

@@ -432,6 +432,60 @@ app.get("/api/payments/:userId", async (req, res) => {
   }
 });
 
+// Get Purchase Statistics
+app.get("/api/statistics/purchases", async (req, res) => {
+  try {
+    const { data: payments, error: paymentsError } = await supabase
+      .from("payments")
+      .select("*")
+      .eq("status", "completed");
+    
+    if (paymentsError) throw paymentsError;
+    
+    const { data: resources } = await supabase
+      .from("resources")
+      .select("id, title, price");
+    
+    const { data: { users } } = await supabase.auth.admin.listUsers();
+    
+    const userStats = {};
+    
+    payments.forEach(payment => {
+      const resource = resources?.find(r => r.id === payment.resource_id);
+      const user = users?.find(u => u.id === payment.user_id);
+      const userEmail = user?.email || 'Unknown';
+      
+      if (!userStats[userEmail]) {
+        userStats[userEmail] = {
+          email: userEmail,
+          totalPurchases: 0,
+          totalAmount: 0,
+          resources: []
+        };
+      }
+      
+      userStats[userEmail].totalPurchases++;
+      userStats[userEmail].totalAmount += parseFloat(resource?.price || 0);
+      if (resource) {
+        userStats[userEmail].resources.push(resource.title);
+      }
+    });
+    
+    res.json({
+      totalPurchases: payments.length,
+      totalRevenue: payments.reduce((sum, p) => {
+        const resource = resources?.find(r => r.id === p.resource_id);
+        return sum + parseFloat(resource?.price || 0);
+      }, 0),
+      totalCustomers: Object.keys(userStats).length,
+      userStats: Object.values(userStats)
+    });
+  } catch (error) {
+    console.error('Error fetching statistics:', error);
+    res.json({ totalPurchases: 0, totalRevenue: 0, totalCustomers: 0, userStats: [] });
+  }
+});
+
 // Test endpoint to add payment
 app.post("/api/test-payment", async (req, res) => {
   try {
@@ -478,6 +532,10 @@ app.get("/admin/resources", (req, res) => {
 
 app.get("/admin/analytics", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "admin", "analytics.html"));
+});
+
+app.get("/admin/statistics", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "admin", "statistics.html"));
 });
 
 app.get("/admin/settings", (req, res) => {

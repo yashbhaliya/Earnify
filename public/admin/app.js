@@ -114,6 +114,44 @@ function exportData() {
   alert("Export functionality - Coming soon!");
 }
 
+async function loadPurchaseStatistics() {
+  try {
+    const res = await fetch('http://localhost:5000/api/statistics/purchases');
+    
+    if (!res.ok) {
+      throw new Error('Server not running. Please start the server with: npm start');
+    }
+    
+    const data = await res.json();
+    
+    document.getElementById('totalPurchases').textContent = data.totalPurchases || 0;
+    document.getElementById('totalRevenue').textContent = '₹' + (data.totalRevenue || 0);
+    document.getElementById('totalCustomers').textContent = data.totalCustomers || 0;
+    
+    const tbody = document.getElementById('purchaseTableBody');
+    if (!data.userStats || data.userStats.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 40px; color: #64748b;">No purchase data available</td></tr>';
+      return;
+    }
+    
+    tbody.innerHTML = data.userStats.map(user => `
+      <tr>
+        <td>${user.email}</td>
+        <td>${user.totalPurchases}</td>
+        <td>₹${user.totalAmount.toFixed(2)}</td>
+        <td>${user.resources.join(', ')}</td>
+      </tr>
+    `).join('');
+  } catch (error) {
+    console.error('Error loading purchase statistics:', error);
+    const tbody = document.getElementById('purchaseTableBody');
+    tbody.innerHTML = `<tr><td colspan="4" style="text-align: center; padding: 40px; color: #ef4444;">
+      ⚠️ ${error.message}<br><br>
+      <small>Make sure to access via: <strong>http://localhost:5000/admin/statistics.html</strong></small>
+    </td></tr>`;
+  }
+}
+
 let currentType = 'all';
 
 function showTab(type) {
@@ -465,3 +503,4 @@ if (document.getElementById("userTable")) loadUsers();
 if (document.getElementById("totalUsers")) loadDashboard();
 if (document.getElementById("activeRate")) loadAnalytics();
 if (document.getElementById("totalRecords")) loadSettings();
+if (document.getElementById("purchaseTableBody")) loadPurchaseStatistics();
