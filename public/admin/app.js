@@ -129,50 +129,82 @@ async function loadResources(type) {
   const grid = document.getElementById(type + 'Grid');
   if (!grid) return;
   
-  // Update sidebar count
-  try {
-    const userRes = await fetch(API);
-    const users = await userRes.json();
-    const sidebarCount = document.getElementById("sidebarUserCount");
-    if (sidebarCount) sidebarCount.textContent = users.length;
-  } catch (err) {
-    console.error('Error loading user count:', err);
+  const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+  const userEmail = currentUser.email;
+  
+  if (!userEmail) {
+    grid.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">🔒</div>
+        <h3>Login Required</h3>
+        <p>Please login to view resources</p>
+      </div>
+    `;
+    return;
   }
   
   try {
     const res = await fetch(RESOURCE_API);
     const allResources = await res.json();
     
-    // Filter resources based on type
-    const filtered = type === 'all' ? allResources : allResources.filter(r => r.type === type);
+    // Filter by user email and type
+    let resources = allResources.filter(r => r.user_email === userEmail);
+    if (type !== 'all') {
+      resources = resources.filter(r => r.type === type);
+    }
     
-    if (filtered.length === 0) {
-      grid.innerHTML = '<p style="color: white; padding: 20px;">No resources yet. Add your first resource!</p>';
+    if (resources.length === 0) {
+      const emptyStates = {
+        all: { icon: '📦', title: 'No Resources Yet', text: 'Add your first resource to get started!' },
+        pdf: { icon: '📄', title: 'No PDF Notes', text: 'Add your first PDF note!' },
+        excel: { icon: '📊', title: 'No Excel Templates', text: 'Add your first template!' },
+        exam: { icon: '📝', title: 'No Exam Materials', text: 'Add your first exam material!' },
+        freelance: { icon: '💼', title: 'No Freelance Services', text: 'Add your first service!' }
+      };
+      const state = emptyStates[type];
+      grid.innerHTML = `
+        <div class="empty-state">
+          <div class="empty-icon">${state.icon}</div>
+          <h3>${state.title}</h3>
+          <p>${state.text}</p>
+        </div>
+      `;
       return;
     }
     
-    const icons = { pdf: '📄', excel: '📊', exam: '📝', freelance: '💼' };
-    
-    grid.innerHTML = filtered.map(r => {
-      const hasFile = r.fileUrl || r.fileurl;
-      return `
+    grid.innerHTML = resources.map(r => `
       <div class="resource-card">
-        <div class="resource-type-badge">${icons[r.type]} ${r.type.toUpperCase()}</div>
+        <div class="resource-icon">${getTypeIcon(r.type)}</div>
         <h3>${r.title}</h3>
         <p>${r.description}</p>
         <div class="resource-price">₹${r.price}</div>
-        ${!hasFile ? '<div style="color: #f59e0b; font-size: 12px; margin: 5px 0;">⚠️ No file uploaded</div>' : ''}
         <div class="resource-actions">
-          <button onclick="openFile(${r.id})" class="download-btn" ${!hasFile ? 'style="opacity:0.5"' : ''}>Open</button>
-          <button onclick="editResource(${r.id})">Edit</button>
-          <button onclick="deleteResource(${r.id})">Delete</button>
+          <button onclick="openFile(${r.id})" class="btn-view">📂 Open</button>
+          <button onclick="editResource(${r.id})" class="btn-edit">✏️ Edit</button>
+          <button onclick="deleteResource(${r.id})" class="btn-delete">🗑️ Delete</button>
         </div>
       </div>
-    `}).join('');
-  } catch (err) {
-    console.error('Error loading resources:', err);
-    grid.innerHTML = '<p style="color: white; padding: 20px;">Error loading resources. Please check server.</p>';
+    `).join('');
+  } catch (error) {
+    console.error('Error loading resources:', error);
+    grid.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">⚠️</div>
+        <h3>Error Loading Resources</h3>
+        <p>Please try again later</p>
+      </div>
+    `;
   }
+}
+
+function getTypeIcon(type) {
+  const icons = {
+    pdf: '📄',
+    excel: '📊',
+    exam: '📝',
+    freelance: '💼'
+  };
+  return icons[type] || '📦';
 }
 
 function setupRealtimeResources() {
@@ -320,12 +352,21 @@ if (document.getElementById('resourceForm')) {
   document.getElementById('resourceForm').onsubmit = async (e) => {
     e.preventDefault();
     
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    const userEmail = currentUser.email;
+    
+    if (!userEmail) {
+      alert('Please login to add resources');
+      return;
+    }
+    
     const formData = new FormData();
     formData.append('type', currentType);
     formData.append('title', document.getElementById('title').value);
     formData.append('description', document.getElementById('description').value);
     formData.append('price', document.getElementById('price').value);
     formData.append('file', document.getElementById('fileUpload').files[0]);
+    formData.append('user_email', userEmail);
     
     document.getElementById('uploadProgress').style.display = 'block';
     

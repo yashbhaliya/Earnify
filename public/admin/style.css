@@ -2060,3 +2060,55 @@ body.light-mode #viewContent strong {
 body.light-mode #viewContent span {
   color: #0f172a;
 }
+
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  grid-column: 1 / -1;
+}
+
+.empty-icon {
+  font-size: 80px;
+  margin-bottom: 20px;
+  opacity: 0.5;
+}
+
+.empty-state h3 {
+  color: #3b82f6;
+  font-size: 24px;
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+
+.empty-state p {
+  color: #64748b;
+  font-size: 16px;
+}
+
+/* Enhanced Empty State */
+.empty-state {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(255, 255, 255, 0.8) 100%);
+  border-radius: 15px;
+  border: 2px dashed #e2e8f0;
+  padding: 80px 20px;
+}
+
+.empty-icon {
+  animation: float 3s ease-in-out infinite;
+  font-size: 100px;
+  opacity: 0.6;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.empty-state h3 {
+  font-size: 26px;
+  margin-bottom: 12px;
+}
+
+.empty-state p {
+  font-weight: 500;
+}

@@ -193,7 +193,7 @@ app.get("/api/resources", async (req, res) => {
 // Upload File and Add Resource
 app.post("/api/resources", upload.single('file'), async (req, res) => {
   try {
-    const { type, title, description, price } = req.body;
+    const { type, title, description, price, user_email } = req.body;
     const file = req.file;
     
     if (!file) {
@@ -222,7 +222,7 @@ app.post("/api/resources", upload.single('file'), async (req, res) => {
 
     const { data, error } = await supabase
       .from("resources")
-      .insert([{ type, title, description, price, fileurl: publicUrl }])
+      .insert([{ type, title, description, price, fileurl: publicUrl, user_email: user_email }])
       .select();
 
     if (error) {

@@ -217,8 +217,10 @@ async function loadResources() {
     displayResources(allResources, userPurchases);
   } catch (error) {
     console.error('Error loading resources:', error);
-    document.getElementById('resourcesGrid').innerHTML = 
-      '<p style="text-align: center; color: #666;">Unable to load resources. Please try again later.</p>';
+    const grid = document.getElementById('resourcesGrid');
+    if (grid) {
+      grid.innerHTML = '<p style="text-align: center; color: #666;">Unable to load resources. Please try again later.</p>';
+    }
   }
 }
 
@@ -255,31 +257,33 @@ function searchResources() {
 function displayResources(resources, userPurchases = []) {
   const grid = document.getElementById('resourcesGrid');
   
+  if (!grid) return;
+  
   if (!resources || resources.length === 0) {
     grid.innerHTML = '<p style="text-align: center; color: #666;">No resources available yet.</p>';
     return;
   }
-
-  const icons = { pdf: '📄', excel: '📊', exam: '📝', freelance: '💼' };
+  
   const purchasedIds = userPurchases.map(p => p.resource_id);
   
-  grid.innerHTML = resources.map(r => {
-    const isPurchased = purchasedIds.includes(r.id);
-    const purchasedItem = userPurchases.find(p => p.resource_id === r.id);
+  grid.innerHTML = resources.map(resource => {
+    const isPurchased = purchasedIds.includes(resource.id);
+    const icons = { pdf: '📄', excel: '📊', exam: '📝', freelance: '💼' };
+    const icon = icons[resource.type] || '📦';
     
     return `
-    <div class="resource-card" onclick="viewDetails(${r.id})" style="cursor: pointer;">
-      <span class="resource-type">${icons[r.type] || '📦'} ${r.type.toUpperCase()}</span>
-      <h3>${r.title}</h3>
-      <p>${r.description}</p>
-      <div class="resource-price" style="${isPurchased ? 'color: #10b981;' : ''}">${isPurchased ? '✅ Already Purchased' : '₹' + r.price}</div>
-      ${isPurchased ? 
-        `<a href="${purchasedItem?.resources?.fileurl || '#'}" ${purchasedItem?.resources?.fileurl ? 'download' : ''} class="buy-btn" onclick="event.stopPropagation();" style="display: block; text-align: center; text-decoration: none; background: #10b981;">📥 Download</a>` 
-        : 
-        `<button class="buy-btn" onclick="event.stopPropagation(); buyResource(${r.id})">Buy Now</button>`
-      }
-    </div>
-  `;
+      <div class="resource-card">
+        <div class="resource-icon">${icon}</div>
+        <h3>${resource.title}</h3>
+        <p>${resource.description}</p>
+        <div class="resource-price">₹${resource.price}</div>
+        <div class="resource-type">${resource.type.toUpperCase()}</div>
+        ${isPurchased ? 
+          '<button class="btn-purchased" disabled>✓ Purchased</button>' :
+          `<button class="btn-buy" onclick="buyResource(${resource.id})">Buy Now</button>`
+        }
+      </div>
+    `;
   }).join('');
 }
 

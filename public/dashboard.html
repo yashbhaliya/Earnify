@@ -163,21 +163,26 @@
         return;
       }
       
-      container.innerHTML = purchases.map(purchase => `
+      container.innerHTML = purchases.map(purchase => {
+        const resource = purchase.resources;
+        if (!resource || resource.hidden_from_users) return '';
+        
+        return `
           <div class="purchase-card">
-            <h3>📦 ${purchase.resources?.title || 'Resource'}</h3>
-            <p><strong>Type:</strong> ${purchase.resources?.type || 'N/A'}</p>
-            <p class="price-tag"><strong>Price:</strong> ₹${purchase.resources?.price || 'N/A'}</p>
+            <h3>📦 ${resource.title || 'Resource'}</h3>
+            <p><strong>Type:</strong> ${resource.type || 'N/A'}</p>
+            <p class="price-tag"><strong>Price:</strong> ₹${resource.price || 'N/A'}</p>
             <p><strong>Payment ID:</strong> ${purchase.payment_id}</p>
             <p><strong>Order ID:</strong> ${purchase.order_id || 'N/A'}</p>
             <p><strong>Date:</strong> ${new Date(purchase.created_at).toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
             <span class="status ${purchase.status.toLowerCase()}">${purchase.status.toUpperCase()}</span>
             <div style="display: flex; gap: 10px; margin-top: 15px;">
-              <button onclick="downloadReceipt('${purchase.payment_id}', '${purchase.order_id}', '${purchase.resources?.title || 'Resource'}', '${purchase.resources?.price || 0}')" style="flex: 1; background: #10b981; color: white; padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">🧾 Download Receipt</button>
-              ${purchase.resources?.fileurl ? `<a href="${purchase.resources.fileurl}" target="_blank" download style="flex: 1; background: #3b82f6; color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; display: flex; align-items: center; justify-content: center; font-weight: 600;">📥 Download Content</a>` : '<button disabled style="flex: 1; background: #94a3b8; color: white; padding: 10px 20px; border: none; border-radius: 8px; cursor: not-allowed; font-weight: 600;">📥 Download Content</button>'}
+              <button onclick="downloadReceipt('${purchase.payment_id}', '${purchase.order_id}', '${resource.title || 'Resource'}', '${resource.price || 0}')" style="flex: 1; background: #10b981; color: white; padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">🧾 Download Receipt</button>
+              ${resource.fileurl ? `<a href="${resource.fileurl}" target="_blank" download style="flex: 1; background: #3b82f6; color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; display: flex; align-items: center; justify-content: center; font-weight: 600;">📥 Download Content</a>` : '<button disabled style="flex: 1; background: #94a3b8; color: white; padding: 10px 20px; border: none; border-radius: 8px; cursor: not-allowed; font-weight: 600;">📥 Download Content</button>'}
             </div>
           </div>
-        `).join('');
+        `;
+      }).filter(Boolean).join('');
     }
 
     function logout() {
