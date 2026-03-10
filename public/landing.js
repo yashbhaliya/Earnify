@@ -3,26 +3,72 @@ let allResources = [];
 let currentFilter = 'all';
 let isLoggedIn = false;
 
+// Check login status on page load
+document.addEventListener('DOMContentLoaded', () => {
+  checkLoginStatus();
+  loadResources();
+  loadSiteSettings();
+});
+
+function loadSiteSettings() {
+  const siteSettings = JSON.parse(localStorage.getItem('siteSettings') || '{}');
+  
+  // Update site name in navbar
+  const logoElement = document.querySelector('.logo');
+  if (logoElement && siteSettings.siteName) {
+    logoElement.textContent = siteSettings.siteLogo || siteSettings.siteName;
+  }
+  
+  // Update page title
+  if (siteSettings.siteName) {
+    document.title = siteSettings.siteName + ' - Your Learning Marketplace';
+  }
+}
+
 function checkLoginStatus() {
-  isLoggedIn = localStorage.getItem('userLoggedIn') === 'true';
+  isLoggedIn = localStorage.getItem('userLoggedIn') === 'true' || localStorage.getItem('adminToken') !== null;
   updateUI();
 }
 
 function updateUI() {
   const loginBtn = document.getElementById('loginBtn');
   const signupBtn = document.getElementById('signupBtn');
-  const logoutBtn = document.getElementById('logoutBtn');
+  const userMenu = document.getElementById('userMenu');
+  const userName = document.getElementById('userName');
+  const userDisplayName = document.getElementById('userDisplayName');
+  const userEmail = document.getElementById('userEmail');
   
   if (isLoggedIn) {
     if (loginBtn) loginBtn.style.display = 'none';
     if (signupBtn) signupBtn.style.display = 'none';
-    if (logoutBtn) logoutBtn.style.display = 'inline-block';
+    if (userMenu) userMenu.style.display = 'flex';
+    
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    const displayName = currentUser.user_metadata?.name || currentUser.email?.split('@')[0] || 'User';
+    const email = currentUser.email || '';
+    if (userName) userName.textContent = displayName;
+    if (userDisplayName) userDisplayName.textContent = displayName;
+    if (userEmail) userEmail.textContent = email;
   } else {
     if (loginBtn) loginBtn.style.display = 'inline-block';
     if (signupBtn) signupBtn.style.display = 'inline-block';
-    if (logoutBtn) logoutBtn.style.display = 'none';
+    if (userMenu) userMenu.style.display = 'none';
   }
 }
+
+function toggleUserDropdown() {
+  const dropdown = document.getElementById('userDropdown');
+  dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+}
+
+// Close dropdown when clicking outside
+document.addEventListener('click', (e) => {
+  const userMenu = document.getElementById('userMenu');
+  const dropdown = document.getElementById('userDropdown');
+  if (userMenu && dropdown && !userMenu.contains(e.target)) {
+    dropdown.style.display = 'none';
+  }
+});
 
 function showLoginModal() {
   document.getElementById('loginModal').style.display = 'flex';
@@ -74,6 +120,7 @@ async function handleLogin(e) {
     
     localStorage.setItem('userLoggedIn', 'true');
     localStorage.setItem('currentUser', JSON.stringify(data.user));
+    localStorage.setItem('adminToken', data.session.access_token);
     isLoggedIn = true;
     closeLoginModal();
     updateUI();
@@ -107,7 +154,7 @@ async function handleSignup(e) {
       password,
       options: {
         data: { name },
-        emailRedirectTo: 'http://127.0.0.1:5500/public/index.html'
+        emailRedirectTo: window.location.origin + '/'
       }
     });
     
@@ -131,9 +178,19 @@ async function logout() {
   await supabaseClient.auth.signOut();
   localStorage.removeItem('userLoggedIn');
   localStorage.removeItem('currentUser');
+  localStorage.removeItem('adminToken');
   isLoggedIn = false;
   updateUI();
-  alert('Logged out successfully!');
+  window.location.href = 'index.html';
+}
+
+function viewProfile() {
+  // Close dropdown first
+  const dropdown = document.getElementById('userDropdown');
+  if (dropdown) dropdown.style.display = 'none';
+  
+  // Redirect to admin resources page
+  window.location.href = 'admin/resources.html';
 }
 
 async function loadResources() {
@@ -269,21 +326,25 @@ function buyResource(id) {
 async function handleEmailVerification() {
   const hashParams = new URLSearchParams(window.location.hash.substring(1));
   const type = hashParams.get('type');
+  const accessToken = hashParams.get('access_token');
+  
+  // If we have an access_token, it means email was verified
+  if (accessToken) {
+    alert('Email verified successfully!');
+    // Clean the URL hash
+    window.history.replaceState({}, document.title, window.location.pathname);
+    return;
+  }
   
   if (type === 'signup' || type === 'email') {
-    const { data, error } = await supabaseClient.auth.getSession();
-    
+    const { data } = await supabaseClient.auth.getSession();
     if (data.session) {
       await supabaseClient.auth.signOut();
     }
-    
     alert('Email verified successfully! Please login to continue.');
     window.location.hash = '';
-    showLoginModal();
   }
 }
 
-// Load resources and check login on page load
-loadResources();
-checkLoginStatus();
+// Handle email verification from URL
 handleEmailVerification();

@@ -19,7 +19,21 @@
         <a href="dashboard.html">Dashboard</a>
         <button id="loginBtn" class="admin-btn" onclick="showLoginModal()">Login</button>
         <button id="signupBtn" class="admin-btn" onclick="showSignupModal()">Sign Up</button>
-        <button id="logoutBtn" class="admin-btn" onclick="logout()" style="display:none;">Logout</button>
+        <div id="userMenu" class="user-menu" style="display:none;">
+          <button class="user-menu-btn" onclick="toggleUserDropdown()">
+            <span class="user-avatar">👤</span>
+            <span id="userName">User</span>
+            <span style="font-size:10px;">▼</span>
+          </button>
+          <div id="userDropdown" class="user-dropdown">
+            <div class="user-dropdown-header">
+              <div class="name" id="userDisplayName">User</div>
+              <div class="email" id="userEmail">user@email.com</div>
+            </div>
+            <a onclick="viewProfile()"><span>👤</span> View Profile</a>
+            <a onclick="logout()"><span>🚪</span> Logout</a>
+          </div>
+        </div>
       </div>
     </div>
   </nav>
@@ -117,6 +131,11 @@
             document.getElementById('loginBtn').style.display = 'none';
             document.getElementById('signupBtn').style.display = 'none';
             document.getElementById('logoutBtn').style.display = 'inline-block';
+            
+            // Set user name in logout button
+            const displayName = user.user_metadata?.name || user.email?.split('@')[0] || 'User';
+            const userName = document.getElementById('userName');
+            if (userName) userName.textContent = displayName;
           }
         } catch (e) {
           localStorage.removeItem('adminToken');

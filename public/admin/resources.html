@@ -9,15 +9,10 @@
 
 <div class="sidebar">
   <h2>Earnify Admin</h2>
-  <a href="dashboard.html">📊 Dashboard</a>
   <a href="resources.html">📚 Resources</a>
-  <a href="analytics.html">📈 Analytics</a>
-  <a href="settings.html">⚙️ Settings</a>
+  <a href="statistics.html">📈 Statistics</a>
   <a href="../index.html" style="margin-top: 20px; border-top: 1px solid #ddd; padding-top: 10px;">🏠 Main Site</a>
-  <div class="sidebar-auth">
-    <a onclick="openAuthModal('login')" class="auth-btn login-btn">🔐 Login</a>
-    <a onclick="openAuthModal('signup')" class="auth-btn signup-btn">✨ Sign Up</a>
-  </div>
+  <a onclick="logout()" style="margin-top: 20px; border-radius: 20px;  border-top: 1px solid #ddd; padding-top: 10px;">🚪Logout</a>
 </div>
 
 <div id="authModal" class="auth-modal">
@@ -168,5 +163,33 @@
 <script src="app.js"></script>
 <script src="theme.js"></script>
 <script src="auth-modal.js"></script>
+<script>
+  // Check login status and update sidebar
+  (function() {
+    const token = localStorage.getItem('adminToken');
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    const sidebarUser = document.getElementById('sidebarUser');
+    
+    if (token && currentUser.email) {
+      if (sidebarUser) sidebarUser.style.display = 'block';
+      
+      const userName = currentUser.user_metadata?.name || currentUser.email?.split('@')[0] || 'User';
+      const userEmail = currentUser.email || '';
+      
+      const sidebarUserName = document.getElementById('sidebarUserName');
+      const sidebarUserEmail = document.getElementById('sidebarUserEmail');
+      
+      if (sidebarUserName) sidebarUserName.textContent = userName;
+      if (sidebarUserEmail) sidebarUserEmail.textContent = userEmail;
+    }
+  })();
+  
+  function logout() {
+    localStorage.removeItem('adminToken');
+    localStorage.removeItem('currentUser');
+    localStorage.removeItem('userLoggedIn');
+    window.location.href = '../index.html';
+  }
+</script>
 </body>
 </html>

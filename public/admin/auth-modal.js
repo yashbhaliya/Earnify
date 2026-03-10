@@ -77,6 +77,60 @@ function isValidEmail(email) {
   return emailRegex.test(email);
 }
 
+// Update admin UI to show user name in logout button
+function updateAdminUI(user) {
+  const loginBtn = document.getElementById('adminLoginBtn');
+  const signupBtn = document.getElementById('adminSignupBtn');
+  const logoutBtn = document.getElementById('adminLogoutBtn');
+  const userName = document.getElementById('adminUserName');
+  
+  // Handle old elements if they exist
+  if (loginBtn) loginBtn.style.display = 'none';
+  if (signupBtn) signupBtn.style.display = 'none';
+  if (logoutBtn) logoutBtn.style.display = 'inline-block';
+  
+  if (userName && user) {
+    const displayName = user.name || user.email?.split('@')[0] || 'User';
+    userName.textContent = displayName;
+  }
+  
+  // Handle new sidebar user section
+  const sidebarUser = document.getElementById('sidebarUser');
+  const sidebarAuth = document.getElementById('sidebarAuth');
+  const sidebarUserName = document.getElementById('sidebarUserName');
+  const sidebarUserEmail = document.getElementById('sidebarUserEmail');
+  
+  if (sidebarUser && sidebarAuth) {
+    if (user && user.email) {
+      sidebarUser.style.display = 'block';
+      sidebarAuth.style.display = 'none';
+      
+      const displayName = user.name || user.email?.split('@')[0] || 'User';
+      if (sidebarUserName) sidebarUserName.textContent = displayName;
+      if (sidebarUserEmail) sidebarUserEmail.textContent = user.email;
+    } else {
+      sidebarUser.style.display = 'none';
+      sidebarAuth.style.display = 'flex';
+    }
+  }
+}
+
+// Check if admin is already logged in on page load
+function checkAdminAuth() {
+  const token = localStorage.getItem('adminToken');
+  const user = localStorage.getItem('adminUser');
+  
+  if (token && user) {
+    try {
+      const userData = JSON.parse(user);
+      updateAdminUI(userData);
+    } catch (e) {
+      localStorage.removeItem('adminToken');
+      localStorage.removeItem('adminUser');
+    }
+  }
+}
+
 // Password strength checker
 function checkModalPasswordStrength(password) {
   const hasLength = password.length >= 8;
@@ -97,6 +151,9 @@ function checkModalPasswordStrength(password) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  // Check admin auth status on page load
+  checkAdminAuth();
+  
   const loginForm = document.getElementById('authLoginForm');
   const signupForm = document.getElementById('authSignupForm');
   
@@ -145,8 +202,15 @@ document.addEventListener('DOMContentLoaded', () => {
       
       if (response.ok && data.token) {
         localStorage.setItem('adminToken', data.token);
+        localStorage.setItem('adminUser', JSON.stringify(data.user));
+        localStorage.setItem('currentUser', JSON.stringify(data.user));
+        localStorage.setItem('userLoggedIn', 'true');
         document.getElementById('authSuccess').textContent = 'Login successful!';
         document.getElementById('authSuccess').style.display = 'block';
+        
+        // Update UI to show logout button with user name
+        updateAdminUI(data.user);
+        
         setTimeout(() => { closeAuthModal(); window.location.href = 'admin/dashboard.html'; }, 1000);
       } else {
         document.getElementById('authError').textContent = data.error || 'Invalid email or password';
@@ -218,8 +282,15 @@ document.addEventListener('DOMContentLoaded', () => {
       
       if (response.ok && data.token) {
         localStorage.setItem('adminToken', data.token);
+        localStorage.setItem('adminUser', JSON.stringify(data.user));
+        localStorage.setItem('currentUser', JSON.stringify(data.user));
+        localStorage.setItem('userLoggedIn', 'true');
         document.getElementById('authSuccess').textContent = 'Account created successfully!';
         document.getElementById('authSuccess').style.display = 'block';
+        
+        // Update UI to show logout button with user name
+        updateAdminUI(data.user);
+        
         setTimeout(() => { closeAuthModal(); window.location.href = 'admin/dashboard.html'; }, 1000);
       } else {
         const errorMsg = data.error || 'Signup failed';
@@ -240,3 +311,21 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
+
+// Admin logout function
+function logout() {
+  localStorage.removeItem('adminToken');
+  localStorage.removeItem('adminUser');
+  
+  // Reset UI
+  const loginBtn = document.getElementById('adminLoginBtn');
+  const signupBtn = document.getElementById('adminSignupBtn');
+  const logoutBtn = document.getElementById('adminLogoutBtn');
+  
+  if (loginBtn) loginBtn.style.display = 'inline-block';
+  if (signupBtn) signupBtn.style.display = 'inline-block';
+  if (logoutBtn) logoutBtn.style.display = 'none';
+  
+  // Redirect to login page or show login modal
+  openAuthModal('login');
+}

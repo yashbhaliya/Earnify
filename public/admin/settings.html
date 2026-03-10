@@ -8,14 +8,20 @@
 
 <div class="sidebar">
   <h2>Earnify Admin</h2>
-  <a href="dashboard.html">📊 Dashboard</a>
   <a href="resources.html">📚 Resources</a>
-  <a href="analytics.html">📈 Analytics</a>
-  <a href="settings.html">⚙️ Settings</a>
+  <a href="analytics.html">📈 Statistics</a>
   <a href="../index.html" style="margin-top: 20px; border-top: 1px solid #ddd; padding-top: 10px;">🏠 Main Site</a>
-  <div class="sidebar-auth">
-    <a onclick="openAuthModal('login')" class="auth-btn login-btn">🔐 Login</a>
-    <a onclick="openAuthModal('signup')" class="auth-btn signup-btn">✨ Sign Up</a>
+  
+  <!-- User Profile Section (shown when logged in) -->
+  <div class="sidebar-user" id="sidebarUser" style="display: none;">
+    <div class="user-info">
+      <div class="user-avatar">👤</div>
+      <div class="user-details">
+        <div class="user-name" id="sidebarUserName">User</div>
+        <div class="user-email" id="sidebarUserEmail">user@email.com</div>
+      </div>
+    </div>
+    <a onclick="logout()" class="logout-link">🚪 Logout</a>
   </div>
 </div>
 
@@ -69,11 +75,26 @@
   <h1>System Settings</h1>
 
   <div class="settings-container">
+    <!-- Site Name & Logo Settings -->
+    <div class="settings-card">
+      <h3>🏷️ Site Name & Logo</h3>
+      <div class="form-group">
+        <label>Site Name</label>
+        <input type="text" id="siteName" placeholder="Enter site name" value="Earnify">
+      </div>
+      <div class="form-group">
+        <label>Logo URL</label>
+        <input type="text" id="siteLogo" placeholder="Enter logo URL (e.g., 💰 Earnify)">
+      </div>
+      <button class="action-btn" onclick="saveSiteSettings()">💾 Save Settings</button>
+      <p id="settingsMsg" style="margin-top: 10px; color: green; display: none;">Settings saved successfully!</p>
+    </div>
+
     <div class="settings-card">
       <h3>Application Info</h3>
       <div class="info-row">
         <span>App Name:</span>
-        <strong>Earnify</strong>
+        <strong id="displayAppName">Earnify</strong>
       </div>
       <div class="info-row">
         <span>Version:</span>
@@ -112,5 +133,71 @@
 <script src="app.js"></script>
 <script src="theme.js"></script>
 <script src="auth-modal.js"></script>
+<script>
+  // Check login status and update sidebar
+  (function() {
+    const token = localStorage.getItem('adminToken');
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    const sidebarUser = document.getElementById('sidebarUser');
+    
+    if (token && currentUser.email) {
+      if (sidebarUser) sidebarUser.style.display = 'block';
+      
+      const userName = currentUser.user_metadata?.name || currentUser.email?.split('@')[0] || 'User';
+      const userEmail = currentUser.email || '';
+      
+      const sidebarUserName = document.getElementById('sidebarUserName');
+      const sidebarUserEmail = document.getElementById('sidebarUserEmail');
+      
+      if (sidebarUserName) sidebarUserName.textContent = userName;
+      if (sidebarUserEmail) sidebarUserEmail.textContent = userEmail;
+    }
+  })();
+  
+  function logout() {
+    localStorage.removeItem('adminToken');
+    localStorage.removeItem('currentUser');
+    localStorage.removeItem('userLoggedIn');
+    window.location.href = '../index.html';
+  }
+  
+  // Load site settings on page load
+  (function() {
+    const siteSettings = JSON.parse(localStorage.getItem('siteSettings') || '{}');
+    if (siteSettings.siteName) {
+      document.getElementById('siteName').value = siteSettings.siteName;
+      document.getElementById('displayAppName').textContent = siteSettings.siteName;
+    }
+    if (siteSettings.siteLogo) {
+      document.getElementById('siteLogo').value = siteSettings.siteLogo;
+    }
+  })();
+  
+  // Save site settings
+  function saveSiteSettings() {
+    const siteName = document.getElementById('siteName').value.trim();
+    const siteLogo = document.getElementById('siteLogo').value.trim();
+    
+    if (!siteName) {
+      alert('Please enter a site name');
+      return;
+    }
+    
+    const siteSettings = {
+      siteName: siteName,
+      siteLogo: siteLogo
+    };
+    
+    localStorage.setItem('siteSettings', JSON.stringify(siteSettings));
+    document.getElementById('displayAppName').textContent = siteName;
+    
+    // Show success message
+    const msg = document.getElementById('settingsMsg');
+    msg.style.display = 'block';
+    setTimeout(() => msg.style.display = 'none', 3000);
+    
+    alert('Site settings saved! The changes will appear on the site.');
+  }
+</script>
 </body>
 </html>
