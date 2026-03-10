@@ -56,16 +56,19 @@ async function handleLogin(e) {
   const password = document.getElementById('loginPassword').value;
   
   try {
-    const response = await fetch('http://localhost:5000/api/auth/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password })
+    const { data, error } = await supabaseClient.auth.signInWithPassword({
+      email,
+      password
     });
     
-    const data = await response.json();
+    if (error) {
+      alert(error.message);
+      return;
+    }
     
-    if (!response.ok) {
-      alert('Invalid email or password!');
+    if (!data.user.email_confirmed_at) {
+      alert('Please verify your email before logging in!');
+      await supabaseClient.auth.signOut();
       return;
     }
     
@@ -77,7 +80,7 @@ async function handleLogin(e) {
     alert('Login successful!');
   } catch (error) {
     console.error('Login error:', error);
-    alert('Login failed. Please try again.');
+    alert('Login failed: ' + error.message);
   }
 }
 
@@ -93,35 +96,38 @@ async function handleSignup(e) {
     return;
   }
   
+  if (password.length < 6) {
+    alert('Password must be at least 6 characters long!');
+    return;
+  }
+  
   try {
-    const response = await fetch('http://localhost:5000/api/auth/signup', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, email, password })
+    const { data, error } = await supabaseClient.auth.signUp({
+      email,
+      password,
+      options: {
+        data: { name }
+      }
     });
     
-    const data = await response.json();
-    
-    if (!response.ok) {
-      if (data.error === 'User already exists') {
-        alert('User with this email already exists! Please login.');
-        switchToLogin();
-        return;
+    if (error) {
+      if (error.message.includes('confirmation email')) {
+        alert('SMTP not configured. Please contact admin or disable email verification in Supabase settings.');
+      } else {
+        alert(error.message);
       }
-      throw new Error(data.error);
+      throw error;
     }
     
-    // Close signup modal and open login modal
     closeSignupModal();
-    alert('Account created successfully! Please login.');
-    showLoginModal();
+    alert('Verification email sent! Please check your inbox and verify your email before logging in.');
   } catch (error) {
     console.error('Signup error:', error);
-    alert('Signup failed. Please try again.');
   }
 }
 
-function logout() {
+async function logout() {
+  await supabaseClient.auth.signOut();
   localStorage.removeItem('userLoggedIn');
   localStorage.removeItem('currentUser');
   isLoggedIn = false;
@@ -133,7 +139,24 @@ async function loadResources() {
   try {
     const res = await fetch(API);
     allResources = await res.json();
-    displayResources(allResources);
+    
+    // Get user's purchases if logged in
+    let userPurchases = [];
+    if (isLoggedIn) {
+      const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+      if (currentUser) {
+        try {
+          const purchaseRes = await fetch(`http://localhost:5000/api/payments/${currentUser.id}`);
+          if (purchaseRes.ok) {
+            userPurchases = await purchaseRes.json();
+          }
+        } catch (err) {
+          console.log('Could not fetch purchases');
+        }
+      }
+    }
+    
+    displayResources(allResources, userPurchases);
   } catch (error) {
     console.error('Error loading resources:', error);
     document.getElementById('resourcesGrid').innerHTML = 
@@ -141,7 +164,7 @@ async function loadResources() {
   }
 }
 
-function displayResources(resources) {
+function displayResources(resources, userPurchases = []) {
   const grid = document.getElementById('resourcesGrid');
   
   if (!resources || resources.length === 0) {
@@ -150,16 +173,26 @@ function displayResources(resources) {
   }
 
   const icons = { pdf: '📄', excel: '📊', exam: '📝', freelance: '💼' };
+  const purchasedIds = userPurchases.map(p => p.resource_id);
   
-  grid.innerHTML = resources.map(r => `
+  grid.innerHTML = resources.map(r => {
+    const isPurchased = purchasedIds.includes(r.id);
+    const purchasedItem = userPurchases.find(p => p.resource_id === r.id);
+    
+    return `
     <div class="resource-card" onclick="viewDetails(${r.id})" style="cursor: pointer;">
       <span class="resource-type">${icons[r.type] || '📦'} ${r.type.toUpperCase()}</span>
       <h3>${r.title}</h3>
       <p>${r.description}</p>
-      <div class="resource-price">₹${r.price}</div>
-      <button class="buy-btn" onclick="event.stopPropagation(); buyResource(${r.id})">Buy Now</button>
+      <div class="resource-price" style="${isPurchased ? 'color: #10b981;' : ''}">${isPurchased ? '✅ Already Purchased' : '₹' + r.price}</div>
+      ${isPurchased ? 
+        `<a href="${purchasedItem?.resources?.fileurl || '#'}" ${purchasedItem?.resources?.fileurl ? 'download' : ''} class="buy-btn" onclick="event.stopPropagation();" style="display: block; text-align: center; text-decoration: none; background: #10b981;">📥 Download</a>` 
+        : 
+        `<button class="buy-btn" onclick="event.stopPropagation(); buyResource(${r.id})">Buy Now</button>`
+      }
     </div>
-  `).join('');
+  `;
+  }).join('');
 }
 
 function filterResources(type) {
@@ -176,7 +209,20 @@ function filterResources(type) {
     ? allResources 
     : allResources.filter(r => r.type === type);
   
-  displayResources(filtered);
+  // Get user purchases if logged in
+  let userPurchases = [];
+  if (isLoggedIn) {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    if (currentUser) {
+      fetch(`http://localhost:5000/api/payments/${currentUser.id}`)
+        .then(res => res.ok ? res.json() : [])
+        .then(purchases => displayResources(filtered, purchases))
+        .catch(() => displayResources(filtered, []));
+      return;
+    }
+  }
+  
+  displayResources(filtered, userPurchases);
 }
 
 function viewDetails(id) {
@@ -188,6 +234,25 @@ function buyResource(id) {
   window.location.href = `details.html?id=${id}`;
 }
 
+// Handle email verification callback
+async function handleEmailVerification() {
+  const hashParams = new URLSearchParams(window.location.hash.substring(1));
+  const type = hashParams.get('type');
+  
+  if (type === 'signup' || type === 'email') {
+    const { data, error } = await supabaseClient.auth.getSession();
+    
+    if (data.session) {
+      await supabaseClient.auth.signOut();
+    }
+    
+    alert('Email verified successfully! Please login to continue.');
+    window.location.hash = '';
+    showLoginModal();
+  }
+}
+
 // Load resources and check login on page load
 loadResources();
 checkLoginStatus();
+handleEmailVerification();

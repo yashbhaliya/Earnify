@@ -33,57 +33,51 @@ async function ensureFileUrlColumn() {
   });
 }
 
-// User Signup
+// User Signup with Supabase Auth
 app.post("/api/auth/signup", async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { email, password } = req.body;
     
-    // Check if user exists
-    const { data: existingUser } = await supabase
-      .from('users')
-      .select('email')
-      .eq('email', email)
-      .single();
+    const { data, error } = await supabase.auth.signUp({
+      email: email,
+      password: password
+    });
     
-    if (existingUser) {
-      return res.status(400).json({ error: 'User already exists' });
+    if (error) {
+      return res.json({ success: false, message: error.message });
     }
     
-    // Insert new user
-    const { data, error } = await supabase
-      .from('users')
-      .insert([{ name, email, password }])
-      .select();
-    
-    if (error) throw error;
-    
-    res.json({ success: true, user: data[0] });
+    res.json({
+      success: true,
+      message: "Verification email sent. Please check your inbox."
+    });
   } catch (err) {
     console.error('Signup error:', err);
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ success: false, message: err.message });
   }
 });
 
-// User Login
+// User Login with Supabase Auth
 app.post("/api/auth/login", async (req, res) => {
   try {
     const { email, password } = req.body;
     
-    const { data: user, error } = await supabase
-      .from('users')
-      .select('*')
-      .eq('email', email)
-      .eq('password', password)
-      .single();
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: email,
+      password: password
+    });
     
-    if (error || !user) {
-      return res.status(401).json({ error: 'Invalid credentials' });
+    if (error) {
+      return res.json({ success: false, message: error.message });
     }
     
-    res.json({ success: true, user });
+    res.json({
+      success: true,
+      message: "Login successful"
+    });
   } catch (err) {
     console.error('Login error:', err);
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ success: false, message: err.message });
   }
 });
 
@@ -279,7 +273,7 @@ app.post("/api/payment/verify", async (req, res) => {
     console.log('Payment verification request:', { razorpay_order_id, razorpay_payment_id, resourceId, userId });
     
     if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
-      return res.status(400).json({ error: "Missing payment parameters" });
+      return res.status(400).json({ success: false, error: "Missing payment parameters" });
     }
     
     const sign = razorpay_order_id + "|" + razorpay_payment_id;
@@ -297,7 +291,7 @@ app.post("/api/payment/verify", async (req, res) => {
           const { data, error } = await supabase
             .from("payments")
             .insert([{
-              user_id: parseInt(userId),
+              user_id: userId,
               resource_id: parseInt(resourceId),
               payment_id: razorpay_payment_id,
               order_id: razorpay_order_id,
@@ -307,35 +301,37 @@ app.post("/api/payment/verify", async (req, res) => {
           
           if (error) {
             console.error('Database save error:', error);
-            return res.status(500).json({ error: 'Payment verified but failed to save: ' + error.message });
+            return res.status(500).json({ success: false, error: 'Payment verified but failed to save: ' + error.message });
           } else {
             console.log('Payment saved to database:', data[0]);
             return res.json({ success: true, message: "Payment verified and saved", payment: data[0] });
           }
         } catch (dbError) {
           console.error('Database operation failed:', dbError);
-          return res.status(500).json({ error: 'Database error: ' + dbError.message });
+          return res.status(500).json({ success: false, error: 'Database error: ' + dbError.message });
         }
       }
       
       res.json({ success: true, message: "Payment verified successfully" });
     } else {
-      res.status(400).json({ error: "Invalid payment signature" });
+      res.status(400).json({ success: false, error: "Invalid payment signature" });
     }
   } catch (error) {
     console.error('Payment verification error:', error);
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ success: false, error: error.message });
   }
 });
 
 // Get User Payments
 app.get("/api/payments/:userId", async (req, res) => {
   try {
-    // Get payments
+    const userId = req.params.userId;
+    
+    // Get payments - userId is now UUID from Supabase Auth
     const { data: payments, error: paymentsError } = await supabase
       .from("payments")
       .select("*")
-      .eq("user_id", req.params.userId);
+      .eq("user_id", userId);
     
     if (paymentsError) {
       console.error('Payments fetch error:', paymentsError);

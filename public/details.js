@@ -41,7 +41,21 @@ async function loadResourceDetails() {
       return;
     }
     
-    displayResourceDetails();
+    // Check if user already purchased this item
+    let isPurchased = false;
+    if (isLoggedIn && currentUser) {
+      try {
+        const purchaseRes = await fetch(`http://localhost:5000/api/payments/${currentUser.id}`);
+        if (purchaseRes.ok) {
+          const purchases = await purchaseRes.json();
+          isPurchased = purchases.some(p => p.resource_id === currentResource.id);
+        }
+      } catch (err) {
+        console.log('Could not check purchases');
+      }
+    }
+    
+    displayResourceDetails(isPurchased);
   } catch (error) {
     console.error('Error loading resource:', error);
     document.getElementById('resourceDetails').innerHTML = 
@@ -49,7 +63,7 @@ async function loadResourceDetails() {
   }
 }
 
-function displayResourceDetails() {
+function displayResourceDetails(isPurchased = false) {
   const icons = { pdf: '📄', excel: '📊', exam: '📝', freelance: '💼' };
   const icon = icons[currentResource.type] || '📦';
   
@@ -70,18 +84,32 @@ function displayResourceDetails() {
     </div>
   `;
   
-  document.getElementById('purchaseCard').innerHTML = `
-    <div class="price-section">
-      <div class="price-label">Price</div>
-      <div class="price">₹${currentResource.price}</div>
-    </div>
-    <button class="buy-button" onclick="handlePurchase()">Buy Now</button>
-    <div class="purchase-info">
-      <div class="info-item">Secure payment</div>
-      <div class="info-item">Money-back guarantee</div>
-      <div class="info-item">Instant delivery</div>
-    </div>
-  `;
+  if (isPurchased) {
+    document.getElementById('purchaseCard').innerHTML = `
+      <div class="price-section">
+        <div class="price-label" style="color: #10b981; font-size: 18px; font-weight: 600;">✅ Already Purchased</div>
+      </div>
+      <a href="${currentResource.fileurl || '#'}" ${currentResource.fileurl ? 'download' : ''} class="buy-button" style="background: #10b981; text-decoration: none; display: block; text-align: center;">📥 Download Content</a>
+      <div class="purchase-info">
+        <div class="info-item">Thank you for your purchase!</div>
+        <div class="info-item">Access anytime from dashboard</div>
+        <div class="info-item">Lifetime access</div>
+      </div>
+    `;
+  } else {
+    document.getElementById('purchaseCard').innerHTML = `
+      <div class="price-section">
+        <div class="price-label">Price</div>
+        <div class="price">₹${currentResource.price}</div>
+      </div>
+      <button class="buy-button" onclick="handlePurchase()">Buy Now</button>
+      <div class="purchase-info">
+        <div class="info-item">Secure payment</div>
+        <div class="info-item">Money-back guarantee</div>
+        <div class="info-item">Instant delivery</div>
+      </div>
+    `;
+  }
 }
 
 async function handlePurchase() {
@@ -166,15 +194,15 @@ async function verifyPayment(response) {
     
     const result = await verifyResponse.json();
     
-    if (result.success) {
-      alert('Payment successful! Check your dashboard for purchased resources.');
-      window.location.href = '/dashboard.html';
+    if (verifyResponse.ok && result.success) {
+      alert('Payment successful! You can now download your content.');
+      loadResourceDetails();
     } else {
-      alert('Payment verification failed.');
+      alert('Payment verification failed: ' + (result.error || 'Unknown error'));
     }
   } catch (error) {
     console.error('Verification error:', error);
-    alert('Payment verification failed.');
+    alert('Payment verification failed: ' + error.message);
   }
 }
 
