@@ -42,7 +42,14 @@
 <body>
   <nav class="navbar">
     <div class="container">
-      <a href="index.html" style="text-decoration: none; color: inherit;"><h1 class="logo">💰 Earnify</h1></a>
+      <div class="nav-header">
+        <a href="index.html" style="text-decoration: none; color: inherit;"><h1 class="logo">💰 Earnify</h1></a>
+        <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+          <span class="hamburger"></span>
+          <span class="hamburger"></span>
+          <span class="hamburger"></span>
+        </button>
+      </div>
       <div class="nav-links">
         <a href="index.html#resources">Resources</a>
         <a href="index.html#about">About</a>
@@ -50,6 +57,25 @@
         <button id="logoutBtn" class="admin-btn" onclick="logout()" style="display:none;">Logout</button>
       </div>
     </div>
+    
+    <!-- Mobile Sidebar -->
+    <div class="mobile-sidebar" id="mobileSidebar">
+      <div class="mobile-sidebar-header">
+        <h2>💰 Earnify</h2>
+        <button class="close-sidebar" onclick="toggleMobileMenu()">&times;</button>
+      </div>
+      <div class="mobile-sidebar-content">
+        <a href="index.html" onclick="toggleMobileMenu()">🏠 Home</a>
+        <a href="about.html" onclick="toggleMobileMenu()">ℹ️ About</a>
+        <a href="contact.html" onclick="toggleMobileMenu()">📞 Contact</a>
+        <a href="index.html#resources" onclick="toggleMobileMenu()">📚 Resources</a>
+        <a href="dashboard.html" onclick="toggleMobileMenu()">📊 Dashboard</a>
+        <a href="terms.html" onclick="toggleMobileMenu()">📜 Terms</a>
+        <a href="privacy.html" onclick="toggleMobileMenu()">🔒 Privacy</a>
+        <a href="payment.html" onclick="toggleMobileMenu()">💳 Payment</a>
+      </div>
+    </div>
+    <div class="mobile-sidebar-overlay" id="mobileSidebarOverlay" onclick="toggleMobileMenu()"></div>
   </nav>
   <h1 style="padding: 20px; margin: 0;">Purchase Resources</h1>
   <div id="resources"></div>
@@ -197,5 +223,6 @@
 
     loadResources();
   </script>
+  <script src="landing.js"></script>
 </body>
 </html>

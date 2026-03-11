@@ -1,0 +1,157 @@
+// Shimmer loading for Privacy page
+document.addEventListener('DOMContentLoaded', function() {
+  loadPrivacyContent();
+});
+
+function loadPrivacyContent() {
+  showShimmer();
+  setTimeout(() => {
+    loadActualContent();
+  }, 1500);
+}
+
+function showShimmer() {
+  const container = document.getElementById('privacyContainer');
+  let shimmerHTML = '';
+  
+  for (let i = 0; i < 13; i++) {
+    shimmerHTML += `
+      <div class="content-box">
+        <div class="shimmer-box">
+          <div class="shimmer-title"></div>
+          <div class="shimmer-text"></div>
+          <div class="shimmer-text"></div>
+          <div class="shimmer-text short"></div>
+          <div class="shimmer-list">
+            <div class="shimmer-list-item"></div>
+            <div class="shimmer-list-item"></div>
+            <div class="shimmer-list-item"></div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+  
+  container.innerHTML = shimmerHTML;
+}
+
+function loadActualContent() {
+  const container = document.getElementById('privacyContainer');
+  container.innerHTML = `
+    <div class="content-box">
+      <h2>1. Introduction</h2>
+      <p>At Earnify, we are committed to protecting your privacy and ensuring the security of your personal information. This Privacy Policy explains how we collect, use, disclose, and safeguard your data when you use our platform.</p>
+    </div>
+
+    <div class="content-box">
+      <h2>2. Information We Collect</h2>
+      <p><strong>2.1 Personal Information:</strong></p>
+      <ul class="benefits-list">
+        <li><i class="fas fa-info-circle"></i> Name and email address</li>
+        <li><i class="fas fa-info-circle"></i> Account credentials</li>
+        <li><i class="fas fa-info-circle"></i> Payment information (processed securely by third-party providers)</li>
+        <li><i class="fas fa-info-circle"></i> Profile information you choose to provide</li>
+      </ul>
+      <p><strong>2.2 Usage Information:</strong></p>
+      <ul class="benefits-list">
+        <li><i class="fas fa-info-circle"></i> Pages visited and resources viewed</li>
+        <li><i class="fas fa-info-circle"></i> Purchase history and transaction details</li>
+        <li><i class="fas fa-info-circle"></i> Device information and IP address</li>
+        <li><i class="fas fa-info-circle"></i> Browser type and operating system</li>
+      </ul>
+    </div>
+
+    <div class="content-box">
+      <h2>3. How We Use Your Information</h2>
+      <p>We use your information to:</p>
+      <ul class="benefits-list">
+        <li><i class="fas fa-check-circle"></i> Provide and maintain our services</li>
+        <li><i class="fas fa-check-circle"></i> Process transactions and deliver purchased resources</li>
+        <li><i class="fas fa-check-circle"></i> Send important updates and notifications</li>
+        <li><i class="fas fa-check-circle"></i> Improve our platform and user experience</li>
+        <li><i class="fas fa-check-circle"></i> Prevent fraud and ensure security</li>
+        <li><i class="fas fa-check-circle"></i> Comply with legal obligations</li>
+        <li><i class="fas fa-check-circle"></i> Send promotional emails (with your consent)</li>
+      </ul>
+    </div>
+
+    <div class="content-box">
+      <h2>4. Information Sharing and Disclosure</h2>
+      <p><strong>4.1 We Do Not Sell Your Data:</strong> We never sell your personal information to third parties.</p>
+      <p><strong>4.2 Service Providers:</strong> We may share information with trusted service providers who assist us in operating our platform (payment processors, hosting services, analytics providers).</p>
+      <p><strong>4.3 Legal Requirements:</strong> We may disclose information when required by law or to protect our rights and safety.</p>
+      <p><strong>4.4 Business Transfers:</strong> In the event of a merger or acquisition, your information may be transferred to the new entity.</p>
+    </div>
+
+    <div class="content-box">
+      <h2>5. Data Security</h2>
+      <p>We implement industry-standard security measures to protect your information:</p>
+      <ul class="benefits-list">
+        <li><i class="fas fa-shield-alt"></i> Encryption of sensitive data in transit and at rest</li>
+        <li><i class="fas fa-shield-alt"></i> Secure authentication systems</li>
+        <li><i class="fas fa-shield-alt"></i> Regular security audits and updates</li>
+        <li><i class="fas fa-shield-alt"></i> Limited access to personal information</li>
+        <li><i class="fas fa-shield-alt"></i> Secure payment processing through certified providers</li>
+      </ul>
+      <p>However, no method of transmission over the internet is 100% secure. We cannot guarantee absolute security.</p>
+    </div>
+
+    <div class="content-box">
+      <h2>6. Cookies and Tracking Technologies</h2>
+      <p>We use cookies and similar technologies to:</p>
+      <ul class="benefits-list">
+        <li><i class="fas fa-cookie"></i> Remember your preferences and settings</li>
+        <li><i class="fas fa-cookie"></i> Analyze site traffic and usage patterns</li>
+        <li><i class="fas fa-cookie"></i> Provide personalized content and recommendations</li>
+        <li><i class="fas fa-cookie"></i> Improve platform functionality</li>
+      </ul>
+      <p>You can control cookies through your browser settings, but disabling them may affect platform functionality.</p>
+    </div>
+
+    <div class="content-box">
+      <h2>7. Your Privacy Rights</h2>
+      <p>You have the right to:</p>
+      <ul class="benefits-list">
+        <li><i class="fas fa-user-check"></i> Access your personal information</li>
+        <li><i class="fas fa-user-check"></i> Correct inaccurate data</li>
+        <li><i class="fas fa-user-check"></i> Request deletion of your data</li>
+        <li><i class="fas fa-user-check"></i> Opt-out of marketing communications</li>
+        <li><i class="fas fa-user-check"></i> Export your data</li>
+        <li><i class="fas fa-user-check"></i> Withdraw consent for data processing</li>
+      </ul>
+      <p>To exercise these rights, contact us at support@earnify.com</p>
+    </div>
+
+    <div class="content-box">
+      <h2>8. Children's Privacy</h2>
+      <p>Our services are not intended for children under 13. We do not knowingly collect personal information from children. If you believe we have collected information from a child, please contact us immediately.</p>
+    </div>
+
+    <div class="content-box">
+      <h2>9. Third-Party Links</h2>
+      <p>Our platform may contain links to third-party websites. We are not responsible for the privacy practices of these external sites. We encourage you to review their privacy policies.</p>
+    </div>
+
+    <div class="content-box">
+      <h2>10. Data Retention</h2>
+      <p>We retain your personal information for as long as necessary to provide our services and comply with legal obligations. When data is no longer needed, we securely delete or anonymize it.</p>
+    </div>
+
+    <div class="content-box">
+      <h2>11. International Data Transfers</h2>
+      <p>Your information may be transferred to and processed in countries other than your own. We ensure appropriate safeguards are in place to protect your data in accordance with this policy.</p>
+    </div>
+
+    <div class="content-box">
+      <h2>12. Changes to This Policy</h2>
+      <p>We may update this Privacy Policy periodically. We will notify you of significant changes via email or platform notification. Your continued use of our services after changes constitutes acceptance of the updated policy.</p>
+    </div>
+
+    <div class="content-box">
+      <h2>13. Contact Us</h2>
+      <p>If you have questions or concerns about this Privacy Policy or our data practices, please contact us:</p>
+      <p>📧 Email: support@earnify.com</p>
+      <p>📞 Phone: +11 60464 53263</p>
+    </div>
+  `;
+}

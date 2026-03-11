@@ -424,3 +424,52 @@ async function handleEmailVerification() {
 
 // Handle email verification from URL
 handleEmailVerification();
+
+
+// Mobile Menu Toggle Function
+function toggleMobileMenu() {
+  const sidebar = document.getElementById('mobileSidebar');
+  const overlay = document.getElementById('mobileSidebarOverlay');
+  const menuBtn = document.querySelector('.mobile-menu-btn');
+  const body = document.body;
+  
+  sidebar.classList.toggle('active');
+  overlay.classList.toggle('active');
+  menuBtn.classList.toggle('active');
+  body.classList.toggle('sidebar-open');
+  
+  // Update mobile user menu visibility
+  updateMobileUserMenu();
+}
+
+function updateMobileUserMenu() {
+  const mobileLoginBtn = document.getElementById('mobileLoginBtn');
+  const mobileSignupBtn = document.getElementById('mobileSignupBtn');
+  const mobileUserMenu = document.getElementById('mobileUserMenu');
+  const mobileUserName = document.getElementById('mobileUserName');
+  const mobileUserEmail = document.getElementById('mobileUserEmail');
+  
+  if (isLoggedIn) {
+    if (mobileLoginBtn) mobileLoginBtn.style.display = 'none';
+    if (mobileSignupBtn) mobileSignupBtn.style.display = 'none';
+    if (mobileUserMenu) mobileUserMenu.style.display = 'block';
+    
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    const displayName = currentUser.user_metadata?.name || currentUser.email?.split('@')[0] || 'User';
+    const email = currentUser.email || '';
+    
+    if (mobileUserName) mobileUserName.textContent = displayName;
+    if (mobileUserEmail) mobileUserEmail.textContent = email;
+  } else {
+    if (mobileLoginBtn) mobileLoginBtn.style.display = 'block';
+    if (mobileSignupBtn) mobileSignupBtn.style.display = 'block';
+    if (mobileUserMenu) mobileUserMenu.style.display = 'none';
+  }
+}
+
+// Update mobile menu on login/logout
+const originalUpdateUI = updateUI;
+updateUI = function() {
+  originalUpdateUI();
+  updateMobileUserMenu();
+};

@@ -115,6 +115,9 @@ function exportData() {
 }
 
 async function loadPurchaseStatistics() {
+  const statsOverview = document.getElementById('statsOverview');
+  const tbody = document.getElementById('purchaseTableBody');
+  
   try {
     const res = await fetch('http://localhost:5000/api/statistics/purchases');
     
@@ -125,7 +128,6 @@ async function loadPurchaseStatistics() {
     const data = await res.json();
     
     // Update stats cards
-    const statsOverview = document.getElementById('statsOverview');
     statsOverview.innerHTML = `
       <div class="stat-card">
         <div class="stat-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
@@ -159,7 +161,6 @@ async function loadPurchaseStatistics() {
       </div>
     `;
     
-    const tbody = document.getElementById('purchaseTableBody');
     if (!data.userStats || data.userStats.length === 0) {
       tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 40px; color: #666;">No purchase data available</td></tr>';
       return;
@@ -175,7 +176,6 @@ async function loadPurchaseStatistics() {
     `).join('');
   } catch (error) {
     console.error('Error loading purchase statistics:', error);
-    const statsOverview = document.getElementById('statsOverview');
     statsOverview.innerHTML = `
       <div class="stat-card">
         <div class="stat-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
@@ -208,7 +208,6 @@ async function loadPurchaseStatistics() {
         </div>
       </div>
     `;
-    const tbody = document.getElementById('purchaseTableBody');
     tbody.innerHTML = `<tr><td colspan="4" style="text-align: center; padding: 40px; color: #ef4444;">
       ⚠️ ${error.message}<br><br>
       <small>Make sure to access via: <strong>http://localhost:5000/admin/statistics.html</strong></small>

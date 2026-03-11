@@ -2179,6 +2179,11 @@ body.light-mode #viewContent span {
 
 
 /* Statistics Page Styles */
+.stats-container {
+  width: 100%;
+  max-width: 100%;
+}
+
 .page-header {
   text-align: center;
   margin-bottom: 40px;
@@ -3110,4 +3115,35 @@ body.light-mode #viewContent span {
   background: #e2e8f0;
   border-radius: 4px;
   margin: 0 auto;
+}
+
+/* Fix Shimmer Stat Card Layout */
+.stats-overview .shimmer-stat-card {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.stats-overview .shimmer-stat-icon {
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.shimmer-stat-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.stats-overview .shimmer-stat-title {
+  margin: 0;
+}
+
+.stats-overview .shimmer-stat-number {
+  margin: 0;
+}
+
+.stats-overview .shimmer-stat-label {
+  margin: 0;
 }

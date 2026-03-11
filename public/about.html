@@ -11,7 +11,14 @@
 <body>
   <nav class="navbar">
     <div class="container">
-      <a href="index.html" style="text-decoration: none; color: inherit;"><h1 class="logo">💰 Earnify</h1></a>
+      <div class="nav-header">
+        <a href="index.html" style="text-decoration: none; color: inherit;"><h1 class="logo">💰 Earnify</h1></a>
+        <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+          <span class="hamburger"></span>
+          <span class="hamburger"></span>
+          <span class="hamburger"></span>
+        </button>
+      </div>
       <div class="nav-links">
         <a href="index.html">Home</a>
         <a href="about.html">About</a>
@@ -19,6 +26,25 @@
         <a href="dashboard.html">Dashboard</a>
       </div>
     </div>
+    
+    <!-- Mobile Sidebar -->
+    <div class="mobile-sidebar" id="mobileSidebar">
+      <div class="mobile-sidebar-header">
+        <h2>💰 Earnify</h2>
+        <button class="close-sidebar" onclick="toggleMobileMenu()">&times;</button>
+      </div>
+      <div class="mobile-sidebar-content">
+        <a href="index.html" onclick="toggleMobileMenu()">🏠 Home</a>
+        <a href="about.html" onclick="toggleMobileMenu()">ℹ️ About</a>
+        <a href="contact.html" onclick="toggleMobileMenu()">📞 Contact</a>
+        <a href="index.html#resources" onclick="toggleMobileMenu()">📚 Resources</a>
+        <a href="dashboard.html" onclick="toggleMobileMenu()">📊 Dashboard</a>
+        <a href="terms.html" onclick="toggleMobileMenu()">📜 Terms</a>
+        <a href="privacy.html" onclick="toggleMobileMenu()">🔒 Privacy</a>
+        <a href="payment.html" onclick="toggleMobileMenu()">💳 Payment</a>
+      </div>
+    </div>
+    <div class="mobile-sidebar-overlay" id="mobileSidebarOverlay" onclick="toggleMobileMenu()"></div>
   </nav>
 
   <section class="page-hero">
@@ -30,59 +56,19 @@
 
   <section class="page-content">
     <div class="container">
-      <div class="content-box">
-        <h2>Who We Are</h2>
-        <p>Earnify is a premier digital marketplace dedicated to empowering learners, students, and professionals with high-quality educational resources and services. Founded with the vision of making premium learning materials accessible to everyone, we bridge the gap between knowledge seekers and content creators.</p>
+      <div class="content-box" id="contentBox1">
       </div>
 
-      <div class="content-box">
-        <h2>Our Mission</h2>
-        <p>To democratize education by providing a platform where quality study materials, templates, and professional services are easily accessible. We believe that everyone deserves access to premium educational resources that can help them achieve their academic and professional goals.</p>
+      <div class="content-box" id="contentBox2">
       </div>
 
-      <div class="content-box">
-        <h2>What We Offer</h2>
-        <div class="features-grid-2">
-          <div class="feature-item">
-            <i class="fas fa-file-pdf"></i>
-            <h3>PDF Notes & Study Materials</h3>
-            <p>Comprehensive study guides, lecture notes, and reference materials across various subjects.</p>
-          </div>
-          <div class="feature-item">
-            <i class="fas fa-file-excel"></i>
-            <h3>Excel Templates</h3>
-            <p>Professional spreadsheet templates for business, finance, and academic purposes.</p>
-          </div>
-          <div class="feature-item">
-            <i class="fas fa-graduation-cap"></i>
-            <h3>Exam Preparation</h3>
-            <p>Practice tests, question banks, and exam strategies to help you succeed.</p>
-          </div>
-          <div class="feature-item">
-            <i class="fas fa-briefcase"></i>
-            <h3>Professional Services</h3>
-            <p>Freelance services including tutoring, consulting, and project assistance.</p>
-          </div>
-        </div>
+      <div class="content-box" id="contentBox3">
       </div>
 
-      <div class="content-box">
-        <h2>Why Choose Earnify?</h2>
-        <ul class="benefits-list">
-          <li><i class="fas fa-check-circle"></i> Curated high-quality resources from verified creators</li>
-          <li><i class="fas fa-check-circle"></i> Secure payment processing and instant access</li>
-          <li><i class="fas fa-check-circle"></i> Affordable pricing for students and professionals</li>
-          <li><i class="fas fa-check-circle"></i> Regular updates and new content additions</li>
-          <li><i class="fas fa-check-circle"></i> Dedicated customer support</li>
-        </ul>
+      <div class="content-box" id="contentBox4">
       </div>
 
-      <div class="content-box">
-        <h2>Our Values</h2>
-        <p><strong>Quality:</strong> We ensure all resources meet high standards of accuracy and usefulness.</p>
-        <p><strong>Accessibility:</strong> Making education affordable and available to everyone.</p>
-        <p><strong>Trust:</strong> Building a secure and reliable platform for our community.</p>
-        <p><strong>Innovation:</strong> Continuously improving our platform to serve you better.</p>
+      <div class="content-box" id="contentBox5">
       </div>
     </div>
   </section>
@@ -114,5 +100,8 @@
       </div>
     </div>
   </footer>
+  
+  <script src="about.js"></script>
+  <script src="landing.js"></script>
 </body>
 </html>

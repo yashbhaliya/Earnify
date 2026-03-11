@@ -10,11 +10,19 @@
 <body>
   <nav class="navbar">
     <div class="container">
-      <a href="index.html" style="text-decoration: none; color: inherit;"><h1 class="logo">💰 Earnify</h1></a>
+      <div class="nav-header">
+        <a href="index.html" style="text-decoration: none; color: inherit;"><h1 class="logo">💰 Earnify</h1></a>
+        <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+          <span class="hamburger"></span>
+          <span class="hamburger"></span>
+          <span class="hamburger"></span>
+        </button>
+      </div>
       <div class="search-box">
         <input type="text" id="searchInput" placeholder="🔍 Search resources by title, type, description..." oninput="searchResources()">
       </div>
-      <div class="nav-links">
+      <div class="nav-links" id="navLinks">
+        <a href="index.html">Home</a>
         <a href="#resources">Resources</a>
         <a href="dashboard.html">Dashboard</a>
         <button id="loginBtn" class="admin-btn" onclick="showLoginModal()">Login</button>
@@ -37,6 +45,35 @@
         </div>
       </div>
     </div>
+    
+    <!-- Mobile Sidebar -->
+    <div class="mobile-sidebar" id="mobileSidebar">
+      <div class="mobile-sidebar-header">
+        <h2>💰 Earnify</h2>
+        <button class="close-sidebar" onclick="toggleMobileMenu()">&times;</button>
+      </div>
+      <div class="mobile-sidebar-content">
+        <a href="index.html" onclick="toggleMobileMenu()">🏠 Home</a>
+        <a href="#resources" onclick="toggleMobileMenu()">📚 Resources</a>
+        <a href="dashboard.html" onclick="toggleMobileMenu()">📊 Dashboard</a>
+        <div class="mobile-sidebar-divider"></div>
+        <button id="mobileLoginBtn" class="mobile-sidebar-btn" onclick="showLoginModal(); toggleMobileMenu();">🔐 Login</button>
+        <button id="mobileSignupBtn" class="mobile-sidebar-btn" onclick="showSignupModal(); toggleMobileMenu();">✨ Sign Up</button>
+        <div id="mobileUserMenu" class="mobile-user-section" style="display:none;">
+          <div class="mobile-user-info">
+            <div class="mobile-user-avatar">👤</div>
+            <div>
+              <div class="mobile-user-name" id="mobileUserName">User</div>
+              <div class="mobile-user-email" id="mobileUserEmail">user@email.com</div>
+            </div>
+          </div>
+          <a onclick="viewProfile(); toggleMobileMenu();">👤 View Profile</a>
+          <a href="admin/resources.html" onclick="toggleMobileMenu()">➕ Add Resources</a>
+          <a onclick="logout(); toggleMobileMenu();">🚪 Logout</a>
+        </div>
+      </div>
+    </div>
+    <div class="mobile-sidebar-overlay" id="mobileSidebarOverlay" onclick="toggleMobileMenu()"></div>
   </nav>
 
   <section class="hero">
