@@ -512,6 +512,35 @@ app.post("/api/test-payment", async (req, res) => {
   }
 });
 
+// Contact Form Submission
+app.post("/api/contact", async (req, res) => {
+  try {
+    const { name, email, subject, message } = req.body;
+    
+    if (!name || !email || !subject || !message) {
+      return res.status(400).json({ success: false, error: "All fields are required" });
+    }
+    
+    const { data, error } = await supabase
+      .from("contact_messages")
+      .insert([{ name, email, subject, message, created_at: new Date().toISOString() }])
+      .select();
+    
+    if (error) {
+      console.error('Contact message error:', error);
+      if (error.message.includes('relation "contact_messages" does not exist')) {
+        return res.status(500).json({ success: false, error: "Contact form is not configured. Please run: node create-contact-table.js" });
+      }
+      return res.status(500).json({ success: false, error: "Failed to send message. Please try again later." });
+    }
+    
+    res.json({ success: true, message: "Message sent successfully!" });
+  } catch (error) {
+    console.error('Contact submission failed:', error);
+    res.status(500).json({ success: false, error: "Failed to send message. Please try again later." });
+  }
+});
+
 // Default route - Landing page
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));

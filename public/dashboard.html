@@ -72,6 +72,36 @@
       font-weight: 700;
       font-size: 18px;
     }
+    .shimmer-card {
+      background: white;
+      border: 1px solid #e2e8f0;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+      position: relative;
+      overflow: hidden;
+    }
+    .shimmer-line {
+      height: 20px;
+      background: #e2e8f0;
+      border-radius: 4px;
+      margin: 10px 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .shimmer-line::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent);
+      animation: shimmer 1.5s infinite;
+    }
+    @keyframes shimmer {
+      100% { left: 100%; }
+    }
   </style>
 </head>
 <body>
@@ -96,6 +126,8 @@
               <div class="email" id="userEmail">user@email.com</div>
             </div>
             <a href="admin/resources.html"><span>👤</span> View Profile</a>
+            <a href="admin/resources.html"><span>➕</span> Add Resources</a>
+
             <a onclick="logout()"><span>🚪</span> Logout</a>
           </div>
         </div>
@@ -109,6 +141,34 @@
       <div id="purchases"></div>
     </div>
   </div>
+
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h3 class="footer-logo">💰 Earnify</h3>
+          <p class="footer-desc">Your trusted learning marketplace for premium study materials, templates, and professional services.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Quick Links</h4>
+          <ul class="footer-links">
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="terms.html">Terms & Conditions</a></li>
+            <li><a href="privacy.html">Privacy Policy</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Contact Info</h4>
+          <p class="footer-contact">📧 support@earnify.com</p>
+          <p class="footer-contact">📞 +11 60464 53263</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2024 Earnify. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
@@ -129,6 +189,11 @@
     let allPurchases = [];
 
     async function loadPurchases() {
+      document.getElementById('purchases').innerHTML = `
+        <div class="shimmer-card"><div class="shimmer-line" style="width:60%"></div><div class="shimmer-line"></div><div class="shimmer-line" style="width:80%"></div><div class="shimmer-line" style="width:70%"></div></div>
+        <div class="shimmer-card"><div class="shimmer-line" style="width:60%"></div><div class="shimmer-line"></div><div class="shimmer-line" style="width:80%"></div><div class="shimmer-line" style="width:70%"></div></div>
+      `;
+      
       try {
         const response = await fetch(`http://localhost:5000/api/payments/${currentUser.id}`);
         

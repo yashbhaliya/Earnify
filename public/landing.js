@@ -196,6 +196,23 @@ function viewProfile() {
 }
 
 async function loadResources() {
+  const grid = document.getElementById('resourcesGrid');
+  
+  // Show shimmer loading cards
+  if (grid) {
+    grid.innerHTML = Array(6).fill(0).map(() => `
+      <div class="shimmer-card">
+        <div class="shimmer shimmer-icon"></div>
+        <div class="shimmer shimmer-type"></div>
+        <div class="shimmer shimmer-title"></div>
+        <div class="shimmer shimmer-description"></div>
+        <div class="shimmer shimmer-description"></div>
+        <div class="shimmer shimmer-price"></div>
+        <div class="shimmer shimmer-button"></div>
+      </div>
+    `).join('');
+  }
+  
   try {
     const res = await fetch(API);
     allResources = await res.json();

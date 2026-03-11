@@ -2,24 +2,186 @@ let currentResource = null;
 let isLoggedIn = false;
 let currentUser = null;
 
+document.addEventListener('DOMContentLoaded', () => {
+  checkLoginStatus();
+  loadResourceDetails();
+  loadSiteSettings();
+});
+
+function loadSiteSettings() {
+  const siteSettings = JSON.parse(localStorage.getItem('siteSettings') || '{}');
+  const logoElement = document.querySelector('.logo');
+  if (logoElement && siteSettings.siteName) {
+    logoElement.textContent = siteSettings.siteLogo || siteSettings.siteName;
+  }
+  if (siteSettings.siteName) {
+    document.title = siteSettings.siteName + ' - Resource Details';
+  }
+}
+
 function checkLoginStatus() {
-  isLoggedIn = localStorage.getItem('userLoggedIn') === 'true';
+  isLoggedIn = localStorage.getItem('userLoggedIn') === 'true' || localStorage.getItem('adminToken') !== null;
   const userStr = localStorage.getItem('currentUser');
   currentUser = userStr ? JSON.parse(userStr) : null;
   updateUI();
 }
 
 function updateUI() {
+  const loginBtn = document.getElementById('loginBtn');
+  const signupBtn = document.getElementById('signupBtn');
+  const userMenu = document.getElementById('userMenu');
+  const userName = document.getElementById('userName');
+  const userDisplayName = document.getElementById('userDisplayName');
+  const userEmail = document.getElementById('userEmail');
+  
   if (isLoggedIn) {
-    document.getElementById('logoutBtn').style.display = 'inline-block';
-    document.getElementById('dashboardLink').style.display = 'inline-block';
+    if (loginBtn) loginBtn.style.display = 'none';
+    if (signupBtn) signupBtn.style.display = 'none';
+    if (userMenu) userMenu.style.display = 'flex';
+    
+    const displayName = currentUser?.user_metadata?.name || currentUser?.email?.split('@')[0] || 'User';
+    const email = currentUser?.email || '';
+    if (userName) userName.textContent = displayName;
+    if (userDisplayName) userDisplayName.textContent = displayName;
+    if (userEmail) userEmail.textContent = email;
+  } else {
+    if (loginBtn) loginBtn.style.display = 'inline-block';
+    if (signupBtn) signupBtn.style.display = 'inline-block';
+    if (userMenu) userMenu.style.display = 'none';
   }
 }
 
-function logout() {
+function toggleUserDropdown() {
+  const dropdown = document.getElementById('userDropdown');
+  dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+}
+
+document.addEventListener('click', (e) => {
+  const userMenu = document.getElementById('userMenu');
+  const dropdown = document.getElementById('userDropdown');
+  if (userMenu && dropdown && !userMenu.contains(e.target)) {
+    dropdown.style.display = 'none';
+  }
+});
+
+function showLoginModal() {
+  document.getElementById('loginModal').style.display = 'flex';
+}
+
+function closeLoginModal() {
+  document.getElementById('loginModal').style.display = 'none';
+}
+
+function showSignupModal() {
+  document.getElementById('signupModal').style.display = 'flex';
+}
+
+function closeSignupModal() {
+  document.getElementById('signupModal').style.display = 'none';
+}
+
+function switchToSignup() {
+  closeLoginModal();
+  showSignupModal();
+}
+
+function switchToLogin() {
+  closeSignupModal();
+  showLoginModal();
+}
+
+async function handleLogin(e) {
+  e.preventDefault();
+  const email = document.getElementById('loginEmail').value;
+  const password = document.getElementById('loginPassword').value;
+  
+  try {
+    const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+    
+    if (error) {
+      alert(error.message);
+      return;
+    }
+    
+    if (!data.user.email_confirmed_at) {
+      alert('Please verify your email before logging in!');
+      await supabaseClient.auth.signOut();
+      return;
+    }
+    
+    localStorage.setItem('userLoggedIn', 'true');
+    localStorage.setItem('currentUser', JSON.stringify(data.user));
+    localStorage.setItem('adminToken', data.session.access_token);
+    isLoggedIn = true;
+    currentUser = data.user;
+    closeLoginModal();
+    updateUI();
+    alert('Login successful!');
+    loadResourceDetails();
+  } catch (error) {
+    console.error('Login error:', error);
+    alert('Login failed: ' + error.message);
+  }
+}
+
+async function handleSignup(e) {
+  e.preventDefault();
+  const name = document.getElementById('signupName').value;
+  const email = document.getElementById('signupEmail').value;
+  const password = document.getElementById('signupPassword').value;
+  const confirmPassword = document.getElementById('signupConfirmPassword').value;
+  
+  if (password !== confirmPassword) {
+    alert('Passwords do not match!');
+    return;
+  }
+  
+  if (password.length < 6) {
+    alert('Password must be at least 6 characters long!');
+    return;
+  }
+  
+  try {
+    const { data, error } = await supabaseClient.auth.signUp({
+      email,
+      password,
+      options: {
+        data: { name },
+        emailRedirectTo: window.location.origin + '/'
+      }
+    });
+    
+    if (error) {
+      if (error.message.includes('confirmation email')) {
+        alert('SMTP not configured. Please contact admin or disable email verification in Supabase settings.');
+      } else {
+        alert(error.message);
+      }
+      throw error;
+    }
+    
+    closeSignupModal();
+    alert('Verification email sent! Please check your inbox and verify your email before logging in.');
+  } catch (error) {
+    console.error('Signup error:', error);
+  }
+}
+
+async function logout() {
+  await supabaseClient.auth.signOut();
   localStorage.removeItem('userLoggedIn');
   localStorage.removeItem('currentUser');
-  window.location.href = '/';
+  localStorage.removeItem('adminToken');
+  isLoggedIn = false;
+  currentUser = null;
+  updateUI();
+  window.location.href = 'index.html';
+}
+
+function viewProfile() {
+  const dropdown = document.getElementById('userDropdown');
+  if (dropdown) dropdown.style.display = 'none';
+  window.location.href = 'admin/resources.html';
 }
 
 async function loadResourceDetails() {
@@ -115,7 +277,7 @@ function displayResourceDetails(isPurchased = false) {
 async function handlePurchase() {
   if (!isLoggedIn) {
     alert('Please login to purchase');
-    window.location.href = '/#resources';
+    showLoginModal();
     return;
   }
   
@@ -206,5 +368,3 @@ async function verifyPayment(response) {
   }
 }
 
-checkLoginStatus();
-loadResourceDetails();

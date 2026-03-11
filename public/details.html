@@ -4,16 +4,37 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Resource Details - Earnify</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="details.css">
 </head>
 <body>
   <nav class="navbar">
     <div class="container">
       <a href="index.html" style="text-decoration: none; color: inherit;"><h1 class="logo">💰 Earnify</h1></a>
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="🔍 Search resources...">
+      </div>
       <div class="nav-links">
-        <a href="index.html">Home</a>
-        <a href="dashboard.html" id="dashboardLink">Dashboard</a>
-        <button id="logoutBtn" class="admin-btn" onclick="logout()" style="display:none;">Logout</button>
+        <a href="index.html#resources">Resources</a>
+        <a href="dashboard.html">Dashboard</a>
+        <button id="loginBtn" class="admin-btn" onclick="showLoginModal()">Login</button>
+        <button id="signupBtn" class="admin-btn" onclick="showSignupModal()">Sign Up</button>
+        <div id="userMenu" class="user-menu" style="display:none;">
+          <button class="user-menu-btn" onclick="toggleUserDropdown()">
+            <span class="user-avatar">👤</span>
+            <span id="userName">User</span>
+            <span style="font-size:10px;">▼</span>
+          </button>
+          <div id="userDropdown" class="user-dropdown">
+            <div class="user-dropdown-header">
+              <div class="name" id="userDisplayName">User</div>
+              <div class="email" id="userEmail">user@email.com</div>
+            </div>
+            <a onclick="viewProfile()"><span>👤</span> View Profile</a>
+            <a href="admin/resources.html"><span>➕</span> Add Resources</a>
+            <a onclick="logout()"><span>🚪</span> Logout</a>
+          </div>
+        </div>
       </div>
     </div>
   </nav>
@@ -34,6 +55,14 @@
     </div>
   </div>
 
+
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const supabaseUrl = 'https://emnrgsgerfjvndexomro.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVtbnJnc2dlcmZqdm5kZXhvbXJvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI0MjAyMTAsImV4cCI6MjA4Nzk5NjIxMH0.uXr8lipxLbB4D_5JwQkpLzc-HudQw23tOFBfV4C6hqY';
+    const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+  </script>
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   <script src="details.js"></script>
 </body>
