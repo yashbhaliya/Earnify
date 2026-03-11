@@ -247,6 +247,46 @@ async function loadResources(type) {
     return;
   }
   
+  // Show shimmer loading
+  grid.innerHTML = `
+    <div class="shimmer-card">
+      <div class="shimmer-icon"></div>
+      <div class="shimmer-title"></div>
+      <div class="shimmer-description"></div>
+      <div class="shimmer-description"></div>
+      <div class="shimmer-price"></div>
+      <div class="shimmer-buttons">
+        <div class="shimmer-button"></div>
+        <div class="shimmer-button"></div>
+        <div class="shimmer-button"></div>
+      </div>
+    </div>
+    <div class="shimmer-card">
+      <div class="shimmer-icon"></div>
+      <div class="shimmer-title"></div>
+      <div class="shimmer-description"></div>
+      <div class="shimmer-description"></div>
+      <div class="shimmer-price"></div>
+      <div class="shimmer-buttons">
+        <div class="shimmer-button"></div>
+        <div class="shimmer-button"></div>
+        <div class="shimmer-button"></div>
+      </div>
+    </div>
+    <div class="shimmer-card">
+      <div class="shimmer-icon"></div>
+      <div class="shimmer-title"></div>
+      <div class="shimmer-description"></div>
+      <div class="shimmer-description"></div>
+      <div class="shimmer-price"></div>
+      <div class="shimmer-buttons">
+        <div class="shimmer-button"></div>
+        <div class="shimmer-button"></div>
+        <div class="shimmer-button"></div>
+      </div>
+    </div>
+  `;
+  
   try {
     const res = await fetch(RESOURCE_API, {
       method: 'GET',
