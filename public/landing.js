@@ -304,6 +304,13 @@ function renderPagination(totalPages) {
     document.querySelector('.resources-section .container').appendChild(paginationDiv);
   }
   
+  // Only show pagination if there are more than 12 resources (more than 1 page)
+  if (totalPages <= 1) {
+    paginationDiv.style.display = 'none';
+    return;
+  }
+  
+  paginationDiv.style.display = 'flex';
   let html = '<div class="pagination-buttons">';
   html += `<button onclick="changePage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}>← Prev</button>`;
   
