@@ -279,15 +279,15 @@ function displayResources(resources, userPurchases = []) {
     const icon = icons[resource.type] || '📦';
     
     return `
-      <div class="resource-card">
+      <div class="resource-card" onclick="viewDetails(${resource.id})" style="cursor: pointer;">
         <div class="resource-icon">${icon}</div>
         <h3>${resource.title}</h3>
         <p>${resource.description}</p>
         <div class="resource-price">₹${resource.price}</div>
         <div class="resource-type">${resource.type.toUpperCase()}</div>
         ${isPurchased ? 
-          '<button class="btn-purchased" disabled>✓ Purchased</button>' :
-          `<button class="btn-buy" onclick="buyResource(${resource.id})">Buy Now</button>`
+          '<button class="btn-purchased" disabled onclick="event.stopPropagation()">✓ Purchased</button>' :
+          `<button class="btn-buy" onclick="event.stopPropagation(); buyResource(${resource.id})">Buy Now</button>`
         }
       </div>
     `;

@@ -76,6 +76,12 @@
 </div>
 
 <div class="main">
+  <div class="page-header">
+    <div class="header-content">
+      <h1> My Resources</h1>
+      <p class="subtitle">Manage your PDF notes, Excel templates, Exam materials, and Freelance services</p>
+    </div>
+  </div>
 
   <div class="resource-tabs">
     <button class="tab-btn active" onclick="showTab('all')">📋 All Resources</button>
@@ -86,70 +92,109 @@
   </div>
 
   <div id="all" class="tab-content active">
-    <div class="resource-header">
-      <h2>All Resources</h2>
-    </div>
-    <div class="resource-grid" id="allGrid">
-      <div class="empty-state">
-        <div class="empty-icon">📦</div>
-        <h3>No Resources Yet</h3>
-        <p>Add your first resource to get started!</p>
+    <div class="resource-section">
+      <div class="section-header">
+        <div class="section-title">
+          <h2>🎯 All Resources</h2>
+          <span class="resource-count" id="allCount">0 items</span>
+        </div>
+        <div class="add-buttons-group">
+          <button class="add-btn pdf-btn" onclick="showAddModal('pdf')">
+            <span class="btn-icon">📄</span>
+            <span class="btn-text">Add PDF</span>
+          </button>
+          <button class="add-btn excel-btn" onclick="showAddModal('excel')">
+            <span class="btn-icon">📊</span>
+            <span class="btn-text">Add Excel</span>
+          </button>
+          <button class="add-btn exam-btn" onclick="showAddModal('exam')">
+            <span class="btn-icon">📝</span>
+            <span class="btn-text">Add Exam</span>
+          </button>
+          <button class="add-btn freelance-btn" onclick="showAddModal('freelance')">
+            <span class="btn-icon">💼</span>
+            <span class="btn-text">Add Service</span>
+          </button>
+        </div>
+      </div>
+      <div class="resource-grid" id="allGrid">
+        <div class="empty-state">
+          <div class="empty-icon">📦</div>
+          <h3>No Resources Yet</h3>
+          <p>Click the buttons above to add your first resource!</p>
+        </div>
       </div>
     </div>
   </div>
 
   <div id="pdf" class="tab-content">
-    <div class="resource-header">
-      <h2>PDF Notes</h2>
-      <button class="add-btn" onclick="showAddModal('pdf')">+ Add PDF</button>
-    </div>
-    <div class="resource-grid" id="pdfGrid">
-      <div class="empty-state">
-        <div class="empty-icon">📄</div>
-        <h3>No PDF Notes</h3>
-        <p>Add your first PDF note!</p>
+    <div class="resource-section">
+      <div class="section-header">
+        <div class="section-title">
+          <h2>📄 PDF Notes</h2>
+          <span class="resource-count" id="pdfCount">0 items</span>
+        </div>
+      </div>
+      <div class="resource-grid" id="pdfGrid">
+        <div class="empty-state">
+          <div class="empty-icon">📄</div>
+          <h3>No PDF Notes</h3>
+          <p>Go to "All Resources" tab to add PDF notes</p>
+        </div>
       </div>
     </div>
   </div>
 
   <div id="excel" class="tab-content">
-    <div class="resource-header">
-      <h2>Excel Templates</h2>
-      <button class="add-btn" onclick="showAddModal('excel')">+ Add Template</button>
-    </div>
-    <div class="resource-grid" id="excelGrid">
-      <div class="empty-state">
-        <div class="empty-icon">📊</div>
-        <h3>No Excel Templates</h3>
-        <p>Add your first template!</p>
+    <div class="resource-section">
+      <div class="section-header">
+        <div class="section-title">
+          <h2>📊 Excel Templates</h2>
+          <span class="resource-count" id="excelCount">0 items</span>
+        </div>
+      </div>
+      <div class="resource-grid" id="excelGrid">
+        <div class="empty-state">
+          <div class="empty-icon">📊</div>
+          <h3>No Excel Templates</h3>
+          <p>Go to "All Resources" tab to add Excel templates</p>
+        </div>
       </div>
     </div>
   </div>
 
   <div id="exam" class="tab-content">
-    <div class="resource-header">
-      <h2>Exam Preparation Materials</h2>
-      <button class="add-btn" onclick="showAddModal('exam')">+ Add Material</button>
-    </div>
-    <div class="resource-grid" id="examGrid">
-      <div class="empty-state">
-        <div class="empty-icon">📝</div>
-        <h3>No Exam Materials</h3>
-        <p>Add your first exam material!</p>
+    <div class="resource-section">
+      <div class="section-header">
+        <div class="section-title">
+          <h2>📝 Exam Materials</h2>
+          <span class="resource-count" id="examCount">0 items</span>
+        </div>
+      </div>
+      <div class="resource-grid" id="examGrid">
+        <div class="empty-state">
+          <div class="empty-icon">📝</div>
+          <h3>No Exam Materials</h3>
+          <p>Go to "All Resources" tab to add exam materials</p>
+        </div>
       </div>
     </div>
   </div>
 
   <div id="freelance" class="tab-content">
-    <div class="resource-header">
-      <h2>Freelance Services</h2>
-      <button class="add-btn" onclick="showAddModal('freelance')">+ Add Service</button>
-    </div>
-    <div class="resource-grid" id="freelanceGrid">
-      <div class="empty-state">
-        <div class="empty-icon">💼</div>
-        <h3>No Freelance Services</h3>
-        <p>Add your first service!</p>
+    <div class="resource-section">
+      <div class="section-header">
+        <div class="section-title">
+          <h2>💼 Freelance Services</h2>
+          <span class="resource-count" id="freelanceCount">0 items</span>
+        </div>
+      </div>
+      <div class="resource-grid" id="freelanceGrid">
+        <div class="empty-state">
+          <div class="empty-icon">💼</div>
+          <h3>No Freelance Services</h3>
+          <p>Go to "All Resources" tab to add freelance services</p>
+        </div>
       </div>
     </div>
   </div>

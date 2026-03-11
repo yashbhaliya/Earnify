@@ -191,13 +191,19 @@ async function loadResources(type) {
       resources = resources.filter(r => r.type === type);
     }
     
+    // Update resource count
+    const countElement = document.getElementById(type + 'Count');
+    if (countElement) {
+      countElement.textContent = `${resources.length} item${resources.length !== 1 ? 's' : ''}`;
+    }
+    
     if (resources.length === 0) {
       const emptyStates = {
-        all: { icon: '📦', title: 'No Resources Yet', text: 'Add your first resource to get started!' },
-        pdf: { icon: '📄', title: 'No PDF Notes', text: 'Add your first PDF note!' },
-        excel: { icon: '📊', title: 'No Excel Templates', text: 'Add your first template!' },
-        exam: { icon: '📝', title: 'No Exam Materials', text: 'Add your first exam material!' },
-        freelance: { icon: '💼', title: 'No Freelance Services', text: 'Add your first service!' }
+        all: { icon: '📦', title: 'No Resources Yet', text: 'Click the buttons above to add your first resource!' },
+        pdf: { icon: '📄', title: 'No PDF Notes', text: 'Go to "All Resources" tab to add PDF notes' },
+        excel: { icon: '📊', title: 'No Excel Templates', text: 'Go to "All Resources" tab to add Excel templates' },
+        exam: { icon: '📝', title: 'No Exam Materials', text: 'Go to "All Resources" tab to add exam materials' },
+        freelance: { icon: '💼', title: 'No Freelance Services', text: 'Go to "All Resources" tab to add freelance services' }
       };
       const state = emptyStates[type];
       grid.innerHTML = `

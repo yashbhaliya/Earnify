@@ -6,86 +6,292 @@
   <link rel="stylesheet" href="light-theme.css">
   <style>
     .profile-container {
-      max-width: 800px;
+      max-width: 1000px;
       margin: 0 auto;
     }
-    .profile-header {
-      background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    
+    .profile-page-header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       padding: 40px;
-      border-radius: 15px;
-      text-align: center;
+      border-radius: 20px;
       margin-bottom: 30px;
-      box-shadow: 0 10px 40px rgba(59, 130, 246, 0.3);
+      box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3);
+      text-align: center;
     }
-    .profile-avatar-large {
-      width: 100px;
-      height: 100px;
+    
+    .profile-page-header h1 {
+      color: white;
+      font-size: 36px;
+      margin-bottom: 10px;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+    
+    .profile-page-header p {
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 16px;
+    }
+    
+    .profile-grid {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 30px;
+      margin-bottom: 30px;
+    }
+    
+    .profile-card {
       background: white;
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+      border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+    
+    .profile-avatar-section {
+      text-align: center;
+    }
+    
+    .profile-avatar-large {
+      width: 120px;
+      height: 120px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       border-radius: 50%;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      font-size: 48px;
+      font-size: 56px;
       margin-bottom: 20px;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
-    }
-    .profile-name {
+      box-shadow: 0 8px 30px rgba(102, 126, 234, 0.3);
       color: white;
-      font-size: 28px;
+    }
+    
+    .profile-name {
+      color: #1e293b;
+      font-size: 24px;
       font-weight: 700;
       margin-bottom: 8px;
     }
+    
     .profile-email {
-      color: rgba(255, 255, 255, 0.9);
-      font-size: 16px;
+      color: #64748b;
+      font-size: 14px;
+      margin-bottom: 20px;
     }
-    .profile-details {
-      background: #1e293b;
-      padding: 30px;
-      border-radius: 15px;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    
+    .profile-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+      color: #3b82f6;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
+    
     .profile-details h2 {
-      color: #10b981;
+      color: #1e293b;
       margin-bottom: 25px;
-      font-size: 22px;
-      border-bottom: 2px solid #334155;
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
       padding-bottom: 15px;
+      border-bottom: 2px solid #f1f5f9;
     }
+    
     .detail-row {
       display: flex;
       justify-content: space-between;
-      padding: 15px 0;
-      border-bottom: 1px solid #334155;
+      align-items: center;
+      padding: 18px 0;
+      border-bottom: 1px solid #f1f5f9;
     }
+    
     .detail-row:last-child {
       border-bottom: none;
     }
+    
     .detail-label {
-      color: #000000;
+      color: #64748b;
       font-weight: 600;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
+    
     .detail-value {
-      color: #000000;
-      font-weight: 500;
+      color: #1e293b;
+      font-weight: 600;
+      font-size: 14px;
     }
-    .edit-profile-btn {
-      width: 100%;
+    
+    .profile-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin-top: 25px;
+    }
+    
+    .action-btn {
       padding: 14px;
-      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-      color: white;
       border: none;
-      border-radius: 10px;
-      font-size: 16px;
+      border-radius: 12px;
+      font-size: 14px;
       font-weight: 600;
       cursor: pointer;
-      margin-top: 20px;
       transition: all 0.3s;
-      box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
     }
-    .edit-profile-btn:hover {
+    
+    .btn-edit {
+      background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+      color: white;
+      box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+    }
+    
+    .btn-edit:hover {
       transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+      box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+    }
+    
+    .btn-logout {
+      background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+      color: white;
+      box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+    }
+    
+    .btn-logout:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+    }
+    
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    
+    .stat-card {
+      background: white;
+      border-radius: 15px;
+      padding: 25px;
+      text-align: center;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+      border: 1px solid rgba(0, 0, 0, 0.05);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    }
+    
+    .stat-icon {
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
+    
+    .stat-value {
+      font-size: 28px;
+      font-weight: 800;
+      color: #1e293b;
+      margin-bottom: 5px;
+    }
+    
+    .stat-label {
+      font-size: 12px;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-weight: 600;
+    }
+    
+    @media (max-width: 768px) {
+      .profile-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .profile-actions {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    .resource-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 15px;
+      border-bottom: 1px solid #f1f5f9;
+      transition: all 0.3s;
+    }
+    
+    .resource-item:last-child {
+      border-bottom: none;
+    }
+    
+    .resource-item:hover {
+      background: #f8fafc;
+      padding-left: 20px;
+    }
+    
+    .resource-info {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      flex: 1;
+    }
+    
+    .resource-type-icon {
+      font-size: 32px;
+    }
+    
+    .resource-details h4 {
+      color: #1e293b;
+      font-size: 16px;
+      margin-bottom: 5px;
+      font-weight: 600;
+    }
+    
+    .resource-details p {
+      color: #64748b;
+      font-size: 13px;
+      margin: 0;
+    }
+    
+    .resource-price-tag {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: white;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 14px;
+    }
+    
+    .empty-resources {
+      text-align: center;
+      padding: 40px;
+      color: #64748b;
+    }
+    
+    .empty-resources-icon {
+      font-size: 48px;
+      margin-bottom: 15px;
+      opacity: 0.5;
     }
   </style>
 </head>
@@ -114,35 +320,80 @@
 
 <div class="main">
   <div class="profile-container">
-    <div class="profile-header">
-      <div class="profile-avatar-large" id="profileAvatarLarge">👤</div>
-      <div class="profile-name" id="profileName">User Name</div>
-      <div class="profile-email" id="profileEmail">user@email.com</div>
+    <div class="profile-page-header">
+      <h1>👤 My Profile</h1>
+      <p>Manage your account information and settings</p>
     </div>
 
-    <div class="profile-details">
-      <h2>Profile Information</h2>
-      <div class="detail-row">
-        <span class="detail-label">Full Name:</span>
-        <span class="detail-value" id="detailName">-</span>
+    <div class="profile-grid">
+      <div class="profile-card profile-avatar-section">
+        <div class="profile-avatar-large" id="profileAvatarLarge">👤</div>
+        <div class="profile-name" id="profileName">User Name</div>
+        <div class="profile-email" id="profileEmail">user@email.com</div>
+        <div class="profile-badge">✨ Active Member</div>
+        
+        <div class="profile-actions">
+          <button class="action-btn btn-edit" onclick="editProfile()">
+            <span>✏️</span>
+            <span>Edit Profile</span>
+          </button>
+          <button class="action-btn btn-logout" onclick="logout()">
+            <span>🚺</span>
+            <span>Logout</span>
+          </button>
+        </div>
       </div>
-      <div class="detail-row">
-        <span class="detail-label">Email:</span>
-        <span class="detail-value" id="detailEmail">-</span>
+
+      <div class="profile-card">
+        <h2>📝 Profile Information</h2>
+        <div class="detail-row">
+          <span class="detail-label">👤 Full Name:</span>
+          <span class="detail-value" id="detailName">-</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">📧 Email:</span>
+          <span class="detail-value" id="detailEmail">-</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">🆔 User ID:</span>
+          <span class="detail-value" id="detailUserId">-</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">📅 Account Created:</span>
+          <span class="detail-value" id="detailCreated">-</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">🕑 Last Login:</span>
+          <span class="detail-value" id="detailLastLogin">-</span>
+        </div>
       </div>
-      <div class="detail-row">
-        <span class="detail-label">User ID:</span>
-        <span class="detail-value" id="detailUserId">-</span>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon">📚</div>
+        <div class="stat-value" id="totalResources">0</div>
+        <div class="stat-label">Total Resources</div>
       </div>
-      <div class="detail-row">
-        <span class="detail-label">Account Created:</span>
-        <span class="detail-value" id="detailCreated">-</span>
+      <div class="stat-card">
+        <div class="stat-icon">💰</div>
+        <div class="stat-value" id="totalEarnings">₹0</div>
+        <div class="stat-label">Total Earnings</div>
       </div>
-      <div class="detail-row">
-        <span class="detail-label">Last Login:</span>
-        <span class="detail-value" id="detailLastLogin">-</span>
+      <div class="stat-card">
+        <div class="stat-icon">👥</div>
+        <div class="stat-value" id="totalCustomers">0</div>
+        <div class="stat-label">Total Sales</div>
       </div>
-      <button class="edit-profile-btn" onclick="editProfile()">✏️ Edit Profile</button>
+    </div>
+
+    <div class="profile-card" style="margin-top: 30px;">
+      <h2>📚 My Recent Resources</h2>
+      <div id="recentResourcesList">
+        <div style="text-align: center; padding: 40px; color: #64748b;">
+          Loading resources...
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -249,6 +500,7 @@
   // Load profile on page load
   window.addEventListener('DOMContentLoaded', function() {
     loadProfile();
+    loadProfileStats();
     
     // Update sidebar profile
     const token = localStorage.getItem('adminToken');
@@ -270,6 +522,109 @@
       if (sidebarAvatar) sidebarAvatar.textContent = userName.charAt(0).toUpperCase();
     }
   });
+
+  async function loadProfileStats() {
+    try {
+      const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+      const userEmail = currentUser.email;
+      const userId = currentUser.id;
+      
+      if (!userEmail) return;
+      
+      // Load user's resources count
+      const resourcesRes = await fetch('http://localhost:5000/api/resources');
+      const allResources = await resourcesRes.json();
+      const userResources = allResources.filter(r => r.user_email === userEmail);
+      
+      document.getElementById('totalResources').textContent = userResources.length;
+      
+      // Calculate potential earnings (sum of all resource prices)
+      const potentialEarnings = userResources.reduce((sum, r) => sum + parseFloat(r.price || 0), 0);
+      
+      // Load user's actual purchases/sales
+      const statsRes = await fetch('http://localhost:5000/api/statistics/purchases');
+      const statsData = await statsRes.json();
+      
+      // Find purchases made by this user
+      const paymentsRes = await fetch(`http://localhost:5000/api/payments/${userId}`);
+      const userPayments = await paymentsRes.json();
+      
+      // Calculate actual earnings from sales
+      let actualEarnings = 0;
+      let totalSales = 0;
+      
+      if (statsData.userStats) {
+        // Count how many times this user's resources were purchased
+        const allPaymentsRes = await fetch('http://localhost:5000/api/statistics/purchases');
+        const allPaymentsData = await allPaymentsRes.json();
+        
+        // Get all payments and match with user's resources
+        statsData.userStats.forEach(stat => {
+          stat.resources.forEach(resourceTitle => {
+            const matchingResource = userResources.find(r => r.title === resourceTitle);
+            if (matchingResource) {
+              actualEarnings += parseFloat(matchingResource.price || 0);
+              totalSales++;
+            }
+          });
+        });
+      }
+      
+      // Display earnings (use actual if available, otherwise potential)
+      const displayEarnings = actualEarnings > 0 ? actualEarnings : potentialEarnings;
+      document.getElementById('totalEarnings').textContent = '₹' + displayEarnings.toFixed(0);
+      
+      // Display total sales/customers
+      document.getElementById('totalCustomers').textContent = totalSales;
+      
+      // Load recent resources
+      loadRecentResources(userResources);
+      
+    } catch (error) {
+      console.error('Error loading profile stats:', error);
+      document.getElementById('totalResources').textContent = '0';
+      document.getElementById('totalEarnings').textContent = '₹0';
+      document.getElementById('totalCustomers').textContent = '0';
+    }
+  }
+  
+  function loadRecentResources(resources) {
+    const container = document.getElementById('recentResourcesList');
+    
+    if (!resources || resources.length === 0) {
+      container.innerHTML = `
+        <div class="empty-resources">
+          <div class="empty-resources-icon">📦</div>
+          <h4>No Resources Yet</h4>
+          <p>Start adding resources to see them here</p>
+        </div>
+      `;
+      return;
+    }
+    
+    const typeIcons = {
+      pdf: '📄',
+      excel: '📊',
+      exam: '📝',
+      freelance: '💼'
+    };
+    
+    // Show last 5 resources
+    const recentResources = resources.slice(-5).reverse();
+    
+    container.innerHTML = recentResources.map(resource => `
+      <div class="resource-item">
+        <div class="resource-info">
+          <div class="resource-type-icon">${typeIcons[resource.type] || '📦'}</div>
+          <div class="resource-details">
+            <h4>${resource.title}</h4>
+            <p>${resource.description.substring(0, 60)}${resource.description.length > 60 ? '...' : ''}</p>
+          </div>
+        </div>
+        <div class="resource-price-tag">₹${resource.price}</div>
+      </div>
+    `).join('');
+  }
 
   // Close modal when clicking outside
   window.onclick = function(event) {
