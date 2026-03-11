@@ -2,6 +2,10 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }
 
 body {
@@ -290,10 +294,135 @@ body {
 }
 
 footer {
-  background: #0F172A;
+  background: linear-gradient(135deg, #0F172A 0%, #1e293b 100%);
   color: white;
+  padding: 3rem 0 1rem;
+  margin-top: 4rem;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3rem;
+  margin-bottom: 2rem;
+}
+
+.footer-col h3.footer-logo {
+  font-size: 1.8rem;
+  color: #2563EB;
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+.footer-col h4 {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  color: #60a5fa;
+  font-weight: 600;
+}
+
+.footer-desc {
+  color: #94a3b8;
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+.footer-links {
+  list-style: none;
+}
+
+.footer-links li {
+  margin-bottom: 0.7rem;
+}
+
+.footer-links a {
+  color: #cbd5e1;
+  text-decoration: none;
+  transition: all 0.3s;
+  font-size: 0.95rem;
+}
+
+.footer-links a:hover {
+  color: #60a5fa;
+  padding-left: 5px;
+}
+
+.footer-contact {
+  color: #cbd5e1;
+  margin-bottom: 0.8rem;
+  font-size: 0.95rem;
+}
+
+.social-icons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.social-icons a {
+  width: 45px;
+  height: 45px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  transition: all 0.3s;
+  text-decoration: none;
+  color: white;
+  pointer-events: none;
+  cursor: default;
+}
+
+.social-icons a:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.social-icons a:hover .fa-facebook {
+  color: #1877f2;
+  background: white;
+  border-radius: 50%;
+  padding: 10px;
+}
+
+.social-icons a:hover .fa-instagram {
+  color: #e4405f;
+  background: white;
+  border-radius: 50%;
+  padding: 10px;
+}
+
+.social-icons a:hover .fa-whatsapp {
+  color: #25d366;
+  background: white;
+  border-radius: 50%;
+  padding: 10px;
+}
+
+.footer-bottom {
   text-align: center;
-  padding: 2rem 0;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  color: #94a3b8;
+  font-size: 0.9rem;
+}
+
+.footer-bottom p {
+  margin-top: 0;
+}
+
+@media (max-width: 768px) {
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    text-align: center;
+  }
+  
+  .social-icons {
+    justify-content: center;
+  }
 }
 
 @media (max-width: 768px) {

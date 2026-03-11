@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Earnify - Your Learning Marketplace</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="landing.css">
 </head>
 <body>
@@ -15,7 +16,6 @@
       </div>
       <div class="nav-links">
         <a href="#resources">Resources</a>
-        <a href="#about">About</a>
         <a href="dashboard.html">Dashboard</a>
         <button id="loginBtn" class="admin-btn" onclick="showLoginModal()">Login</button>
         <button id="signupBtn" class="admin-btn" onclick="showSignupModal()">Sign Up</button>
@@ -62,16 +62,36 @@
     </div>
   </section>
 
-  <section id="about" class="about-section">
-    <div class="container">
-      <h2>About Earnify</h2>
-      <p>Your one-stop marketplace for quality educational resources and professional services.</p>
-    </div>
-  </section>
-
   <footer>
     <div class="container">
-      <p>&copy; 2024 Earnify. All rights reserved.</p>
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h3 class="footer-logo">💰 Earnify</h3>
+          <p class="footer-desc">Your trusted learning marketplace for premium study materials, templates, and professional services. Learn, grow, and earn with us.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Quick Links</h4>
+          <ul class="footer-links">
+            <li><a href="#about">About Us</a></li>
+            <li><a href="#terms">Terms & Conditions</a></li>
+            <li><a href="#privacy">Privacy Policy</a></li>
+            <li><a href="#contact">Contact Us</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Contact Info</h4>
+          <p class="footer-contact">📧 support@earnify.com</p>
+          <p class="footer-contact">📞 +11 60464 53263</p>
+          <div class="social-icons">
+            <a href="javascript:void(0)" title="Facebook"><i class="fab fa-facebook"></i></a>
+            <a href="javascript:void(0)" title="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="javascript:void(0)" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2024 Earnify. All rights reserved.</p>
+      </div>
     </div>
   </footer>
 
