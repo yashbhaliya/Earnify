@@ -3006,3 +3006,108 @@ body.light-mode #viewContent span {
     grid-template-columns: 1fr;
   }
 }
+
+
+/* Shimmer for Statistics Table */
+.shimmer-table-row {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer-table-row::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 150%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(102, 126, 234, 0.15) 50%,
+    transparent 100%
+  );
+  animation: shimmer 2s infinite;
+}
+
+.shimmer-table-row td {
+  padding: 20px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.shimmer-table-cell {
+  height: 16px;
+  background: #e2e8f0;
+  border-radius: 4px;
+}
+
+.shimmer-table-cell.small {
+  width: 60px;
+}
+
+.shimmer-table-cell.medium {
+  width: 100px;
+}
+
+.shimmer-table-cell.large {
+  width: 180px;
+}
+
+/* Shimmer for Stats Cards */
+.shimmer-stat-card {
+  background: white;
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.shimmer-stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 150%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(102, 126, 234, 0.2) 50%,
+    transparent 100%
+  );
+  animation: shimmer 2s infinite;
+}
+
+.shimmer-stat-icon {
+  width: 70px;
+  height: 70px;
+  background: #e2e8f0;
+  border-radius: 18px;
+  margin: 0 auto 15px;
+}
+
+.shimmer-stat-title {
+  width: 60%;
+  height: 14px;
+  background: #e2e8f0;
+  border-radius: 4px;
+  margin: 0 auto 12px;
+}
+
+.shimmer-stat-number {
+  width: 80px;
+  height: 32px;
+  background: #e2e8f0;
+  border-radius: 4px;
+  margin: 0 auto 10px;
+}
+
+.shimmer-stat-label {
+  width: 100px;
+  height: 12px;
+  background: #e2e8f0;
+  border-radius: 4px;
+  margin: 0 auto;
+}

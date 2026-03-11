@@ -216,6 +216,8 @@ async function loadPurchaseStatistics() {
   }
 }
 
+
+
 let currentType = 'all';
 
 function showTab(type) {
@@ -244,9 +246,6 @@ async function loadResources(type) {
     `;
     return;
   }
-  
-  // Show shimmer loading
-  showShimmerLoading(grid);
   
   try {
     const res = await fetch(RESOURCE_API, {
@@ -318,27 +317,6 @@ async function loadResources(type) {
     `;
   }
 }
-
-function showShimmerLoading(container) {
-  const shimmerHTML = `
-    <div class="shimmer-card">
-      <div class="shimmer-icon"></div>
-      <div class="shimmer-title"></div>
-      <div class="shimmer-description"></div>
-      <div class="shimmer-description"></div>
-      <div class="shimmer-price"></div>
-      <div class="shimmer-buttons">
-        <div class="shimmer-button"></div>
-        <div class="shimmer-button"></div>
-        <div class="shimmer-button"></div>
-      </div>
-    </div>
-  `;
-  
-  container.innerHTML = `<div class="shimmer-wrapper">${shimmerHTML.repeat(3)}</div>`;
-}
-
-
 
 function getTypeIcon(type) {
   const icons = {
