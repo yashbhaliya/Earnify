@@ -300,7 +300,7 @@
 <div class="sidebar">
   <h2>Earnify Admin</h2>
   <a href="resources.html">📚 Resources</a>
-  <a href="analytics.html">📈 Statistics</a>
+  <a href="statistics.html">📈 Statistics</a>
   <a href="profile.html" style=" border-left-color: #60a5fa; color: #60a5fa;">👤 Profile</a>
   <a href="../index.html" style="margin-top: 20px; border-top: 1px solid #ddd; padding-top: 10px;">🏠 Main Site</a>
             <a onclick="logout()"><span>🚪</span> Logout</a>
@@ -529,10 +529,18 @@
       const userEmail = currentUser.email;
       const userId = currentUser.id;
       
-      if (!userEmail) return;
+      if (!userEmail) {
+        document.getElementById('totalResources').textContent = '0';
+        document.getElementById('totalEarnings').textContent = '₹0';
+        document.getElementById('totalCustomers').textContent = '0';
+        loadRecentResources([]);
+        return;
+      }
       
       // Load user's resources count
       const resourcesRes = await fetch('http://localhost:5000/api/resources');
+      if (!resourcesRes.ok) throw new Error('Failed to fetch resources');
+      
       const allResources = await resourcesRes.json();
       const userResources = allResources.filter(r => r.user_email === userEmail);
       
@@ -542,32 +550,29 @@
       const potentialEarnings = userResources.reduce((sum, r) => sum + parseFloat(r.price || 0), 0);
       
       // Load user's actual purchases/sales
-      const statsRes = await fetch('http://localhost:5000/api/statistics/purchases');
-      const statsData = await statsRes.json();
-      
-      // Find purchases made by this user
-      const paymentsRes = await fetch(`http://localhost:5000/api/payments/${userId}`);
-      const userPayments = await paymentsRes.json();
-      
-      // Calculate actual earnings from sales
       let actualEarnings = 0;
       let totalSales = 0;
       
-      if (statsData.userStats) {
-        // Count how many times this user's resources were purchased
-        const allPaymentsRes = await fetch('http://localhost:5000/api/statistics/purchases');
-        const allPaymentsData = await allPaymentsRes.json();
-        
-        // Get all payments and match with user's resources
-        statsData.userStats.forEach(stat => {
-          stat.resources.forEach(resourceTitle => {
-            const matchingResource = userResources.find(r => r.title === resourceTitle);
-            if (matchingResource) {
-              actualEarnings += parseFloat(matchingResource.price || 0);
-              totalSales++;
-            }
-          });
-        });
+      try {
+        const statsRes = await fetch('http://localhost:5000/api/statistics/purchases');
+        if (statsRes.ok) {
+          const statsData = await statsRes.json();
+          
+          if (statsData.userStats) {
+            // Get all payments and match with user's resources
+            statsData.userStats.forEach(stat => {
+              stat.resources.forEach(resourceTitle => {
+                const matchingResource = userResources.find(r => r.title === resourceTitle);
+                if (matchingResource) {
+                  actualEarnings += parseFloat(matchingResource.price || 0);
+                  totalSales++;
+                }
+              });
+            });
+          }
+        }
+      } catch (statsError) {
+        console.log('Stats not available:', statsError.message);
       }
       
       // Display earnings (use actual if available, otherwise potential)
@@ -585,6 +590,7 @@
       document.getElementById('totalResources').textContent = '0';
       document.getElementById('totalEarnings').textContent = '₹0';
       document.getElementById('totalCustomers').textContent = '0';
+      loadRecentResources([]);
     }
   }
   

@@ -182,7 +182,17 @@ async function loadResources(type) {
   }
   
   try {
-    const res = await fetch(RESOURCE_API);
+    const res = await fetch(RESOURCE_API, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    
+    if (!res.ok) {
+      throw new Error(`Server error: ${res.status}`);
+    }
+    
     const allResources = await res.json();
     
     // Filter by user email and type
@@ -234,8 +244,9 @@ async function loadResources(type) {
     grid.innerHTML = `
       <div class="empty-state">
         <div class="empty-icon">⚠️</div>
-        <h3>Error Loading Resources</h3>
-        <p>Please try again later</p>
+        <h3>Server Connection Error</h3>
+        <p>Please make sure the server is running at <strong>http://localhost:5000</strong></p>
+        <p style="margin-top: 10px; font-size: 12px; color: #ef4444;">${error.message}</p>
       </div>
     `;
   }
