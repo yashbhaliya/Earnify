@@ -12,7 +12,6 @@
   <a href="statistics.html">📈 Statistics</a>
   <a href="profile.html">👤 Profile</a>
   <a href="../index.html" style="margin-top: 20px; border-top: 1px solid #ddd; padding-top: 10px;">🏠 Main Site</a>
-            <a onclick="logout()"><span>🚪</span> Logout</a>
   
   <!-- User Profile Section -->
   <div class="sidebar-user" id="sidebarUser" style="display: none;">
@@ -79,39 +78,7 @@
     <p class="subtitle">Track your sales performance and customer insights</p>
   </div>
 
-  <div class="stats-overview">
-    <div class="stat-card">
-      <div class="stat-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-        <span>🛒</span>
-      </div>
-      <div class="stat-content">
-        <h3>Total Purchases</h3>
-        <p class="stat-number" id="totalPurchases">0</p>
-        <span class="stat-label">All time orders</span>
-      </div>
-    </div>
-    
-    <div class="stat-card">
-      <div class="stat-icon" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
-        <span>💰</span>
-      </div>
-      <div class="stat-content">
-        <h3>Total Revenue</h3>
-        <p class="stat-number" id="totalRevenue">₹0</p>
-        <span class="stat-label">Total earnings</span>
-      </div>
-    </div>
-    
-    <div class="stat-card">
-      <div class="stat-icon" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
-        <span>👥</span>
-      </div>
-      <div class="stat-content">
-        <h3>Total Customers</h3>
-        <p class="stat-number" id="totalCustomers">0</p>
-        <span class="stat-label">Unique buyers</span>
-      </div>
-    </div>
+  <div class="stats-overview" id="statsOverview">
   </div>
 
   <div class="analytics-section">
@@ -151,12 +118,6 @@
           </tr>
         </thead>
         <tbody id="purchaseTableBody">
-          <tr>
-            <td colspan="4" class="loading-cell">
-              <div class="loading-spinner"></div>
-              <p>Loading purchase data...</p>
-            </td>
-          </tr>
         </tbody>
       </table>
     </div>

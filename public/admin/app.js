@@ -124,13 +124,44 @@ async function loadPurchaseStatistics() {
     
     const data = await res.json();
     
-    document.getElementById('totalPurchases').textContent = data.totalPurchases || 0;
-    document.getElementById('totalRevenue').textContent = '₹' + (data.totalRevenue || 0);
-    document.getElementById('totalCustomers').textContent = data.totalCustomers || 0;
+    // Update stats cards
+    const statsOverview = document.getElementById('statsOverview');
+    statsOverview.innerHTML = `
+      <div class="stat-card">
+        <div class="stat-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+          📦
+        </div>
+        <div class="stat-content">
+          <h3>Total Purchases</h3>
+          <div class="stat-number" id="totalPurchases">${data.totalPurchases || 0}</div>
+          <div class="stat-label">All time purchases</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+          💰
+        </div>
+        <div class="stat-content">
+          <h3>Total Revenue</h3>
+          <div class="stat-number" id="totalRevenue">₹${data.totalRevenue || 0}</div>
+          <div class="stat-label">Total earnings</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+          👥
+        </div>
+        <div class="stat-content">
+          <h3>Total Customers</h3>
+          <div class="stat-number" id="totalCustomers">${data.totalCustomers || 0}</div>
+          <div class="stat-label">Unique buyers</div>
+        </div>
+      </div>
+    `;
     
     const tbody = document.getElementById('purchaseTableBody');
     if (!data.userStats || data.userStats.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 40px; color: #64748b;">No purchase data available</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 40px; color: #666;">No purchase data available</td></tr>';
       return;
     }
     
@@ -144,6 +175,39 @@ async function loadPurchaseStatistics() {
     `).join('');
   } catch (error) {
     console.error('Error loading purchase statistics:', error);
+    const statsOverview = document.getElementById('statsOverview');
+    statsOverview.innerHTML = `
+      <div class="stat-card">
+        <div class="stat-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+          📦
+        </div>
+        <div class="stat-content">
+          <h3>Total Purchases</h3>
+          <div class="stat-number" id="totalPurchases">0</div>
+          <div class="stat-label">All time purchases</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+          💰
+        </div>
+        <div class="stat-content">
+          <h3>Total Revenue</h3>
+          <div class="stat-number" id="totalRevenue">₹0</div>
+          <div class="stat-label">Total earnings</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+          👥
+        </div>
+        <div class="stat-content">
+          <h3>Total Customers</h3>
+          <div class="stat-number" id="totalCustomers">0</div>
+          <div class="stat-label">Unique buyers</div>
+        </div>
+      </div>
+    `;
     const tbody = document.getElementById('purchaseTableBody');
     tbody.innerHTML = `<tr><td colspan="4" style="text-align: center; padding: 40px; color: #ef4444;">
       ⚠️ ${error.message}<br><br>
@@ -180,6 +244,9 @@ async function loadResources(type) {
     `;
     return;
   }
+  
+  // Show shimmer loading
+  showShimmerLoading(grid);
   
   try {
     const res = await fetch(RESOURCE_API, {
@@ -250,6 +317,25 @@ async function loadResources(type) {
       </div>
     `;
   }
+}
+
+function showShimmerLoading(container) {
+  const shimmerHTML = `
+    <div class="shimmer-card">
+      <div class="shimmer-icon"></div>
+      <div class="shimmer-title"></div>
+      <div class="shimmer-description"></div>
+      <div class="shimmer-description"></div>
+      <div class="shimmer-price"></div>
+      <div class="shimmer-buttons">
+        <div class="shimmer-button"></div>
+        <div class="shimmer-button"></div>
+        <div class="shimmer-button"></div>
+      </div>
+    </div>
+  `;
+  
+  container.innerHTML = `<div class="shimmer-wrapper">${shimmerHTML.repeat(3)}</div>`;
 }
 
 
