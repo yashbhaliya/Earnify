@@ -207,6 +207,91 @@
     .resource-card {
         padding: 15px;
     }
+
+    /* --- Statistics Page Mobile Styles --- */
+    .page-header {
+        padding: 25px 20px !important;
+        margin-bottom: 20px !important;
+    }
+
+    .page-header h1 {
+        font-size: 24px !important;
+    }
+
+    .subtitle {
+        font-size: 14px !important;
+    }
+
+    .stats-overview {
+        grid-template-columns: 1fr !important;
+        gap: 15px !important;
+    }
+
+    .stat-card {
+        padding: 20px !important;
+        flex-direction: row !important;
+        gap: 15px !important;
+    }
+
+    .stat-icon {
+        width: 60px !important;
+        height: 60px !important;
+        font-size: 28px !important;
+    }
+
+    .stat-content h3 {
+        font-size: 12px !important;
+    }
+
+    .stat-number {
+        font-size: 24px !important;
+    }
+
+    .stat-label {
+        font-size: 11px !important;
+    }
+
+    .section-header {
+        text-align: left !important;
+        margin-bottom: 20px !important;
+    }
+
+    .section-header h2 {
+        font-size: 20px !important;
+    }
+
+    .section-header p {
+        font-size: 13px !important;
+    }
+
+    .table-wrapper {
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+    }
+
+    .modern-table {
+        min-width: 600px !important;
+    }
+
+    .modern-table th,
+    .modern-table td {
+        padding: 12px !important;
+        font-size: 12px !important;
+    }
+
+    .th-content {
+        font-size: 11px !important;
+        gap: 6px !important;
+    }
+
+    .th-icon {
+        font-size: 14px !important;
+    }
+
+    .analytics-section {
+        padding: 20px !important;
+        margin-top: 20px !important;
+    }
 }
 
 /* --- Media Queries for very small screens (Under 480px) --- */

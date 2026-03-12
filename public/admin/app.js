@@ -127,6 +127,9 @@ async function loadPurchaseStatistics() {
     
     const data = await res.json();
     
+    // Store full data globally for filtering
+    window.fullStatsData = data;
+    
     // Update stats cards
     statsOverview.innerHTML = `
       <div class="stat-card">
@@ -213,6 +216,96 @@ async function loadPurchaseStatistics() {
       <small>Make sure to access via: <strong>http://localhost:5000/admin/statistics.html</strong></small>
     </td></tr>`;
   }
+}
+
+function filterStatsByType(type) {
+  // Update active tab
+  document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+  event.target.closest('.tab-btn').classList.add('active');
+  
+  const data = window.fullStatsData;
+  if (!data || !data.userStats) return;
+  
+  const tbody = document.getElementById('purchaseTableBody');
+  const statsOverview = document.getElementById('statsOverview');
+  
+  let filteredStats = data.userStats;
+  let totalPurchases = 0;
+  let totalRevenue = 0;
+  let totalCustomers = 0;
+  
+  if (type !== 'all') {
+    // Filter user stats by resource type
+    filteredStats = data.userStats.map(user => {
+      const filteredResources = user.resources.filter(r => r.toLowerCase().includes(type));
+      if (filteredResources.length === 0) return null;
+      
+      return {
+        email: user.email,
+        totalPurchases: filteredResources.length,
+        totalAmount: user.totalAmount * (filteredResources.length / user.resources.length),
+        resources: filteredResources
+      };
+    }).filter(u => u !== null);
+    
+    // Calculate filtered totals
+    totalPurchases = filteredStats.reduce((sum, u) => sum + u.totalPurchases, 0);
+    totalRevenue = filteredStats.reduce((sum, u) => sum + u.totalAmount, 0);
+    totalCustomers = filteredStats.length;
+  } else {
+    totalPurchases = data.totalPurchases || 0;
+    totalRevenue = data.totalRevenue || 0;
+    totalCustomers = data.totalCustomers || 0;
+  }
+  
+  // Update stats cards
+  statsOverview.innerHTML = `
+    <div class="stat-card">
+      <div class="stat-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+        📦
+      </div>
+      <div class="stat-content">
+        <h3>Total Purchases</h3>
+        <div class="stat-number">${totalPurchases}</div>
+        <div class="stat-label">${type === 'all' ? 'All time purchases' : type.toUpperCase() + ' purchases'}</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+        💰
+      </div>
+      <div class="stat-content">
+        <h3>Total Revenue</h3>
+        <div class="stat-number">₹${totalRevenue.toFixed(2)}</div>
+        <div class="stat-label">Total earnings</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+        👥
+      </div>
+      <div class="stat-content">
+        <h3>Total Customers</h3>
+        <div class="stat-number">${totalCustomers}</div>
+        <div class="stat-label">Unique buyers</div>
+      </div>
+    </div>
+  `;
+  
+  // Update table
+  if (filteredStats.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="4" style="text-align: center; padding: 40px; color: #666;">No ${type === 'all' ? '' : type.toUpperCase() + ' '}purchase data available</td></tr>`;
+    return;
+  }
+  
+  tbody.innerHTML = filteredStats.map(user => `
+    <tr>
+      <td>${user.email}</td>
+      <td>${user.totalPurchases}</td>
+      <td>₹${user.totalAmount.toFixed(2)}</td>
+      <td>${user.resources.join(', ')}</td>
+    </tr>
+  `).join('');
 }
 
 
