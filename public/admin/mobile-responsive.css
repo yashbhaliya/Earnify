@@ -1,0 +1,150 @@
+/* --- Mobile Responsive Reset & Variables --- */
+:root {
+    --sidebar-width: 260px;
+    --primary-color: #4f46e5;
+    --bg-light: #f8fafc;
+}
+
+/* --- Media Queries for Mobile (Under 768px) --- */
+@media (max-width: 768px) {
+    /* --- Layout Adjustments --- */
+    body.sidebar-open {
+        overflow: hidden; /* Prevent scrolling when menu is open */
+    }
+
+    .main {
+        transition: margin-left 0.3s ease;
+        padding: 20px;
+        width: 100%;
+        box-sizing: border-box;
+        margin-left: 0 !important;
+        padding-top: 70px; /* Space for the floating hamburger */
+    }
+
+    /* --- Hamburger Menu Button --- */
+    .mobile-menu-toggle {
+        display: block;
+        position: fixed;
+        top: 15px;
+        left: 15px;
+        z-index: 1001;
+        background: var(--primary-color);
+        border: none;
+        border-radius: 8px;
+        padding: 8px 10px;
+        cursor: pointer;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    .hamburger {
+        width: 22px;
+        height: 2px;
+        background-color: white;
+        margin: 4px 0;
+        transition: 0.3s;
+    }
+
+    /* --- Sidebar Mobile States --- */
+    .sidebar {
+        position: fixed;
+        left: calc(-1 * var(--sidebar-width));
+        top: 0;
+        bottom: 0;
+        width: var(--sidebar-width);
+        z-index: 1000;
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        background: white;
+        box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+    }
+
+    .sidebar.active {
+        transform: translateX(var(--sidebar-width));
+    }
+
+    .sidebar-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(2px);
+        z-index: 999;
+    }
+
+    .sidebar-overlay.active {
+        display: block;
+    }
+
+    /* --- Resource Tabs (Scrollable on Mobile) --- */
+    .resource-tabs {
+        display: flex;
+        overflow-x: auto;
+        white-space: nowrap;
+        gap: 10px;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .resource-tabs::-webkit-scrollbar {
+        display: none; /* Hide scrollbar for cleaner look */
+    }
+
+    .tab-btn {
+        flex: 0 0 auto; /* Prevent tabs from shrinking */
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+
+    /* --- Responsive Grid --- */
+    .resource-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(100%, 1fr)); /* Stack on small screens */
+        gap: 15px;
+    }
+
+    /* --- Modals (Full screen on mobile) --- */
+    .modal-content {
+        width: 95% !important;
+        margin: 10px auto;
+        padding: 20px;
+        border-radius: 12px;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+
+    .page-header h1 {
+        font-size: 1.5rem;
+    }
+
+    .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .add-buttons-group {
+        display: grid;
+        grid-template-columns: 1fr 1fr; /* 2x2 grid for add buttons */
+        width: 100%;
+        gap: 8px;
+    }
+
+    .add-btn {
+        width: 100%;
+        justify-content: center;
+        padding: 10px;
+        font-size: 13px;
+    }
+
+    /* Adjust resource card styling for mobile */
+    .resource-card {
+        padding: 15px;
+    }
+}
+
+/* --- Media Queries for very small screens (Under 480px) --- */
+@media (max-width: 480px) {
+    .add-buttons-group {
+        grid-template-columns: 1fr; /* Full width buttons on tiny screens */
+    }
+}
