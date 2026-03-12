@@ -115,8 +115,13 @@ function exportData() {
 }
 
 async function loadPurchaseStatistics() {
+  const shimmerStats = document.getElementById('shimmerStats');
   const statsOverview = document.getElementById('statsOverview');
   const tbody = document.getElementById('purchaseTableBody');
+  
+  // Show shimmer, hide actual content
+  shimmerStats.style.display = 'grid';
+  statsOverview.style.display = 'none';
   
   try {
     const res = await fetch('http://localhost:5000/api/statistics/purchases');
@@ -126,6 +131,10 @@ async function loadPurchaseStatistics() {
     }
     
     const data = await res.json();
+    
+    // Hide shimmer, show actual content
+    shimmerStats.style.display = 'none';
+    statsOverview.style.display = 'grid';
     
     // Store full data globally for filtering
     window.fullStatsData = data;
@@ -179,6 +188,11 @@ async function loadPurchaseStatistics() {
     `).join('');
   } catch (error) {
     console.error('Error loading purchase statistics:', error);
+    
+    // Hide shimmer on error
+    shimmerStats.style.display = 'none';
+    statsOverview.style.display = 'grid';
+    
     statsOverview.innerHTML = `
       <div class="stat-card">
         <div class="stat-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">

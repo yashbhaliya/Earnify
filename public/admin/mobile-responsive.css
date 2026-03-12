@@ -14,7 +14,7 @@
 
     .main {
         transition: margin-left 0.3s ease;
-        padding: 20px;
+        padding: 2px;
         width: 100%;
         box-sizing: border-box;
         margin-left: 0 !important;
@@ -229,22 +229,23 @@
 
     .stat-card {
         padding: 20px !important;
+        display: flex !important;
         flex-direction: row !important;
+        align-items: center !important;
+        text-align: left !important;
         gap: 15px !important;
     }
 
     .stat-icon {
-        width: 60px !important;
-        height: 60px !important;
-        font-size: 28px !important;
+        font-size: 32px !important;
+        margin-bottom: 0 !important;
+        flex-shrink: 0 !important;
+        
     }
 
-    .stat-content h3 {
-        font-size: 12px !important;
-    }
-
-    .stat-number {
+    .stat-value {
         font-size: 24px !important;
+        margin-bottom: 0 !important;
     }
 
     .stat-label {
@@ -267,15 +268,18 @@
     .table-wrapper {
         overflow-x: auto !important;
         -webkit-overflow-scrolling: touch !important;
+        padding: 0px;
+
     }
 
     .modern-table {
         min-width: 600px !important;
+        /* padding: 0px; */
     }
 
     .modern-table th,
     .modern-table td {
-        padding: 12px !important;
+        padding: 10px !important;
         font-size: 12px !important;
     }
 

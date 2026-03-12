@@ -5,6 +5,144 @@
   <title>Statistics - Earnify Admin</title>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="mobile-responsive.css">
+  <style>
+    /* Shimmer Animation */
+    @keyframes shimmer {
+      0% {
+        background-position: -1000px 0;
+      }
+      100% {
+        background-position: 1000px 0;
+      }
+    }
+
+    .shimmer-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      margin-bottom: 30px;
+    }
+
+    .shimmer-stat-card {
+      background: white;
+      border-radius: 20px;
+      padding: 30px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 20px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+      border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .shimmer-stat-icon {
+      width: 70px;
+      height: 70px;
+      border-radius: 18px;
+      background: linear-gradient(
+        90deg,
+        #f0f0f0 0%,
+        #e0e0e0 50%,
+        #f0f0f0 100%
+      );
+      background-size: 1000px 100%;
+      animation: shimmer 2s infinite linear;
+      flex-shrink: 0;
+    }
+
+    .shimmer-stat-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      text-align: right;
+      align-self: flex-start;
+    }
+
+    .shimmer-stat-title {
+      width: 60%;
+      height: 14px;
+      border-radius: 4px;
+      background: linear-gradient(
+        90deg,
+        #f0f0f0 0%,
+        #e0e0e0 50%,
+        #f0f0f0 100%
+      );
+      background-size: 1000px 100%;
+      animation: shimmer 2s infinite linear;
+    }
+
+    .shimmer-stat-number {
+      width: 80%;
+      height: 32px;
+      border-radius: 6px;
+      background: linear-gradient(
+        90deg,
+        #f0f0f0 0%,
+        #e0e0e0 50%,
+        #f0f0f0 100%
+      );
+      background-size: 1000px 100%;
+      animation: shimmer 2s infinite linear;
+    }
+
+    .shimmer-stat-label {
+      width: 50%;
+      height: 12px;
+      border-radius: 4px;
+      background: linear-gradient(
+        90deg,
+        #f0f0f0 0%,
+        #e0e0e0 50%,
+        #f0f0f0 100%
+      );
+      background-size: 1000px 100%;
+      animation: shimmer 2s infinite linear;
+    }
+
+    .shimmer-table-row {
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0.5;
+      }
+    }
+
+    .shimmer-table-cell {
+      height: 20px;
+      border-radius: 4px;
+      background: linear-gradient(
+        90deg,
+        #f0f0f0 0%,
+        #e0e0e0 50%,
+        #f0f0f0 100%
+      );
+      background-size: 1000px 100%;
+      animation: shimmer 2s infinite linear;
+      margin: 8px 0;
+    }
+
+    @media (max-width: 768px) {
+      .shimmer-stats {
+        grid-template-columns: 1fr;
+      }
+      
+      .shimmer-stat-card {
+        padding: 20px;
+      }
+      
+      .shimmer-stat-icon {
+        width: 60px;
+        height: 60px;
+      }
+    }
+  </style>
 </head>
 <body>
 
@@ -90,7 +228,36 @@
   </div>
 
   <div class="stats-container">
-    <div class="stats-overview" id="statsOverview">
+    <!-- Shimmer Loading for Stats -->
+    <div class="stats-overview shimmer-stats" id="shimmerStats">
+      <div class="shimmer-stat-card">
+        <div class="shimmer-stat-icon"></div>
+        <div class="shimmer-stat-content">
+          <div class="shimmer-stat-title"></div>
+          <div class="shimmer-stat-number"></div>
+          <div class="shimmer-stat-label"></div>
+        </div>
+      </div>
+      <div class="shimmer-stat-card">
+        <div class="shimmer-stat-icon"></div>
+        <div class="shimmer-stat-content">
+          <div class="shimmer-stat-title"></div>
+          <div class="shimmer-stat-number"></div>
+          <div class="shimmer-stat-label"></div>
+        </div>
+      </div>
+      <div class="shimmer-stat-card">
+        <div class="shimmer-stat-icon"></div>
+        <div class="shimmer-stat-content">
+          <div class="shimmer-stat-title"></div>
+          <div class="shimmer-stat-number"></div>
+          <div class="shimmer-stat-label"></div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Actual Stats (Hidden Initially) -->
+    <div class="stats-overview" id="statsOverview" style="display: none;">
     </div>
 
     <div class="analytics-section">
@@ -130,6 +297,25 @@
             </tr>
           </thead>
           <tbody id="purchaseTableBody">
+            <!-- Shimmer Loading for Table -->
+            <tr class="shimmer-table-row">
+              <td><div class="shimmer-table-cell"></div></td>
+              <td><div class="shimmer-table-cell"></div></td>
+              <td><div class="shimmer-table-cell"></div></td>
+              <td><div class="shimmer-table-cell"></div></td>
+            </tr>
+            <tr class="shimmer-table-row">
+              <td><div class="shimmer-table-cell"></div></td>
+              <td><div class="shimmer-table-cell"></div></td>
+              <td><div class="shimmer-table-cell"></div></td>
+              <td><div class="shimmer-table-cell"></div></td>
+            </tr>
+            <tr class="shimmer-table-row">
+              <td><div class="shimmer-table-cell"></div></td>
+              <td><div class="shimmer-table-cell"></div></td>
+              <td><div class="shimmer-table-cell"></div></td>
+              <td><div class="shimmer-table-cell"></div></td>
+            </tr>
           </tbody>
         </table>
       </div>
