@@ -3852,3 +3852,169 @@ body.sidebar-open {
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
+/* Global Box Shadow Refinement - All Pages, All Views */
+
+/* Reduce All Existing Box Shadows */
+* {
+  box-shadow: none !important;
+}
+
+/* Refined Global Box Shadows */
+.card,
+.stat-card,
+.settings-card,
+.resource-card,
+.analytics-section,
+.table-container,
+.modal-content,
+.auth-modal-content,
+.premium-container,
+.resource-dropdown-container {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+}
+
+/* Subtle Hover Effects */
+.card:hover,
+.stat-card:hover,
+.settings-card:hover,
+.resource-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06) !important;
+}
+
+/* Button Shadows - Very Subtle */
+button,
+.btn,
+.action-btn,
+.add-btn,
+.quick-btn {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08) !important;
+}
+
+button:hover,
+.btn:hover,
+.action-btn:hover,
+.add-btn:hover,
+.quick-btn:hover {
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Table Shadows */
+table,
+.users-table,
+.modern-table,
+.premium-table {
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Sidebar Shadow */
+.sidebar {
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.04) !important;
+}
+
+/* Form Elements */
+input,
+textarea,
+select,
+.nav-dropdown,
+.resource-dropdown {
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03) !important;
+}
+
+input:focus,
+textarea:focus,
+select:focus,
+.nav-dropdown:focus,
+.resource-dropdown:focus {
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1), 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Stats Content Shadows */
+#statsContent1,
+#statsContent2,
+#statsContent3 {
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06) !important;
+}
+
+#statsContent1:hover,
+#statsContent2:hover,
+#statsContent3:hover {
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* Icon Shadows */
+.stat-icon,
+.user-avatar {
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* Modal Shadows */
+.modal,
+.auth-modal {
+  background: rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Badge Shadows */
+.badge,
+.resource-type-badge,
+.resource-count {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06) !important;
+}
+
+/* Navigation Elements */
+.tab-btn,
+.nav-dropdown {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+}
+
+.tab-btn:hover,
+.nav-dropdown:hover {
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* Mobile Specific Refinements */
+@media (max-width: 768px) {
+  .card,
+  .stat-card,
+  .settings-card {
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06) !important;
+  }
+  
+  .card:hover,
+  .stat-card:hover,
+  .settings-card:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+  }
+  
+  button,
+  .btn,
+  .action-btn {
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06) !important;
+  }
+  
+  button:hover,
+  .btn:hover,
+  .action-btn:hover {
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08) !important;
+  }
+}
+
+/* Ultra Subtle for Small Screens */
+@media (max-width: 480px) {
+  .card,
+  .stat-card,
+  .settings-card {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+  }
+  
+  .card:hover,
+  .stat-card:hover,
+  .settings-card:hover {
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.07) !important;
+  }
+  
+  button,
+  .btn,
+  .action-btn {
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+  }
+}

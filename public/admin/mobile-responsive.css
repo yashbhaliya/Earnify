@@ -14,7 +14,7 @@
 
     .main {
         transition: margin-left 0.3s ease;
-        padding: 2px;
+        padding: 5px;
         width: 100%;
         box-sizing: border-box;
         margin-left: 0 !important;
