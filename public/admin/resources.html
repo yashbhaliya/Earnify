@@ -93,12 +93,15 @@
     </div>
   </div>
 
-  <div class="resource-tabs">
-    <button class="tab-btn active" onclick="showTab('all')">📋 All Resources</button>
-    <button class="tab-btn" onclick="showTab('pdf')">📄 PDF Notes</button>
-    <button class="tab-btn" onclick="showTab('excel')">📊 Excel Templates</button>
-    <button class="tab-btn" onclick="showTab('exam')">📝 Exam Materials</button>
-    <button class="tab-btn" onclick="showTab('freelance')">💼 Freelance Services</button>
+  <div class="resource-dropdown-container">
+    <label for="resourceSelect" class="dropdown-label">📂 Select Resource Type:</label>
+    <select id="resourceSelect" class="resource-dropdown" onchange="showTab(this.value)">
+      <option value="all">📋 All Resources</option>
+      <option value="pdf">📄 PDF Notes</option>
+      <option value="excel">📊 Excel Templates</option>
+      <option value="exam">📝 Exam Materials</option>
+      <option value="freelance">💼 Freelance Services</option>
+    </select>
   </div>
 
   <div id="all" class="tab-content active">

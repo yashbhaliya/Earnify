@@ -41,6 +41,50 @@ body {
   text-shadow: none;
 }
 
+.dropdown-nav {
+  padding: 15px 30px;
+  margin-bottom: 10px;
+}
+
+.nav-dropdown {
+  width: 100%;
+  padding: 12px 16px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #1e293b;
+  background: white;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%233b82f6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 20px;
+  padding-right: 40px;
+}
+
+.nav-dropdown:hover {
+  border-color: #3b82f6;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
+}
+
+.nav-dropdown:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.nav-dropdown option {
+  padding: 12px;
+  font-weight: 600;
+  background: white;
+  color: #1e293b;
+  font-size: 15px;
+  line-height: 2;
+}
+
 .sidebar a {
   display: block;
   color: #64748b;
@@ -352,6 +396,86 @@ button:last-child:hover {
 }
 
 
+.resource-dropdown-container {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 15px 50px rgba(102, 126, 234, 0.4);
+  margin-bottom: 30px;
+  border: none;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.resource-dropdown-container::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 70%);
+  border-radius: 50%;
+}
+
+.resource-dropdown-container:hover {
+  box-shadow: 0 20px 60px rgba(102, 126, 234, 0.5);
+  transform: translateY(-3px);
+}
+
+.dropdown-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: white;
+  font-weight: 700;
+  font-size: 18px;
+  margin-bottom: 18px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.resource-dropdown {
+  width: 100%;
+  padding: 18px 28px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #1e293b;
+  background: white;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 24 24' fill='none' stroke='%23667eea' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 24px center;
+  background-size: 28px;
+  padding-right: 70px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.resource-dropdown:hover {
+  box-shadow: 0 12px 35px rgba(102, 126, 234, 0.3);
+  transform: translateY(-2px);
+}
+
+.resource-dropdown:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.3), 0 12px 35px rgba(102, 126, 234, 0.3);
+}
+
+.resource-dropdown option {
+  padding: 18px;
+  font-weight: 600;
+  background: white;
+  color: #1e293b;
+  font-size: 17px;
+  line-height: 1.8;
+}
+
 .resource-tabs {
   display: flex;
   gap: 10px;
@@ -359,7 +483,11 @@ button:last-child:hover {
 }
 
 .tab-btn {
-  padding: 12px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 16px;
   background: #ffffff;
   border: 2px solid #3b82f6;
   color: #3b82f6;
@@ -367,6 +495,15 @@ button:last-child:hover {
   cursor: pointer;
   font-weight: 600;
   transition: all 0.3s;
+  min-width: 80px;
+}
+
+.tab-btn span:first-child {
+  font-size: 24px;
+}
+
+.tab-btn span:last-child {
+  font-size: 12px;
 }
 
 .tab-btn.active {
@@ -2594,7 +2731,11 @@ body.light-mode #viewContent span {
 }
 
 .tab-btn {
-  padding: 12px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 16px;
   background: transparent;
   border: 2px solid transparent;
   color: #64748b;
@@ -2602,7 +2743,15 @@ body.light-mode #viewContent span {
   cursor: pointer;
   font-weight: 600;
   transition: all 0.3s;
-  font-size: 14px;
+  min-width: 80px;
+}
+
+.tab-btn span:first-child {
+  font-size: 24px;
+}
+
+.tab-btn span:last-child {
+  font-size: 12px;
 }
 
 .tab-btn:hover {
@@ -2745,13 +2894,78 @@ body.light-mode #viewContent span {
     gap: 15px;
   }
   
+  .add-buttons-group {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    width: 100% !important;
+    gap: 10px !important;
+    padding-bottom: 10px !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: thin;
+  }
+  
+  .add-buttons-group::-webkit-scrollbar {
+    height: 8px;
+  }
+  
+  .add-buttons-group::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 10px;
+  }
+  
+  .add-buttons-group::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #cbd5e1 0%, #94a3b8 100%);
+    border-radius: 10px;
+  }
+  
+  .add-buttons-group::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #94a3b8 0%, #64748b 100%);
+  }
+  
+  .add-btn {
+    flex-shrink: 0 !important;
+    white-space: nowrap !important;
+    min-width: auto !important;
+  }
+  
   .resource-tabs {
-    flex-direction: column;
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    gap: 8px !important;
+    padding: 12px !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: thin;
+  }
+  
+  .resource-tabs::-webkit-scrollbar {
+    height: 6px;
+  }
+  
+  .resource-tabs::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 10px;
+  }
+  
+  .resource-tabs::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #cbd5e1 0%, #94a3b8 100%);
+    border-radius: 10px;
   }
   
   .tab-btn {
-    width: 100%;
-    text-align: center;
+    flex-shrink: 0 !important;
+    min-width: 70px !important;
+    padding: 10px 12px !important;
+  }
+  
+  .tab-btn span:first-child {
+    font-size: 20px;
+  }
+  
+  .tab-btn span:last-child {
+    font-size: 11px;
   }
   
   .resource-grid {
