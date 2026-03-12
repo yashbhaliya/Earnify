@@ -213,6 +213,9 @@
           <span class="hamburger"></span>
         </button>
       </div>
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="🔍 Search purchases..." oninput="searchPurchases()">
+      </div>
       <div class="nav-links">
         <a href="index.html#resources">Resources</a>
         <a href="index.html#about">About</a>
@@ -229,7 +232,7 @@
               <div class="name" id="userDisplayName">User</div>
               <div class="email" id="userEmail">user@email.com</div>
             </div>
-            <a href="admin/resources.html"><span>👤</span> View Profile</a>
+            <a href="admin/profile.html"><span>👤</span> View Profile</a>
             <a href="admin/resources.html"><span>➕</span> Add Resources</a>
 
             <a onclick="logout()"><span>🚪</span> Logout</a>
@@ -257,7 +260,7 @@
               <div class="mobile-user-email" id="mobileUserEmail">user@email.com</div>
             </div>
           </div>
-          <a href="admin/resources.html" onclick="toggleMobileMenu()">👤 View Profile</a>
+          <a href="admin/profile.html" onclick="toggleMobileMenu()">👤 View Profile</a>
           <a href="admin/resources.html" onclick="toggleMobileMenu()">➕ Add Resources</a>
           <a onclick="logout(); toggleMobileMenu()">🚪 Logout</a>
         </div>
@@ -336,6 +339,29 @@
     }
 
     let allPurchases = [];
+
+    function searchPurchases() {
+      const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+      
+      if (!searchTerm) {
+        displayPurchases(allPurchases);
+        return;
+      }
+      
+      const filtered = allPurchases.filter(purchase => {
+        const resource = purchase.resources;
+        if (!resource) return false;
+        
+        return (
+          resource.title?.toLowerCase().includes(searchTerm) ||
+          resource.type?.toLowerCase().includes(searchTerm) ||
+          purchase.payment_id?.toLowerCase().includes(searchTerm) ||
+          purchase.order_id?.toLowerCase().includes(searchTerm)
+        );
+      });
+      
+      displayPurchases(filtered);
+    }
 
     async function loadPurchases() {
       document.getElementById('purchases').innerHTML = `

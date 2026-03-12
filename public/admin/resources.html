@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Resources - Earnify Admin</title>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="light-theme.css">
@@ -8,13 +9,21 @@
 </head>
 <body class="light-mode">
 
+<button class="mobile-menu-toggle" onclick="toggleSidebar()">
+  <div class="hamburger"></div>
+  <div class="hamburger"></div>
+  <div class="hamburger"></div>
+</button>
+
+<div class="sidebar-overlay" onclick="toggleSidebar()"></div>
+
 <div class="sidebar">
   <h2>Earnify Admin</h2>
   <a href="resources.html">📚 Resources</a>
   <a href="statistics.html">📈 Statistics</a>
   <a href="profile.html">👤 Profile</a>
   <a href="../index.html" style="margin-top: 20px; border-top: 1px solid #ddd; padding-top: 10px;">🏠 Main Site</a>
-            <a onclick="logout()"><span>🚪</span> Logout</a>
+  <a onclick="logout()"><span>🚪</span> Logout</a>
   
   <!-- User Profile Section -->
   <div class="sidebar-user" id="sidebarUser" style="display: none;">
@@ -253,6 +262,19 @@
 <script src="theme.js"></script>
 <script src="auth-modal.js"></script>
 <script>
+  // Make sure functions are globally accessible
+  window.showAddModal = window.showAddModal || function(type) {
+    console.log('showAddModal called with type:', type);
+    const modal = document.getElementById('addModal');
+    if (modal) {
+      modal.style.display = 'flex';
+    }
+  };
+  
+  window.showTab = window.showTab || function(type) {
+    console.log('showTab called with type:', type);
+  };
+  
   // Check login status and update sidebar
   (function() {
     const token = localStorage.getItem('adminToken');
@@ -280,6 +302,28 @@
     localStorage.removeItem('currentUser');
     localStorage.removeItem('userLoggedIn');
     window.location.href = '../index.html';
+  }
+  
+  function toggleSidebar() {
+    const sidebar = document.querySelector('.sidebar');
+    const overlay = document.querySelector('.sidebar-overlay');
+    const body = document.body;
+    
+    sidebar.classList.toggle('active');
+    overlay.classList.toggle('active');
+    body.classList.toggle('sidebar-open');
+  }
+  
+  function closeMobileSidebar() {
+    const sidebar = document.querySelector('.sidebar');
+    const overlay = document.querySelector('.sidebar-overlay');
+    const body = document.body;
+    
+    if (sidebar.classList.contains('active')) {
+      sidebar.classList.remove('active');
+      overlay.classList.remove('active');
+      body.classList.remove('sidebar-open');
+    }
   }
 </script>
 </body>

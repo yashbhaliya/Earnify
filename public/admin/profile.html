@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Profile - Earnify Admin</title>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="light-theme.css">
@@ -304,12 +305,20 @@
 </head>
 <body class="light-mode">
 
+<button class="mobile-menu-toggle" onclick="toggleSidebar()">
+  <div class="hamburger"></div>
+  <div class="hamburger"></div>
+  <div class="hamburger"></div>
+</button>
+
+<div class="sidebar-overlay" onclick="toggleSidebar()"></div>
+
 <div class="sidebar">
   <h2>Earnify Admin</h2>
-  <a href="resources.html">📚 Resources</a>
-  <a href="statistics.html">📈 Statistics</a>
-  <a href="profile.html" style=" border-left-color: #60a5fa; color: #60a5fa;">👤 Profile</a>
-  <a href="../index.html" style="margin-top: 20px; border-top: 1px solid #ddd; padding-top: 10px;">🏠 Main Site</a>
+  <a href="resources.html" onclick="closeMobileSidebar()">📚 Resources</a>
+  <a href="statistics.html" onclick="closeMobileSidebar()">📈 Statistics</a>
+  <a href="profile.html" onclick="closeMobileSidebar()" style=" border-left-color: #60a5fa; color: #60a5fa;">👤 Profile</a>
+  <a href="../index.html" style="margin-top: 20px; border-top: 1px solid #ddd; padding-top: 10px;" onclick="closeMobileSidebar()">🏠 Main Site</a>
             <a onclick="logout()"><span>🚪</span> Logout</a>
   
   <!-- User Profile Section -->
@@ -426,6 +435,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js"></script>
+<script src="mobile-fix.js"></script>
 <script>
   const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
 
@@ -644,6 +654,28 @@
     const modal = document.getElementById('editProfileModal');
     if (event.target === modal) {
       closeEditProfileModal();
+    }
+  }
+  
+  function toggleSidebar() {
+    const sidebar = document.querySelector('.sidebar');
+    const overlay = document.querySelector('.sidebar-overlay');
+    const body = document.body;
+    
+    sidebar.classList.toggle('active');
+    overlay.classList.toggle('active');
+    body.classList.toggle('sidebar-open');
+  }
+  
+  function closeMobileSidebar() {
+    const sidebar = document.querySelector('.sidebar');
+    const overlay = document.querySelector('.sidebar-overlay');
+    const body = document.body;
+    
+    if (sidebar.classList.contains('active')) {
+      sidebar.classList.remove('active');
+      overlay.classList.remove('active');
+      body.classList.remove('sidebar-open');
     }
   }
 </script>

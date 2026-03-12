@@ -224,7 +224,16 @@ function showTab(type) {
   document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.getElementById(type).classList.add('active');
-  event.target.classList.add('active');
+  
+  // Find and activate the correct button
+  const buttons = document.querySelectorAll('.tab-btn');
+  buttons.forEach(btn => {
+    if (btn.textContent.toLowerCase().includes(type) || 
+        (type === 'all' && btn.textContent.includes('All Resources'))) {
+      btn.classList.add('active');
+    }
+  });
+  
   loadResources(type);
 }
 
@@ -386,9 +395,16 @@ function setupRealtimeResources() {
 }
 
 function showAddModal(type) {
+  console.log('showAddModal called with type:', type);
   currentType = type;
+  const modal = document.getElementById('addModal');
   const fileInput = document.getElementById('fileUpload');
   const modalTitle = document.getElementById('modalTitle');
+  
+  if (!modal) {
+    console.error('Modal element not found');
+    return;
+  }
   
   // Set file input accept attribute based on type
   switch(type) {
@@ -413,11 +429,19 @@ function showAddModal(type) {
       modalTitle.textContent = 'Add Resource';
   }
   
-  document.getElementById('addModal').style.display = 'flex';
+  modal.style.display = 'flex';
+  console.log('Modal display set to flex');
 }
 
 function closeModal() {
-  document.getElementById('addModal').style.display = 'none';
+  console.log('closeModal called');
+  const modal = document.getElementById('addModal');
+  if (modal) {
+    modal.style.display = 'none';
+    // Reset form
+    const form = document.getElementById('resourceForm');
+    if (form) form.reset();
+  }
 }
 
 function closeViewModal() {
@@ -624,3 +648,6 @@ if (document.getElementById("totalUsers")) loadDashboard();
 if (document.getElementById("activeRate")) loadAnalytics();
 if (document.getElementById("totalRecords")) loadSettings();
 if (document.getElementById("purchaseTableBody")) loadPurchaseStatistics();
+
+
+

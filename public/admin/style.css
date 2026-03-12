@@ -2449,57 +2449,6 @@ body.light-mode #viewContent span {
   flex-wrap: wrap;
 }
 
-.pdf-btn {
-  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
-}
-
-.pdf-btn:hover {
-  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
-  box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
-}
-
-.excel-btn {
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
-}
-
-.excel-btn:hover {
-  background: linear-gradient(135deg, #059669 0%, #047857 100%);
-  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
-}
-
-.exam-btn {
-  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-  box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
-}
-
-.exam-btn:hover {
-  background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
-  box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
-}
-
-.freelance-btn {
-  background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
-  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
-}
-
-.freelance-btn:hover {
-  background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
-  box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
-}
-
-@media (max-width: 768px) {
-  .add-buttons-group {
-    flex-direction: column;
-  }
-  
-  .add-buttons-group .add-btn {
-    width: 100%;
-    justify-content: center;
-  }
-}
-
 
 /* Modern Resources Page Layout */
 .page-header {
@@ -2794,16 +2743,6 @@ body.light-mode #viewContent span {
     flex-direction: column;
     align-items: flex-start;
     gap: 15px;
-  }
-  
-  .add-buttons-group {
-    width: 100%;
-    flex-direction: column;
-  }
-  
-  .add-btn {
-    width: 100%;
-    justify-content: center;
   }
   
   .resource-tabs {
@@ -3147,3 +3086,174 @@ body.light-mode #viewContent span {
 .stats-overview .shimmer-stat-label {
   margin: 0;
 }
+
+
+/* Mobile Menu Styles */
+.mobile-menu-toggle {
+  display: none;
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 1001;
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  border: none;
+  padding: 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+  flex-direction: column;
+  gap: 5px;
+  width: 50px;
+  height: 50px;
+  justify-content: center;
+  align-items: center;
+}
+
+.mobile-menu-toggle .hamburger {
+  width: 25px;
+  height: 3px;
+  background: white;
+  border-radius: 3px;
+  transition: all 0.3s;
+}
+
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.sidebar-overlay.active {
+  opacity: 1;
+}
+
+body.sidebar-open {
+  overflow: hidden;
+}
+
+
+
+
+
+
+/* Mobile Dropdown for Add Resource */
+.mobile-add-dropdown {
+  display: none;
+  position: relative;
+}
+
+.mobile-dropdown-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 24px;
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 15px;
+  width: 100%;
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+  transition: all 0.3s;
+}
+
+.mobile-dropdown-btn:hover {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+}
+
+.dropdown-arrow {
+  font-size: 12px;
+  transition: transform 0.3s;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+  margin-top: 8px;
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transition: all 0.3s ease;
+  z-index: 100;
+}
+
+.dropdown-menu.show {
+  max-height: 400px;
+  opacity: 1;
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 20px;
+  background: white;
+  border: none;
+  border-bottom: 1px solid #f1f5f9;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  width: 100%;
+  text-align: left;
+  transition: all 0.3s;
+}
+
+.dropdown-item:last-child {
+  border-bottom: none;
+}
+
+.pdf-item {
+  color: #ef4444;
+}
+
+.pdf-item:hover {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(220, 38, 38, 0.1) 100%);
+}
+
+.excel-item {
+  color: #10b981;
+}
+
+.excel-item:hover {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(5, 150, 105, 0.1) 100%);
+}
+
+.exam-item {
+  color: #f59e0b;
+}
+
+.exam-item:hover {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(217, 119, 6, 0.1) 100%);
+}
+
+.freelance-item {
+  color: #8b5cf6;
+}
+
+.freelance-item:hover {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(124, 58, 237, 0.1) 100%);
+}
+
+
+
+
+x
+
+

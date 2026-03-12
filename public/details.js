@@ -368,3 +368,46 @@ async function verifyPayment(response) {
   }
 }
 
+
+// Mobile Menu Functions
+function toggleMobileMenu() {
+  const sidebar = document.getElementById('mobileSidebar');
+  const overlay = document.getElementById('mobileSidebarOverlay');
+  
+  if (sidebar && overlay) {
+    sidebar.classList.toggle('active');
+    overlay.classList.toggle('active');
+    document.body.style.overflow = sidebar.classList.contains('active') ? 'hidden' : '';
+  }
+}
+
+// Update mobile menu UI based on login status
+function updateMobileMenuUI() {
+  const mobileLoginBtn = document.getElementById('mobileLoginBtn');
+  const mobileSignupBtn = document.getElementById('mobileSignupBtn');
+  const mobileUserMenu = document.getElementById('mobileUserMenu');
+  const mobileUserName = document.getElementById('mobileUserName');
+  const mobileUserEmail = document.getElementById('mobileUserEmail');
+  
+  if (isLoggedIn && currentUser) {
+    if (mobileLoginBtn) mobileLoginBtn.style.display = 'none';
+    if (mobileSignupBtn) mobileSignupBtn.style.display = 'none';
+    if (mobileUserMenu) mobileUserMenu.style.display = 'block';
+    
+    const displayName = currentUser?.user_metadata?.name || currentUser?.email?.split('@')[0] || 'User';
+    const email = currentUser?.email || '';
+    if (mobileUserName) mobileUserName.textContent = displayName;
+    if (mobileUserEmail) mobileUserEmail.textContent = email;
+  } else {
+    if (mobileLoginBtn) mobileLoginBtn.style.display = 'block';
+    if (mobileSignupBtn) mobileSignupBtn.style.display = 'block';
+    if (mobileUserMenu) mobileUserMenu.style.display = 'none';
+  }
+}
+
+// Call updateMobileMenuUI when updating UI
+const originalUpdateUI = updateUI;
+updateUI = function() {
+  originalUpdateUI();
+  updateMobileMenuUI();
+};

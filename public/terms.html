@@ -35,13 +35,23 @@
       </div>
       <div class="mobile-sidebar-content">
         <a href="index.html" onclick="toggleMobileMenu()">🏠 Home</a>
-        <a href="about.html" onclick="toggleMobileMenu()">ℹ️ About</a>
-        <a href="contact.html" onclick="toggleMobileMenu()">📞 Contact</a>
         <a href="index.html#resources" onclick="toggleMobileMenu()">📚 Resources</a>
         <a href="dashboard.html" onclick="toggleMobileMenu()">📊 Dashboard</a>
-        <a href="terms.html" onclick="toggleMobileMenu()">📜 Terms</a>
-        <a href="privacy.html" onclick="toggleMobileMenu()">🔒 Privacy</a>
-        <a href="payment.html" onclick="toggleMobileMenu()">💳 Payment</a>
+        <div class="mobile-sidebar-divider"></div>
+        <button id="mobileLoginBtn" class="mobile-sidebar-btn" onclick="showLoginModal(); toggleMobileMenu();">🔐 Login</button>
+        <button id="mobileSignupBtn" class="mobile-sidebar-btn" onclick="showSignupModal(); toggleMobileMenu();">✨ Sign Up</button>
+        <div id="mobileUserMenu" class="mobile-user-section" style="display:none;">
+          <div class="mobile-user-info">
+            <div class="mobile-user-avatar">👤</div>
+            <div>
+              <div class="mobile-user-name" id="mobileUserName">User</div>
+              <div class="mobile-user-email" id="mobileUserEmail">user@email.com</div>
+            </div>
+          </div>
+          <a href="admin/profile.html" onclick="toggleMobileMenu()">👤 View Profile</a>
+          <a href="admin/resources.html" onclick="toggleMobileMenu();">➕ Add Resources</a>
+          <a onclick="logout(); toggleMobileMenu();">🚪 Logout</a>
+        </div>
       </div>
     </div>
     <div class="mobile-sidebar-overlay" id="mobileSidebarOverlay" onclick="toggleMobileMenu()"></div>
