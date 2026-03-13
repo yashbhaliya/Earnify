@@ -20,6 +20,34 @@
       "dest": "/public/admin/$1"
     },
     {
+      "src": "/About/?$",
+      "dest": "/public/About/index.html"
+    },
+    {
+      "src": "/Contact/?$",
+      "dest": "/public/Contact/index.html"
+    },
+    {
+      "src": "/Privacy/?$",
+      "dest": "/public/Privacy/index.html"
+    },
+    {
+      "src": "/Terms/?$",
+      "dest": "/public/Terms/index.html"
+    },
+    {
+      "src": "/Dashboard/?$",
+      "dest": "/public/Dashboard/index.html"
+    },
+    {
+      "src": "/Detail/?$",
+      "dest": "/public/Detail/index.html"
+    },
+    {
+      "src": "/Payment/?$",
+      "dest": "/public/Payment/index.html"
+    },
+    {
       "src": "/(.*\\.(js|css|html|png|jpg|jpeg|gif|svg|ico|pdf|xls|xlsx))",
       "dest": "/public/$1"
     },
