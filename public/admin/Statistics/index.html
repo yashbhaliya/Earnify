@@ -3,8 +3,8 @@
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Statistics - Earnify Admin</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="mobile-responsive.css">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../mobile-responsive.css">
   <style>
     /* Shimmer Animation */
     @keyframes shimmer {
@@ -156,10 +156,10 @@
 
 <div class="sidebar">
   <h2>Earnify Admin</h2>
-  <a href="resources.html" onclick="closeMobileSidebar()">📚 Resources</a>
-  <a href="statistics.html" onclick="closeMobileSidebar()">📈 Statistics</a>
-  <a href="profile.html" onclick="closeMobileSidebar()">👤 Profile</a>
-  <a href="../index.html" style="margin-top: 20px; border-top: 1px solid #ddd; padding-top: 10px;" onclick="closeMobileSidebar()">🏠 Main Site</a>
+  <a href="../Resources/" onclick="closeMobileSidebar()">📚 Resources</a>
+  <a href="../Statistics/" onclick="closeMobileSidebar()">📈 Statistics</a>
+  <a href="../Profile/" onclick="closeMobileSidebar()">👤 Profile</a>
+  <a href="../../index.html" style="margin-top: 20px; border-top: 1px solid #ddd; padding-top: 10px;" onclick="closeMobileSidebar()">🏠 Main Site</a>
             <a onclick="logout()"><span>🚪</span> Logout</a>
   
   <!-- User Profile Section -->
@@ -223,8 +223,8 @@
 
 <div class="main">
   <div class="page-header">
-    <h1> Purchase Statistics</h1>
-    <p class="subtitle">Track your sales performance and customer insights</p>
+    <h1>📈 My Sales Statistics</h1>
+    <p class="subtitle">Track sales performance and customer insights for your resources</p>
   </div>
 
   <div class="stats-container">
@@ -262,8 +262,8 @@
 
     <div class="analytics-section">
       <div class="section-header">
-        <h2>📈 Customer Purchase Details</h2>
-        <p>Detailed breakdown of purchases by customer</p>
+        <h2>📈 My Customer Purchase Details</h2>
+        <p>Customers who purchased your resources</p>
       </div>
       
       <div class="table-wrapper">
@@ -323,9 +323,9 @@
   </div>
 </div>
 
-<script src="app.js"></script>
-<script src="theme.js"></script>
-<script src="auth-modal.js"></script>
+<script src="../api-config.js"></script>
+<script src="../app.js"></script>
+<script src="../auth-modal.js"></script>
 <script>
   // Check login status and update sidebar
   (function() {

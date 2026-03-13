@@ -3,16 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>About Us - Earnify</title>
+  <title>Terms & Conditions - Earnify</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <link rel="stylesheet" href="landing.css">
-  <link rel="stylesheet" href="pages.css">
+  <link rel="stylesheet" href="../landing.css">
+  <link rel="stylesheet" href="../pages.css">
 </head>
 <body>
   <nav class="navbar">
     <div class="container">
       <div class="nav-header">
-        <a href="index.html" style="text-decoration: none; color: inherit;"><h1 class="logo">💰 Earnify</h1></a>
+        <a href="../index.html" style="text-decoration: none; color: inherit;"><h1 class="logo">💰 Earnify</h1></a>
         <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
           <span class="hamburger"></span>
           <span class="hamburger"></span>
@@ -20,10 +20,10 @@
         </button>
       </div>
       <div class="nav-links">
-        <a href="index.html">Home</a>
-        <a href="about.html">About</a>
-        <a href="contact.html">Contact</a>
-        <a href="dashboard.html">Dashboard</a>
+        <a href="../index.html">Home</a>
+        <a href="../About/">About</a>
+        <a href="../Contact/">Contact</a>
+        <a href="../Dashboard/">Dashboard</a>
       </div>
     </div>
     
@@ -34,9 +34,9 @@
         <button class="close-sidebar" onclick="toggleMobileMenu()">&times;</button>
       </div>
       <div class="mobile-sidebar-content">
-        <a href="index.html" onclick="toggleMobileMenu()">🏠 Home</a>
-        <a href="index.html#resources" onclick="toggleMobileMenu()">📚 Resources</a>
-        <a href="dashboard.html" onclick="toggleMobileMenu()">📊 Dashboard</a>
+        <a href="../index.html" onclick="toggleMobileMenu()">🏠 Home</a>
+        <a href="../index.html#resources" onclick="toggleMobileMenu()">📚 Resources</a>
+        <a href="../Dashboard/" onclick="toggleMobileMenu()">📊 Dashboard</a>
         <div class="mobile-sidebar-divider"></div>
         <button id="mobileLoginBtn" class="mobile-sidebar-btn" onclick="showLoginModal(); toggleMobileMenu();">🔐 Login</button>
         <button id="mobileSignupBtn" class="mobile-sidebar-btn" onclick="showSignupModal(); toggleMobileMenu();">✨ Sign Up</button>
@@ -48,8 +48,8 @@
               <div class="mobile-user-email" id="mobileUserEmail">user@email.com</div>
             </div>
           </div>
-          <a href="admin/profile.html" onclick="toggleMobileMenu()">👤 View Profile</a>
-          <a href="admin/resources.html" onclick="toggleMobileMenu();">➕ Add Resources</a>
+          <a href="../admin/profile.html" onclick="toggleMobileMenu()">👤 View Profile</a>
+          <a href="../admin/resources.html" onclick="toggleMobileMenu();">➕ Add Resources</a>
           <a onclick="logout(); toggleMobileMenu();">🚪 Logout</a>
         </div>
       </div>
@@ -59,27 +59,13 @@
 
   <section class="page-hero">
     <div class="container">
-      <h1>About Earnify</h1>
-      <p>Your Trusted Learning Marketplace</p>
+      <h1>Terms & Conditions</h1>
+      <p>Last Updated: January 2024</p>
     </div>
   </section>
 
   <section class="page-content">
-    <div class="container">
-      <div class="content-box" id="contentBox1">
-      </div>
-
-      <div class="content-box" id="contentBox2">
-      </div>
-
-      <div class="content-box" id="contentBox3">
-      </div>
-
-      <div class="content-box" id="contentBox4">
-      </div>
-
-      <div class="content-box" id="contentBox5">
-      </div>
+    <div class="container" id="termsContainer">
     </div>
   </section>
 
@@ -93,10 +79,10 @@
         <div class="footer-col">
           <h4>Quick Links</h4>
           <ul class="footer-links">
-            <li><a href="about.html">About Us</a></li>
-            <li><a href="terms.html">Terms & Conditions</a></li>
-            <li><a href="privacy.html">Privacy Policy</a></li>
-            <li><a href="contact.html">Contact Us</a></li>
+            <li><a href="../About/">About Us</a></li>
+            <li><a href="../Terms/">Terms & Conditions</a></li>
+            <li><a href="../Privacy/">Privacy Policy</a></li>
+            <li><a href="../Contact/">Contact Us</a></li>
           </ul>
         </div>
         <div class="footer-col">
@@ -111,7 +97,7 @@
     </div>
   </footer>
   
-  <script src="about.js"></script>
+  <script src="terms.js"></script>
   <script src="landing.js"></script>
 </body>
 </html>

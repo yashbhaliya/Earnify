@@ -3,7 +3,7 @@
 <head>
   <title>Dashboard - Earnify</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="landing.css?v=2">
+  <link rel="stylesheet" href="../landing.css?v=2">
   <style>
     body { margin: 0; background: #f8fafc; }
     .content-wrapper { padding: 3rem 0; min-height: 80vh; }
@@ -206,7 +206,7 @@
   <nav class="navbar">
     <div class="container">
       <div class="nav-header">
-        <a href="index.html" style="text-decoration: none; color: inherit;"><h1 class="logo">💰 Earnify</h1></a>
+        <a href="../index.html" style="text-decoration: none; color: inherit;"><h1 class="logo">💰 Earnify</h1></a>
         <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
           <span class="hamburger"></span>
           <span class="hamburger"></span>
@@ -217,9 +217,9 @@
         <input type="text" id="searchInput" placeholder="🔍 Search purchases..." oninput="searchPurchases()">
       </div>
       <div class="nav-links">
-        <a href="index.html#resources">Resources</a>
-        <a href="index.html#about">About</a>
-        <a href="dashboard.html" style="color: #fbbf24;">Dashboard</a>
+        <a href="../index.html">Resources</a>
+        <a href="../index.html#about">About</a>
+        <a href="../Dashboard/" style="color: #fbbf24;">Dashboard</a>
         
         <div id="userMenu" class="user-menu" style="display:flex;">
           <button class="user-menu-btn" onclick="toggleUserDropdown()">
@@ -232,8 +232,8 @@
               <div class="name" id="userDisplayName">User</div>
               <div class="email" id="userEmail">user@email.com</div>
             </div>
-            <a href="admin/profile.html"><span>👤</span> View Profile</a>
-            <a href="admin/resources.html"><span>➕</span> Add Resources</a>
+            <a href="../admin/Profile/"><span>👤</span> View Profile</a>
+            <a href="../admin/Resources/"><span>➕</span> Add Resources</a>
 
             <a onclick="logout()"><span>🚪</span> Logout</a>
           </div>
@@ -248,9 +248,9 @@
         <button class="close-sidebar" onclick="toggleMobileMenu()">&times;</button>
       </div>
       <div class="mobile-sidebar-content">
-        <a href="index.html" onclick="toggleMobileMenu()">🏠 Home</a>
-        <a href="index.html#resources" onclick="toggleMobileMenu()">📚 Resources</a>
-        <a href="dashboard.html" onclick="toggleMobileMenu()">📊 Dashboard</a>
+        <a href="../index.html" onclick="toggleMobileMenu()">🏠 Home</a>
+        <a href="../index.html#resources" onclick="toggleMobileMenu()">📚 Resources</a>
+        <a href="../Dashboard/" onclick="toggleMobileMenu()">📊 Dashboard</a>
         <div class="mobile-sidebar-divider"></div>
         <div id="mobileUserMenu" class="mobile-user-section" style="display:block;">
           <div class="mobile-user-info">
@@ -260,8 +260,8 @@
               <div class="mobile-user-email" id="mobileUserEmail">user@email.com</div>
             </div>
           </div>
-          <a href="admin/profile.html" onclick="toggleMobileMenu()">👤 View Profile</a>
-          <a href="admin/resources.html" onclick="toggleMobileMenu()">➕ Add Resources</a>
+          <a href="../admin/profile.html" onclick="toggleMobileMenu()">👤 View Profile</a>
+          <a href="../admin/resources.html" onclick="toggleMobileMenu()">➕ Add Resources</a>
           <a onclick="logout(); toggleMobileMenu()">🚪 Logout</a>
         </div>
       </div>
@@ -286,10 +286,10 @@
         <div class="footer-col">
           <h4>Quick Links</h4>
           <ul class="footer-links">
-            <li><a href="about.html">About Us</a></li>
-            <li><a href="terms.html">Terms & Conditions</a></li>
-            <li><a href="privacy.html">Privacy Policy</a></li>
-            <li><a href="contact.html">Contact Us</a></li>
+            <li><a href="../About/">About Us</a></li>
+            <li><a href="../Terms/">Terms & Conditions</a></li>
+            <li><a href="../Privacy/">Privacy Policy</a></li>
+            <li><a href="../Contact/">Contact Us</a></li>
           </ul>
         </div>
         <div class="footer-col">
@@ -310,6 +310,7 @@
     const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVtbnJnc2dlcmZqdm5kZXhvbXJvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI0MjAyMTAsImV4cCI6MjA4Nzk5NjIxMH0.uXr8lipxLbB4D_5JwQkpLzc-HudQw23tOFBfV4C6hqY';
     const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
   </script>
+  <script src="api-config.js"></script>
   <script src="landing.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script>
@@ -370,7 +371,7 @@
       `;
       
       try {
-        const response = await fetch(`http://localhost:5000/api/payments/${currentUser.id}`);
+        const response = await fetch(API_CONFIG.getURL(`${API_CONFIG.endpoints.payments}/${currentUser.id}`));
         
         if (!response.ok) {
           document.getElementById('purchases').innerHTML = `

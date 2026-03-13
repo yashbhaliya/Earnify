@@ -147,7 +147,7 @@ async function handleSignup(e) {
       password,
       options: {
         data: { name },
-        emailRedirectTo: window.location.origin + '/'
+        emailRedirectTo: window.location.origin + '../'
       }
     });
     
@@ -175,13 +175,13 @@ async function logout() {
   isLoggedIn = false;
   currentUser = null;
   updateUI();
-  window.location.href = 'index.html';
+  window.location.href = '../index.html';
 }
 
 function viewProfile() {
   const dropdown = document.getElementById('userDropdown');
   if (dropdown) dropdown.style.display = 'none';
-  window.location.href = 'admin/resources.html';
+  window.location.href = '../admin/resources.html';
 }
 
 async function loadResourceDetails() {
@@ -189,17 +189,17 @@ async function loadResourceDetails() {
   const resourceId = urlParams.get('id');
   
   if (!resourceId) {
-    window.location.href = '/';
+    window.location.href = '../';
     return;
   }
   
   try {
-    const response = await fetch(`http://localhost:5000/api/resources`);
+    const response = await fetch(API_CONFIG.getURL(API_CONFIG.endpoints.resources));
     const resources = await response.json();
     currentResource = resources.find(r => r.id == resourceId);
     
     if (!currentResource) {
-      window.location.href = '/';
+      window.location.href = '../';
       return;
     }
     
@@ -207,7 +207,7 @@ async function loadResourceDetails() {
     let isPurchased = false;
     if (isLoggedIn && currentUser) {
       try {
-        const purchaseRes = await fetch(`http://localhost:5000/api/payments/${currentUser.id}`);
+        const purchaseRes = await fetch(API_CONFIG.getURL(`${API_CONFIG.endpoints.payments}/${currentUser.id}`));
         if (purchaseRes.ok) {
           const purchases = await purchaseRes.json();
           isPurchased = purchases.some(p => p.resource_id === currentResource.id);
@@ -287,11 +287,11 @@ async function handlePurchase() {
     button.textContent = 'Processing...';
     
     // Get Razorpay key
-    const keyResponse = await fetch('http://localhost:5000/api/payment/key');
+    const keyResponse = await fetch(API_CONFIG.getURL(API_CONFIG.endpoints.paymentKey));
     const { key } = await keyResponse.json();
     
     // Create order
-    const orderResponse = await fetch('http://localhost:5000/api/payment/create-order', {
+    const orderResponse = await fetch(API_CONFIG.getURL(API_CONFIG.endpoints.createOrder), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -342,7 +342,7 @@ async function handlePurchase() {
 
 async function verifyPayment(response) {
   try {
-    const verifyResponse = await fetch('http://localhost:5000/api/payment/verify', {
+    const verifyResponse = await fetch(API_CONFIG.getURL(API_CONFIG.endpoints.verifyPayment), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

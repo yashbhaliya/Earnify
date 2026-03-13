@@ -333,60 +333,177 @@ app.post("/api/payment/create-order", async (req, res) => {
   }
 });
 
-// Verify Payment
+// Verify Payment - Enhanced for Vercel
 app.post("/api/payment/verify", async (req, res) => {
   try {
+    console.log('=== PAYMENT VERIFICATION START ===');
+    console.log('Request body:', JSON.stringify(req.body, null, 2));
+    console.log('Environment check:', {
+      hasRazorpaySecret: !!process.env.RAZORPAY_KEY_SECRET,
+      hasSupabaseUrl: !!process.env.SUPABASE_URL,
+      hasSupabaseKey: !!process.env.SUPABASE_SERVICE_ROLE_KEY
+    });
+
     const { razorpay_order_id, razorpay_payment_id, razorpay_signature, resourceId, userId } = req.body;
     
-    console.log('Payment verification request:', { razorpay_order_id, razorpay_payment_id, resourceId, userId });
-    
+    // Validate required parameters
     if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
-      return res.status(400).json({ success: false, error: "Missing payment parameters" });
+      console.log('❌ Missing payment parameters');
+      return res.status(400).json({ 
+        success: false, 
+        error: "Missing payment parameters",
+        received: { razorpay_order_id: !!razorpay_order_id, razorpay_payment_id: !!razorpay_payment_id, razorpay_signature: !!razorpay_signature }
+      });
     }
-    
+
+    if (!resourceId || !userId) {
+      console.log('❌ Missing resourceId or userId');
+      return res.status(400).json({ 
+        success: false, 
+        error: "Missing resourceId or userId",
+        received: { resourceId: !!resourceId, userId: !!userId }
+      });
+    }
+
+    // Check environment variables
+    if (!process.env.RAZORPAY_KEY_SECRET) {
+      console.log('❌ Razorpay secret not configured');
+      return res.status(500).json({ success: false, error: "Payment configuration error" });
+    }
+
+    // Verify payment signature
     const sign = razorpay_order_id + "|" + razorpay_payment_id;
     const expectedSign = crypto
       .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
       .update(sign.toString())
       .digest("hex");
     
-    if (razorpay_signature === expectedSign) {
-      console.log('Payment verified successfully:', razorpay_payment_id);
+    console.log('Signature verification:', {
+      received: razorpay_signature,
+      expected: expectedSign,
+      match: razorpay_signature === expectedSign
+    });
+
+    if (razorpay_signature !== expectedSign) {
+      console.log('❌ Invalid payment signature');
+      return res.status(400).json({ success: false, error: "Invalid payment signature" });
+    }
+
+    console.log('✅ Payment signature verified');
+
+    // Check Supabase connection
+    if (!supabase) {
+      console.log('❌ Supabase not initialized');
+      return res.status(500).json({ success: false, error: "Database connection error" });
+    }
+
+    // Get resource details
+    console.log('Fetching resource:', resourceId);
+    const { data: resource, error: resourceError } = await supabase
+      .from("resources")
+      .select("id, price, title")
+      .eq("id", parseInt(resourceId))
+      .single();
+    
+    if (resourceError) {
+      console.log('❌ Resource fetch error:', resourceError);
+      return res.status(400).json({ 
+        success: false, 
+        error: 'Resource not found: ' + resourceError.message,
+        details: resourceError
+      });
+    }
+
+    if (!resource) {
+      console.log('❌ Resource not found');
+      return res.status(400).json({ success: false, error: 'Resource not found' });
+    }
+
+    console.log('✅ Resource found:', resource);
+
+    // Check for existing payment
+    console.log('Checking for existing payment:', razorpay_payment_id);
+    const { data: existingPayment, error: existingError } = await supabase
+      .from("payments")
+      .select("id, status")
+      .eq("payment_id", razorpay_payment_id)
+      .single();
+    
+    if (existingError && existingError.code !== 'PGRST116') { // PGRST116 = no rows found
+      console.log('❌ Error checking existing payment:', existingError);
+      return res.status(500).json({ 
+        success: false, 
+        error: 'Database error: ' + existingError.message,
+        details: existingError
+      });
+    }
+
+    if (existingPayment) {
+      console.log('✅ Payment already exists:', existingPayment);
+      return res.json({ 
+        success: true, 
+        message: "Payment already recorded", 
+        payment: existingPayment 
+      });
+    }
+
+    // Insert new payment record
+    console.log('Inserting new payment record');
+    const paymentData = {
+      user_id: userId,
+      resource_id: parseInt(resourceId),
+      payment_id: razorpay_payment_id,
+      order_id: razorpay_order_id,
+      status: "completed"
+    };
+    
+    // Don't include amount column for now (will be added later)
+    console.log('Payment data to insert:', paymentData);
+
+    const { data: newPayment, error: insertError } = await supabase
+      .from("payments")
+      .insert([paymentData])
+      .select()
+      .single();
+    
+    if (insertError) {
+      console.log('❌ Payment insert error:', insertError);
       
-      // Save payment to database
-      if (resourceId && userId) {
-        try {
-          const { data, error } = await supabase
-            .from("payments")
-            .insert([{
-              user_id: userId,
-              resource_id: parseInt(resourceId),
-              payment_id: razorpay_payment_id,
-              order_id: razorpay_order_id,
-              status: "completed"
-            }])
-            .select();
-          
-          if (error) {
-            console.error('Database save error:', error);
-            return res.status(500).json({ success: false, error: 'Payment verified but failed to save: ' + error.message });
-          } else {
-            console.log('Payment saved to database:', data[0]);
-            return res.json({ success: true, message: "Payment verified and saved", payment: data[0] });
-          }
-        } catch (dbError) {
-          console.error('Database operation failed:', dbError);
-          return res.status(500).json({ success: false, error: 'Database error: ' + dbError.message });
-        }
+      // Check if it's a foreign key constraint error
+      if (insertError.message.includes('foreign key constraint')) {
+        return res.status(500).json({ 
+          success: false, 
+          error: 'Database constraint error. Please ensure the payments table is properly configured.',
+          details: insertError.message,
+          suggestion: 'Run the SQL from fix-payments-schema.sql in Supabase'
+        });
       }
       
-      res.json({ success: true, message: "Payment verified successfully" });
-    } else {
-      res.status(400).json({ success: false, error: "Invalid payment signature" });
+      return res.status(500).json({ 
+        success: false, 
+        error: 'Failed to save payment: ' + insertError.message,
+        details: insertError
+      });
     }
+
+    console.log('✅ Payment saved successfully:', newPayment);
+    console.log('=== PAYMENT VERIFICATION SUCCESS ===');
+
+    return res.json({ 
+      success: true, 
+      message: "Payment verified and saved successfully", 
+      payment: newPayment 
+    });
+
   } catch (error) {
-    console.error('Payment verification error:', error);
-    res.status(500).json({ success: false, error: error.message });
+    console.log('❌ Payment verification error:', error);
+    console.log('Error stack:', error.stack);
+    
+    return res.status(500).json({ 
+      success: false, 
+      error: 'Payment verification failed: ' + error.message,
+      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
+    });
   }
 });
 
@@ -432,9 +549,18 @@ app.get("/api/payments/:userId", async (req, res) => {
   }
 });
 
-// Get Purchase Statistics
-app.get("/api/statistics/purchases", async (req, res) => {
+// Get Purchase Statistics - User Specific
+app.get("/api/statistics/purchases/:userEmail", async (req, res) => {
   try {
+    const userEmail = req.params.userEmail;
+    
+    if (!userEmail) {
+      return res.status(400).json({ error: 'User email is required' });
+    }
+    
+    console.log('Getting statistics for user:', userEmail);
+    
+    // Get all payments for resources owned by this user
     const { data: payments, error: paymentsError } = await supabase
       .from("payments")
       .select("*")
@@ -442,47 +568,73 @@ app.get("/api/statistics/purchases", async (req, res) => {
     
     if (paymentsError) throw paymentsError;
     
-    const { data: resources } = await supabase
+    // Get all resources owned by this user
+    const { data: userResources, error: resourcesError } = await supabase
       .from("resources")
-      .select("id, title, price");
+      .select("id, title, price, user_email")
+      .eq("user_email", userEmail);
     
+    if (resourcesError) throw resourcesError;
+    
+    // Get all resources for reference
+    const { data: allResources } = await supabase
+      .from("resources")
+      .select("id, title, price, user_email");
+    
+    // Get all users for reference
     const { data: { users } } = await supabase.auth.admin.listUsers();
+    
+    // Filter payments to only include purchases of this user's resources
+    const userResourceIds = userResources.map(r => r.id);
+    const relevantPayments = payments.filter(p => userResourceIds.includes(p.resource_id));
+    
+    console.log('User resources:', userResourceIds);
+    console.log('Relevant payments:', relevantPayments.length);
     
     const userStats = {};
     
-    payments.forEach(payment => {
-      const resource = resources?.find(r => r.id === payment.resource_id);
+    relevantPayments.forEach(payment => {
+      const resource = allResources?.find(r => r.id === payment.resource_id);
       const user = users?.find(u => u.id === payment.user_id);
-      const userEmail = user?.email || 'Unknown';
+      const buyerEmail = user?.email || 'Unknown';
       
-      if (!userStats[userEmail]) {
-        userStats[userEmail] = {
-          email: userEmail,
+      if (!userStats[buyerEmail]) {
+        userStats[buyerEmail] = {
+          email: buyerEmail,
           totalPurchases: 0,
           totalAmount: 0,
           resources: []
         };
       }
       
-      userStats[userEmail].totalPurchases++;
-      userStats[userEmail].totalAmount += parseFloat(resource?.price || 0);
+      userStats[buyerEmail].totalPurchases++;
+      userStats[buyerEmail].totalAmount += parseFloat(resource?.price || 0);
       if (resource) {
-        userStats[userEmail].resources.push(resource.title);
+        userStats[buyerEmail].resources.push(resource.title);
       }
     });
     
+    const totalRevenue = relevantPayments.reduce((sum, p) => {
+      const resource = allResources?.find(r => r.id === p.resource_id);
+      return sum + parseFloat(resource?.price || 0);
+    }, 0);
+    
     res.json({
-      totalPurchases: payments.length,
-      totalRevenue: payments.reduce((sum, p) => {
-        const resource = resources?.find(r => r.id === p.resource_id);
-        return sum + parseFloat(resource?.price || 0);
-      }, 0),
+      totalPurchases: relevantPayments.length,
+      totalRevenue: totalRevenue,
       totalCustomers: Object.keys(userStats).length,
-      userStats: Object.values(userStats)
+      userStats: Object.values(userStats),
+      userResourcesCount: userResources.length
     });
   } catch (error) {
-    console.error('Error fetching statistics:', error);
-    res.json({ totalPurchases: 0, totalRevenue: 0, totalCustomers: 0, userStats: [] });
+    console.error('Error fetching user statistics:', error);
+    res.json({ 
+      totalPurchases: 0, 
+      totalRevenue: 0, 
+      totalCustomers: 0, 
+      userStats: [],
+      userResourcesCount: 0
+    });
   }
 });
 

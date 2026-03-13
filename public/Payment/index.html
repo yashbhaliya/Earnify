@@ -3,6 +3,7 @@
 <head>
   <title>Payment - Earnify</title>
   <link rel="stylesheet" href="landing.css">
+  <script src="api-config.js"></script>
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   <style>
     #resources { 
@@ -53,7 +54,7 @@
       <div class="nav-links">
         <a href="index.html#resources">Resources</a>
         <a href="index.html#about">About</a>
-        <a href="dashboard.html">Dashboard</a>
+        <a href="../Dashboard/">Dashboard</a>
         <button id="logoutBtn" class="admin-btn" onclick="logout()" style="display:none;">Logout</button>
       </div>
     </div>
@@ -65,14 +66,14 @@
         <button class="close-sidebar" onclick="toggleMobileMenu()">&times;</button>
       </div>
       <div class="mobile-sidebar-content">
-        <a href="index.html" onclick="toggleMobileMenu()">🏠 Home</a>
-        <a href="about.html" onclick="toggleMobileMenu()">ℹ️ About</a>
-        <a href="contact.html" onclick="toggleMobileMenu()">📞 Contact</a>
-        <a href="index.html#resources" onclick="toggleMobileMenu()">📚 Resources</a>
-        <a href="dashboard.html" onclick="toggleMobileMenu()">📊 Dashboard</a>
-        <a href="terms.html" onclick="toggleMobileMenu()">📜 Terms</a>
-        <a href="privacy.html" onclick="toggleMobileMenu()">🔒 Privacy</a>
-        <a href="payment.html" onclick="toggleMobileMenu()">💳 Payment</a>
+        <a href="../index.html" onclick="toggleMobileMenu()">🏠 Home</a>
+        <a href="../About/" onclick="toggleMobileMenu()">ℹ️ About</a>
+        <a href="../Contact/" onclick="toggleMobileMenu()">📞 Contact</a>
+        <a href="../index.html#resources" onclick="toggleMobileMenu()">📚 Resources</a>
+        <a href="../Dashboard/" onclick="toggleMobileMenu()">📊 Dashboard</a>
+        <a href="../Terms/" onclick="toggleMobileMenu()">📜 Terms</a>
+        <a href="../Privacy/" onclick="toggleMobileMenu()">🔒 Privacy</a>
+        <a href="../Payment/" onclick="toggleMobileMenu()">💳 Payment</a>
       </div>
     </div>
     <div class="mobile-sidebar-overlay" id="mobileSidebarOverlay" onclick="toggleMobileMenu()"></div>
@@ -91,7 +92,7 @@
     }
 
     async function loadResources() {
-      const response = await fetch('/api/resources');
+      const response = await fetch(API_CONFIG.getURL(API_CONFIG.endpoints.resources));
       const resources = await response.json();
       
       const container = document.getElementById('resources');
@@ -112,7 +113,7 @@
         console.log('Starting payment for:', { resourceId, price, title });
         
         // Create order
-        const orderResponse = await fetch('/api/payment/create-order', {
+        const orderResponse = await fetch(API_CONFIG.getURL(API_CONFIG.endpoints.createOrder), {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -131,7 +132,7 @@
         console.log('Order created:', order);
         
         // Get Razorpay key from server
-        const keyResponse = await fetch('/api/payment/key');
+        const keyResponse = await fetch(API_CONFIG.getURL(API_CONFIG.endpoints.paymentKey));
         if (!keyResponse.ok) {
           throw new Error('Failed to get payment key');
         }
@@ -155,7 +156,7 @@
               console.log('Payment response:', response);
               
               // Verify payment
-              const verifyResponse = await fetch('/api/payment/verify', {
+              const verifyResponse = await fetch(API_CONFIG.getURL(API_CONFIG.endpoints.verifyPayment), {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
