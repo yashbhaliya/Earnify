@@ -218,9 +218,51 @@
         font-size: 13px;
       }
       
-      /* Hide date filter on mobile */
+      /* Mobile Page Header */
+      .page-header {
+        display: block !important;
+        visibility: visible !important;
+        padding: 20px 15px !important;
+        margin-bottom: 20px;
+      }
+      
+      .header-content {
+        display: block !important;
+        visibility: visible !important;
+        text-align: center;
+      }
+      
+      .header-content h1 {
+        font-size: 24px !important;
+        margin-bottom: 10px;
+        display: block !important;
+      }
+      
+      .header-content .subtitle {
+        font-size: 14px !important;
+        margin-bottom: 20px;
+        display: block !important;
+      }
+      
+      /* Show dropdown on mobile, hide buttons */
+      .date-filter-buttons {
+        display: none !important;
+      }
+      
+      .date-filter-dropdown {
+        display: block !important;
+        margin-top: 10px;
+      }
+      
       .date-filter-section {
-        display: none;
+        display: block !important;
+        visibility: visible !important;
+      }
+      
+      .filter-label {
+        font-size: 14px;
+        margin-bottom: 12px;
+        text-align: left;
       }
     }
 
@@ -276,31 +318,182 @@
       }
     }
 
-    /* Date Filter Section - Desktop Only */
+    /* Page Header Base Styles */
+    .page-header {
+      display: block;
+      visibility: visible;
+      padding: 40px 20px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      margin-bottom: 30px;
+    }
+    
+    .header-content {
+      display: block;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .header-content h1 {
+      font-size: 36px;
+      font-weight: 700;
+      margin: 0 0 10px 0;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    .header-content .subtitle {
+      font-size: 16px;
+      opacity: 0.9;
+      margin: 0 0 20px 0;
+      font-weight: 400;
+    }
+    
+    /* Date Filter Section - Desktop and Mobile */
     .date-filter-section {
       margin-top: 25px;
       padding-top: 20px;
       border-top: 1px solid rgba(255, 255, 255, 0.2);
+      display: block !important;
+      visibility: visible !important;
     }
 
     .filter-label {
-      display: flex;
+      display: flex !important;
       align-items: center;
       gap: 8px;
       color: rgba(255, 255, 255, 0.9);
       font-size: 16px;
       font-weight: 600;
       margin-bottom: 15px;
+      visibility: visible !important;
     }
 
     .filter-icon {
       font-size: 18px;
     }
 
+    /* Desktop View - Buttons */
     .date-filter-buttons {
       display: flex;
       gap: 12px;
       flex-wrap: wrap;
+    }
+    
+    @media (min-width: 769px) {
+      .date-filter-buttons {
+        display: flex !important;
+      }
+      
+      .date-filter-dropdown {
+        display: none !important;
+      }
+    }
+
+    /* Mobile View - Dropdown */
+    .date-filter-dropdown {
+      display: none;
+      position: relative;
+      width: 100%;
+      max-width: 300px;
+      z-index: 10;
+      visibility: visible !important;
+    }
+
+    .filter-dropdown-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      background: rgba(255, 255, 255, 0.15);
+      color: white;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 14px;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+      width: 100%;
+      text-align: left;
+    }
+
+    .filter-dropdown-toggle:hover {
+      background: rgba(255, 255, 255, 0.25);
+      border-color: rgba(255, 255, 255, 0.5);
+    }
+
+    .dropdown-arrow {
+      font-size: 12px;
+      transition: transform 0.3s ease;
+    }
+
+    .filter-dropdown-toggle.active .dropdown-arrow {
+      transform: rotate(180deg);
+    }
+
+    .filter-dropdown-menu {
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0;
+      right: 0;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      z-index: 100;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-10px);
+      transition: all 0.3s ease;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    .filter-dropdown-menu.show {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .filter-dropdown-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 16px;
+      color: #475569;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .filter-dropdown-item:last-child {
+      border-bottom: none;
+      border-radius: 0 0 12px 12px;
+    }
+
+    .filter-dropdown-item:first-child {
+      border-radius: 12px 12px 0 0;
+    }
+
+    .filter-dropdown-item:hover {
+      background: #f8fafc;
+      color: #667eea;
+    }
+
+    .filter-dropdown-item.active {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+
+    .dropdown-item-icon {
+      font-size: 16px;
+      width: 20px;
+      text-align: center;
+    }
+
+    .dropdown-item-text {
+      font-weight: 600;
+      font-size: 14px;
     }
 
     .filter-btn {
@@ -608,7 +801,7 @@
   <a href="../Resources/" onclick="closeMobileSidebar()">📚 Resources</a>
   <a href="../Statistics/" onclick="closeMobileSidebar()">📈 Statistics</a>
   <a href="../Profile/" onclick="closeMobileSidebar()">👤 Profile</a>
-  <a href="../../index.html" style="margin-top: 20px; border-top: 1px solid #ddd; padding-top: 10px;" onclick="closeMobileSidebar()">🏠 Main Site</a>
+  <a href="../../" style="margin-top: 20px; border-top: 1px solid #ddd; padding-top: 10px;" onclick="closeMobileSidebar()">🏠 Main Site</a>
             <a onclick="logout()"><span>🚪</span> Logout</a>
   
   <!-- User Profile Section -->
@@ -676,12 +869,14 @@
       <h1>My Sales Statistics</h1>
       <p class="subtitle">Track sales performance and customer insights for your resources</p>
       
-      <!-- Date Filter Section - Desktop Only -->
+      <!-- Date Filter Section - Desktop and Mobile -->
       <div class="date-filter-section">
         <div class="filter-label">
           <span class="filter-icon">📅</span>
           <span>Filter by Date:</span>
         </div>
+        
+        <!-- Desktop View - Buttons -->
         <div class="date-filter-buttons">
           <button class="filter-btn active" onclick="filterByDate('alltime')" data-period="alltime">
             <span class="btn-icon">📊</span>
@@ -707,6 +902,43 @@
             <span class="btn-icon">🗓️</span>
             <span class="btn-text">Custom</span>
           </button>
+        </div>
+        
+        <!-- Mobile View - Dropdown -->
+        <div class="date-filter-dropdown">
+          <div class="filter-dropdown-toggle" onclick="toggleFilterDropdown()" id="filterDropdownToggle">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span class="dropdown-current-icon">📊</span>
+              <span class="dropdown-current-text">All Time</span>
+            </div>
+            <span class="dropdown-arrow">▼</span>
+          </div>
+          <div class="filter-dropdown-menu" id="filterDropdownMenu">
+            <div class="filter-dropdown-item active" onclick="selectDropdownFilter('alltime')" data-period="alltime">
+              <span class="dropdown-item-icon">📊</span>
+              <span class="dropdown-item-text">All Time</span>
+            </div>
+            <div class="filter-dropdown-item" onclick="selectDropdownFilter('today')" data-period="today">
+              <span class="dropdown-item-icon">📈</span>
+              <span class="dropdown-item-text">Today</span>
+            </div>
+            <div class="filter-dropdown-item" onclick="selectDropdownFilter('yesterday')" data-period="yesterday">
+              <span class="dropdown-item-icon">📉</span>
+              <span class="dropdown-item-text">Yesterday</span>
+            </div>
+            <div class="filter-dropdown-item" onclick="selectDropdownFilter('lastweek')" data-period="lastweek">
+              <span class="dropdown-item-icon">📋</span>
+              <span class="dropdown-item-text">Last Week</span>
+            </div>
+            <div class="filter-dropdown-item" onclick="selectDropdownFilter('lastmonth')" data-period="lastmonth">
+              <span class="dropdown-item-icon">📅</span>
+              <span class="dropdown-item-text">Last Month</span>
+            </div>
+            <div class="filter-dropdown-item" onclick="selectDropdownFilter('custom')" data-period="custom">
+              <span class="dropdown-item-icon">🗓️</span>
+              <span class="dropdown-item-text">Custom</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -1145,12 +1377,17 @@
   function filterByDate(period) {
     console.log('Filtering by date:', period);
     
-    // Update active button
+    // Update active button (desktop)
     document.querySelectorAll('.filter-btn').forEach(btn => {
       btn.classList.remove('active');
     });
     const targetBtn = document.querySelector(`[data-period="${period}"]`);
-    if (targetBtn) targetBtn.classList.add('active');
+    if (targetBtn && targetBtn.classList.contains('filter-btn')) {
+      targetBtn.classList.add('active');
+    }
+    
+    // Update mobile dropdown display
+    updateDropdownDisplay(period);
     
     currentDateFilter = period;
     
@@ -1329,6 +1566,93 @@
       default: return 'All Time';
     }
   }
+  
+  // Mobile dropdown functions
+  function toggleFilterDropdown() {
+    const toggle = document.getElementById('filterDropdownToggle');
+    const menu = document.getElementById('filterDropdownMenu');
+    
+    if (toggle && menu) {
+      const isOpen = menu.classList.contains('show');
+      
+      if (isOpen) {
+        menu.classList.remove('show');
+        toggle.classList.remove('active');
+      } else {
+        menu.classList.add('show');
+        toggle.classList.add('active');
+      }
+    }
+  }
+  
+  function selectDropdownFilter(period) {
+    // Close dropdown
+    const toggle = document.getElementById('filterDropdownToggle');
+    const menu = document.getElementById('filterDropdownMenu');
+    
+    if (toggle && menu) {
+      menu.classList.remove('show');
+      toggle.classList.remove('active');
+    }
+    
+    // Update dropdown display
+    updateDropdownDisplay(period);
+    
+    // Apply filter
+    if (period === 'custom') {
+      showCustomDateModal();
+    } else {
+      filterByDate(period);
+    }
+  }
+  
+  function updateDropdownDisplay(period) {
+    const currentIcon = document.querySelector('.dropdown-current-icon');
+    const currentText = document.querySelector('.dropdown-current-text');
+    
+    // Update active state in dropdown items
+    document.querySelectorAll('.filter-dropdown-item').forEach(item => {
+      item.classList.remove('active');
+    });
+    const activeItem = document.querySelector(`[data-period="${period}"]`);
+    if (activeItem && activeItem.classList.contains('filter-dropdown-item')) {
+      activeItem.classList.add('active');
+    }
+    
+    // Update dropdown toggle display
+    const icons = {
+      'alltime': '📊',
+      'today': '📈',
+      'yesterday': '📉',
+      'lastweek': '📋',
+      'lastmonth': '📅',
+      'custom': '🗓️'
+    };
+    
+    const texts = {
+      'alltime': 'All Time',
+      'today': 'Today',
+      'yesterday': 'Yesterday',
+      'lastweek': 'Last Week',
+      'lastmonth': 'Last Month',
+      'custom': 'Custom'
+    };
+    
+    if (currentIcon) currentIcon.textContent = icons[period] || '📊';
+    if (currentText) currentText.textContent = texts[period] || 'All Time';
+  }
+  
+  // Close dropdown when clicking outside
+  document.addEventListener('click', function(event) {
+    const dropdown = document.querySelector('.date-filter-dropdown');
+    const toggle = document.getElementById('filterDropdownToggle');
+    const menu = document.getElementById('filterDropdownMenu');
+    
+    if (dropdown && toggle && menu && !dropdown.contains(event.target)) {
+      menu.classList.remove('show');
+      toggle.classList.remove('active');
+    }
+  });
 </script>
 </body>
 </html>
