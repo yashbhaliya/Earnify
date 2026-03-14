@@ -212,6 +212,7 @@
     .page-header {
         padding: 25px 20px !important;
         margin-bottom: 20px !important;
+        display: none;
     }
 
     .page-header h1 {
@@ -229,8 +230,8 @@
 
     .stat-card {
         padding: 20px !important;
-        display: flex !important;
-        flex-direction: row !important;
+        display: grid !important;
+        /* flex-direction: row !important; */
         align-items: center !important;
         text-align: left !important;
         gap: 15px !important;

@@ -101,6 +101,32 @@ body {
   color: white;
 }
 
+/* Desktop/Tablet only - margins and enhanced styling */
+@media (min-width: 769px) {
+  .hero {
+    margin: 0 40px;
+    border-radius: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="%23ffffff" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>') repeat;
+    opacity: 0.3;
+  }
+}
+
+.hero .container {
+  position: relative;
+  z-index: 1;
+}
+
 .hero h1 {
   font-size: 3.5rem;
   margin-bottom: 1rem;

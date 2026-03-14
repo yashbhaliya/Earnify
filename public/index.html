@@ -78,8 +78,8 @@
               <div class="mobile-user-email" id="mobileUserEmail">user@email.com</div>
             </div>
           </div>
-          <a href="admin/profile.html" onclick="toggleMobileMenu()">👤 View Profile</a>
-          <a href="admin/resources.html" onclick="toggleMobileMenu()">➕ Add Resources</a>
+          <a href="admin/Profile/" onclick="toggleMobileMenu()">👤 View Profile</a>
+          <a href="admin/Resources/" onclick="toggleMobileMenu()">➕ Add Resources</a>
           <a onclick="logout(); toggleMobileMenu();">🚪 Logout</a>
         </div>
       </div>
@@ -175,7 +175,10 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="api-config.js"></script>
+  <script src="landing.js"></script>
   <script>
+    
     const supabaseUrl = 'https://emnrgsgerfjvndexomro.supabase.co';
     const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVtbnJnc2dlcmZqdm5kZXhvbXJvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI0MjAyMTAsImV4cCI6MjA4Nzk5NjIxMH0.uXr8lipxLbB4D_5JwQkpLzc-HudQw23tOFBfV4C6hqY';
     const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
@@ -216,8 +219,6 @@
       }
     })();
   </script>
-  <script src="api-config.js"></script>
-  <script src="landing.js"></script>
 </body>
 
 </html>

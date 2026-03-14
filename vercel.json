@@ -16,6 +16,20 @@
       "dest": "/server.js"
     },
     {
+      "src": "/(.*\\.js)$",
+      "dest": "/public/$1",
+      "headers": {
+        "Content-Type": "application/javascript"
+      }
+    },
+    {
+      "src": "/(.*\\.css)$",
+      "dest": "/public/$1",
+      "headers": {
+        "Content-Type": "text/css"
+      }
+    },
+    {
       "src": "/admin/(.*)",
       "dest": "/public/admin/$1"
     },
@@ -44,11 +58,15 @@
       "dest": "/public/Detail/index.html"
     },
     {
+      "src": "/Detail/.*",
+      "dest": "/public/Detail/index.html"
+    },
+    {
       "src": "/Payment/?$",
       "dest": "/public/Payment/index.html"
     },
     {
-      "src": "/(.*\\.(js|css|html|png|jpg|jpeg|gif|svg|ico|pdf|xls|xlsx))",
+      "src": "/(.*\\.(html|png|jpg|jpeg|gif|svg|ico|pdf|xls|xlsx))",
       "dest": "/public/$1"
     },
     {

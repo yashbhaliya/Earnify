@@ -228,7 +228,7 @@
     .stat-card {
       background: white;
       border-radius: 20px;
-      padding: 30px;
+      /* padding: 30px; */
       box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
       border: 1px solid rgba(0, 0, 0, 0.05);
       position: relative;
@@ -707,6 +707,7 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="api-config.js"></script>
 <script src="../supabase-config.js"></script>
 <script>
   const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
@@ -860,7 +861,7 @@
       }
       
       // Load user's resources count
-      const resourcesRes = await fetch('http://localhost:5000/api/resources');
+      const resourcesRes = await fetch(API_CONFIG.getURL(API_CONFIG.endpoints.resources));
       if (!resourcesRes.ok) throw new Error('Failed to fetch resources');
       
       const allResources = await resourcesRes.json();
@@ -876,7 +877,7 @@
       let totalSales = 0;
       
       try {
-        const statsRes = await fetch('http://localhost:5000/api/statistics/purchases');
+        const statsRes = await fetch(API_CONFIG.getURL(API_CONFIG.endpoints.statistics));
         if (statsRes.ok) {
           const statsData = await statsRes.json();
           

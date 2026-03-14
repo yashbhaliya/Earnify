@@ -560,7 +560,7 @@
         if (data.token) {
           localStorage.setItem('adminToken', data.token);
           showSuccess('Login successful! Redirecting...');
-          setTimeout(() => window.location.href = 'dashboard.html', 1000);
+          setTimeout(() => window.location.href = 'Resources/', 1000);
         } else {
           showError(data.error || 'Invalid email or password');
           setButtonLoading(btn, false);
@@ -632,7 +632,7 @@
         if (data.token) {
           localStorage.setItem('adminToken', data.token);
           showSuccess('Account created successfully! Redirecting...');
-          setTimeout(() => window.location.href = 'dashboard.html', 1000);
+          setTimeout(() => window.location.href = 'Resources/', 1000);
         } else if (data.error) {
           // Handle specific error cases
           if (data.error.includes('already registered') || data.error.includes('already exists')) {
@@ -686,7 +686,7 @@
       if (token) {
         try {
           const { data: { user } } = await supabaseClient.auth.getUser(token);
-          if (user) window.location.href = 'dashboard.html';
+          if (user) window.location.href = 'Resources/';
         } catch (e) {
           localStorage.removeItem('adminToken');
         }

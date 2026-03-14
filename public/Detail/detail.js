@@ -188,18 +188,41 @@ async function loadResourceDetails() {
   const urlParams = new URLSearchParams(window.location.search);
   const resourceId = urlParams.get('id');
   
+  console.log('Loading resource with ID:', resourceId);
+  console.log('Current URL:', window.location.href);
+  
   if (!resourceId) {
-    window.location.href = '../';
+    console.error('No resource ID found in URL');
+    document.getElementById('resourceDetails').innerHTML = 
+      '<p class="loading">No resource ID provided. <a href="../Dashboard/">Return to Dashboard</a></p>';
+    document.getElementById('purchaseCard').innerHTML = 
+      '<p class="loading">Unable to load resource.</p>';
     return;
   }
   
+  // Show shimmer loading
+  showShimmerLoading();
+  
   try {
+    console.log('Fetching resources from:', API_CONFIG.getURL(API_CONFIG.endpoints.resources));
     const response = await fetch(API_CONFIG.getURL(API_CONFIG.endpoints.resources));
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
     const resources = await response.json();
+    console.log('All resources:', resources);
+    
     currentResource = resources.find(r => r.id == resourceId);
+    console.log('Found resource:', currentResource);
     
     if (!currentResource) {
-      window.location.href = '../';
+      console.error('Resource not found with ID:', resourceId);
+      document.getElementById('resourceDetails').innerHTML = 
+        '<p class="loading">Resource not found. <a href="../Dashboard/">Return to Dashboard</a></p>';
+      document.getElementById('purchaseCard').innerHTML = 
+        '<p class="loading">Resource not available.</p>';
       return;
     }
     
@@ -213,16 +236,54 @@ async function loadResourceDetails() {
           isPurchased = purchases.some(p => p.resource_id === currentResource.id);
         }
       } catch (err) {
-        console.log('Could not check purchases');
+        console.log('Could not check purchases:', err);
       }
     }
     
-    displayResourceDetails(isPurchased);
+    // Add a small delay to show shimmer effect
+    setTimeout(() => {
+      displayResourceDetails(isPurchased);
+    }, 800);
+    
   } catch (error) {
     console.error('Error loading resource:', error);
     document.getElementById('resourceDetails').innerHTML = 
-      '<p class="loading">Failed to load resource details.</p>';
+      `<p class="loading">Failed to load resource details: ${error.message}. <a href="../Dashboard/">Return to Dashboard</a></p>`;
+    document.getElementById('purchaseCard').innerHTML = 
+      '<p class="loading">Failed to load purchase options.</p>';
   }
+}
+
+function showShimmerLoading() {
+  // Show shimmer for main content
+  document.getElementById('resourceDetails').innerHTML = `
+    <div class="shimmer-element shimmer-badge"></div>
+    <div class="shimmer-element shimmer-title"></div>
+    <div class="shimmer-element shimmer-description"></div>
+    <div class="shimmer-element shimmer-description"></div>
+    <div class="shimmer-element shimmer-description"></div>
+    <div class="shimmer-features">
+      <div class="shimmer-element shimmer-features-title"></div>
+      <div class="shimmer-element shimmer-feature-item"></div>
+      <div class="shimmer-element shimmer-feature-item"></div>
+      <div class="shimmer-element shimmer-feature-item"></div>
+      <div class="shimmer-element shimmer-feature-item"></div>
+    </div>
+  `;
+  
+  // Show shimmer for purchase card
+  document.getElementById('purchaseCard').innerHTML = `
+    <div class="shimmer-price-section">
+      <div class="shimmer-element shimmer-price-label"></div>
+      <div class="shimmer-element shimmer-price"></div>
+    </div>
+    <div class="shimmer-element shimmer-button"></div>
+    <div class="shimmer-info-section">
+      <div class="shimmer-element shimmer-info-item"></div>
+      <div class="shimmer-element shimmer-info-item"></div>
+      <div class="shimmer-element shimmer-info-item"></div>
+    </div>
+  `;
 }
 
 function displayResourceDetails(isPurchased = false) {

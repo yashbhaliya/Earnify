@@ -2421,15 +2421,14 @@ body.light-mode #viewContent span {
 /* Enhanced Statistics Cards - Global Styling */
 .stats-overview {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 30px;
+grid-template-columns: repeat(3, 1fr);  gap: 30px;
   margin-bottom: 50px;
 }
 
 .stat-card {
   background: white;
   border-radius: 25px;
-  padding: 35px;
+  padding: 10px;
   display: flex;
   align-items: center;
   gap: 25px;
@@ -2705,6 +2704,10 @@ body.light-mode #viewContent span {
   font-weight: 500;
 }
 
+#statsOverview {
+  display: flex;
+}
+
 /* Enhanced Mobile Responsive Design for Stats Cards */
 @media (max-width: 768px) {
   .stats-overview {
@@ -2818,7 +2821,7 @@ body.light-mode #viewContent span {
 .add-buttons-group {
   display: flex;
   gap: 12px;
-  flex-wrap: wrap;
+  /* flex-wrap: wrap; */
 }
 
 
@@ -2885,7 +2888,7 @@ body.light-mode #viewContent span {
 .add-buttons-group {
   display: flex;
   gap: 10px;
-  flex-wrap: wrap;
+  /* flex-wrap: wrap; */
 }
 
 .add-btn {
@@ -3796,7 +3799,7 @@ body.sidebar-open {
 .stat-card {
   background: white;
   border-radius: 20px;
-  padding: 30px;
+  /* padding: 30px; */
   display: flex;
   align-items: center;
   gap: 20px;
@@ -3928,18 +3931,9 @@ select:focus,
   box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1), 0 1px 3px rgba(0, 0, 0, 0.05) !important;
 }
 
-/* Stats Content Shadows */
-#statsContent1,
-#statsContent2,
-#statsContent3 {
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06) !important;
-}
 
-#statsContent1:hover,
-#statsContent2:hover,
-#statsContent3:hover {
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08) !important;
-}
+
+
 
 /* Icon Shadows */
 .stat-icon,

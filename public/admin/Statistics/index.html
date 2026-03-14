@@ -223,7 +223,7 @@
 
 <div class="main">
   <div class="page-header">
-    <h1>📈 My Sales Statistics</h1>
+    <h1>My Sales Statistics</h1>
     <p class="subtitle">Track sales performance and customer insights for your resources</p>
   </div>
 
@@ -257,7 +257,42 @@
     </div>
     
     <!-- Actual Stats (Hidden Initially) -->
-    <div class="stats-overview" id="statsOverview" style="display: none;">
+    <div class="stats-overview loaded" id="statsOverview" style="display: none;">
+      <div class="stat-card">
+        <div class="stat-icon">💰</div>
+        <div class="stat-content">
+          <div class="stat-number" id="totalRevenue">₹0</div>
+          <h3>Total Revenue</h3>
+          <div class="stat-label">All time earnings</div>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-icon">📦</div>
+        <div class="stat-content">
+          <div class="stat-number" id="totalSales">0</div>
+          <h3>Total Sales</h3>
+          <div class="stat-label">Resources sold</div>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-icon">👥</div>
+        <div class="stat-content">
+          <div class="stat-number" id="totalCustomers">0</div>
+          <h3>Customers</h3>
+          <div class="stat-label">Unique buyers</div>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-icon">📈</div>
+        <div class="stat-content">
+          <div class="stat-number" id="avgOrderValue">₹0</div>
+          <h3>Avg Order</h3>
+          <div class="stat-label">Per transaction</div>
+        </div>
+      </div>
     </div>
 
     <div class="analytics-section">
@@ -347,7 +382,179 @@
       if (sidebarUserEmail) sidebarUserEmail.textContent = userEmail;
       if (sidebarAvatar) sidebarAvatar.textContent = userName.charAt(0).toUpperCase();
     }
+    
+    // Load statistics data
+    loadStatistics();
   })();
+  
+  async function loadStatistics() {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    const userEmail = currentUser.email;
+    
+    if (!userEmail) {
+      showNoDataMessage();
+      return;
+    }
+    
+    try {
+      console.log('Loading statistics for user:', userEmail);
+      console.log('API Base URL:', API_CONFIG.baseURL);
+      console.log('Payments endpoint:', API_CONFIG.getURL(API_CONFIG.endpoints.payments));
+      console.log('Resources endpoint:', API_CONFIG.getURL(API_CONFIG.endpoints.resources));
+      
+      // Use the correct statistics endpoint
+      const statsUrl = `${API_CONFIG.baseURL}/api/statistics/purchases/${encodeURIComponent(userEmail)}`;
+      console.log('Fetching statistics from:', statsUrl);
+      
+      const statsRes = await fetch(statsUrl);
+      console.log('Statistics response status:', statsRes.status);
+      
+      if (!statsRes.ok) {
+        console.error('Statistics API error:', statsRes.status, statsRes.statusText);
+        throw new Error(`Statistics API Error: ${statsRes.status}`);
+      }
+      
+      const statsData = await statsRes.json();
+      console.log('Statistics data:', statsData);
+      
+      // Update stats display
+      const totalRevenueEl = document.getElementById('totalRevenue');
+      const totalSalesEl = document.getElementById('totalSales');
+      const totalCustomersEl = document.getElementById('totalCustomers');
+      const avgOrderValueEl = document.getElementById('avgOrderValue');
+      
+      if (totalRevenueEl) totalRevenueEl.textContent = `₹${(statsData.totalRevenue || 0).toFixed(0)}`;
+      if (totalSalesEl) totalSalesEl.textContent = statsData.totalPurchases || 0;
+      if (totalCustomersEl) totalCustomersEl.textContent = statsData.totalCustomers || 0;
+      
+      const avgOrderValue = statsData.totalPurchases > 0 ? 
+        (statsData.totalRevenue || 0) / statsData.totalPurchases : 0;
+      if (avgOrderValueEl) avgOrderValueEl.textContent = `₹${avgOrderValue.toFixed(0)}`;
+      
+      // Convert userStats to the format expected by displayCustomerPurchases
+      const customerStats = {};
+      
+      if (statsData.userStats && Array.isArray(statsData.userStats)) {
+        statsData.userStats.forEach((user, index) => {
+          customerStats[`customer_${index}`] = {
+            email: user.email,
+            quantity: user.totalPurchases,
+            totalAmount: user.totalAmount,
+            resources: user.resources || []
+          };
+        });
+      }
+      
+      // Display customer purchase table
+      displayCustomerPurchases(customerStats);
+      
+      // Show actual stats and hide shimmer
+      const shimmerStats = document.getElementById('shimmerStats');
+      const statsOverview = document.getElementById('statsOverview');
+      
+      if (shimmerStats) shimmerStats.style.display = 'none';
+      if (statsOverview) statsOverview.style.display = 'flex';
+      
+    } catch (error) {
+      console.error('Error loading statistics:', error);
+      showErrorMessage();
+    }
+  }
+  
+  function displayCustomerPurchases(customerStats) {
+    const tbody = document.getElementById('purchaseTableBody');
+    
+    if (!tbody) {
+      console.error('purchaseTableBody element not found');
+      return;
+    }
+    
+    if (Object.keys(customerStats).length === 0) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="4" style="text-align: center; padding: 40px; color: #64748b;">
+            <div style="font-size: 48px; margin-bottom: 16px;">📊</div>
+            <h3 style="margin: 0 0 8px 0; color: #1e293b;">No Sales Yet</h3>
+            <p style="margin: 0;">Your resources haven't been purchased yet. Keep promoting your content!</p>
+          </td>
+        </tr>
+      `;
+      return;
+    }
+    
+    tbody.innerHTML = Object.entries(customerStats).map(([userId, stats]) => `
+      <tr>
+        <td>
+          <div class="customer-info">
+            <div class="customer-avatar">👤</div>
+            <div class="customer-details">
+              <div class="customer-email">${stats.email}</div>
+              <div class="customer-id">ID: ${userId.substring(0, 8)}...</div>
+            </div>
+          </div>
+        </td>
+        <td>
+          <span class="quantity-badge">${stats.quantity}</span>
+        </td>
+        <td>
+          <span class="amount-value">₹${stats.totalAmount.toFixed(0)}</span>
+        </td>
+        <td>
+          <div class="resources-list">
+            ${stats.resources.slice(0, 2).map(resource => 
+              `<span class="resource-tag">${resource}</span>`
+            ).join('')}
+            ${stats.resources.length > 2 ? 
+              `<span class="resource-tag more">+${stats.resources.length - 2} more</span>` : 
+              ''
+            }
+          </div>
+        </td>
+      </tr>
+    `).join('');
+  }
+  
+  function showNoDataMessage() {
+    const shimmerStats = document.getElementById('shimmerStats');
+    const statsOverview = document.getElementById('statsOverview');
+    const tbody = document.getElementById('purchaseTableBody');
+    
+    if (shimmerStats) shimmerStats.style.display = 'none';
+    if (statsOverview) statsOverview.style.display = 'flex';
+    
+    if (tbody) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="4" style="text-align: center; padding: 40px; color: #64748b;">
+            <div style="font-size: 48px; margin-bottom: 16px;">🔐</div>
+            <h3 style="margin: 0 0 8px 0; color: #1e293b;">Please Login</h3>
+            <p style="margin: 0;">You need to be logged in to view your sales statistics.</p>
+          </td>
+        </tr>
+      `;
+    }
+  }
+  
+  function showErrorMessage() {
+    const shimmerStats = document.getElementById('shimmerStats');
+    const statsOverview = document.getElementById('statsOverview');
+    const tbody = document.getElementById('purchaseTableBody');
+    
+    if (shimmerStats) shimmerStats.style.display = 'none';
+    if (statsOverview) statsOverview.style.display = 'flex';
+    
+    if (tbody) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="4" style="text-align: center; padding: 40px; color: #64748b;">
+            <div style="font-size: 48px; margin-bottom: 16px;">⚠️</div>
+            <h3 style="margin: 0 0 8px 0; color: #1e293b;">Error Loading Data</h3>
+            <p style="margin: 0;">Unable to load statistics. Please try refreshing the page.</p>
+          </td>
+        </tr>
+      `;
+    }
+  }
   
   function logout() {
     localStorage.removeItem('adminToken');

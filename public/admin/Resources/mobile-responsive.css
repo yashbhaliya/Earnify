@@ -164,10 +164,6 @@
         overflow-y: auto;
     }
 
-    .page-header h1 {
-        font-size: 1.5rem;
-    }
-
     .section-header {
         flex-direction: column;
         align-items: flex-start;
@@ -210,8 +206,7 @@
 
     /* --- Statistics Page Mobile Styles --- */
     .page-header {
-        padding: 25px 20px !important;
-        margin-bottom: 20px !important;
+        display: none !important;
     }
 
     .page-header h1 {

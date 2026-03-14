@@ -211,6 +211,16 @@ body {
 
 .details-wrapper {
   padding: 3rem 0 5rem;
+  margin: 0 20px;
+
+}
+
+/* Desktop/Tablet only - add left/right margins */
+@media (min-width: 769px) {
+  .details-wrapper {
+    margin: 0 40px;
+    
+  }
 }
 
 .breadcrumb {
@@ -647,3 +657,169 @@ body {
 }
 
 
+/* Shimmer Loading Styles for Details Page */
+.shimmer-details-main {
+  background: white;
+  border-radius: 24px;
+  padding: 3rem;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  animation: slideUp 0.6s ease-out;
+}
+
+.shimmer-purchase-card {
+  background: white;
+  border-radius: 24px;
+  padding: 2.5rem;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  position: sticky;
+  top: 100px;
+  animation: slideUp 0.6s ease-out 0.2s both;
+}
+
+.shimmer-element {
+  background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer-element::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 150%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.6) 50%,
+    transparent 100%
+  );
+  animation: shimmer 2s infinite;
+  z-index: 1;
+}
+
+@keyframes shimmer {
+  0% {
+    left: -150%;
+  }
+  100% {
+    left: 150%;
+  }
+}
+
+.shimmer-badge {
+  width: 120px;
+  height: 32px;
+  margin-bottom: 1.5rem;
+}
+
+.shimmer-title {
+  width: 80%;
+  height: 48px;
+  margin-bottom: 1.5rem;
+}
+
+.shimmer-description {
+  width: 100%;
+  height: 16px;
+  margin-bottom: 12px;
+}
+
+.shimmer-description:nth-child(2) {
+  width: 95%;
+}
+
+.shimmer-description:nth-child(3) {
+  width: 85%;
+  margin-bottom: 2.5rem;
+}
+
+.shimmer-features {
+  background: #f7fafc;
+  padding: 2rem;
+  border-radius: 16px;
+  margin-top: 2rem;
+}
+
+.shimmer-features-title {
+  width: 40%;
+  height: 24px;
+  margin-bottom: 1rem;
+}
+
+.shimmer-feature-item {
+  width: 100%;
+  height: 20px;
+  margin-bottom: 12px;
+}
+
+.shimmer-feature-item:last-child {
+  width: 70%;
+}
+
+.shimmer-price-section {
+  text-align: center;
+  padding: 2rem 0;
+  border-bottom: 2px solid #e2e8f0;
+  margin-bottom: 2rem;
+}
+
+.shimmer-price-label {
+  width: 60px;
+  height: 16px;
+  margin: 0 auto 0.5rem;
+}
+
+.shimmer-price {
+  width: 120px;
+  height: 56px;
+  margin: 0 auto;
+}
+
+.shimmer-button {
+  width: 100%;
+  height: 60px;
+  border-radius: 16px;
+  margin-bottom: 2rem;
+}
+
+.shimmer-info-section {
+  padding-top: 2rem;
+  border-top: 2px solid #e2e8f0;
+}
+
+.shimmer-info-item {
+  width: 80%;
+  height: 18px;
+  margin-bottom: 16px;
+}
+
+.shimmer-info-item:nth-child(2) {
+  width: 90%;
+}
+
+.shimmer-info-item:last-child {
+  width: 75%;
+}
+
+@media (max-width: 968px) {
+  .shimmer-purchase-card {
+    position: static;
+  }
+}
+
+@media (max-width: 768px) {
+  .shimmer-details-main {
+    padding: 2rem 1.5rem;
+  }
+  
+  .shimmer-title {
+    height: 36px;
+  }
+  
+  .shimmer-price {
+    height: 44px;
+  }
+}

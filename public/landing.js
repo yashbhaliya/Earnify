@@ -5,8 +5,9 @@ let isLoggedIn = false;
 let currentPage = 1;
 const itemsPerPage = 12;
 
-// Check login status on page load
+// Initialize the application when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
+  console.log('DOM loaded, API_CONFIG available:', typeof API_CONFIG !== 'undefined');
   checkLoginStatus();
   loadResources();
   loadSiteSettings();
@@ -198,6 +199,8 @@ function viewProfile() {
 async function loadResources() {
   const grid = document.getElementById('resourcesGrid');
   
+  console.log('loadResources called, API_CONFIG available:', typeof API_CONFIG !== 'undefined');
+  
   // Show shimmer loading cards
   if (grid) {
     grid.innerHTML = Array(6).fill(0).map(() => `
@@ -214,8 +217,16 @@ async function loadResources() {
   }
   
   try {
-    const res = await fetch(API_CONFIG.getURL(API_CONFIG.endpoints.resources));
+    const resourceUrl = API_CONFIG.getURL(API_CONFIG.endpoints.resources);
+    console.log('Fetching resources from:', resourceUrl);
+    
+    const res = await fetch(resourceUrl);
+    if (!res.ok) {
+      throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+    }
+    
     allResources = await res.json();
+    console.log('Resources loaded:', allResources.length);
     
     // Get user's purchases if logged in
     let userPurchases = [];
@@ -228,7 +239,7 @@ async function loadResources() {
             userPurchases = await purchaseRes.json();
           }
         } catch (err) {
-          console.log('Could not fetch purchases');
+          console.log('Could not fetch purchases:', err);
         }
       }
     }
@@ -238,7 +249,7 @@ async function loadResources() {
     console.error('Error loading resources:', error);
     const grid = document.getElementById('resourcesGrid');
     if (grid) {
-      grid.innerHTML = '<p style="text-align: center; color: #666;">Unable to load resources. Please try again later.</p>';
+      grid.innerHTML = `<p style="text-align: center; color: #666;">Unable to load resources: ${error.message}<br>Please try refreshing the page.</p>`;
     }
   }
 }
