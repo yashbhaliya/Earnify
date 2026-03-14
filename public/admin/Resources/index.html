@@ -23,7 +23,7 @@
   <a href="../Resources/">📚 Resources</a>
   <a href="../Statistics/">📈 Statistics</a>
   <a href="../Profile/">👤 Profile</a>
-  <a href="../../index.html" style="margin-top: 20px; border-top: 1px solid #ddd; padding-top: 10px;">🏠 Main Site</a>
+  <a href="../../" style="margin-top: 20px; border-top: 1px solid #ddd; padding-top: 10px;">🏠 Main Site</a>
   <a onclick="logout()"><span>🚪</span> Logout</a>
   
   <!-- User Profile Section -->
@@ -303,10 +303,19 @@
   })();
   
   function logout() {
+    // Clear all authentication data
     localStorage.removeItem('adminToken');
     localStorage.removeItem('currentUser');
     localStorage.removeItem('userLoggedIn');
-    window.location.href = '../index.html';
+    localStorage.removeItem('adminUser');
+    
+    // Sign out from Supabase if available
+    if (typeof supabaseClient !== 'undefined') {
+      supabaseClient.auth.signOut().catch(console.error);
+    }
+    
+    // Redirect to main site
+    window.location.href = '../../index.html';
   }
   
   function toggleSidebar() {

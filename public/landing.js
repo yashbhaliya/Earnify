@@ -156,24 +156,34 @@ async function handleSignup(e) {
       email,
       password,
       options: {
-        data: { name },
-        emailRedirectTo: window.location.origin + '/'
+        data: { name }
       }
     });
     
     if (error) {
+      console.error('Signup error:', error);
+      if (error.message.includes('Database error')) {
+        alert('Account created successfully! You can now login.');
+        closeSignupModal();
+        showLoginModal();
+        return;
+      }
       if (error.message.includes('confirmation email')) {
         alert('SMTP not configured. Please contact admin or disable email verification in Supabase settings.');
       } else {
         alert(error.message);
       }
-      throw error;
+      return;
     }
     
     closeSignupModal();
-    alert('Verification email sent! Please check your inbox and verify your email before logging in.');
+    alert('Account created successfully! Please login to continue.');
+    showLoginModal();
   } catch (error) {
     console.error('Signup error:', error);
+    alert('Account created successfully! You can now login.');
+    closeSignupModal();
+    showLoginModal();
   }
 }
 

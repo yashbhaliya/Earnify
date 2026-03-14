@@ -312,10 +312,17 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-// Admin logout function
-function logout() {
+// Admin logout function - only used if no other logout function is defined
+function adminLogout() {
   localStorage.removeItem('adminToken');
   localStorage.removeItem('adminUser');
+  localStorage.removeItem('currentUser');
+  localStorage.removeItem('userLoggedIn');
+  
+  // Sign out from Supabase if available
+  if (typeof supabaseClient !== 'undefined') {
+    supabaseClient.auth.signOut().catch(console.error);
+  }
   
   // Reset UI
   const loginBtn = document.getElementById('adminLoginBtn');
@@ -326,6 +333,6 @@ function logout() {
   if (signupBtn) signupBtn.style.display = 'inline-block';
   if (logoutBtn) logoutBtn.style.display = 'none';
   
-  // Redirect to login page or show login modal
-  openAuthModal('login');
+  // Redirect to main site
+  window.location.href = '../../index.html';
 }

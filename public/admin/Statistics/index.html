@@ -6,99 +6,154 @@
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../mobile-responsive.css">
   <style>
-    /* Shimmer Animation */
+    /* Enhanced Shimmer Animation */
     @keyframes shimmer {
       0% {
         background-position: -1000px 0;
+        opacity: 0.8;
+      }
+      50% {
+        opacity: 1;
       }
       100% {
         background-position: 1000px 0;
+        opacity: 0.8;
       }
     }
 
+    /* Shimmer Stats Grid */
     .shimmer-stats {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 25px;
-      margin-bottom: 30px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+      margin-bottom: 50px;
     }
 
+    /* Enhanced Shimmer Stat Card */
     .shimmer-stat-card {
       background: white;
-      border-radius: 20px;
-      padding: 30px;
+      border-radius: 25px;
+      padding: 35px;
       display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 20px;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+      align-items: center;
+      gap: 25px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
       border: 1px solid rgba(0, 0, 0, 0.05);
+      position: relative;
+      overflow: hidden;
+      min-height: 140px;
     }
 
+    .shimmer-stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 6px;
+      background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .shimmer-stat-card:nth-child(2)::before {
+      background: linear-gradient(90deg, #f093fb 0%, #f5576c 100%);
+    }
+
+    .shimmer-stat-card:nth-child(3)::before {
+      background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+    }
+
+    /* Shimmer Icon */
     .shimmer-stat-icon {
-      width: 70px;
-      height: 70px;
-      border-radius: 18px;
+      width: 90px;
+      height: 90px;
+      border-radius: 22px;
       background: linear-gradient(
         90deg,
         #f0f0f0 0%,
-        #e0e0e0 50%,
+        #e8e8e8 25%,
+        #f0f0f0 50%,
+        #e8e8e8 75%,
         #f0f0f0 100%
       );
       background-size: 1000px 100%;
-      animation: shimmer 2s infinite linear;
+      animation: shimmer 2.5s infinite linear;
       flex-shrink: 0;
+      position: relative;
+      overflow: hidden;
     }
 
+    .shimmer-stat-icon::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 40px;
+      height: 40px;
+      background: rgba(102, 126, 234, 0.1);
+      border-radius: 50%;
+    }
+
+    /* Shimmer Content */
     .shimmer-stat-content {
       flex: 1;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 12px;
       text-align: right;
-      align-self: flex-start;
+      align-self: stretch;
+      justify-content: center;
     }
 
     .shimmer-stat-title {
+      width: 70%;
+      height: 16px;
+      border-radius: 6px;
+      background: linear-gradient(
+        90deg,
+        #f0f0f0 0%,
+        #e8e8e8 25%,
+        #f0f0f0 50%,
+        #e8e8e8 75%,
+        #f0f0f0 100%
+      );
+      background-size: 1000px 100%;
+      animation: shimmer 2.5s infinite linear;
+      margin-left: auto;
+    }
+
+    .shimmer-stat-number {
+      width: 85%;
+      height: 42px;
+      border-radius: 8px;
+      background: linear-gradient(
+        90deg,
+        #f0f0f0 0%,
+        #e8e8e8 25%,
+        #f0f0f0 50%,
+        #e8e8e8 75%,
+        #f0f0f0 100%
+      );
+      background-size: 1000px 100%;
+      animation: shimmer 2.5s infinite linear;
+      margin-left: auto;
+    }
+
+    .shimmer-stat-label {
       width: 60%;
       height: 14px;
       border-radius: 4px;
       background: linear-gradient(
         90deg,
         #f0f0f0 0%,
-        #e0e0e0 50%,
+        #e8e8e8 25%,
+        #f0f0f0 50%,
+        #e8e8e8 75%,
         #f0f0f0 100%
       );
       background-size: 1000px 100%;
-      animation: shimmer 2s infinite linear;
-    }
-
-    .shimmer-stat-number {
-      width: 80%;
-      height: 32px;
-      border-radius: 6px;
-      background: linear-gradient(
-        90deg,
-        #f0f0f0 0%,
-        #e0e0e0 50%,
-        #f0f0f0 100%
-      );
-      background-size: 1000px 100%;
-      animation: shimmer 2s infinite linear;
-    }
-
-    .shimmer-stat-label {
-      width: 50%;
-      height: 12px;
-      border-radius: 4px;
-      background: linear-gradient(
-        90deg,
-        #f0f0f0 0%,
-        #e0e0e0 50%,
-        #f0f0f0 100%
-      );
-      background-size: 1000px 100%;
-      animation: shimmer 2s infinite linear;
+      animation: shimmer 2.5s infinite linear;
+      margin-left: auto;
     }
 
     .shimmer-table-row {
@@ -129,18 +184,412 @@
     }
 
     @media (max-width: 768px) {
-      .shimmer-stats {
+      .shimmer-stats,
+      .stats-overview {
         grid-template-columns: 1fr;
+        gap: 20px;
+      }
+      
+      .shimmer-stat-card,
+      .stat-card {
+        padding: 25px;
+        gap: 20px;
+        min-height: 120px;
+      }
+      
+      .shimmer-stat-icon,
+      .stat-icon {
+        width: 70px;
+        height: 70px;
+        font-size: 32px;
+        border-radius: 18px;
+        border: 2px solid #e2e8f0;
+      }
+      
+      .stat-number {
+        font-size: 32px;
+      }
+      
+      .stat-content h3 {
+        font-size: 14px;
+      }
+      
+      .stat-label {
+        font-size: 13px;
+      }
+      
+      /* Hide date filter on mobile */
+      .date-filter-section {
+        display: none;
+      }
+    }
+
+    /* Ultra Mobile - Stack vertically */
+    @media (max-width: 480px) {
+      .stat-card {
+        flex-direction: column;
+        text-align: center;
+        padding: 20px;
+        gap: 15px;
+        min-height: auto;
+      }
+      
+      .stat-content {
+        text-align: center !important;
+      }
+      
+      .stat-icon {
+        width: 60px;
+        height: 60px;
+        font-size: 28px;
+        margin: 0 auto;
+      }
+      
+      .stat-number {
+        font-size: 28px;
       }
       
       .shimmer-stat-card {
+        flex-direction: column;
+        text-align: center;
         padding: 20px;
+        gap: 15px;
+        min-height: auto;
+      }
+      
+      .shimmer-stat-content {
+        text-align: center;
+        align-self: center;
+      }
+      
+      .shimmer-stat-title,
+      .shimmer-stat-number,
+      .shimmer-stat-label {
+        margin-left: auto;
+        margin-right: auto;
       }
       
       .shimmer-stat-icon {
         width: 60px;
         height: 60px;
+        margin: 0 auto;
       }
+    }
+
+    /* Date Filter Section - Desktop Only */
+    .date-filter-section {
+      margin-top: 25px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .filter-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 15px;
+    }
+
+    .filter-icon {
+      font-size: 18px;
+    }
+
+    .date-filter-buttons {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 16px;
+      background: rgba(255, 255, 255, 0.15);
+      color: white;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 13px;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+      white-space: nowrap;
+    }
+
+    .filter-btn:hover {
+      background: rgba(255, 255, 255, 0.25);
+      border-color: rgba(255, 255, 255, 0.5);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .filter-btn.active {
+      background: rgba(255, 255, 255, 0.9);
+      color: #667eea;
+      border-color: rgba(255, 255, 255, 0.9);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .filter-btn .btn-icon {
+      font-size: 14px;
+    }
+
+    .filter-btn .btn-text {
+      font-weight: 600;
+    }
+
+    /* Custom Date Modal Styles */
+    .custom-date-modal {
+      max-width: 450px;
+      padding: 30px;
+    }
+
+    .custom-date-modal h2 {
+      color: #667eea;
+      text-align: center;
+      margin-bottom: 25px;
+      font-size: 24px;
+    }
+
+    .date-range-form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .date-input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .date-input-group label {
+      color: #475569;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .date-input {
+      padding: 12px 15px;
+      border: 2px solid #e2e8f0;
+      border-radius: 10px;
+      font-size: 14px;
+      transition: all 0.3s;
+      background: #f8fafc;
+    }
+
+    .date-input:focus {
+      outline: none;
+      border-color: #667eea;
+      background: white;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+      margin-top: 10px;
+    }
+
+    .btn-cancel {
+      padding: 12px 20px;
+      background: #f1f5f9;
+      color: #64748b;
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+
+    .btn-cancel:hover {
+      background: #e2e8f0;
+      color: #475569;
+    }
+
+    .btn-apply {
+      padding: 12px 20px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s;
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    }
+
+    /* Enhanced Statistics Cards */
+    .stats-overview {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+      margin-bottom: 50px;
+    }
+
+    .stat-card {
+      background: white;
+      border-radius: 25px;
+      padding: 35px;
+      display: flex;
+      align-items: center;
+      gap: 25px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      border: 1px solid rgba(0, 0, 0, 0.05);
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      min-height: 140px;
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 6px;
+      background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+      transition: height 0.3s ease;
+    }
+
+    .stat-card:nth-child(2)::before {
+      background: linear-gradient(90deg, #f093fb 0%, #f5576c 100%);
+    }
+
+    .stat-card:nth-child(3)::before {
+      background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+    }
+
+    .stat-card::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -50%;
+      width: 200px;
+      height: 200px;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+      border-radius: 50%;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+    }
+
+    .stat-card:hover::before {
+      height: 8px;
+    }
+
+    .stat-card:hover::after {
+      opacity: 1;
+    }
+
+    .stat-icon {
+      width: 90px;
+      height: 90px;
+      border-radius: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 42px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      flex-shrink: 0;
+      background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+      border: 3px solid #e2e8f0;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-icon::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.3) 50%, transparent 70%);
+      transform: rotate(45deg);
+      transition: transform 0.6s ease;
+    }
+
+    .stat-card:hover .stat-icon {
+      transform: rotate(5deg) scale(1.1);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .stat-card:hover .stat-icon::before {
+      transform: rotate(45deg) translate(100%, 100%);
+    }
+
+    .stat-content {
+      flex: 1;
+      text-align: right;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .stat-content h3 {
+      font-size: 16px;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin: 0;
+      font-weight: 700;
+      opacity: 0.8;
+      transition: all 0.3s ease;
+    }
+
+    .stat-card:hover .stat-content h3 {
+      opacity: 1;
+      transform: translateY(-2px);
+    }
+
+    .stat-number {
+      font-size: 42px;
+      font-weight: 900;
+      background: linear-gradient(135deg, #1e293b 0%, #475569 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin: 0;
+      line-height: 1.1;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .stat-card:hover .stat-number {
+      transform: scale(1.05);
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .stat-label {
+      font-size: 14px;
+      color: #94a3b8;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      transition: all 0.3s ease;
+      margin: 0;
+    }
+
+    .stat-card:hover .stat-label {
+      color: #64748b;
+      transform: translateY(-1px);
     }
   </style>
 </head>
@@ -223,8 +672,44 @@
 
 <div class="main">
   <div class="page-header">
-    <h1>My Sales Statistics</h1>
-    <p class="subtitle">Track sales performance and customer insights for your resources</p>
+    <div class="header-content">
+      <h1>My Sales Statistics</h1>
+      <p class="subtitle">Track sales performance and customer insights for your resources</p>
+      
+      <!-- Date Filter Section - Desktop Only -->
+      <div class="date-filter-section">
+        <div class="filter-label">
+          <span class="filter-icon">📅</span>
+          <span>Filter by Date:</span>
+        </div>
+        <div class="date-filter-buttons">
+          <button class="filter-btn active" onclick="filterByDate('alltime')" data-period="alltime">
+            <span class="btn-icon">📊</span>
+            <span class="btn-text">All Time</span>
+          </button>
+          <button class="filter-btn" onclick="filterByDate('today')" data-period="today">
+            <span class="btn-icon">📈</span>
+            <span class="btn-text">Today</span>
+          </button>
+          <button class="filter-btn" onclick="filterByDate('yesterday')" data-period="yesterday">
+            <span class="btn-icon">📉</span>
+            <span class="btn-text">Yesterday</span>
+          </button>
+          <button class="filter-btn" onclick="filterByDate('lastweek')" data-period="lastweek">
+            <span class="btn-icon">📋</span>
+            <span class="btn-text">Last Week</span>
+          </button>
+          <button class="filter-btn" onclick="filterByDate('lastmonth')" data-period="lastmonth">
+            <span class="btn-icon">📅</span>
+            <span class="btn-text">Last Month</span>
+          </button>
+          <button class="filter-btn" onclick="showCustomDateModal()" data-period="custom">
+            <span class="btn-icon">🗓️</span>
+            <span class="btn-text">Custom</span>
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div class="stats-container">
@@ -257,9 +742,9 @@
     </div>
     
     <!-- Actual Stats (Hidden Initially) -->
-    <div class="stats-overview loaded" id="statsOverview" style="display: grid;">
+    <div class="stats-overview loaded" id="statsOverview" style="display: none; opacity: 0; transform: translateY(20px); transition: all 0.5s ease;">
       <div class="stat-card">
-        <div class="stat-icon">💰</div>
+        <div class="stat-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">💰</div>
         <div class="stat-content">
           <div class="stat-number" id="totalRevenue">₹0</div>
           <h3>Total Revenue</h3>
@@ -268,7 +753,7 @@
       </div>
       
       <div class="stat-card">
-        <div class="stat-icon">📦</div>
+        <div class="stat-icon" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white;">📦</div>
         <div class="stat-content">
           <div class="stat-number" id="totalSales">0</div>
           <h3>Total Sales</h3>
@@ -277,20 +762,11 @@
       </div>
       
       <div class="stat-card">
-        <div class="stat-icon">👥</div>
+        <div class="stat-icon" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white;">👥</div>
         <div class="stat-content">
           <div class="stat-number" id="totalCustomers">0</div>
           <h3>Customers</h3>
           <div class="stat-label">Unique buyers</div>
-        </div>
-      </div>
-      
-      <div class="stat-card">
-        <div class="stat-icon">📈</div>
-        <div class="stat-content">
-          <div class="stat-number" id="avgOrderValue">₹0</div>
-          <h3>Avg Order</h3>
-          <div class="stat-label">Per transaction</div>
         </div>
       </div>
     </div>
@@ -358,10 +834,36 @@
   </div>
 </div>
 
+<!-- Custom Date Range Modal -->
+<div id="customDateModal" class="modal">
+  <div class="modal-content custom-date-modal">
+    <span class="close" onclick="closeCustomDateModal()">&times;</span>
+    <h2>Custom Date Range</h2>
+    <div class="date-range-form">
+      <div class="date-input-group">
+        <label for="startDate">From Date:</label>
+        <input type="date" id="startDate" class="date-input">
+      </div>
+      <div class="date-input-group">
+        <label for="endDate">To Date:</label>
+        <input type="date" id="endDate" class="date-input">
+      </div>
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="closeCustomDateModal()">Cancel</button>
+        <button class="btn-apply" onclick="applyCustomDateRange()">Apply Filter</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script src="../api-config.js"></script>
 <script src="../app.js"></script>
 <script src="../auth-modal.js"></script>
 <script>
+  // Initialize variables first
+  let currentDateFilter = 'alltime';
+  let originalStatsData = {};
+  
   // Check login status and update sidebar
   (function() {
     const token = localStorage.getItem('adminToken');
@@ -397,67 +899,90 @@
     }
     
     try {
-      console.log('Loading statistics for user:', userEmail);
-      console.log('API Base URL:', API_CONFIG.baseURL);
-      console.log('Payments endpoint:', API_CONFIG.getURL(API_CONFIG.endpoints.payments));
-      console.log('Resources endpoint:', API_CONFIG.getURL(API_CONFIG.endpoints.resources));
+      console.log('Loading statistics for user:', userEmail, 'with filter:', currentDateFilter);
       
-      // Use the correct statistics endpoint
-      const statsUrl = `${API_CONFIG.baseURL}/api/statistics/purchases/${encodeURIComponent(userEmail)}`;
-      console.log('Fetching statistics from:', statsUrl);
+      // Always load all data first, then filter client-side for better reliability
+      const res = await fetch(API_CONFIG.getURL(`${API_CONFIG.endpoints.userStatistics}/${encodeURIComponent(userEmail)}`));
       
-      const statsRes = await fetch(statsUrl);
-      console.log('Statistics response status:', statsRes.status);
-      
-      if (!statsRes.ok) {
-        console.error('Statistics API error:', statsRes.status, statsRes.statusText);
-        throw new Error(`Statistics API Error: ${statsRes.status}`);
+      if (!res.ok) {
+        throw new Error('Failed to load statistics. Please try again.');
       }
       
-      const statsData = await statsRes.json();
-      console.log('Statistics data:', statsData);
+      const statsData = await res.json();
+      console.log('Raw statistics data:', statsData);
       
-      // Update stats display
-      const totalRevenueEl = document.getElementById('totalRevenue');
-      const totalSalesEl = document.getElementById('totalSales');
-      const totalCustomersEl = document.getElementById('totalCustomers');
-      const avgOrderValueEl = document.getElementById('avgOrderValue');
+      // Store original data for filtering
+      window.originalStatsData = statsData;
       
-      if (totalRevenueEl) totalRevenueEl.textContent = `₹${(statsData.totalRevenue || 0).toFixed(0)}`;
-      if (totalSalesEl) totalSalesEl.textContent = statsData.totalPurchases || 0;
-      if (totalCustomersEl) totalCustomersEl.textContent = statsData.totalCustomers || 0;
-      
-      const avgOrderValue = statsData.totalPurchases > 0 ? 
-        (statsData.totalRevenue || 0) / statsData.totalPurchases : 0;
-      if (avgOrderValueEl) avgOrderValueEl.textContent = `₹${avgOrderValue.toFixed(0)}`;
-      
-      // Convert userStats to the format expected by displayCustomerPurchases
-      const customerStats = {};
-      
-      if (statsData.userStats && Array.isArray(statsData.userStats)) {
-        statsData.userStats.forEach((user, index) => {
-          customerStats[`customer_${index}`] = {
-            email: user.email,
-            quantity: user.totalPurchases,
-            totalAmount: user.totalAmount,
-            resources: user.resources || []
-          };
-        });
+      // Apply client-side filtering based on current filter
+      let displayData = statsData;
+      if (currentDateFilter !== 'alltime') {
+        if (currentDateFilter === 'custom' && window.customStartDate && window.customEndDate) {
+          displayData = filterDataByDate(statsData, currentDateFilter, window.customStartDate, window.customEndDate);
+        } else {
+          displayData = filterDataByDate(statsData, currentDateFilter);
+        }
       }
       
-      // Display customer purchase table
-      displayCustomerPurchases(customerStats);
-      
-      // Show actual stats and hide shimmer
-      const shimmerStats = document.getElementById('shimmerStats');
-      const statsOverview = document.getElementById('statsOverview');
-      
-      if (shimmerStats) shimmerStats.style.display = 'none';
-      if (statsOverview) statsOverview.style.display = 'flex';
+      console.log('Display data after filtering:', displayData);
+      displayStatsData(displayData);
+      updateSectionHeader();
       
     } catch (error) {
       console.error('Error loading statistics:', error);
       showErrorMessage();
+    }
+  }
+  
+  function displayStatsData(statsData) {
+    console.log('Displaying stats data:', statsData);
+    
+    // Update stats display
+    const totalRevenueEl = document.getElementById('totalRevenue');
+    const totalSalesEl = document.getElementById('totalSales');
+    const totalCustomersEl = document.getElementById('totalCustomers');
+    
+    const revenue = statsData.totalRevenue || 0;
+    const sales = statsData.totalPurchases || 0;
+    const customers = statsData.totalCustomers || 0;
+    
+    if (totalRevenueEl) totalRevenueEl.textContent = `₹${revenue.toFixed(0)}`;
+    if (totalSalesEl) totalSalesEl.textContent = sales;
+    if (totalCustomersEl) totalCustomersEl.textContent = customers;
+    
+    console.log('Updated stats display:', { revenue, sales, customers });
+    
+    // Convert userStats to the format expected by displayCustomerPurchases
+    const customerStats = {};
+    
+    if (statsData.userStats && Array.isArray(statsData.userStats)) {
+      statsData.userStats.forEach((user, index) => {
+        customerStats[`customer_${index}`] = {
+          email: user.email,
+          quantity: user.totalPurchases,
+          totalAmount: user.totalAmount,
+          resources: user.resources || [],
+          purchaseDate: user.purchaseDate || user.created_at || new Date().toISOString()
+        };
+      });
+    }
+    
+    console.log('Customer stats for table:', customerStats);
+    
+    // Display customer purchase table
+    displayCustomerPurchases(customerStats);
+    
+    // Show actual stats and hide shimmer
+    const shimmerStats = document.getElementById('shimmerStats');
+    const statsOverview = document.getElementById('statsOverview');
+    
+    if (shimmerStats) shimmerStats.style.display = 'none';
+    if (statsOverview) {
+      statsOverview.style.display = 'grid';
+      setTimeout(() => {
+        statsOverview.style.opacity = '1';
+        statsOverview.style.transform = 'translateY(0)';
+      }, 100);
     }
   }
   
@@ -520,7 +1045,13 @@
     const tbody = document.getElementById('purchaseTableBody');
     
     if (shimmerStats) shimmerStats.style.display = 'none';
-    if (statsOverview) statsOverview.style.display = 'flex';
+    if (statsOverview) {
+      statsOverview.style.display = 'grid';
+      setTimeout(() => {
+        statsOverview.style.opacity = '1';
+        statsOverview.style.transform = 'translateY(0)';
+      }, 100);
+    }
     
     if (tbody) {
       tbody.innerHTML = `
@@ -543,13 +1074,22 @@
     if (shimmerStats) shimmerStats.style.display = 'none';
     if (statsOverview) statsOverview.style.display = 'flex';
     
+    // Reset stats to zero
+    const totalRevenueEl = document.getElementById('totalRevenue');
+    const totalSalesEl = document.getElementById('totalSales');
+    const totalCustomersEl = document.getElementById('totalCustomers');
+    
+    if (totalRevenueEl) totalRevenueEl.textContent = '₹0';
+    if (totalSalesEl) totalSalesEl.textContent = '0';
+    if (totalCustomersEl) totalCustomersEl.textContent = '0';
+    
     if (tbody) {
       tbody.innerHTML = `
         <tr>
           <td colspan="4" style="text-align: center; padding: 40px; color: #64748b;">
             <div style="font-size: 48px; margin-bottom: 16px;">⚠️</div>
             <h3 style="margin: 0 0 8px 0; color: #1e293b;">Error Loading Data</h3>
-            <p style="margin: 0;">Unable to load statistics. Please try refreshing the page.</p>
+            <p style="margin: 0;">Unable to load statistics. Please check your server connection and try refreshing the page.</p>
           </td>
         </tr>
       `;
@@ -557,10 +1097,19 @@
   }
   
   function logout() {
+    // Clear all authentication data
     localStorage.removeItem('adminToken');
     localStorage.removeItem('currentUser');
     localStorage.removeItem('userLoggedIn');
-    window.location.href = '../index.html';
+    localStorage.removeItem('adminUser');
+    
+    // Sign out from Supabase if available
+    if (typeof supabaseClient !== 'undefined') {
+      supabaseClient.auth.signOut().catch(console.error);
+    }
+    
+    // Redirect to main site
+    window.location.href = '../../index.html';
   }
   
   function toggleSidebar() {
@@ -582,6 +1131,202 @@
       sidebar.classList.remove('active');
       overlay.classList.remove('active');
       body.classList.remove('sidebar-open');
+    }
+  }
+  
+  function updateSectionHeader() {
+    const sectionHeader = document.querySelector('.analytics-section .section-header h2');
+    if (sectionHeader) {
+      const filterText = getFilterDisplayText();
+      sectionHeader.textContent = `📈 Customer Purchase Details - ${filterText}`;
+    }
+  }
+  
+  function filterByDate(period) {
+    console.log('Filtering by date:', period);
+    
+    // Update active button
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.classList.remove('active');
+    });
+    const targetBtn = document.querySelector(`[data-period="${period}"]`);
+    if (targetBtn) targetBtn.classList.add('active');
+    
+    currentDateFilter = period;
+    
+    // Reload statistics with new filter
+    loadStatistics();
+  }
+  
+  function filterDataByDate(originalData, period, customStartDate = null, customEndDate = null) {
+    if (!originalData || !originalData.userStats) {
+      return originalData;
+    }
+    
+    const now = new Date();
+    let startDate, endDate;
+    
+    switch (period) {
+      case 'today':
+        startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        endDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59);
+        break;
+      case 'yesterday':
+        const yesterday = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+        startDate = new Date(yesterday.getFullYear(), yesterday.getMonth(), yesterday.getDate());
+        endDate = new Date(yesterday.getFullYear(), yesterday.getMonth(), yesterday.getDate(), 23, 59, 59);
+        break;
+      case 'lastweek':
+        // Get the previous week (Monday to Sunday)
+        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        const currentDayOfWeek = today.getDay(); // 0 = Sunday, 1 = Monday, etc.
+        const daysToLastMonday = currentDayOfWeek === 0 ? 13 : (currentDayOfWeek + 6); // Days to get to last Monday
+        
+        const lastMonday = new Date(today.getTime() - daysToLastMonday * 24 * 60 * 60 * 1000);
+        const lastSunday = new Date(lastMonday.getTime() + 6 * 24 * 60 * 60 * 1000);
+        
+        startDate = new Date(lastMonday.getFullYear(), lastMonday.getMonth(), lastMonday.getDate(), 0, 0, 0);
+        endDate = new Date(lastSunday.getFullYear(), lastSunday.getMonth(), lastSunday.getDate(), 23, 59, 59);
+        break;
+      case 'lastmonth':
+        // Get the previous month (1st to last day of previous month)
+        const lastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+        const lastDayOfLastMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+        
+        startDate = new Date(lastMonth.getFullYear(), lastMonth.getMonth(), 1, 0, 0, 0);
+        endDate = new Date(lastDayOfLastMonth.getFullYear(), lastDayOfLastMonth.getMonth(), lastDayOfLastMonth.getDate(), 23, 59, 59);
+        break;
+      case 'custom':
+        if (customStartDate && customEndDate) {
+          startDate = new Date(customStartDate);
+          endDate = new Date(customEndDate + 'T23:59:59');
+        } else {
+          return originalData;
+        }
+        break;
+      default:
+        return originalData;
+    }
+    
+    console.log(`Filtering data for ${period}:`, {
+      startDate: startDate.toISOString(),
+      endDate: endDate.toISOString(),
+      originalDataCount: originalData.userStats.length,
+      dateRange: `${startDate.toLocaleDateString()} to ${endDate.toLocaleDateString()}`
+    });
+    
+    // Filter userStats based on purchase dates
+    const filteredUserStats = originalData.userStats.filter(user => {
+      // Try multiple date fields that might exist in the data
+      const purchaseDate = new Date(
+        user.purchaseDate || 
+        user.created_at || 
+        user.purchase_date || 
+        user.date || 
+        Date.now()
+      );
+      
+      const isInRange = purchaseDate >= startDate && purchaseDate <= endDate;
+      
+      if (period === 'lastweek' || period === 'lastmonth') {
+        console.log(`User ${user.email}: purchaseDate=${purchaseDate.toLocaleDateString()}, startDate=${startDate.toLocaleDateString()}, endDate=${endDate.toLocaleDateString()}, inRange=${isInRange}`);
+      }
+      
+      return isInRange;
+    });
+    
+    console.log(`Filtered results for ${period}:`, {
+      filteredCount: filteredUserStats.length,
+      originalCount: originalData.userStats.length
+    });
+    
+    // Recalculate totals based on filtered data
+    const totalRevenue = filteredUserStats.reduce((sum, user) => sum + (user.totalAmount || 0), 0);
+    const totalPurchases = filteredUserStats.reduce((sum, user) => sum + (user.totalPurchases || 0), 0);
+    const totalCustomers = filteredUserStats.length;
+    
+    return {
+      ...originalData,
+      totalRevenue,
+      totalPurchases,
+      totalCustomers,
+      userStats: filteredUserStats
+    };
+  }
+  
+  function showCustomDateModal() {
+    const modal = document.getElementById('customDateModal');
+    if (modal) {
+      modal.style.display = 'flex';
+      
+      // Set default dates
+      const today = new Date();
+      const lastWeek = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
+      
+      document.getElementById('startDate').value = lastWeek.toISOString().split('T')[0];
+      document.getElementById('endDate').value = today.toISOString().split('T')[0];
+    }
+  }
+  
+  function closeCustomDateModal() {
+    const modal = document.getElementById('customDateModal');
+    if (modal) {
+      modal.style.display = 'none';
+    }
+  }
+  
+  function applyCustomDateRange() {
+    const startDate = document.getElementById('startDate').value;
+    const endDate = document.getElementById('endDate').value;
+    
+    if (!startDate || !endDate) {
+      alert('Please select both start and end dates');
+      return;
+    }
+    
+    if (new Date(startDate) > new Date(endDate)) {
+      alert('Start date cannot be later than end date');
+      return;
+    }
+    
+    // Update active button
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.classList.remove('active');
+    });
+    const customBtn = document.querySelector('[data-period="custom"]');
+    if (customBtn) customBtn.classList.add('active');
+    
+    currentDateFilter = 'custom';
+    
+    // Store custom dates for filtering
+    window.customStartDate = startDate;
+    window.customEndDate = endDate;
+    
+    // Apply custom date filter
+    if (window.originalStatsData) {
+      const filteredData = filterDataByDate(window.originalStatsData, 'custom', startDate, endDate);
+      displayStatsData(filteredData);
+      updateSectionHeader();
+    }
+    
+    closeCustomDateModal();
+  }
+  
+  function getFilterDisplayText() {
+    switch (currentDateFilter) {
+      case 'alltime': return 'All Time';
+      case 'today': return 'Today';
+      case 'yesterday': return 'Yesterday';
+      case 'lastweek': return 'Last Week';
+      case 'lastmonth': return 'Last Month';
+      case 'custom': 
+        if (window.customStartDate && window.customEndDate) {
+          const start = new Date(window.customStartDate).toLocaleDateString();
+          const end = new Date(window.customEndDate).toLocaleDateString();
+          return `${start} to ${end}`;
+        }
+        return 'Custom Range';
+      default: return 'All Time';
     }
   }
 </script>

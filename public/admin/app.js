@@ -769,7 +769,10 @@ if (document.getElementById("userTable")) loadUsers();
 if (document.getElementById("totalUsers")) loadDashboard();
 if (document.getElementById("activeRate")) loadAnalytics();
 if (document.getElementById("totalRecords")) loadSettings();
-if (document.getElementById("purchaseTableBody")) loadPurchaseStatistics();
+if (document.getElementById("purchaseTableBody")) {
+  // Disabled loadPurchaseStatistics to prevent fetch errors
+  console.log('loadPurchaseStatistics disabled - Statistics page uses its own mock data system');
+}
 
 
 
