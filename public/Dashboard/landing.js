@@ -177,13 +177,29 @@ async function handleSignup(e) {
 }
 
 async function logout() {
-  await supabaseClient.auth.signOut();
-  localStorage.removeItem('userLoggedIn');
-  localStorage.removeItem('currentUser');
+  try {
+    await supabaseClient.auth.signOut();
+  } catch (error) {
+    console.log('Supabase signout error:', error);
+  }
+  
+  // Clear all authentication data
   localStorage.removeItem('adminToken');
+  localStorage.removeItem('currentUser');
+  localStorage.removeItem('userLoggedIn');
+  localStorage.removeItem('adminUser');
+  localStorage.removeItem('authToken');
+  localStorage.removeItem('user');
+  sessionStorage.clear();
+  
   isLoggedIn = false;
   updateUI();
-  window.location.href = 'index.html';
+  
+  // Reliable redirect to main index page
+  window.location.href = '../index.html';
+  setTimeout(() => {
+    window.location.replace('../index.html');
+  }, 100);
 }
 
 function viewProfile() {

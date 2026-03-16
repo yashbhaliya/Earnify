@@ -377,7 +377,7 @@
           document.getElementById('purchases').innerHTML = `
             <div class="empty-state">
               <h2>🛒 No Purchases Yet</h2>
-              <p>You haven't made any purchases. <a href="index.html#resources">Browse our resources</a> to get started!</p>
+              <p>You haven't made any purchases. <a href="javascript:void(0)" onclick="navigateToResources('all')">Browse our resources</a> to get started!</p>
             </div>
           `;
           return;
@@ -387,7 +387,7 @@
         allPurchases = purchases;
         displayPurchases(purchases);
       } catch (error) {
-        document.getElementById('purchases').innerHTML = '<div class="empty-state"><h2>🛒 No Purchases Yet</h2><p>You haven\'t made any purchases. <a href="index.html#resources">Browse our resources</a> to get started!</p></div>';
+        document.getElementById('purchases').innerHTML = '<div class="empty-state"><h2>🛒 No Purchases Yet</h2><p>You haven\'t made any purchases. <a href="javascript:void(0)" onclick="navigateToResources(\'all\')">Browse our resources</a> to get started!</p></div>';
       }
     }
 
@@ -398,7 +398,7 @@
         container.innerHTML = `
           <div class="empty-state">
             <h2>🛒 No Purchases Yet</h2>
-            <p>You haven't made any purchases. <a href="index.html#resources">Browse our resources</a> to get started!</p>
+            <p>You haven't made any purchases. <a href="javascript:void(0)" onclick="navigateToResources('all')">Browse our resources</a> to get started!</p>
           </div>
         `;
         return;
@@ -431,6 +431,17 @@
       localStorage.removeItem('currentUser');
       localStorage.removeItem('userLoggedIn');
       window.location.href = 'index.html';
+    }
+    
+    function navigateToResources(type = 'all') {
+      // Navigate to main index page with resources section
+      if (type === 'all') {
+        window.location.href = '../index.html#resources';
+      } else {
+        // Store the filter type in sessionStorage to apply after page load
+        sessionStorage.setItem('resourceFilter', type);
+        window.location.href = '../index.html#resources';
+      }
     }
     
     function downloadReceipt(paymentId, orderId, title, price) {

@@ -10,15 +10,15 @@
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   min-height: 100vh;
+  background-color: #F8FAFC;
   color: #1a202c;
 }
 
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 10px;
 }
 
 .navbar {
@@ -210,7 +210,7 @@ body {
 }
 
 .details-wrapper {
-  padding: 3rem 0 5rem;
+  /* padding: 3rem 0 5rem; */
   margin: 0 20px;
 
 }
@@ -257,7 +257,7 @@ body {
   background: white;
   border-radius: 24px;
   padding: 3rem;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.05);
   animation: slideUp 0.6s ease-out;
 }
 
@@ -340,7 +340,7 @@ body {
   background: white;
   border-radius: 24px;
   padding: 2.5rem;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.05);
   position: sticky;
   top: 100px;
   animation: slideUp 0.6s ease-out 0.2s both;
@@ -440,6 +440,28 @@ body {
   
   .purchase-card {
     position: static;
+  }
+  
+  /* Move price-section and buy-button to appear after description on mobile */
+  .details-main {
+    position: relative;
+  }
+  
+  .details-main .description {
+    margin-bottom: 1rem;
+  }
+  
+  /* Create mobile price and button section */
+  .details-main::after {
+    content: '';
+    display: block;
+    width: 100%;
+    margin: 2rem 0;
+  }
+  
+  /* Hide the sidebar purchase card on mobile */
+  .details-sidebar {
+    display: none;
   }
 }
 
@@ -657,7 +679,7 @@ body {
 }
 
 
-/* Shimmer Loading Styles for Details Page */
+/* Enhanced Shimmer Loading Styles for Details Page */
 .shimmer-details-main {
   background: white;
   border-radius: 24px;
@@ -677,10 +699,12 @@ body {
 }
 
 .shimmer-element {
-  background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+  background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 50%, #f1f5f9 100%);
   border-radius: 8px;
   position: relative;
   overflow: hidden;
+  background-size: 200% 100%;
+  animation: shimmerWave 2s infinite ease-in-out;
 }
 
 .shimmer-element::before {
@@ -693,10 +717,10 @@ body {
   background: linear-gradient(
     90deg,
     transparent 0%,
-    rgba(255, 255, 255, 0.6) 50%,
+    rgba(255, 255, 255, 0.8) 50%,
     transparent 100%
   );
-  animation: shimmer 2s infinite;
+  animation: shimmer 2.5s infinite;
   z-index: 1;
 }
 
@@ -709,22 +733,34 @@ body {
   }
 }
 
+@keyframes shimmerWave {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
 .shimmer-badge {
-  width: 120px;
-  height: 32px;
+  width: 140px;
+  height: 36px;
   margin-bottom: 1.5rem;
+  border-radius: 30px;
 }
 
 .shimmer-title {
-  width: 80%;
-  height: 48px;
+  width: 85%;
+  height: 52px;
   margin-bottom: 1.5rem;
+  border-radius: 12px;
 }
 
 .shimmer-description {
   width: 100%;
-  height: 16px;
-  margin-bottom: 12px;
+  height: 18px;
+  margin-bottom: 14px;
+  border-radius: 6px;
 }
 
 .shimmer-description:nth-child(2) {
@@ -744,15 +780,17 @@ body {
 }
 
 .shimmer-features-title {
-  width: 40%;
-  height: 24px;
-  margin-bottom: 1rem;
+  width: 45%;
+  height: 28px;
+  margin-bottom: 1.5rem;
+  border-radius: 8px;
 }
 
 .shimmer-feature-item {
   width: 100%;
-  height: 20px;
-  margin-bottom: 12px;
+  height: 22px;
+  margin-bottom: 16px;
+  border-radius: 6px;
 }
 
 .shimmer-feature-item:last-child {
@@ -767,20 +805,22 @@ body {
 }
 
 .shimmer-price-label {
-  width: 60px;
-  height: 16px;
-  margin: 0 auto 0.5rem;
+  width: 80px;
+  height: 18px;
+  margin: 0 auto 0.8rem;
+  border-radius: 6px;
 }
 
 .shimmer-price {
-  width: 120px;
-  height: 56px;
+  width: 140px;
+  height: 64px;
   margin: 0 auto;
+  border-radius: 12px;
 }
 
 .shimmer-button {
   width: 100%;
-  height: 60px;
+  height: 64px;
   border-radius: 16px;
   margin-bottom: 2rem;
 }
@@ -791,9 +831,10 @@ body {
 }
 
 .shimmer-info-item {
-  width: 80%;
-  height: 18px;
-  margin-bottom: 16px;
+  width: 85%;
+  height: 20px;
+  margin-bottom: 18px;
+  border-radius: 6px;
 }
 
 .shimmer-info-item:nth-child(2) {
@@ -804,9 +845,15 @@ body {
   width: 75%;
 }
 
+/* Mobile Shimmer Adjustments */
 @media (max-width: 968px) {
   .shimmer-purchase-card {
     position: static;
+    margin-top: 2rem;
+  }
+  
+  .shimmer-features {
+    margin-top: 1.5rem;
   }
 }
 
@@ -816,10 +863,35 @@ body {
   }
   
   .shimmer-title {
-    height: 36px;
+    height: 42px;
+    width: 90%;
   }
   
   .shimmer-price {
-    height: 44px;
+    height: 52px;
+    width: 120px;
+  }
+  
+  .shimmer-button {
+    height: 56px;
+  }
+  
+  .shimmer-badge {
+    width: 120px;
+    height: 32px;
+  }
+  
+  .shimmer-features {
+    padding: 1.5rem;
+  }
+  
+  .shimmer-features-title {
+    width: 50%;
+    height: 24px;
+  }
+  
+  .shimmer-feature-item {
+    height: 20px;
+    margin-bottom: 14px;
   }
 }

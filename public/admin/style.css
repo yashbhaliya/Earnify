@@ -3227,38 +3227,35 @@ body.light-mode #viewContent span {
   }
   
   .add-buttons-group {
-    display: flex !important;
-    flex-wrap: nowrap !important;
-    overflow-x: auto !important;
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
     width: 100% !important;
     gap: 10px !important;
-    padding-bottom: 10px !important;
-    -webkit-overflow-scrolling: touch !important;
-    scrollbar-width: thin;
-  }
-  
-  .add-buttons-group::-webkit-scrollbar {
-    height: 8px;
-  }
-  
-  .add-buttons-group::-webkit-scrollbar-track {
-    background: #f1f5f9;
-    border-radius: 10px;
-  }
-  
-  .add-buttons-group::-webkit-scrollbar-thumb {
-    background: linear-gradient(135deg, #cbd5e1 0%, #94a3b8 100%);
-    border-radius: 10px;
-  }
-  
-  .add-buttons-group::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(135deg, #94a3b8 0%, #64748b 100%);
+    overflow: visible !important;
+    padding-bottom: 0 !important;
   }
   
   .add-btn {
-    flex-shrink: 0 !important;
-    white-space: nowrap !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    padding: 12px 8px !important;
+    white-space: normal !important;
     min-width: auto !important;
+    width: 100% !important;
+    flex-shrink: 1 !important;
+  }
+  
+  .add-btn .btn-icon {
+    font-size: 28px !important;
+  }
+  
+  .add-btn .btn-text {
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    text-align: center !important;
   }
   
   .resource-tabs {

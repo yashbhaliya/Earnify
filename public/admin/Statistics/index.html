@@ -6,42 +6,82 @@
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../mobile-responsive.css">
   <style>
-    /* Enhanced Shimmer Animation */
+    .sidebar-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 30px 30px;
+      border-bottom: 2px solid rgba(59, 130, 246, 0.2);
+    }
+    .sidebar-header h2 {
+      padding: 0;
+      border-bottom: none;
+      margin: 0;
+    }
+    .sidebar-close-btn {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 26px;
+      line-height: 1;
+      cursor: pointer;
+      color: #64748b;
+      padding: 2px 6px;
+      border-radius: 6px;
+      transition: background 0.2s, color 0.2s;
+      box-shadow: none !important;
+    }
+    .sidebar-close-btn:hover {
+      background: rgba(255,255,255,0.15);
+      color: #ef4444;
+    }
+    .sidebar.active .sidebar-close-btn {
+      display: block;
+    }
+    @media (min-width: 769px) {
+      .sidebar-close-btn { display: none !important; }
+    }
+
+    /* Enhanced Shimmer Animation - Smaller and Subtle */
     @keyframes shimmer {
       0% {
-        background-position: -1000px 0;
-        opacity: 0.8;
+        background-position: -800px 0;
+        opacity: 0.9;
       }
       50% {
         opacity: 1;
       }
       100% {
-        background-position: 1000px 0;
-        opacity: 0.8;
+        background-position: 800px 0;
+        opacity: 0.9;
       }
     }
 
-    /* Shimmer Stats Grid */
+    /* Shimmer Stats Grid - Compact Layout */
     .shimmer-stats {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 30px;
-      margin-bottom: 50px;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-bottom: 35px;
     }
 
-    /* Enhanced Shimmer Stat Card */
+    .stats-overview.loaded {
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+
+    /* Enhanced Shimmer Stat Card - Compact */
     .shimmer-stat-card {
       background: white;
-      border-radius: 25px;
-      padding: 35px;
+      border-radius: 12px;
+      padding: 16px;
       display: flex;
       align-items: center;
-      gap: 25px;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-      border: 1px solid rgba(0, 0, 0, 0.05);
+      gap: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+      border: 1px solid rgba(0, 0, 0, 0.04);
       position: relative;
       overflow: hidden;
-      min-height: 140px;
+      min-height: 80px;
     }
 
     .shimmer-stat-card::before {
@@ -50,7 +90,7 @@
       top: 0;
       left: 0;
       right: 0;
-      height: 6px;
+      height: 3px;
       background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
     }
 
@@ -62,21 +102,21 @@
       background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
     }
 
-    /* Shimmer Icon */
+    /* Shimmer Icon - Compact */
     .shimmer-stat-icon {
-      width: 90px;
-      height: 90px;
-      border-radius: 22px;
+      width: 48px;
+      height: 48px;
+      border-radius: 10px;
       background: linear-gradient(
         90deg,
-        #f0f0f0 0%,
-        #e8e8e8 25%,
-        #f0f0f0 50%,
-        #e8e8e8 75%,
-        #f0f0f0 100%
+        #f5f5f5 0%,
+        #eeeeee 25%,
+        #f5f5f5 50%,
+        #eeeeee 75%,
+        #f5f5f5 100%
       );
-      background-size: 1000px 100%;
-      animation: shimmer 2.5s infinite linear;
+      background-size: 800px 100%;
+      animation: shimmer 2s infinite linear;
       flex-shrink: 0;
       position: relative;
       overflow: hidden;
@@ -88,71 +128,71 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: 40px;
-      height: 40px;
-      background: rgba(102, 126, 234, 0.1);
+      width: 20px;
+      height: 20px;
+      background: rgba(102, 126, 234, 0.08);
       border-radius: 50%;
     }
 
-    /* Shimmer Content */
+    /* Shimmer Content - Compact */
     .shimmer-stat-content {
       flex: 1;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 8px;
       text-align: right;
       align-self: stretch;
       justify-content: center;
     }
 
     .shimmer-stat-title {
-      width: 70%;
-      height: 16px;
-      border-radius: 6px;
+      width: 60%;
+      height: 10px;
+      border-radius: 3px;
       background: linear-gradient(
         90deg,
-        #f0f0f0 0%,
-        #e8e8e8 25%,
-        #f0f0f0 50%,
-        #e8e8e8 75%,
-        #f0f0f0 100%
+        #f5f5f5 0%,
+        #eeeeee 25%,
+        #f5f5f5 50%,
+        #eeeeee 75%,
+        #f5f5f5 100%
       );
-      background-size: 1000px 100%;
-      animation: shimmer 2.5s infinite linear;
+      background-size: 800px 100%;
+      animation: shimmer 2s infinite linear;
       margin-left: auto;
     }
 
     .shimmer-stat-number {
-      width: 85%;
-      height: 42px;
-      border-radius: 8px;
+      width: 75%;
+      height: 24px;
+      border-radius: 4px;
       background: linear-gradient(
         90deg,
-        #f0f0f0 0%,
-        #e8e8e8 25%,
-        #f0f0f0 50%,
-        #e8e8e8 75%,
-        #f0f0f0 100%
+        #f5f5f5 0%,
+        #eeeeee 25%,
+        #f5f5f5 50%,
+        #eeeeee 75%,
+        #f5f5f5 100%
       );
-      background-size: 1000px 100%;
-      animation: shimmer 2.5s infinite linear;
+      background-size: 800px 100%;
+      animation: shimmer 2s infinite linear;
       margin-left: auto;
     }
 
     .shimmer-stat-label {
-      width: 60%;
-      height: 14px;
-      border-radius: 4px;
+      width: 50%;
+      height: 8px;
+      border-radius: 2px;
       background: linear-gradient(
         90deg,
-        #f0f0f0 0%,
-        #e8e8e8 25%,
-        #f0f0f0 50%,
-        #e8e8e8 75%,
-        #f0f0f0 100%
+        #f5f5f5 0%,
+        #eeeeee 25%,
+        #f5f5f5 50%,
+        #eeeeee 75%,
+        #f5f5f5 100%
       );
-      background-size: 1000px 100%;
-      animation: shimmer 2.5s infinite linear;
+      background-size: 800px 100%;
+      animation: shimmer 2s infinite linear;
       margin-left: auto;
     }
 
@@ -187,35 +227,48 @@
       .shimmer-stats,
       .stats-overview {
         grid-template-columns: 1fr;
-        gap: 20px;
+        gap: 12px;
       }
       
       .shimmer-stat-card,
       .stat-card {
-        padding: 25px;
-        gap: 20px;
-        min-height: 120px;
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        padding: 14px;
+        gap: 10px;
+        min-height: 70px;
       }
       
       .shimmer-stat-icon,
       .stat-icon {
-        width: 70px;
-        height: 70px;
-        font-size: 32px;
-        border-radius: 18px;
-        border: 2px solid #e2e8f0;
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+        border-radius: 8px;
+        flex-shrink: 0;
+      }
+      
+      .shimmer-stat-content,
+      .stat-content {
+        flex: 1;
+        text-align: right !important;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 4px;
       }
       
       .stat-number {
-        font-size: 32px;
+        font-size: 22px;
       }
       
       .stat-content h3 {
-        font-size: 14px;
+        font-size: 10px;
       }
       
       .stat-label {
-        font-size: 13px;
+        font-size: 9px;
       }
       
       /* Mobile Page Header */
@@ -241,7 +294,7 @@
       .header-content .subtitle {
         font-size: 14px !important;
         margin-bottom: 20px;
-        display: block !important;
+        display: none !important;
       }
       
       /* Show dropdown on mobile, hide buttons */
@@ -266,55 +319,66 @@
       }
     }
 
-    /* Ultra Mobile - Stack vertically */
+    /* Ultra Mobile - Keep horizontal layout but smaller */
     @media (max-width: 480px) {
-      .stat-card {
+      .stat-card,
+      .shimmer-stat-card {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        padding: 12px;
+        gap: 8px;
+        min-height: 60px;
+      }
+      
+      .stat-content,
+      .shimmer-stat-content {
+        flex: 1;
+        text-align: right !important;
+        display: flex;
         flex-direction: column;
-        text-align: center;
-        padding: 20px;
-        gap: 15px;
-        min-height: auto;
+        justify-content: center;
+        gap: 2px;
       }
       
-      .stat-content {
-        text-align: center !important;
-      }
-      
-      .stat-icon {
-        width: 60px;
-        height: 60px;
-        font-size: 28px;
-        margin: 0 auto;
+      .stat-icon,
+      .shimmer-stat-icon {
+        width: 36px;
+        height: 36px;
+        font-size: 16px;
+        border-radius: 6px;
+        flex-shrink: 0;
       }
       
       .stat-number {
-        font-size: 28px;
+        font-size: 20px;
       }
       
-      .shimmer-stat-card {
-        flex-direction: column;
-        text-align: center;
-        padding: 20px;
-        gap: 15px;
-        min-height: auto;
+      .stat-content h3 {
+        font-size: 9px;
       }
       
-      .shimmer-stat-content {
-        text-align: center;
-        align-self: center;
+      .stat-label {
+        font-size: 8px;
       }
       
       .shimmer-stat-title,
       .shimmer-stat-number,
       .shimmer-stat-label {
         margin-left: auto;
-        margin-right: auto;
+        margin-right: 0;
       }
       
-      .shimmer-stat-icon {
-        width: 60px;
-        height: 60px;
-        margin: 0 auto;
+      .shimmer-stat-title {
+        height: 9px;
+      }
+      
+      .shimmer-stat-number {
+        height: 20px;
+      }
+      
+      .shimmer-stat-label {
+        height: 8px;
       }
     }
 
@@ -365,6 +429,7 @@
       font-size: 16px;
       font-weight: 600;
       margin-bottom: 15px;
+     
       visibility: visible !important;
     }
 
@@ -535,6 +600,32 @@
       font-weight: 600;
     }
 
+    .filter-btn[data-period="today"] {
+      background: #847ACD !important;
+    }
+
+    .filter-btn[data-period="today"].active {
+      background: white !important;
+      color: #667eea !important;
+      border-color: white !important;
+    }
+
+    .filter-btn[data-period="alltime"] {
+      background: #10b981 !important;
+      border-color: #10b981 !important;
+    }
+
+    .filter-btn[data-period="alltime"]:hover {
+      background: #059669 !important;
+      border-color: #059669 !important;
+    }
+
+    .filter-btn[data-period="alltime"].active {
+      background: #059669 !important;
+      border-color: #059669 !important;
+      color: white !important;
+    }
+
     /* Custom Date Modal Styles */
     .custom-date-modal {
       max-width: 450px;
@@ -617,28 +708,192 @@
       box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
     }
 
-    /* Enhanced Statistics Cards */
+    /* Profile Stat Card - Small Compact */
+    .profile-stat-card {
+      background: white;
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+      border: 1px solid rgba(0, 0, 0, 0.04);
+      position: relative;
+      overflow: hidden;
+      min-height: 80px !important;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    .profile-stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+      transition: height 0.2s ease;
+    }
+
+    .profile-stat-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .profile-stat-card:hover::before {
+      height: 4px;
+    }
+
+    .profile-avatar-small {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: 700;
+      color: white;
+      flex-shrink: 0;
+      box-shadow: 0 2px 6px rgba(16, 185, 129, 0.3);
+      transition: all 0.2s ease;
+    }
+
+    .profile-stat-card:hover .profile-avatar-small {
+      transform: scale(1.05);
+    }
+
+    .profile-stat-content {
+      flex: 1;
+      text-align: right;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 4px;
+    }
+
+    .profile-stat-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: #1e293b;
+      margin: 0;
+      line-height: 1.2;
+    }
+
+    .profile-stat-email {
+      font-size: 10px;
+      color: #64748b;
+      margin: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 180px;
+      margin-left: auto;
+    }
+
+    .profile-stat-badge {
+      font-size: 9px;
+      color: #10b981;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin: 0;
+    }
+
+    /* Shimmer for profile card */
+    .shimmer-profile-card {
+      background: white;
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+      border: 1px solid rgba(0, 0, 0, 0.04);
+      position: relative;
+      overflow: hidden;
+      min-height: 80px;
+    }
+
+    .shimmer-profile-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+    }
+
+    .shimmer-avatar-circle {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: linear-gradient(90deg, #f5f5f5 0%, #eeeeee 25%, #f5f5f5 50%, #eeeeee 75%, #f5f5f5 100%);
+      background-size: 800px 100%;
+      animation: shimmer 2s infinite linear;
+      flex-shrink: 0;
+    }
+
+    .shimmer-profile-lines {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      align-items: flex-end;
+    }
+
+    .shimmer-profile-name-line {
+      width: 55%;
+      height: 12px;
+      border-radius: 3px;
+      background: linear-gradient(90deg, #f5f5f5 0%, #eeeeee 25%, #f5f5f5 50%, #eeeeee 75%, #f5f5f5 100%);
+      background-size: 800px 100%;
+      animation: shimmer 2s infinite linear;
+    }
+
+    .shimmer-profile-email-line {
+      width: 75%;
+      height: 9px;
+      border-radius: 3px;
+      background: linear-gradient(90deg, #f5f5f5 0%, #eeeeee 25%, #f5f5f5 50%, #eeeeee 75%, #f5f5f5 100%);
+      background-size: 800px 100%;
+      animation: shimmer 2s infinite linear;
+    }
+
+    .shimmer-profile-badge-line {
+      width: 40%;
+      height: 8px;
+      border-radius: 3px;
+      background: linear-gradient(90deg, #f5f5f5 0%, #eeeeee 25%, #f5f5f5 50%, #eeeeee 75%, #f5f5f5 100%);
+      background-size: 800px 100%;
+      animation: shimmer 2s infinite linear;
+    }
+
+    /* Enhanced Statistics Cards - Compact Layout */
     .stats-overview {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 30px;
-      margin-bottom: 50px;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+      margin-bottom: 35px;
     }
 
     .stat-card {
       background: white;
-      border-radius: 25px;
-      padding: 35px;
+      border-radius: 12px;
+      padding: 16px;
       display: flex;
       align-items: center;
-      gap: 25px;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      border: 1px solid rgba(0, 0, 0, 0.05);
+      gap: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+      transition: all 0.2s ease;
+      border: 1px solid rgba(0, 0, 0, 0.04);
       position: relative;
       overflow: hidden;
       cursor: pointer;
-      min-height: 140px;
+      min-height: 80px !important;
     }
 
     .stat-card::before {
@@ -647,9 +902,9 @@
       top: 0;
       left: 0;
       right: 0;
-      height: 6px;
+      height: 3px;
       background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-      transition: height 0.3s ease;
+      transition: height 0.2s ease;
     }
 
     .stat-card:nth-child(2)::before {
@@ -674,12 +929,12 @@
     }
 
     .stat-card:hover {
-      transform: translateY(-8px) scale(1.02);
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     }
 
     .stat-card:hover::before {
-      height: 8px;
+      height: 4px;
     }
 
     .stat-card:hover::after {
@@ -687,18 +942,18 @@
     }
 
     .stat-icon {
-      width: 90px;
-      height: 90px;
-      border-radius: 22px;
+      width: 48px;
+      height: 48px;
+      border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 42px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      font-size: 22px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
       flex-shrink: 0;
       background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-      border: 3px solid #e2e8f0;
-      transition: all 0.3s ease;
+      border: 1px solid #e2e8f0;
+      transition: all 0.2s ease;
       position: relative;
       overflow: hidden;
     }
@@ -716,8 +971,8 @@
     }
 
     .stat-card:hover .stat-icon {
-      transform: rotate(5deg) scale(1.1);
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+      transform: scale(1.02);
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
     }
 
     .stat-card:hover .stat-icon::before {
@@ -734,36 +989,36 @@
     }
 
     .stat-content h3 {
-      font-size: 16px;
+      font-size: 11px;
       color: #64748b;
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 0.6px;
       margin: 0;
-      font-weight: 700;
+      font-weight: 600;
       opacity: 0.8;
-      transition: all 0.3s ease;
+      transition: all 0.2s ease;
     }
 
     .stat-card:hover .stat-content h3 {
       opacity: 1;
-      transform: translateY(-2px);
+      transform: translateY(-1px);
     }
 
     .stat-number {
-      font-size: 42px;
-      font-weight: 900;
+      font-size: 28px;
+      font-weight: 800;
       background: linear-gradient(135deg, #1e293b 0%, #475569 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
       margin: 0;
       line-height: 1.1;
-      transition: all 0.3s ease;
+      transition: all 0.2s ease;
       position: relative;
     }
 
     .stat-card:hover .stat-number {
-      transform: scale(1.05);
+      transform: scale(1.02);
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -771,12 +1026,12 @@
     }
 
     .stat-label {
-      font-size: 14px;
+      font-size: 10px;
       color: #94a3b8;
-      font-weight: 600;
+      font-weight: 500;
       text-transform: uppercase;
-      letter-spacing: 0.8px;
-      transition: all 0.3s ease;
+      letter-spacing: 0.5px;
+      transition: all 0.2s ease;
       margin: 0;
     }
 
@@ -797,7 +1052,10 @@
 <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
 
 <div class="sidebar">
-  <h2>Earnify Admin</h2>
+  <div class="sidebar-header">
+    <h2>Earnify Admin</h2>
+    <button class="sidebar-close-btn" onclick="toggleSidebar()">&times;</button>
+  </div>
   <a href="../Resources/" onclick="closeMobileSidebar()">📚 Resources</a>
   <a href="../Statistics/" onclick="closeMobileSidebar()">📈 Statistics</a>
   <a href="../Profile/" onclick="closeMobileSidebar()">👤 Profile</a>
@@ -883,7 +1141,7 @@
             <span class="btn-text">All Time</span>
           </button>
           <button class="filter-btn" onclick="filterByDate('today')" data-period="today">
-            <span class="btn-icon">📈</span>
+            <span class="btn-icon">📉</span>
             <span class="btn-text">Today</span>
           </button>
           <button class="filter-btn" onclick="filterByDate('yesterday')" data-period="yesterday">
@@ -971,10 +1229,13 @@
           <div class="shimmer-stat-label"></div>
         </div>
       </div>
+      
     </div>
     
     <!-- Actual Stats (Hidden Initially) -->
     <div class="stats-overview loaded" id="statsOverview" style="display: none; opacity: 0; transform: translateY(20px); transition: all 0.5s ease;">
+   
+
       <div class="stat-card">
         <div class="stat-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">💰</div>
         <div class="stat-content">
@@ -1003,64 +1264,41 @@
       </div>
     </div>
 
-    <div class="analytics-section">
+    <!-- Shimmer for analytics section -->
+    <div class="analytics-section" id="analyticsShimmer">
       <div class="section-header">
-        <h2>📈 My Customer Purchase Details</h2>
-        <p>Customers who purchased your resources</p>
+        <div class="shimmer-table-cell" style="width:260px;height:22px;border-radius:6px;margin-bottom:8px;"></div>
+        <div class="shimmer-table-cell" style="width:200px;height:14px;border-radius:4px;"></div>
       </div>
-      
       <div class="table-wrapper">
         <table class="modern-table">
           <thead>
             <tr>
-              <th>
-                <div class="th-content">
-                  <span class="th-icon">📧</span>
-                  <span>Customer Email</span>
-                </div>
-              </th>
-              <th>
-                <div class="th-content">
-                  <span class="th-icon">🔢</span>
-                  <span>Quantity</span>
-                </div>
-              </th>
-              <th>
-                <div class="th-content">
-                  <span class="th-icon">💵</span>
-                  <span>Total Amount</span>
-                </div>
-              </th>
-              <th>
-                <div class="th-content">
-                  <span class="th-icon">📦</span>
-                  <span>Resources Purchased</span>
-                </div>
-              </th>
+              <th><div class="shimmer-table-cell" style="height:16px;border-radius:4px;"></div></th>
+              <th><div class="shimmer-table-cell" style="height:16px;border-radius:4px;"></div></th>
+              <th><div class="shimmer-table-cell" style="height:16px;border-radius:4px;"></div></th>
+              <th><div class="shimmer-table-cell" style="height:16px;border-radius:4px;"></div></th>
             </tr>
           </thead>
-          <tbody id="purchaseTableBody">
-            <!-- Shimmer Loading for Table -->
-            <tr class="shimmer-table-row">
-              <td><div class="shimmer-table-cell"></div></td>
-              <td><div class="shimmer-table-cell"></div></td>
-              <td><div class="shimmer-table-cell"></div></td>
-              <td><div class="shimmer-table-cell"></div></td>
-            </tr>
-            <tr class="shimmer-table-row">
-              <td><div class="shimmer-table-cell"></div></td>
-              <td><div class="shimmer-table-cell"></div></td>
-              <td><div class="shimmer-table-cell"></div></td>
-              <td><div class="shimmer-table-cell"></div></td>
-            </tr>
-            <tr class="shimmer-table-row">
-              <td><div class="shimmer-table-cell"></div></td>
-              <td><div class="shimmer-table-cell"></div></td>
-              <td><div class="shimmer-table-cell"></div></td>
-              <td><div class="shimmer-table-cell"></div></td>
-            </tr>
+          <tbody>
+            <tr class="shimmer-table-row"><td><div class="shimmer-table-cell"></div></td><td><div class="shimmer-table-cell"></div></td><td><div class="shimmer-table-cell"></div></td><td><div class="shimmer-table-cell"></div></td></tr>
+            <tr class="shimmer-table-row"><td><div class="shimmer-table-cell"></div></td><td><div class="shimmer-table-cell"></div></td><td><div class="shimmer-table-cell"></div></td><td><div class="shimmer-table-cell"></div></td></tr>
+            <tr class="shimmer-table-row"><td><div class="shimmer-table-cell"></div></td><td><div class="shimmer-table-cell"></div></td><td><div class="shimmer-table-cell"></div></td><td><div class="shimmer-table-cell"></div></td></tr>
+            <tr class="shimmer-table-row"><td><div class="shimmer-table-cell"></div></td><td><div class="shimmer-table-cell"></div></td><td><div class="shimmer-table-cell"></div></td><td><div class="shimmer-table-cell"></div></td></tr>
+            <tr class="shimmer-table-row"><td><div class="shimmer-table-cell"></div></td><td><div class="shimmer-table-cell"></div></td><td><div class="shimmer-table-cell"></div></td><td><div class="shimmer-table-cell"></div></td></tr>
           </tbody>
         </table>
+      </div>
+    </div>
+
+    <!-- Real analytics section (hidden until loaded) -->
+    <div class="analytics-section" id="analyticsSection" style="display:none;">
+      <div class="section-header">
+        <h2>📈 My Customer Purchase Details</h2>
+        <p>Customers who purchased your resources</p>
+      </div>
+      <div id="analyticsContent">
+        <!-- filled by JS: table or empty state -->
       </div>
     </div>
   </div>
@@ -1115,6 +1353,14 @@
       if (sidebarUserName) sidebarUserName.textContent = userName;
       if (sidebarUserEmail) sidebarUserEmail.textContent = userEmail;
       if (sidebarAvatar) sidebarAvatar.textContent = userName.charAt(0).toUpperCase();
+
+      // Populate profile stat card
+      const statAvatar = document.getElementById('statProfileAvatar');
+      const statName = document.getElementById('statProfileName');
+      const statEmail = document.getElementById('statProfileEmail');
+      if (statAvatar) statAvatar.textContent = userName.charAt(0).toUpperCase();
+      if (statName) statName.textContent = userName;
+      if (statEmail) statEmail.textContent = userEmail;
     }
     
     // Load statistics data
@@ -1131,7 +1377,7 @@
     }
     
     try {
-      console.log('Loading statistics for user:', userEmail, 'with filter:', currentDateFilter);
+      console.log('🔄 Loading statistics for user:', userEmail, 'with filter:', currentDateFilter);
       
       // Always load all data first, then filter client-side for better reliability
       const res = await fetch(API_CONFIG.getURL(`${API_CONFIG.endpoints.userStatistics}/${encodeURIComponent(userEmail)}`));
@@ -1141,27 +1387,64 @@
       }
       
       const statsData = await res.json();
-      console.log('Raw statistics data:', statsData);
+      console.log('📊 Raw API Response:', statsData);
+      
+      // Ensure created_at dates are properly formatted and log the structure
+      if (statsData.userStats && Array.isArray(statsData.userStats)) {
+        console.log('👥 Processing user stats:', statsData.userStats.length, 'users');
+        
+        statsData.userStats = statsData.userStats.map((user, index) => {
+          console.log(`👤 User ${index + 1}:`, {
+            email: user.email,
+            created_at: user.created_at,
+            purchaseDate: user.purchaseDate,
+            totalAmount: user.totalAmount,
+            totalPurchases: user.totalPurchases
+          });
+          
+          // Ensure created_at is in proper ISO format
+          if (user.created_at) {
+            const testDate = new Date(user.created_at);
+            if (isNaN(testDate.getTime())) {
+              console.warn(`⚠️ Invalid created_at date for user ${user.email}:`, user.created_at);
+              user.created_at = new Date().toISOString();
+            } else {
+              console.log(`✅ Valid date for ${user.email}:`, testDate.toLocaleString());
+            }
+          } else {
+            console.warn(`⚠️ No created_at date for user ${user.email}, using current date`);
+            user.created_at = new Date().toISOString();
+          }
+          return user;
+        });
+      } else {
+        console.log('📭 No userStats found in response');
+      }
       
       // Store original data for filtering
       window.originalStatsData = statsData;
       
+      console.log('💾 Stored original data:', statsData);
+      
       // Apply client-side filtering based on current filter
       let displayData = statsData;
       if (currentDateFilter !== 'alltime') {
+        console.log('🔍 Applying filter:', currentDateFilter);
         if (currentDateFilter === 'custom' && window.customStartDate && window.customEndDate) {
           displayData = filterDataByDate(statsData, currentDateFilter, window.customStartDate, window.customEndDate);
         } else {
           displayData = filterDataByDate(statsData, currentDateFilter);
         }
+      } else {
+        console.log('📈 Showing all time data (no filter)');
       }
       
-      console.log('Display data after filtering:', displayData);
+      console.log('🎨 Final display data:', displayData);
       displayStatsData(displayData);
       updateSectionHeader();
       
     } catch (error) {
-      console.error('Error loading statistics:', error);
+      console.error('❌ Error loading statistics:', error);
       showErrorMessage();
     }
   }
@@ -1207,8 +1490,12 @@
     // Show actual stats and hide shimmer
     const shimmerStats = document.getElementById('shimmerStats');
     const statsOverview = document.getElementById('statsOverview');
+    const analyticsShimmer = document.getElementById('analyticsShimmer');
+    const analyticsSection = document.getElementById('analyticsSection');
     
     if (shimmerStats) shimmerStats.style.display = 'none';
+    if (analyticsShimmer) analyticsShimmer.style.display = 'none';
+    if (analyticsSection) analyticsSection.style.display = '';
     if (statsOverview) {
       statsOverview.style.display = 'grid';
       setTimeout(() => {
@@ -1219,56 +1506,41 @@
   }
   
   function displayCustomerPurchases(customerStats) {
-    const tbody = document.getElementById('purchaseTableBody');
-    
-    if (!tbody) {
-      console.error('purchaseTableBody element not found');
-      return;
-    }
+    const content = document.getElementById('analyticsContent');
+    if (!content) return;
     
     if (Object.keys(customerStats).length === 0) {
-      tbody.innerHTML = `
-        <tr>
-          <td colspan="4" style="text-align: center; padding: 40px; color: #64748b;">
-            <div style="font-size: 48px; margin-bottom: 16px;">📊</div>
-            <h3 style="margin: 0 0 8px 0; color: #1e293b;">No Sales Yet</h3>
-            <p style="margin: 0;">Your resources haven't been purchased yet. Keep promoting your content!</p>
-          </td>
-        </tr>
-      `;
+      content.innerHTML = `
+        <div style="text-align:center;padding:50px 20px;background:white;border-radius:12px;border:1px solid rgba(0,0,0,0.06);">
+          <div style="font-size:52px;margin-bottom:14px;">📭</div>
+          <h3 style="margin:0 0 8px;color:#1e293b;font-size:18px;">No Records Found</h3>
+          <p style="margin:0;color:#64748b;font-size:14px;">No purchases found for the selected period.</p>
+        </div>`;
       return;
     }
     
-    tbody.innerHTML = Object.entries(customerStats).map(([userId, stats]) => `
-      <tr>
-        <td>
-          <div class="customer-info">
-            <div class="customer-avatar">👤</div>
-            <div class="customer-details">
-              <div class="customer-email">${stats.email}</div>
-              <div class="customer-id">ID: ${userId.substring(0, 8)}...</div>
-            </div>
-          </div>
-        </td>
-        <td>
-          <span class="quantity-badge">${stats.quantity}</span>
-        </td>
-        <td>
-          <span class="amount-value">₹${stats.totalAmount.toFixed(0)}</span>
-        </td>
-        <td>
-          <div class="resources-list">
-            ${stats.resources.slice(0, 2).map(resource => 
-              `<span class="resource-tag">${resource}</span>`
-            ).join('')}
-            ${stats.resources.length > 2 ? 
-              `<span class="resource-tag more">+${stats.resources.length - 2} more</span>` : 
-              ''
-            }
-          </div>
-        </td>
-      </tr>
-    `).join('');
+    content.innerHTML = `
+      <div class="table-wrapper">
+        <table class="modern-table">
+          <thead>
+            <tr>
+              <th><div class="th-content"><span class="th-icon">📧</span><span>Customer Email</span></div></th>
+              <th><div class="th-content"><span class="th-icon">🔢</span><span>Quantity</span></div></th>
+              <th><div class="th-content"><span class="th-icon">💵</span><span>Total Amount</span></div></th>
+              <th><div class="th-content"><span class="th-icon">📦</span><span>Resources Purchased</span></div></th>
+            </tr>
+          </thead>
+          <tbody>
+            ${Object.entries(customerStats).map(([userId, stats]) => `
+              <tr>
+                <td><div class="customer-info"><div class="customer-avatar">👤</div><div class="customer-details"><div class="customer-email">${stats.email}</div><div class="customer-id">ID: ${userId.substring(0, 8)}...</div></div></div></td>
+                <td><span class="quantity-badge">${stats.quantity}</span></td>
+                <td><span class="amount-value">₹${stats.totalAmount.toFixed(0)}</span></td>
+                <td><div class="resources-list">${stats.resources.slice(0, 2).map(r => `<span class="resource-tag">${r}</span>`).join('')}${stats.resources.length > 2 ? `<span class="resource-tag more">+${stats.resources.length - 2} more</span>` : ''}</div></td>
+              </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>`;
   }
   
   function showNoDataMessage() {
@@ -1277,6 +1549,10 @@
     const tbody = document.getElementById('purchaseTableBody');
     
     if (shimmerStats) shimmerStats.style.display = 'none';
+    const analyticsShimmerND = document.getElementById('analyticsShimmer');
+    const analyticsSectionND = document.getElementById('analyticsSection');
+    if (analyticsShimmerND) analyticsShimmerND.style.display = 'none';
+    if (analyticsSectionND) analyticsSectionND.style.display = '';
     if (statsOverview) {
       statsOverview.style.display = 'grid';
       setTimeout(() => {
@@ -1284,18 +1560,13 @@
         statsOverview.style.transform = 'translateY(0)';
       }, 100);
     }
-    
-    if (tbody) {
-      tbody.innerHTML = `
-        <tr>
-          <td colspan="4" style="text-align: center; padding: 40px; color: #64748b;">
-            <div style="font-size: 48px; margin-bottom: 16px;">🔐</div>
-            <h3 style="margin: 0 0 8px 0; color: #1e293b;">Please Login</h3>
-            <p style="margin: 0;">You need to be logged in to view your sales statistics.</p>
-          </td>
-        </tr>
-      `;
-    }
+    const contentND = document.getElementById('analyticsContent');
+    if (contentND) contentND.innerHTML = `
+      <div style="text-align:center;padding:50px 20px;background:white;border-radius:12px;border:1px solid rgba(0,0,0,0.06);">
+        <div style="font-size:52px;margin-bottom:14px;">🔐</div>
+        <h3 style="margin:0 0 8px;color:#1e293b;font-size:18px;">Please Login</h3>
+        <p style="margin:0;color:#64748b;font-size:14px;">You need to be logged in to view your sales statistics.</p>
+      </div>`;
   }
   
   function showErrorMessage() {
@@ -1305,27 +1576,25 @@
     
     if (shimmerStats) shimmerStats.style.display = 'none';
     if (statsOverview) statsOverview.style.display = 'flex';
+    const analyticsShimmerErr = document.getElementById('analyticsShimmer');
+    const analyticsSectionErr = document.getElementById('analyticsSection');
+    if (analyticsShimmerErr) analyticsShimmerErr.style.display = 'none';
+    if (analyticsSectionErr) analyticsSectionErr.style.display = '';
     
-    // Reset stats to zero
     const totalRevenueEl = document.getElementById('totalRevenue');
     const totalSalesEl = document.getElementById('totalSales');
     const totalCustomersEl = document.getElementById('totalCustomers');
-    
     if (totalRevenueEl) totalRevenueEl.textContent = '₹0';
     if (totalSalesEl) totalSalesEl.textContent = '0';
     if (totalCustomersEl) totalCustomersEl.textContent = '0';
     
-    if (tbody) {
-      tbody.innerHTML = `
-        <tr>
-          <td colspan="4" style="text-align: center; padding: 40px; color: #64748b;">
-            <div style="font-size: 48px; margin-bottom: 16px;">⚠️</div>
-            <h3 style="margin: 0 0 8px 0; color: #1e293b;">Error Loading Data</h3>
-            <p style="margin: 0;">Unable to load statistics. Please check your server connection and try refreshing the page.</p>
-          </td>
-        </tr>
-      `;
-    }
+    const contentErr = document.getElementById('analyticsContent');
+    if (contentErr) contentErr.innerHTML = `
+      <div style="text-align:center;padding:50px 20px;background:white;border-radius:12px;border:1px solid rgba(0,0,0,0.06);">
+        <div style="font-size:52px;margin-bottom:14px;">⚠️</div>
+        <h3 style="margin:0 0 8px;color:#1e293b;font-size:18px;">Error Loading Data</h3>
+        <p style="margin:0;color:#64748b;font-size:14px;">Unable to load statistics. Please check your connection and refresh.</p>
+      </div>`;
   }
   
   function logout() {
@@ -1334,40 +1603,51 @@
     localStorage.removeItem('currentUser');
     localStorage.removeItem('userLoggedIn');
     localStorage.removeItem('adminUser');
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('user');
+    
+    // Clear session storage as well
+    sessionStorage.clear();
     
     // Sign out from Supabase if available
     if (typeof supabaseClient !== 'undefined') {
       supabaseClient.auth.signOut().catch(console.error);
     }
     
-    // Redirect to main site
+    // Force redirect to main site index page
     window.location.href = '../../index.html';
+    
+    // Fallback redirect after a short delay
+    setTimeout(() => {
+      window.location.replace('../../index.html');
+    }, 100);
   }
   
   function toggleSidebar() {
     const sidebar = document.querySelector('.sidebar');
     const overlay = document.querySelector('.sidebar-overlay');
-    const body = document.body;
-    
+    const toggleBtn = document.querySelector('.mobile-menu-toggle');
+    const isOpening = !sidebar.classList.contains('active');
     sidebar.classList.toggle('active');
     overlay.classList.toggle('active');
-    body.classList.toggle('sidebar-open');
+    document.body.classList.toggle('sidebar-open');
+    if (toggleBtn) toggleBtn.style.display = isOpening ? 'none' : '';
   }
-  
+
   function closeMobileSidebar() {
     const sidebar = document.querySelector('.sidebar');
     const overlay = document.querySelector('.sidebar-overlay');
-    const body = document.body;
-    
+    const toggleBtn = document.querySelector('.mobile-menu-toggle');
     if (sidebar.classList.contains('active')) {
       sidebar.classList.remove('active');
       overlay.classList.remove('active');
-      body.classList.remove('sidebar-open');
+      document.body.classList.remove('sidebar-open');
+      if (toggleBtn) toggleBtn.style.display = '';
     }
   }
   
   function updateSectionHeader() {
-    const sectionHeader = document.querySelector('.analytics-section .section-header h2');
+    const sectionHeader = document.querySelector('#analyticsSection .section-header h2');
     if (sectionHeader) {
       const filterText = getFilterDisplayText();
       sectionHeader.textContent = `📈 Customer Purchase Details - ${filterText}`;
@@ -1375,7 +1655,8 @@
   }
   
   function filterByDate(period) {
-    console.log('Filtering by date:', period);
+    console.log(`🎯 Filter button clicked: ${period}`);
+    console.log(`📅 Current date: ${new Date().toLocaleString()}`);
     
     // Update active button (desktop)
     document.querySelectorAll('.filter-btn').forEach(btn => {
@@ -1384,59 +1665,70 @@
     const targetBtn = document.querySelector(`[data-period="${period}"]`);
     if (targetBtn && targetBtn.classList.contains('filter-btn')) {
       targetBtn.classList.add('active');
+      console.log(`✅ Activated button: ${period}`);
     }
     
     // Update mobile dropdown display
     updateDropdownDisplay(period);
     
+    // Set current filter
     currentDateFilter = period;
+    console.log(`🔄 Current filter set to: ${currentDateFilter}`);
     
-    // Reload statistics with new filter
-    loadStatistics();
+    // Apply filter to existing data
+    if (window.originalStatsData) {
+      console.log('📊 Applying filter to existing data...');
+      
+      let filteredData;
+      if (period === 'custom' && window.customStartDate && window.customEndDate) {
+        filteredData = filterDataByDate(window.originalStatsData, period, window.customStartDate, window.customEndDate);
+      } else {
+        filteredData = filterDataByDate(window.originalStatsData, period);
+      }
+      
+      console.log('🎨 Displaying filtered data...');
+      displayStatsData(filteredData);
+      updateSectionHeader();
+    } else {
+      console.log('🔄 No cached data, reloading statistics...');
+      // Reload statistics with new filter
+      loadStatistics();
+    }
   }
   
   function filterDataByDate(originalData, period, customStartDate = null, customEndDate = null) {
-    if (!originalData || !originalData.userStats) {
-      return originalData;
-    }
-    
+    if (!originalData || !originalData.userStats) return originalData;
+
     const now = new Date();
     let startDate, endDate;
-    
+
     switch (period) {
       case 'today':
-        startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-        endDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59);
+        startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0);
+        endDate   = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59, 999);
         break;
       case 'yesterday':
-        const yesterday = new Date(now.getTime() - 24 * 60 * 60 * 1000);
-        startDate = new Date(yesterday.getFullYear(), yesterday.getMonth(), yesterday.getDate());
-        endDate = new Date(yesterday.getFullYear(), yesterday.getMonth(), yesterday.getDate(), 23, 59, 59);
+        const yest = new Date(now);
+        yest.setDate(yest.getDate() - 1);
+        startDate = new Date(yest.getFullYear(), yest.getMonth(), yest.getDate(), 0, 0, 0, 0);
+        endDate   = new Date(yest.getFullYear(), yest.getMonth(), yest.getDate(), 23, 59, 59, 999);
         break;
       case 'lastweek':
-        // Get the previous week (Monday to Sunday)
-        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-        const currentDayOfWeek = today.getDay(); // 0 = Sunday, 1 = Monday, etc.
-        const daysToLastMonday = currentDayOfWeek === 0 ? 13 : (currentDayOfWeek + 6); // Days to get to last Monday
-        
-        const lastMonday = new Date(today.getTime() - daysToLastMonday * 24 * 60 * 60 * 1000);
-        const lastSunday = new Date(lastMonday.getTime() + 6 * 24 * 60 * 60 * 1000);
-        
-        startDate = new Date(lastMonday.getFullYear(), lastMonday.getMonth(), lastMonday.getDate(), 0, 0, 0);
-        endDate = new Date(lastSunday.getFullYear(), lastSunday.getMonth(), lastSunday.getDate(), 23, 59, 59);
+        startDate = new Date(now);
+        startDate.setDate(startDate.getDate() - 7);
+        startDate.setHours(0, 0, 0, 0);
+        endDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59, 999);
         break;
       case 'lastmonth':
-        // Get the previous month (1st to last day of previous month)
-        const lastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
-        const lastDayOfLastMonth = new Date(now.getFullYear(), now.getMonth(), 0);
-        
-        startDate = new Date(lastMonth.getFullYear(), lastMonth.getMonth(), 1, 0, 0, 0);
-        endDate = new Date(lastDayOfLastMonth.getFullYear(), lastDayOfLastMonth.getMonth(), lastDayOfLastMonth.getDate(), 23, 59, 59);
+        startDate = new Date(now);
+        startDate.setDate(startDate.getDate() - 30);
+        startDate.setHours(0, 0, 0, 0);
+        endDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59, 999);
         break;
       case 'custom':
         if (customStartDate && customEndDate) {
-          startDate = new Date(customStartDate);
-          endDate = new Date(customEndDate + 'T23:59:59');
+          startDate = new Date(customStartDate + 'T00:00:00');
+          endDate   = new Date(customEndDate   + 'T23:59:59');
         } else {
           return originalData;
         }
@@ -1444,49 +1736,32 @@
       default:
         return originalData;
     }
-    
-    console.log(`Filtering data for ${period}:`, {
-      startDate: startDate.toISOString(),
-      endDate: endDate.toISOString(),
-      originalDataCount: originalData.userStats.length,
-      dateRange: `${startDate.toLocaleDateString()} to ${endDate.toLocaleDateString()}`
-    });
-    
-    // Filter userStats based on purchase dates
+
+    console.log('Filter:', period, '| Start:', startDate.toLocaleString(), '| End:', endDate.toLocaleString());
+
     const filteredUserStats = originalData.userStats.filter(user => {
-      // Try multiple date fields that might exist in the data
-      const purchaseDate = new Date(
-        user.purchaseDate || 
-        user.created_at || 
-        user.purchase_date || 
-        user.date || 
-        Date.now()
-      );
-      
-      const isInRange = purchaseDate >= startDate && purchaseDate <= endDate;
-      
-      if (period === 'lastweek' || period === 'lastmonth') {
-        console.log(`User ${user.email}: purchaseDate=${purchaseDate.toLocaleDateString()}, startDate=${startDate.toLocaleDateString()}, endDate=${endDate.toLocaleDateString()}, inRange=${isInRange}`);
+      const raw = user.created_at;
+      if (!raw) {
+        console.warn('No created_at for:', user.email, '| keys:', Object.keys(user));
+        return false;
       }
-      
-      return isInRange;
+      const d = new Date(raw);
+      if (isNaN(d.getTime())) {
+        console.warn('Invalid date for:', user.email, raw);
+        return false;
+      }
+      const inRange = d >= startDate && d <= endDate;
+      console.log(user.email, '| date:', d.toLocaleString(), '| inRange:', inRange);
+      return inRange;
     });
-    
-    console.log(`Filtered results for ${period}:`, {
-      filteredCount: filteredUserStats.length,
-      originalCount: originalData.userStats.length
-    });
-    
-    // Recalculate totals based on filtered data
-    const totalRevenue = filteredUserStats.reduce((sum, user) => sum + (user.totalAmount || 0), 0);
-    const totalPurchases = filteredUserStats.reduce((sum, user) => sum + (user.totalPurchases || 0), 0);
-    const totalCustomers = filteredUserStats.length;
-    
+
+    console.log('Result:', filteredUserStats.length, '/', originalData.userStats.length, 'users match', period);
+
     return {
       ...originalData,
-      totalRevenue,
-      totalPurchases,
-      totalCustomers,
+      totalRevenue:   filteredUserStats.reduce((s, u) => s + (parseFloat(u.totalAmount)  || 0), 0),
+      totalPurchases: filteredUserStats.reduce((s, u) => s + (parseInt(u.totalPurchases) || 0), 0),
+      totalCustomers: filteredUserStats.length,
       userStats: filteredUserStats
     };
   }

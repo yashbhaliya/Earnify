@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Profile - Earnify Admin</title>
@@ -7,12 +8,47 @@
   <link rel="stylesheet" href="../light-theme.css">
   <link rel="stylesheet" href="../mobile-responsive.css">
   <style>
+    .sidebar-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 30px 30px;
+      border-bottom: 2px solid rgba(59, 130, 246, 0.2);
+    }
+    .sidebar-header h2 {
+      padding: 0;
+      border-bottom: none;
+      margin: 0;
+    }
+    .sidebar-close-btn {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 26px;
+      line-height: 1;
+      cursor: pointer;
+      color: #64748b;
+      padding: 2px 6px;
+      border-radius: 6px;
+      transition: background 0.2s, color 0.2s;
+      box-shadow: none !important;
+    }
+    .sidebar-close-btn:hover {
+      background: #f1f5f9;
+      color: #ef4444;
+    }
+    .sidebar.active .sidebar-close-btn {
+      display: block;
+    }
+    @media (min-width: 769px) {
+      .sidebar-close-btn { display: none !important; }
+    }
     .profile-container {
       max-width: 1200px;
       margin: 0 auto;
-      padding: 0 20px;
+      padding: 0 10px;
     }
-    
+
     .profile-page-header {
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       padding: 50px 40px;
@@ -24,7 +60,7 @@
       position: relative;
       overflow: hidden;
     }
-    
+
     .profile-page-header::before {
       content: '';
       position: absolute;
@@ -35,7 +71,7 @@
       background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 70%);
       border-radius: 50%;
     }
-    
+
     .profile-page-header h1 {
       color: white !important;
       font-size: 42px;
@@ -43,31 +79,31 @@
       text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
       font-weight: 800;
     }
-    
+
     .profile-page-header p {
       color: rgba(255, 255, 255, 0.9) !important;
       font-size: 18px;
       font-weight: 500;
     }
-    
+
     .profile-grid {
       display: grid;
       grid-template-columns: 1fr 2fr;
       gap: 40px;
       margin-bottom: 40px;
     }
-    
+
     .profile-card {
       background: white;
       border-radius: 25px;
-      padding: 35px;
+      padding: 15px;
       box-shadow: 0 15px 50px rgba(0, 0, 0, 0.1);
       border: 1px solid rgba(0, 0, 0, 0.05);
       transition: all 0.3s ease;
       position: relative;
       overflow: hidden;
     }
-    
+
     .profile-card::before {
       content: '';
       position: absolute;
@@ -77,7 +113,7 @@
       height: 4px;
       background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
     }
-    
+
     .profile-card:hover {
       transform: translateY(-5px);
       box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
@@ -94,11 +130,11 @@
       padding-bottom: 20px;
       border-bottom: 2px solid #f1f5f9;
     }
-    
+
     .profile-avatar-section {
       text-align: center;
     }
-    
+
     .profile-avatar-large {
       width: 120px;
       height: 120px;
@@ -112,20 +148,20 @@
       box-shadow: 0 8px 30px rgba(102, 126, 234, 0.3);
       color: white;
     }
-    
+
     .profile-name {
       color: #1e293b;
       font-size: 24px;
       font-weight: 700;
       margin-bottom: 8px;
     }
-    
+
     .profile-email {
       color: #64748b;
       font-size: 14px;
       margin-bottom: 20px;
     }
-    
+
     .profile-badge {
       display: inline-block;
       background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
@@ -137,7 +173,7 @@
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
-    
+
     .profile-details h2 {
       color: #1e293b;
       margin-bottom: 25px;
@@ -148,7 +184,7 @@
       padding-bottom: 15px;
       border-bottom: 2px solid #f1f5f9;
     }
-    
+
     .detail-row {
       display: flex;
       justify-content: space-between;
@@ -156,11 +192,11 @@
       padding: 18px 0;
       border-bottom: 1px solid #f1f5f9;
     }
-    
+
     .detail-row:last-child {
       border-bottom: none;
     }
-    
+
     .detail-label {
       color: #64748b;
       font-weight: 600;
@@ -169,20 +205,20 @@
       align-items: center;
       gap: 8px;
     }
-    
+
     .detail-value {
       color: #1e293b;
       font-weight: 600;
       font-size: 14px;
     }
-    
+
     .profile-actions {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 15px;
       margin-top: 25px;
     }
-    
+
     .action-btn {
       padding: 14px;
       border: none;
@@ -196,132 +232,247 @@
       justify-content: center;
       gap: 8px;
     }
-    
+
     .btn-edit {
       background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
       color: white;
       box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
     }
-    
+
     .btn-edit:hover {
       transform: translateY(-2px);
       box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
     }
-    
+
     .btn-logout {
       background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
       color: white;
       box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
     }
-    
+
     .btn-logout:hover {
       transform: translateY(-2px);
       box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
     }
-    
+
+    @keyframes shimmer {
+      0% {
+        background-position: -800px 0;
+      }
+
+      100% {
+        background-position: 800px 0;
+      }
+    }
+
     .stats-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
+      gap: 16px;
+      margin-bottom: 30px;
     }
-    
+
     .stat-card {
       background: white;
-      border-radius: 20px;
-      /* padding: 30px; */
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
-      border: 1px solid rgba(0, 0, 0, 0.05);
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+      transition: all 0.2s ease;
+      border: 1px solid rgba(0, 0, 0, 0.04);
       position: relative;
       overflow: hidden;
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 20px;
-      transition: all 0.3s ease;
+      cursor: pointer;
+      min-height: 80px !important;
     }
-    
+
     .stat-card::before {
       content: '';
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
-      height: 4px;
+      height: 3px;
       background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+      transition: height 0.2s ease;
     }
-    
+
     .stat-card:nth-child(2)::before {
       background: linear-gradient(90deg, #f093fb 0%, #f5576c 100%);
     }
-    
+
     .stat-card:nth-child(3)::before {
       background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
     }
-    
-    .stat-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 15px 50px rgba(0, 0, 0, 0.12);
+
+    /* shimmer sweep */
+    .stat-card.shimmer-active::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 60%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+      animation: shimmer 1.6s infinite;
     }
-    
+
+    .stat-card:hover {
+      transform: translateY(-2px);
+    }
+
+    .stat-card:hover::before {
+      height: 4px;
+    }
+
     .stat-icon {
-      width: 70px;
-      height: 70px;
-      border-radius: 18px;
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 32px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      font-size: 20px;
       flex-shrink: 0;
-      margin-bottom: 20px;
+      background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+      border: 1px solid #e2e8f0;
+      transition: transform 0.2s ease;
     }
-    
+
+    .stat-card:hover .stat-icon {
+      transform: scale(1.06);
+    }
+
+    /* shimmer icon placeholder */
+    .stat-icon.shimmer-icon {
+      background: linear-gradient(90deg, #efefef 0%, #e0e0e0 50%, #efefef 100%);
+      background-size: 800px 100%;
+      animation: shimmer 1.6s infinite linear;
+      border: none;
+    }
+
+    .stat-card:nth-child(1) .stat-icon.shimmer-icon {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      opacity: 0.3;
+      animation: none;
+    }
+
+    .stat-card:nth-child(2) .stat-icon.shimmer-icon {
+      background: linear-gradient(135deg, #f093fb, #f5576c);
+      opacity: 0.3;
+      animation: none;
+    }
+
+    .stat-card:nth-child(3) .stat-icon.shimmer-icon {
+      background: linear-gradient(135deg, #4facfe, #00f2fe);
+      opacity: 0.3;
+      animation: none;
+    }
+
     .stat-content {
       flex: 1;
       text-align: right;
-      align-self: flex-start;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
     }
-    
+
     .stat-value {
-      font-size: 32px;
+      font-size: 22px;
       font-weight: 800;
-      color: #1e293b;
-      line-height: 1.2;
-      margin-bottom: 5px;
+      background: linear-gradient(135deg, #1e293b 0%, #475569 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1.1;
+      margin: 0;
+      transition: all 0.2s ease;
     }
-    
+
+    .stat-card:hover .stat-value {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* shimmer value/label bars */
+    .stat-value.shimmer-bar,
+    .stat-label.shimmer-bar {
+      background: linear-gradient(90deg, #efefef 0%, #e0e0e0 50%, #efefef 100%) !important;
+      background-size: 800px 100% !important;
+      animation: shimmer 1.6s infinite linear !important;
+      -webkit-text-fill-color: transparent;
+      border-radius: 4px;
+      color: transparent !important;
+      display: block;
+      margin-left: auto;
+    }
+
+    .stat-value.shimmer-bar {
+      width: 65%;
+      height: 20px;
+    }
+
+    .stat-label.shimmer-bar {
+      width: 45%;
+      height: 9px;
+      margin-top: 2px;
+    }
+
     .stat-label {
-      font-size: 14px;
-      color: #64748b;
+      font-size: 10px;
+      color: #94a3b8;
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.5px;
+      margin: 0;
     }
-    
+
+    .shimmer-gradient {
+      background: linear-gradient(90deg, #f0f0f0 0%, #e0e0e0 50%, #f0f0f0 100%);
+      background-size: 800px 100%;
+      animation: shimmer 1.6s infinite linear;
+    }
+
     @media (max-width: 768px) {
-      
       .profile-grid {
         grid-template-columns: 1fr;
-        
       }
+
       .profile-page-header {
         display: none;
       }
+
       .stats-grid {
         grid-template-columns: 1fr;
-        text-align: left;
-       gap: 20px;      
-        
+        gap: 12px;
       }
-      .stat-content {
-          text-align: center;
-          margin-top: 10px;
-        }
+
+      .stat-card {
+        padding: 12px 14px;
+        gap: 10px;
+        min-height: 68px;
+      }
+
+      .stat-icon {
+        width: 38px;
+        height: 38px;
+        font-size: 17px;
+      }
+
+      .stat-value {
+        font-size: 18px;
+      }
+
       .profile-actions {
         grid-template-columns: 1fr;
       }
     }
-    
+
     .resource-item {
       display: flex;
       align-items: center;
@@ -330,40 +481,40 @@
       border-bottom: 1px solid #f1f5f9;
       transition: all 0.3s;
     }
-    
+
     .resource-item:last-child {
       border-bottom: none;
     }
-    
+
     .resource-item:hover {
       background: #f8fafc;
       padding-left: 20px;
     }
-    
+
     .resource-info {
       display: flex;
       align-items: center;
       gap: 15px;
       flex: 1;
     }
-    
+
     .resource-type-icon {
       font-size: 32px;
     }
-    
+
     .resource-details h4 {
       color: #1e293b;
       font-size: 16px;
       margin-bottom: 5px;
       font-weight: 600;
     }
-    
+
     .resource-details p {
       color: #64748b;
       font-size: 13px;
       margin: 0;
     }
-    
+
     .resource-price-tag {
       background: linear-gradient(135deg, #10b981 0%, #059669 100%);
       color: white;
@@ -372,99 +523,104 @@
       font-weight: 700;
       font-size: 14px;
     }
-    
+
     .empty-resources {
       text-align: center;
       padding: 40px;
       color: #64748b;
     }
-    
+
     .empty-resources-icon {
       font-size: 48px;
       margin-bottom: 15px;
       opacity: 0.5;
     }
-    
+
     /* Shimmer Animation */
     @keyframes shimmer {
-      0% { background-position: -1000px 0; }
-      100% { background-position: 1000px 0; }
+      0% {
+        background-position: -1000px 0;
+      }
+
+      100% {
+        background-position: 1000px 0;
+      }
     }
-    
+
     .shimmer-gradient {
       background: linear-gradient(90deg, #f0f0f0 0%, #e0e0e0 50%, #f0f0f0 100%);
       background-size: 1000px 100%;
       animation: shimmer 2s infinite linear;
     }
-    
+
     .shimmer-profile-avatar {
       width: 120px;
       height: 120px;
       border-radius: 50%;
       margin: 0 auto 20px;
     }
-    
+
     .shimmer-profile-name {
       width: 60%;
       height: 24px;
       border-radius: 6px;
       margin: 0 auto 8px;
     }
-    
+
     .shimmer-profile-email {
       width: 50%;
       height: 14px;
       border-radius: 4px;
       margin: 0 auto 20px;
     }
-    
+
     .shimmer-badge {
       width: 120px;
       height: 28px;
       border-radius: 20px;
       margin: 0 auto;
     }
-    
+
     .shimmer-detail-row {
       display: flex;
       justify-content: space-between;
       padding: 18px 0;
       border-bottom: 1px solid #f1f5f9;
     }
-    
+
     .shimmer-detail-label {
       width: 30%;
       height: 14px;
       border-radius: 4px;
     }
-    
+
     .shimmer-detail-value {
       width: 40%;
       height: 14px;
       border-radius: 4px;
     }
-    
+
     .shimmer-stat-icon {
       width: 50px;
       height: 50px;
       border-radius: 50%;
       margin: 0 auto 10px;
     }
-    
+
     .shimmer-stat-value {
       width: 60%;
       height: 28px;
       border-radius: 6px;
       margin: 0 auto 5px;
     }
-    
+
     .shimmer-stat-label {
       width: 80%;
       height: 12px;
       border-radius: 4px;
       margin: 0 auto;
     }
-    
+
     .shimmer-resource-item {
       display: flex;
       align-items: center;
@@ -472,31 +628,31 @@
       padding: 15px;
       border-bottom: 1px solid #f1f5f9;
     }
-    
+
     .shimmer-resource-icon {
       width: 40px;
       height: 40px;
       border-radius: 8px;
     }
-    
+
     .shimmer-resource-content {
       flex: 1;
       margin-left: 15px;
     }
-    
+
     .shimmer-resource-title {
       width: 70%;
       height: 16px;
       border-radius: 4px;
       margin-bottom: 8px;
     }
-    
+
     .shimmer-resource-desc {
       width: 90%;
       height: 13px;
       border-radius: 4px;
     }
-    
+
     .shimmer-resource-price {
       width: 60px;
       height: 28px;
@@ -504,434 +660,425 @@
     }
   </style>
 </head>
+
 <body class="light-mode">
 
-<button class="mobile-menu-toggle" onclick="toggleSidebar()">
-  <div class="hamburger"></div>
-  <div class="hamburger"></div>
-  <div class="hamburger"></div>
-</button>
+  <button class="mobile-menu-toggle" onclick="toggleSidebar()">
+    <div class="hamburger"></div>
+    <div class="hamburger"></div>
+    <div class="hamburger"></div>
+  </button>
 
-<div class="sidebar-overlay" onclick="toggleSidebar()"></div>
+  <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
 
-<div class="sidebar">
-  <h2>Earnify Admin</h2>
-  <a href="../Resources/" onclick="closeMobileSidebar()">📚 Resources</a>
-  <a href="../Statistics/" onclick="closeMobileSidebar()">📈 Statistics</a>
-  <a href="../Profile/" onclick="closeMobileSidebar()" style=" border-left-color: #60a5fa; color: #60a5fa;">👤 Profile</a>
-  <a href="../../" style="margin-top: 20px; border-top: 1px solid #ddd; padding-top: 10px;" onclick="closeMobileSidebar()">🏠 Main Site</a>
-            <a onclick="logout()"><span>🚪</span> Logout</a>
-  
-  <!-- User Profile Section -->
-  <div class="sidebar-user" id="sidebarUser" style="display: none;">
-    <div class="user-info">
-      <div class="user-avatar" id="sidebarAvatar">👤</div>
-      <div class="user-details">
-        <div class="user-name" id="sidebarUserName">User</div>
-        <div class="user-email" id="sidebarUserEmail">user@email.com</div>
-      </div>
+  <div class="sidebar">
+    <div class="sidebar-header">
+      <h2>Earnify Admin</h2>
+      <button class="sidebar-close-btn" onclick="toggleSidebar()">&times;</button>
     </div>
-    <a onclick="logout()" class="logout-link">🚪 Logout</a>
+    <a href="../Resources/" onclick="closeMobileSidebar()">📚 Resources</a>
+    <a href="../Statistics/" onclick="closeMobileSidebar()">📈 Statistics</a>
+    <a href="../Profile/" onclick="closeMobileSidebar()" style=" border-left-color: #60a5fa; color: #60a5fa;">👤
+      Profile</a>
+    <a href="../../" style="margin-top: 20px; border-top: 1px solid #ddd; padding-top: 10px;"
+      onclick="closeMobileSidebar()">🏠 Main Site</a>
+    <a onclick="logout()"><span>🚪</span> Logout</a>
+
+    <!-- User Profile Section -->
+    <div class="sidebar-user" id="sidebarUser" style="display: none;">
+      <div class="user-info">
+        <div class="user-avatar" id="sidebarAvatar">👤</div>
+        <div class="user-details">
+          <div class="user-name" id="sidebarUserName">User</div>
+          <div class="user-email" id="sidebarUserEmail">user@email.com</div>
+        </div>
+      </div>
+      <a onclick="logout()" class="logout-link">🚪 Logout</a>
+    </div>
   </div>
-</div>
 
-<div class="main">
-  <div class="profile-container">
-    <div class="profile-page-header">
-      <h1>👤 My Profile</h1>
-      <p>Manage your account information and settings</p>
-    </div>
+  <div class="main">
+    <div class="profile-container">
+      <div class="profile-page-header">
+        <h1>👤 My Profile</h1>
+        <p>Manage your account information and settings</p>
+      </div>
 
-    <div class="profile-grid">
-      <div class="profile-card profile-avatar-section">
-        <!-- Shimmer Loading -->
-        <div id="profileAvatarShimmer" style="display: none;">
-          <div class="shimmer-profile-avatar shimmer-gradient"></div>
-          <div class="shimmer-profile-name shimmer-gradient"></div>
-          <div class="shimmer-profile-email shimmer-gradient"></div>
-          <div class="shimmer-badge shimmer-gradient"></div>
+      <div class="profile-grid">
+        <div class="profile-card profile-avatar-section">
+          <!-- Shimmer Loading -->
+          <div id="profileAvatarShimmer" style="display: none;">
+            <div class="shimmer-profile-avatar shimmer-gradient"></div>
+            <div class="shimmer-profile-name shimmer-gradient"></div>
+            <div class="shimmer-profile-email shimmer-gradient"></div>
+            <div class="shimmer-badge shimmer-gradient"></div>
+          </div>
+
+          <!-- Actual Content -->
+          <div id="profileAvatarContent">
+            <div class="profile-avatar-large" id="profileAvatarLarge">👤</div>
+            <div class="profile-name" id="profileName">User Name</div>
+            <div class="profile-email" id="profileEmail">user@email.com</div>
+            <div class="profile-badge">✨ Active Member</div>
+          </div>
+
+          <div class="profile-actions">
+            <button class="action-btn btn-edit" onclick="editProfile()">
+              <span>✏️</span>
+              <span>Edit Profile</span>
+            </button>
+            <button class="action-btn btn-logout" onclick="logout()">
+              <span>🚺</span>
+              <span>Logout</span>
+            </button>
+          </div>
         </div>
-        
-        <!-- Actual Content -->
-        <div id="profileAvatarContent">
-          <div class="profile-avatar-large" id="profileAvatarLarge">👤</div>
-          <div class="profile-name" id="profileName">User Name</div>
-          <div class="profile-email" id="profileEmail">user@email.com</div>
-          <div class="profile-badge">✨ Active Member</div>
-        </div>
-        
-        <div class="profile-actions">
-          <button class="action-btn btn-edit" onclick="editProfile()">
-            <span>✏️</span>
-            <span>Edit Profile</span>
-          </button>
-          <button class="action-btn btn-logout" onclick="logout()">
-            <span>🚺</span>
-            <span>Logout</span>
-          </button>
+
+        <div class="profile-card">
+          <h2>📝 Profile Information</h2>
+
+          <!-- Shimmer Loading -->
+          <div id="profileDetailsShimmer" style="display: none;">
+            <div class="shimmer-detail-row">
+              <div class="shimmer-detail-label shimmer-gradient"></div>
+              <div class="shimmer-detail-value shimmer-gradient"></div>
+            </div>
+            <div class="shimmer-detail-row">
+              <div class="shimmer-detail-label shimmer-gradient"></div>
+              <div class="shimmer-detail-value shimmer-gradient"></div>
+            </div>
+            <div class="shimmer-detail-row">
+              <div class="shimmer-detail-label shimmer-gradient"></div>
+              <div class="shimmer-detail-value shimmer-gradient"></div>
+            </div>
+            <div class="shimmer-detail-row">
+              <div class="shimmer-detail-label shimmer-gradient"></div>
+              <div class="shimmer-detail-value shimmer-gradient"></div>
+            </div>
+            <div class="shimmer-detail-row">
+              <div class="shimmer-detail-label shimmer-gradient"></div>
+              <div class="shimmer-detail-value shimmer-gradient"></div>
+            </div>
+          </div>
+
+          <!-- Actual Content -->
+          <div id="profileDetailsContent">
+            <div class="detail-row">
+              <span class="detail-label">👤 Full Name:</span>
+              <span class="detail-value" id="detailName">-</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">📧 Email:</span>
+              <span class="detail-value" id="detailEmail">-</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">🆔 User ID:</span>
+              <span class="detail-value" id="detailUserId">-</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">📅 Account Created:</span>
+              <span class="detail-value" id="detailCreated">-</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">🕑 Last Login:</span>
+              <span class="detail-value" id="detailLastLogin">-</span>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div class="profile-card">
-        <h2>📝 Profile Information</h2>
-        
-        <!-- Shimmer Loading -->
-        <div id="profileDetailsShimmer" style="display: none;">
-          <div class="shimmer-detail-row">
-            <div class="shimmer-detail-label shimmer-gradient"></div>
-            <div class="shimmer-detail-value shimmer-gradient"></div>
-          </div>
-          <div class="shimmer-detail-row">
-            <div class="shimmer-detail-label shimmer-gradient"></div>
-            <div class="shimmer-detail-value shimmer-gradient"></div>
-          </div>
-          <div class="shimmer-detail-row">
-            <div class="shimmer-detail-label shimmer-gradient"></div>
-            <div class="shimmer-detail-value shimmer-gradient"></div>
-          </div>
-          <div class="shimmer-detail-row">
-            <div class="shimmer-detail-label shimmer-gradient"></div>
-            <div class="shimmer-detail-value shimmer-gradient"></div>
-          </div>
-          <div class="shimmer-detail-row">
-            <div class="shimmer-detail-label shimmer-gradient"></div>
-            <div class="shimmer-detail-value shimmer-gradient"></div>
-          </div>
-        </div>
-        
-        <!-- Actual Content -->
-        <div id="profileDetailsContent">
-          <div class="detail-row">
-            <span class="detail-label">👤 Full Name:</span>
-            <span class="detail-value" id="detailName">-</span>
-          </div>
-          <div class="detail-row">
-            <span class="detail-label">📧 Email:</span>
-            <span class="detail-value" id="detailEmail">-</span>
-          </div>
-          <div class="detail-row">
-            <span class="detail-label">🆔 User ID:</span>
-            <span class="detail-value" id="detailUserId">-</span>
-          </div>
-          <div class="detail-row">
-            <span class="detail-label">📅 Account Created:</span>
-            <span class="detail-value" id="detailCreated">-</span>
-          </div>
-          <div class="detail-row">
-            <span class="detail-label">🕑 Last Login:</span>
-            <span class="detail-value" id="detailLastLogin">-</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="stats-grid">
-      <div class="stat-card">
-        <!-- Shimmer Loading -->
-        <div id="statsShimmer1" style="display: none;">
-          <div class="shimmer-stat-icon shimmer-gradient"></div>
-          <div class="shimmer-stat-value shimmer-gradient"></div>
-          <div class="shimmer-stat-label shimmer-gradient"></div>
-        </div>
-        <!-- Actual Content -->
-        <div id="statsContent1" style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
-          <div class="stat-icon">📚</div>
+      <div class="stats-grid">
+        <div class="stat-card shimmer-active" id="statCard1">
+          <div class="stat-icon shimmer-icon" id="statIcon1"></div>
           <div class="stat-content">
-            <div class="stat-value" id="totalResources">0</div>
-            <div class="stat-label">Resources</div>
+            <div class="stat-value shimmer-bar" id="totalResources">0</div>
+            <div class="stat-label shimmer-bar" id="statLabel1">Resources</div>
           </div>
         </div>
-      </div>
-      <div class="stat-card">
-        <!-- Shimmer Loading -->
-        <div id="statsShimmer2" style="display: none;">
-          <div class="shimmer-stat-icon shimmer-gradient"></div>
-          <div class="shimmer-stat-value shimmer-gradient"></div>
-          <div class="shimmer-stat-label shimmer-gradient"></div>
-        </div>
-        <!-- Actual Content -->
-        <div id="statsContent2" style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
-          <div class="stat-icon">💰</div>
+        <div class="stat-card shimmer-active" id="statCard2">
+          <div class="stat-icon shimmer-icon" id="statIcon2"></div>
           <div class="stat-content">
-            <div class="stat-value" id="totalEarnings">₹0</div>
-            <div class="stat-label">Earnings</div>
+            <div class="stat-value shimmer-bar" id="totalEarnings">&#8377;0</div>
+            <div class="stat-label shimmer-bar" id="statLabel2">Earnings</div>
           </div>
         </div>
-      </div>
-      <div class="stat-card">
-        <!-- Shimmer Loading -->
-        <div id="statsShimmer3" style="display: none;">
-          <div class="shimmer-stat-icon shimmer-gradient"></div>
-          <div class="shimmer-stat-value shimmer-gradient"></div>
-          <div class="shimmer-stat-label shimmer-gradient"></div>
-        </div>
-        <!-- Actual Content -->
-        <div id="statsContent3" style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
-          <div class="stat-icon">👥</div>
+        <div class="stat-card shimmer-active" id="statCard3">
+          <div class="stat-icon shimmer-icon" id="statIcon3"></div>
           <div class="stat-content">
-            <div class="stat-value" id="totalCustomers">0</div>
-            <div class="stat-label">Sales</div>
+            <div class="stat-value shimmer-bar" id="totalCustomers">0</div>
+            <div class="stat-label shimmer-bar" id="statLabel3">Sales</div>
           </div>
         </div>
       </div>
-    </div>
 
-    <div class="profile-card" style="margin-top: 30px;">
-      <h2>📚 My Recent Resources</h2>
-      <div id="recentResourcesList">
-        <div style="text-align: center; padding: 40px; color: #64748b;">
-          Loading resources...
+      <div class="profile-card" style="margin-top: 30px;">
+        <h2>📚 My Recent Resources</h2>
+        <div id="recentResourcesList">
+          <div style="text-align: center; padding: 40px; color: #64748b;">
+            Loading resources...
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 
-<!-- Edit Profile Modal -->
-<div id="editProfileModal" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeEditProfileModal()">&times;</span>
-    <h2 style="color: #60a5fa; text-align: center; margin-bottom: 25px;">Edit Profile</h2>
-    <form id="editProfileForm" onsubmit="handleEditProfile(event)">
-      <div class="form-group">
-        <label>Full Name</label>
-        <input type="text" id="editName" required>
-      </div>
-      <div class="form-group">
-        <label>Email</label>
-        <input type="email" id="editEmail" required>
-      </div>
-      <button type="submit" class="btn-submit">Save Changes</button>
-    </form>
+  <!-- Edit Profile Modal -->
+  <div id="editProfileModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeEditProfileModal()">&times;</span>
+      <h2 style="color: #60a5fa; text-align: center; margin-bottom: 25px;">Edit Profile</h2>
+      <form id="editProfileForm" onsubmit="handleEditProfile(event)">
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" id="editName" required>
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="editEmail" required>
+        </div>
+        <button type="submit" class="btn-submit">Save Changes</button>
+      </form>
+    </div>
   </div>
-</div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="api-config.js"></script>
-<script src="../supabase-config.js"></script>
-<script>
-  const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
-
-  function showShimmers() {
-    document.getElementById('profileAvatarShimmer').style.display = 'block';
-    document.getElementById('profileAvatarContent').style.display = 'none';
-    document.getElementById('profileDetailsShimmer').style.display = 'block';
-    document.getElementById('profileDetailsContent').style.display = 'none';
-    document.getElementById('statsShimmer1').style.display = 'block';
-    document.getElementById('statsContent1').style.display = 'none';
-    document.getElementById('statsShimmer2').style.display = 'block';
-    document.getElementById('statsContent2').style.display = 'none';
-    document.getElementById('statsShimmer3').style.display = 'block';
-    document.getElementById('statsContent3').style.display = 'none';
-  }
-  
-  function hideShimmers() {
-    document.getElementById('profileAvatarShimmer').style.display = 'none';
-    document.getElementById('profileAvatarContent').style.display = 'block';
-    document.getElementById('profileDetailsShimmer').style.display = 'none';
-    document.getElementById('profileDetailsContent').style.display = 'block';
-    document.getElementById('statsShimmer1').style.display = 'none';
-    document.getElementById('statsContent1').style.display = 'block';
-    document.getElementById('statsShimmer2').style.display = 'none';
-    document.getElementById('statsContent2').style.display = 'block';
-    document.getElementById('statsShimmer3').style.display = 'none';
-    document.getElementById('statsContent3').style.display = 'block';
-  }
-
-  function loadProfile() {
-    showShimmers();
-    
-    if (!currentUser || !currentUser.id) {
-      alert('Please login first');
-      window.location.href = 'login.html';
-      return;
-    }
-
-    const userName = currentUser.user_metadata?.name || currentUser.email?.split('@')[0] || 'User';
-    const userEmail = currentUser.email || 'No email';
-    const userId = currentUser.id || 'N/A';
-    const createdAt = currentUser.created_at ? new Date(currentUser.created_at).toLocaleDateString() : 'N/A';
-    const lastLogin = currentUser.last_sign_in_at ? new Date(currentUser.last_sign_in_at).toLocaleDateString() : 'N/A';
-
-    // Update header
-    document.getElementById('profileAvatarLarge').textContent = userName.charAt(0).toUpperCase();
-    document.getElementById('profileName').textContent = userName;
-    document.getElementById('profileEmail').textContent = userEmail;
-
-    // Update details
-    document.getElementById('detailName').textContent = userName;
-    document.getElementById('detailEmail').textContent = userEmail;
-    document.getElementById('detailUserId').textContent = userId;
-    document.getElementById('detailCreated').textContent = createdAt;
-    document.getElementById('detailLastLogin').textContent = lastLogin;
-    
-    hideShimmers();
-  }
-
-  function editProfile() {
-    const userName = currentUser.user_metadata?.name || currentUser.email?.split('@')[0] || '';
-    const userEmail = currentUser.email || '';
-
-    document.getElementById('editName').value = userName;
-    document.getElementById('editEmail').value = userEmail;
-    document.getElementById('editProfileModal').style.display = 'flex';
-  }
-
-  function closeEditProfileModal() {
-    document.getElementById('editProfileModal').style.display = 'none';
-  }
-
-  async function handleEditProfile(event) {
-    event.preventDefault();
-    
-    const newName = document.getElementById('editName').value;
-    const newEmail = document.getElementById('editEmail').value;
-
-    try {
-      // Update user metadata
-      const { data, error } = await supabaseClient.auth.updateUser({
-        email: newEmail,
-        data: { name: newName }
-      });
-
-      if (error) throw error;
-
-      // Update localStorage
-      currentUser.email = newEmail;
-      currentUser.user_metadata = { ...currentUser.user_metadata, name: newName };
-      localStorage.setItem('currentUser', JSON.stringify(currentUser));
-
-      alert('Profile updated successfully!');
-      closeEditProfileModal();
-      loadProfile();
-    } catch (error) {
-      console.error('Error updating profile:', error);
-      alert('Failed to update profile: ' + error.message);
-    }
-  }
-
-  function logout() {
-    // Clear all authentication data
-    localStorage.removeItem('adminToken');
-    localStorage.removeItem('currentUser');
-    localStorage.removeItem('userLoggedIn');
-    localStorage.removeItem('adminUser');
-    
-    // Sign out from Supabase if available
-    if (typeof supabaseClient !== 'undefined') {
-      supabaseClient.auth.signOut().catch(console.error);
-    }
-    
-    // Redirect to main site
-    window.location.href = '../../index.html';
-  }
-
-  // Load profile on page load
-  window.addEventListener('DOMContentLoaded', function() {
-    loadProfile();
-    loadProfileStats();
-    
-    // Update sidebar profile
-    const token = localStorage.getItem('adminToken');
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="api-config.js"></script>
+  <script src="../supabase-config.js"></script>
+  <script>
     const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
-    const sidebarUser = document.getElementById('sidebarUser');
-    
-    if (token && currentUser.email) {
-      if (sidebarUser) sidebarUser.style.display = 'block';
-      
-      const userName = currentUser.user_metadata?.name || currentUser.email?.split('@')[0] || 'User';
-      const userEmail = currentUser.email || '';
-      
-      const sidebarUserName = document.getElementById('sidebarUserName');
-      const sidebarUserEmail = document.getElementById('sidebarUserEmail');
-      const sidebarAvatar = document.getElementById('sidebarAvatar');
-      
-      if (sidebarUserName) sidebarUserName.textContent = userName;
-      if (sidebarUserEmail) sidebarUserEmail.textContent = userEmail;
-      if (sidebarAvatar) sidebarAvatar.textContent = userName.charAt(0).toUpperCase();
-    }
-  });
 
-  async function loadProfileStats() {
-    // Show shimmer for resources list
-    loadRecentResources(null);
-    
-    try {
+    function showShimmers() {
+      document.getElementById('profileAvatarShimmer').style.display = 'block';
+      document.getElementById('profileAvatarContent').style.display = 'none';
+      document.getElementById('profileDetailsShimmer').style.display = 'block';
+      document.getElementById('profileDetailsContent').style.display = 'none';
+      [1, 2, 3].forEach(i => {
+        document.getElementById('statCard' + i).classList.add('shimmer-active');
+        document.getElementById('statIcon' + i).classList.add('shimmer-icon');
+        document.getElementById('statIcon' + i).textContent = '';
+      });
+      document.querySelectorAll('.stat-value, .stat-label').forEach(el => el.classList.add('shimmer-bar'));
+    }
+
+    function hideShimmers() {
+      document.getElementById('profileAvatarShimmer').style.display = 'none';
+      document.getElementById('profileAvatarContent').style.display = 'block';
+      document.getElementById('profileDetailsShimmer').style.display = 'none';
+      document.getElementById('profileDetailsContent').style.display = 'block';
+      const icons = ['📚', '💰', '👥'];
+      [1, 2, 3].forEach(i => {
+        document.getElementById('statCard' + i).classList.remove('shimmer-active');
+        const icon = document.getElementById('statIcon' + i);
+        icon.classList.remove('shimmer-icon');
+        icon.textContent = icons[i - 1];
+      });
+      document.querySelectorAll('.stat-value, .stat-label').forEach(el => el.classList.remove('shimmer-bar'));
+    }
+
+    function loadProfile() {
+      showShimmers();
+
+      if (!currentUser || !currentUser.id) {
+        alert('Please login first');
+        window.location.href = 'login.html';
+        return;
+      }
+
+      const userName = currentUser.user_metadata?.name || currentUser.email?.split('@')[0] || 'User';
+      const userEmail = currentUser.email || 'No email';
+      const userId = currentUser.id || 'N/A';
+      const createdAt = currentUser.created_at ? new Date(currentUser.created_at).toLocaleDateString() : 'N/A';
+      const lastLogin = currentUser.last_sign_in_at ? new Date(currentUser.last_sign_in_at).toLocaleDateString() : 'N/A';
+
+      // Update header
+      document.getElementById('profileAvatarLarge').textContent = userName.charAt(0).toUpperCase();
+      document.getElementById('profileName').textContent = userName;
+      document.getElementById('profileEmail').textContent = userEmail;
+
+      // Update details
+      document.getElementById('detailName').textContent = userName;
+      document.getElementById('detailEmail').textContent = userEmail;
+      document.getElementById('detailUserId').textContent = userId;
+      document.getElementById('detailCreated').textContent = createdAt;
+      document.getElementById('detailLastLogin').textContent = lastLogin;
+
+      hideShimmers();
+    }
+
+    function editProfile() {
+      const userName = currentUser.user_metadata?.name || currentUser.email?.split('@')[0] || '';
+      const userEmail = currentUser.email || '';
+
+      document.getElementById('editName').value = userName;
+      document.getElementById('editEmail').value = userEmail;
+      document.getElementById('editProfileModal').style.display = 'flex';
+    }
+
+    function closeEditProfileModal() {
+      document.getElementById('editProfileModal').style.display = 'none';
+    }
+
+    async function handleEditProfile(event) {
+      event.preventDefault();
+
+      const newName = document.getElementById('editName').value;
+      const newEmail = document.getElementById('editEmail').value;
+
+      try {
+        // Update user metadata
+        const { data, error } = await supabaseClient.auth.updateUser({
+          email: newEmail,
+          data: { name: newName }
+        });
+
+        if (error) throw error;
+
+        // Update localStorage
+        currentUser.email = newEmail;
+        currentUser.user_metadata = { ...currentUser.user_metadata, name: newName };
+        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+
+        alert('Profile updated successfully!');
+        closeEditProfileModal();
+        loadProfile();
+      } catch (error) {
+        console.error('Error updating profile:', error);
+        alert('Failed to update profile: ' + error.message);
+      }
+    }
+
+    function logout() {
+      // Clear all authentication data
+      localStorage.removeItem('adminToken');
+      localStorage.removeItem('currentUser');
+      localStorage.removeItem('userLoggedIn');
+      localStorage.removeItem('adminUser');
+      localStorage.removeItem('authToken');
+      localStorage.removeItem('user');
+
+      // Clear session storage as well
+      sessionStorage.clear();
+
+      // Sign out from Supabase if available
+      if (typeof supabaseClient !== 'undefined') {
+        supabaseClient.auth.signOut().catch(console.error);
+      }
+
+      // Force redirect to main site index page
+      window.location.href = '../../index.html';
+
+      // Fallback redirect after a short delay
+      setTimeout(() => {
+        window.location.replace('../../index.html');
+      }, 100);
+    }
+
+    // Load profile on page load
+    window.addEventListener('DOMContentLoaded', function () {
+      loadProfile();
+      loadProfileStats();
+
+      // Update sidebar profile
+      const token = localStorage.getItem('adminToken');
       const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
-      const userEmail = currentUser.email;
-      const userId = currentUser.id;
-      
-      if (!userEmail) {
+      const sidebarUser = document.getElementById('sidebarUser');
+
+      if (token && currentUser.email) {
+        if (sidebarUser) sidebarUser.style.display = 'block';
+
+        const userName = currentUser.user_metadata?.name || currentUser.email?.split('@')[0] || 'User';
+        const userEmail = currentUser.email || '';
+
+        const sidebarUserName = document.getElementById('sidebarUserName');
+        const sidebarUserEmail = document.getElementById('sidebarUserEmail');
+        const sidebarAvatar = document.getElementById('sidebarAvatar');
+
+        if (sidebarUserName) sidebarUserName.textContent = userName;
+        if (sidebarUserEmail) sidebarUserEmail.textContent = userEmail;
+        if (sidebarAvatar) sidebarAvatar.textContent = userName.charAt(0).toUpperCase();
+      }
+    });
+
+    async function loadProfileStats() {
+      // Show shimmer for resources list
+      loadRecentResources(null);
+
+      try {
+        const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+        const userEmail = currentUser.email;
+        const userId = currentUser.id;
+
+        if (!userEmail) {
+          document.getElementById('totalResources').textContent = '0';
+          document.getElementById('totalEarnings').textContent = '₹0';
+          document.getElementById('totalCustomers').textContent = '0';
+          loadRecentResources([]);
+          return;
+        }
+
+        // Load user's resources count
+        const resourcesRes = await fetch(API_CONFIG.getURL(API_CONFIG.endpoints.resources));
+        if (!resourcesRes.ok) throw new Error('Failed to fetch resources');
+
+        const allResources = await resourcesRes.json();
+        const userResources = allResources.filter(r => r.user_email === userEmail);
+
+        document.getElementById('totalResources').textContent = userResources.length;
+
+        // Calculate potential earnings (sum of all resource prices)
+        const potentialEarnings = userResources.reduce((sum, r) => sum + parseFloat(r.price || 0), 0);
+
+        // Load user's actual purchases/sales
+        let actualEarnings = 0;
+        let totalSales = 0;
+
+        try {
+          const statsRes = await fetch(API_CONFIG.getURL(API_CONFIG.endpoints.statistics));
+          if (statsRes.ok) {
+            const statsData = await statsRes.json();
+
+            if (statsData.userStats) {
+              // Get all payments and match with user's resources
+              statsData.userStats.forEach(stat => {
+                stat.resources.forEach(resourceTitle => {
+                  const matchingResource = userResources.find(r => r.title === resourceTitle);
+                  if (matchingResource) {
+                    actualEarnings += parseFloat(matchingResource.price || 0);
+                    totalSales++;
+                  }
+                });
+              });
+            }
+          }
+        } catch (statsError) {
+          console.log('Stats not available:', statsError.message);
+        }
+
+        // Display earnings (use actual if available, otherwise potential)
+        const displayEarnings = actualEarnings > 0 ? actualEarnings : potentialEarnings;
+        document.getElementById('totalEarnings').textContent = '₹' + displayEarnings.toFixed(0);
+
+        // Display total sales/customers
+        document.getElementById('totalCustomers').textContent = totalSales;
+
+        // Load recent resources
+        loadRecentResources(userResources);
+
+      } catch (error) {
+        console.error('Error loading profile stats:', error);
         document.getElementById('totalResources').textContent = '0';
         document.getElementById('totalEarnings').textContent = '₹0';
         document.getElementById('totalCustomers').textContent = '0';
         loadRecentResources([]);
-        return;
       }
-      
-      // Load user's resources count
-      const resourcesRes = await fetch(API_CONFIG.getURL(API_CONFIG.endpoints.resources));
-      if (!resourcesRes.ok) throw new Error('Failed to fetch resources');
-      
-      const allResources = await resourcesRes.json();
-      const userResources = allResources.filter(r => r.user_email === userEmail);
-      
-      document.getElementById('totalResources').textContent = userResources.length;
-      
-      // Calculate potential earnings (sum of all resource prices)
-      const potentialEarnings = userResources.reduce((sum, r) => sum + parseFloat(r.price || 0), 0);
-      
-      // Load user's actual purchases/sales
-      let actualEarnings = 0;
-      let totalSales = 0;
-      
-      try {
-        const statsRes = await fetch(API_CONFIG.getURL(API_CONFIG.endpoints.statistics));
-        if (statsRes.ok) {
-          const statsData = await statsRes.json();
-          
-          if (statsData.userStats) {
-            // Get all payments and match with user's resources
-            statsData.userStats.forEach(stat => {
-              stat.resources.forEach(resourceTitle => {
-                const matchingResource = userResources.find(r => r.title === resourceTitle);
-                if (matchingResource) {
-                  actualEarnings += parseFloat(matchingResource.price || 0);
-                  totalSales++;
-                }
-              });
-            });
-          }
-        }
-      } catch (statsError) {
-        console.log('Stats not available:', statsError.message);
-      }
-      
-      // Display earnings (use actual if available, otherwise potential)
-      const displayEarnings = actualEarnings > 0 ? actualEarnings : potentialEarnings;
-      document.getElementById('totalEarnings').textContent = '₹' + displayEarnings.toFixed(0);
-      
-      // Display total sales/customers
-      document.getElementById('totalCustomers').textContent = totalSales;
-      
-      // Load recent resources
-      loadRecentResources(userResources);
-      
-    } catch (error) {
-      console.error('Error loading profile stats:', error);
-      document.getElementById('totalResources').textContent = '0';
-      document.getElementById('totalEarnings').textContent = '₹0';
-      document.getElementById('totalCustomers').textContent = '0';
-      loadRecentResources([]);
     }
-  }
-  
-  function loadRecentResources(resources) {
-    const container = document.getElementById('recentResourcesList');
-    
-    // Show shimmer while loading
-    if (resources === null) {
-      container.innerHTML = `
+
+    function loadRecentResources(resources) {
+      const container = document.getElementById('recentResourcesList');
+
+      // Show shimmer while loading
+      if (resources === null) {
+        container.innerHTML = `
         <div class="shimmer-resource-item">
           <div class="shimmer-resource-icon shimmer-gradient"></div>
           <div class="shimmer-resource-content">
@@ -957,31 +1104,31 @@
           <div class="shimmer-resource-price shimmer-gradient"></div>
         </div>
       `;
-      return;
-    }
-    
-    if (!resources || resources.length === 0) {
-      container.innerHTML = `
+        return;
+      }
+
+      if (!resources || resources.length === 0) {
+        container.innerHTML = `
         <div class="empty-resources">
           <div class="empty-resources-icon">📦</div>
           <h4>No Resources Yet</h4>
           <p>Start adding resources to see them here</p>
         </div>
       `;
-      return;
-    }
-    
-    const typeIcons = {
-      pdf: '📄',
-      excel: '📊',
-      exam: '📝',
-      freelance: '💼'
-    };
-    
-    // Show last 5 resources
-    const recentResources = resources.slice(-5).reverse();
-    
-    container.innerHTML = recentResources.map(resource => `
+        return;
+      }
+
+      const typeIcons = {
+        pdf: '📄',
+        excel: '📊',
+        exam: '📝',
+        freelance: '💼'
+      };
+
+      // Show last 5 resources
+      const recentResources = resources.slice(-5).reverse();
+
+      container.innerHTML = recentResources.map(resource => `
       <div class="resource-item">
         <div class="resource-info">
           <div class="resource-type-icon">${typeIcons[resource.type] || '📦'}</div>
@@ -993,37 +1140,39 @@
         <div class="resource-price-tag">₹${resource.price}</div>
       </div>
     `).join('');
-  }
+    }
 
-  // Close modal when clicking outside
-  window.onclick = function(event) {
-    const modal = document.getElementById('editProfileModal');
-    if (event.target === modal) {
-      closeEditProfileModal();
+    // Close modal when clicking outside
+    window.onclick = function (event) {
+      const modal = document.getElementById('editProfileModal');
+      if (event.target === modal) {
+        closeEditProfileModal();
+      }
     }
-  }
-  
-  function toggleSidebar() {
-    const sidebar = document.querySelector('.sidebar');
-    const overlay = document.querySelector('.sidebar-overlay');
-    const body = document.body;
-    
-    sidebar.classList.toggle('active');
-    overlay.classList.toggle('active');
-    body.classList.toggle('sidebar-open');
-  }
-  
-  function closeMobileSidebar() {
-    const sidebar = document.querySelector('.sidebar');
-    const overlay = document.querySelector('.sidebar-overlay');
-    const body = document.body;
-    
-    if (sidebar.classList.contains('active')) {
-      sidebar.classList.remove('active');
-      overlay.classList.remove('active');
-      body.classList.remove('sidebar-open');
+
+    function toggleSidebar() {
+      const sidebar = document.querySelector('.sidebar');
+      const overlay = document.querySelector('.sidebar-overlay');
+      const toggleBtn = document.querySelector('.mobile-menu-toggle');
+      const isOpening = !sidebar.classList.contains('active');
+      sidebar.classList.toggle('active');
+      overlay.classList.toggle('active');
+      document.body.classList.toggle('sidebar-open');
+      if (toggleBtn) toggleBtn.style.display = isOpening ? 'none' : '';
     }
-  }
-</script>
+
+    function closeMobileSidebar() {
+      const sidebar = document.querySelector('.sidebar');
+      const overlay = document.querySelector('.sidebar-overlay');
+      const toggleBtn = document.querySelector('.mobile-menu-toggle');
+      if (sidebar.classList.contains('active')) {
+        sidebar.classList.remove('active');
+        overlay.classList.remove('active');
+        document.body.classList.remove('sidebar-open');
+        if (toggleBtn) toggleBtn.style.display = '';
+      }
+    }
+  </script>
 </body>
+
 </html>

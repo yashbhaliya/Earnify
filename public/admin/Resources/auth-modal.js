@@ -314,10 +314,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Admin logout function - only used if no other logout function is defined
 function adminLogout() {
+  // Clear all authentication data
   localStorage.removeItem('adminToken');
   localStorage.removeItem('adminUser');
   localStorage.removeItem('currentUser');
   localStorage.removeItem('userLoggedIn');
+  localStorage.removeItem('authToken');
+  localStorage.removeItem('user');
+  
+  // Clear session storage as well
+  sessionStorage.clear();
   
   // Sign out from Supabase if available
   if (typeof supabaseClient !== 'undefined') {
@@ -333,6 +339,11 @@ function adminLogout() {
   if (signupBtn) signupBtn.style.display = 'inline-block';
   if (logoutBtn) logoutBtn.style.display = 'none';
   
-  // Redirect to main site
+  // Force redirect to main site index page
   window.location.href = '../../index.html';
+  
+  // Fallback redirect after a short delay
+  setTimeout(() => {
+    window.location.replace('../../index.html');
+  }, 100);
 }

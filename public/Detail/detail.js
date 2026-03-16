@@ -6,6 +6,25 @@ document.addEventListener('DOMContentLoaded', () => {
   checkLoginStatus();
   loadResourceDetails();
   loadSiteSettings();
+  
+  // Handle window resize for responsive layout
+  window.addEventListener('resize', () => {
+    if (currentResource) {
+      // Check if user already purchased this item
+      let isPurchased = false;
+      if (isLoggedIn && currentUser) {
+        fetch(API_CONFIG.getURL(`${API_CONFIG.endpoints.payments}/${currentUser.id}`))
+          .then(res => res.ok ? res.json() : [])
+          .then(purchases => {
+            isPurchased = purchases.some(p => p.resource_id === currentResource.id);
+            displayResourceDetails(isPurchased);
+          })
+          .catch(() => displayResourceDetails(false));
+      } else {
+        displayResourceDetails(false);
+      }
+    }
+  });
 });
 
 function loadSiteSettings() {
@@ -240,10 +259,10 @@ async function loadResourceDetails() {
       }
     }
     
-    // Add a small delay to show shimmer effect
+    // Add a loading delay to show shimmer effect properly
     setTimeout(() => {
       displayResourceDetails(isPurchased);
-    }, 800);
+    }, 1200);
     
   } catch (error) {
     console.error('Error loading resource:', error);
@@ -255,35 +274,56 @@ async function loadResourceDetails() {
 }
 
 function showShimmerLoading() {
-  // Show shimmer for main content
+  // Add breadcrumb shimmer
+  document.getElementById('breadcrumbTitle').innerHTML = '<div class="shimmer-element" style="width: 200px; height: 16px; display: inline-block; border-radius: 4px;"></div>';
+  
+  // Create mobile shimmer price section if on mobile
+  let mobileShimmerPrice = '';
+  if (window.innerWidth <= 968) {
+    mobileShimmerPrice = `
+      <div style="text-align: center; padding: 2rem 0; border: 2px solid #e2e8f0; border-radius: 16px; margin: 2rem 0; background: white; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+        <div class="shimmer-element shimmer-price-label" style="margin: 0 auto 0.8rem;"></div>
+        <div class="shimmer-element shimmer-price" style="margin: 0 auto;"></div>
+      </div>
+      <div class="shimmer-element shimmer-button" style="margin-bottom: 2rem;"></div>
+    `;
+  }
+  
+  // Show enhanced shimmer for main content
   document.getElementById('resourceDetails').innerHTML = `
     <div class="shimmer-element shimmer-badge"></div>
     <div class="shimmer-element shimmer-title"></div>
     <div class="shimmer-element shimmer-description"></div>
-    <div class="shimmer-element shimmer-description"></div>
-    <div class="shimmer-element shimmer-description"></div>
+    <div class="shimmer-element shimmer-description" style="width: 95%;"></div>
+    <div class="shimmer-element shimmer-description" style="width: 85%; margin-bottom: 2.5rem;"></div>
+    ${mobileShimmerPrice}
     <div class="shimmer-features">
       <div class="shimmer-element shimmer-features-title"></div>
       <div class="shimmer-element shimmer-feature-item"></div>
       <div class="shimmer-element shimmer-feature-item"></div>
       <div class="shimmer-element shimmer-feature-item"></div>
-      <div class="shimmer-element shimmer-feature-item"></div>
+      <div class="shimmer-element shimmer-feature-item" style="width: 70%;"></div>
     </div>
   `;
   
-  // Show shimmer for purchase card
-  document.getElementById('purchaseCard').innerHTML = `
-    <div class="shimmer-price-section">
-      <div class="shimmer-element shimmer-price-label"></div>
-      <div class="shimmer-element shimmer-price"></div>
-    </div>
-    <div class="shimmer-element shimmer-button"></div>
-    <div class="shimmer-info-section">
-      <div class="shimmer-element shimmer-info-item"></div>
-      <div class="shimmer-element shimmer-info-item"></div>
-      <div class="shimmer-element shimmer-info-item"></div>
-    </div>
-  `;
+  // Show shimmer for purchase card only on desktop
+  if (window.innerWidth > 968) {
+    document.getElementById('purchaseCard').innerHTML = `
+      <div class="shimmer-price-section">
+        <div class="shimmer-element shimmer-price-label"></div>
+        <div class="shimmer-element shimmer-price"></div>
+      </div>
+      <div class="shimmer-element shimmer-button"></div>
+      <div class="shimmer-info-section">
+        <div class="shimmer-element shimmer-info-item"></div>
+        <div class="shimmer-element shimmer-info-item" style="width: 90%;"></div>
+        <div class="shimmer-element shimmer-info-item" style="width: 75%;"></div>
+      </div>
+    `;
+  } else {
+    // Clear sidebar shimmer on mobile
+    document.getElementById('purchaseCard').innerHTML = '';
+  }
 }
 
 function displayResourceDetails(isPurchased = false) {
@@ -292,10 +332,32 @@ function displayResourceDetails(isPurchased = false) {
   
   document.getElementById('breadcrumbTitle').textContent = currentResource.title;
   
+  // Create mobile price section HTML
+  let mobilePriceSection = '';
+  if (window.innerWidth <= 968) {
+    if (isPurchased) {
+      mobilePriceSection = `
+        <div class="price-section" style="text-align: center; padding: 2rem 0; border: 2px solid #e2e8f0; border-radius: 16px; margin: 2rem 0; background: white;">
+          <div class="price-label" style="color: #10b981; font-size: 18px; font-weight: 600;">✅ Already Purchased</div>
+        </div>
+        <a href="${currentResource.fileurl || '#'}" ${currentResource.fileurl ? 'download' : ''} class="buy-button" style="width: 100%; padding: 1.3rem; background: #10b981; color: white; border: none; border-radius: 16px; font-size: 1.2rem; font-weight: 700; cursor: pointer; text-decoration: none; display: block; text-align: center; margin-bottom: 2rem;">📥 Download Content</a>
+      `;
+    } else {
+      mobilePriceSection = `
+        <div class="price-section" style="text-align: center; padding: 2rem 0; border: 2px solid #e2e8f0; border-radius: 16px; margin: 2rem 0; background: white;">
+          <div class="price-label" style="color: #718096; font-size: 0.95rem; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">Price</div>
+          <div class="price" style="font-size: 3.5rem; font-weight: 800; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1;">₹${currentResource.price}</div>
+        </div>
+        <button class="buy-button" onclick="handlePurchase()" style="width: 100%; padding: 1.3rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 16px; font-size: 1.2rem; font-weight: 700; cursor: pointer; transition: all 0.3s; box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2rem;">Buy Now</button>
+      `;
+    }
+  }
+  
   document.getElementById('resourceDetails').innerHTML = `
     <span class="resource-type-badge">${icon} ${currentResource.type.toUpperCase()}</span>
     <h1>${currentResource.title}</h1>
     <p class="description">${currentResource.description}</p>
+    ${mobilePriceSection}
     <div class="features-list">
       <h3>What's Included</h3>
       <ul>
@@ -307,31 +369,37 @@ function displayResourceDetails(isPurchased = false) {
     </div>
   `;
   
-  if (isPurchased) {
-    document.getElementById('purchaseCard').innerHTML = `
-      <div class="price-section">
-        <div class="price-label" style="color: #10b981; font-size: 18px; font-weight: 600;">✅ Already Purchased</div>
-      </div>
-      <a href="${currentResource.fileurl || '#'}" ${currentResource.fileurl ? 'download' : ''} class="buy-button" style="background: #10b981; text-decoration: none; display: block; text-align: center;">📥 Download Content</a>
-      <div class="purchase-info">
-        <div class="info-item">Thank you for your purchase!</div>
-        <div class="info-item">Access anytime from dashboard</div>
-        <div class="info-item">Lifetime access</div>
-      </div>
-    `;
+  // Only populate sidebar purchase card on desktop
+  if (window.innerWidth > 968) {
+    if (isPurchased) {
+      document.getElementById('purchaseCard').innerHTML = `
+        <div class="price-section">
+          <div class="price-label" style="color: #10b981; font-size: 18px; font-weight: 600;">✅ Already Purchased</div>
+        </div>
+        <a href="${currentResource.fileurl || '#'}" ${currentResource.fileurl ? 'download' : ''} class="buy-button" style="background: #10b981; text-decoration: none; display: block; text-align: center;">📥 Download Content</a>
+        <div class="purchase-info">
+          <div class="info-item">Thank you for your purchase!</div>
+          <div class="info-item">Access anytime from dashboard</div>
+          <div class="info-item">Lifetime access</div>
+        </div>
+      `;
+    } else {
+      document.getElementById('purchaseCard').innerHTML = `
+        <div class="price-section">
+          <div class="price-label">Price</div>
+          <div class="price">₹${currentResource.price}</div>
+        </div>
+        <button class="buy-button" onclick="handlePurchase()">Buy Now</button>
+        <div class="purchase-info">
+          <div class="info-item">Secure payment</div>
+          <div class="info-item">Money-back guarantee</div>
+          <div class="info-item">Instant delivery</div>
+        </div>
+      `;
+    }
   } else {
-    document.getElementById('purchaseCard').innerHTML = `
-      <div class="price-section">
-        <div class="price-label">Price</div>
-        <div class="price">₹${currentResource.price}</div>
-      </div>
-      <button class="buy-button" onclick="handlePurchase()">Buy Now</button>
-      <div class="purchase-info">
-        <div class="info-item">Secure payment</div>
-        <div class="info-item">Money-back guarantee</div>
-        <div class="info-item">Instant delivery</div>
-      </div>
-    `;
+    // Clear sidebar on mobile
+    document.getElementById('purchaseCard').innerHTML = '';
   }
 }
 

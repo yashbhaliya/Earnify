@@ -11,7 +11,28 @@ document.addEventListener('DOMContentLoaded', () => {
   checkLoginStatus();
   loadResources();
   loadSiteSettings();
+  initializeSmoothScrolling();
 });
+
+// Initialize smooth scrolling for CTA button
+function initializeSmoothScrolling() {
+  const ctaBtn = document.querySelector('.cta-btn');
+  if (ctaBtn) {
+    ctaBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      const targetId = this.getAttribute('href');
+      if (targetId && targetId.startsWith('#')) {
+        const targetElement = document.querySelector(targetId);
+        if (targetElement) {
+          targetElement.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      }
+    });
+  }
+}
 
 function loadSiteSettings() {
   const siteSettings = JSON.parse(localStorage.getItem('siteSettings') || '{}');

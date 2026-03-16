@@ -603,7 +603,8 @@ app.get("/api/statistics/purchases/:userEmail", async (req, res) => {
           email: buyerEmail,
           totalPurchases: 0,
           totalAmount: 0,
-          resources: []
+          resources: [],
+          created_at: payment.created_at  // first purchase date
         };
       }
       
@@ -611,6 +612,10 @@ app.get("/api/statistics/purchases/:userEmail", async (req, res) => {
       userStats[buyerEmail].totalAmount += parseFloat(resource?.price || 0);
       if (resource) {
         userStats[buyerEmail].resources.push(resource.title);
+      }
+      // keep the most recent created_at
+      if (payment.created_at && (!userStats[buyerEmail].created_at || new Date(payment.created_at) > new Date(userStats[buyerEmail].created_at))) {
+        userStats[buyerEmail].created_at = payment.created_at;
       }
     });
     
