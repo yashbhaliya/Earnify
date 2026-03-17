@@ -13,7 +13,7 @@
 }
 
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Inter', sans-serif;
   display: flex;
   background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
   min-height: 100vh;
@@ -643,7 +643,7 @@ button:last-child:hover {
 
 .resource-card p {
   color: #64748b;
-  margin-bottom: 15px;
+  /* margin-bottom: 15px; */
 }
 
 .resource-price {
@@ -3143,7 +3143,7 @@ body.light-mode #viewContent span {
 
 .resource-icon {
   font-size: 48px;
-  margin-bottom: 15px;
+  /* margin-bottom: 15px; */
   display: block;
 }
 
@@ -3158,7 +3158,7 @@ body.light-mode #viewContent span {
   color: #64748b;
   font-size: 14px;
   line-height: 1.6;
-  margin-bottom: 15px;
+  /* margin-bottom: 15px; */
 }
 
 .resource-price {

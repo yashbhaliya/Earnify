@@ -1,43 +1,35 @@
 .page-hero {
-  background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
-  color: white;
-  padding: 4rem 0;
   text-align: center;
+  padding: 6rem 0 4rem;
+  background: #ffffff;
+  color: #0F172A;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 2px solid #f4f6f8;
 }
 
-/* Desktop/Tablet only - add left/right margins */
-@media (min-width: 769px) {
-  .page-hero {
-     max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px;
-  display: flex;
-  min-height:35vh ;
-    /* center the section */
-    text-align: center;
-    /* padding: 6rem 0; */
-    background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
-    color: white;
-    /* center the text */
-    justify-content: center;
-    align-items: center;
-    border-radius: 15px;
-  }
+.page-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
+  background-size: 40px 40px;
+  opacity: 0.5;
+  pointer-events: none;
+}
 
-  .page-hero .container {
-    width: 100%;
-  }
-
-  .page-hero::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="%23ffffff" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>') repeat;
-    opacity: 0.3;
-  }
+.page-hero::after {
+  content: '';
+  position: absolute;
+  top: -80px;
+  left: -80px;
+  width: 350px;
+  height: 350px;
+  background: #2563EB;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.05;
+  pointer-events: none;
 }
 
 .page-hero .container {
@@ -48,15 +40,32 @@
 .page-hero h1 {
   font-size: 3rem;
   margin-bottom: 0.5rem;
-  position: relative;
-  z-index: 1;
+  color: #0F172A;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
 }
 
 .page-hero p {
-  font-size: 14px;
-  opacity: 0.9;
-  position: relative;
-  z-index: 1;
+  font-size: 1.1rem;
+  color: #475569;
+  max-width: 560px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.7;
+}
+
+@media (min-width: 769px) {
+  .page-hero {
+    padding: 7rem 0 5rem;
+    min-height: 40vh;
+    display: flex;
+    align-items: center;
+  }
+
+  .page-hero .container {
+    width: 100%;
+  }
 }
 
 .page-content {
@@ -318,12 +327,18 @@
 }
 
 @media (max-width: 768px) {
+  .page-hero {
+    padding: 4rem 0 3rem;
+  }
+
   .page-hero h1 {
     font-size: 2rem;
+    line-height: 1.2;
   }
 
   .page-hero p {
     font-size: 1rem;
+    padding: 0 1rem;
   }
 
   .contact-wrapper {

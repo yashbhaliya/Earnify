@@ -3187,7 +3187,7 @@ grid-template-columns: repeat(3, 1fr);  gap: 30px;
 
 .resource-icon {
   font-size: 48px;
-  margin-bottom: 15px;
+  /* margin-bottom: 15px; */
   display: block;
 }
 

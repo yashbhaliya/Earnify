@@ -18,7 +18,7 @@
         width: 100%;
         box-sizing: border-box;
         margin-left: 0 !important;
-        padding-top: 70px; /* Space for the floating hamburger */
+        padding-top: 20px; /* Space for the floating hamburger */
     }
 
     /* --- Hamburger Menu Button --- */
