@@ -49,7 +49,7 @@ function getTypeColorRgba(type, opacity) {
 
 function updatePageTitle(type) {
   const titles = {
-    'all': '🎯 All Resources',
+    'all': '<img src="../../../file/exam.jpg" alt="">  All Resources',
     'pdf': '📄 PDF Notes',
     'excel': '📊 Excel Templates',
     'exam': '📝 Exam Materials',
