@@ -274,56 +274,44 @@ async function loadResourceDetails() {
 }
 
 function showShimmerLoading() {
-  // Add breadcrumb shimmer
-  document.getElementById('breadcrumbTitle').innerHTML = '<div class="shimmer-element" style="width: 200px; height: 16px; display: inline-block; border-radius: 4px;"></div>';
-  
-  // Create mobile shimmer price section if on mobile
-  let mobileShimmerPrice = '';
-  if (window.innerWidth <= 968) {
-    mobileShimmerPrice = `
-      <div style="text-align: center; padding: 2rem 0; border: 2px solid #e2e8f0; border-radius: 16px; margin: 2rem 0; background: white; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
-        <div class="shimmer-element shimmer-price-label" style="margin: 0 auto 0.8rem;"></div>
-        <div class="shimmer-element shimmer-price" style="margin: 0 auto;"></div>
-      </div>
-      <div class="shimmer-element shimmer-button" style="margin-bottom: 2rem;"></div>
-    `;
-  }
-  
-  // Show enhanced shimmer for main content
+  document.getElementById('breadcrumbTitle').innerHTML = '<div class="shimmer-element" style="width:180px;height:14px;display:inline-block;border-radius:4px;"></div>';
+
+  const isMobile = window.innerWidth <= 968;
+
   document.getElementById('resourceDetails').innerHTML = `
     <div class="shimmer-element shimmer-badge"></div>
     <div class="shimmer-element shimmer-title"></div>
-    <div class="shimmer-element shimmer-description"></div>
-    <div class="shimmer-element shimmer-description" style="width: 95%;"></div>
-    <div class="shimmer-element shimmer-description" style="width: 85%; margin-bottom: 2.5rem;"></div>
-    ${mobileShimmerPrice}
+    <div class="shimmer-element shimmer-desc"></div>
+    <div class="shimmer-element shimmer-desc shimmer-desc-mid"></div>
+    <div class="shimmer-element shimmer-desc shimmer-desc-short"></div>
+    ${isMobile ? `
+    <div class="shimmer-mobile-price">
+      <div class="shimmer-element shimmer-price-label"></div>
+      <div class="shimmer-element shimmer-price"></div>
+    </div>
+    <div class="shimmer-element shimmer-button"></div>
+    ` : ''}
     <div class="shimmer-features">
       <div class="shimmer-element shimmer-features-title"></div>
       <div class="shimmer-element shimmer-feature-item"></div>
       <div class="shimmer-element shimmer-feature-item"></div>
       <div class="shimmer-element shimmer-feature-item"></div>
-      <div class="shimmer-element shimmer-feature-item" style="width: 70%;"></div>
+      <div class="shimmer-element shimmer-feature-item shimmer-feature-item-short"></div>
     </div>
   `;
-  
-  // Show shimmer for purchase card only on desktop
-  if (window.innerWidth > 968) {
-    document.getElementById('purchaseCard').innerHTML = `
-      <div class="shimmer-price-section">
-        <div class="shimmer-element shimmer-price-label"></div>
-        <div class="shimmer-element shimmer-price"></div>
-      </div>
-      <div class="shimmer-element shimmer-button"></div>
-      <div class="shimmer-info-section">
-        <div class="shimmer-element shimmer-info-item"></div>
-        <div class="shimmer-element shimmer-info-item" style="width: 90%;"></div>
-        <div class="shimmer-element shimmer-info-item" style="width: 75%;"></div>
-      </div>
-    `;
-  } else {
-    // Clear sidebar shimmer on mobile
-    document.getElementById('purchaseCard').innerHTML = '';
-  }
+
+  document.getElementById('purchaseCard').innerHTML = !isMobile ? `
+    <div class="shimmer-price-section">
+      <div class="shimmer-element shimmer-price-label"></div>
+      <div class="shimmer-element shimmer-price"></div>
+    </div>
+    <div class="shimmer-element shimmer-button"></div>
+    <div class="shimmer-info-section">
+      <div class="shimmer-element shimmer-info-item"></div>
+      <div class="shimmer-element shimmer-info-item shimmer-info-item-mid"></div>
+      <div class="shimmer-element shimmer-info-item shimmer-info-item-short"></div>
+    </div>
+  ` : '';
 }
 
 function displayResourceDetails(isPurchased = false) {

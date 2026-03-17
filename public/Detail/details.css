@@ -256,7 +256,7 @@ body {
 .details-main {
   background: white;
   border-radius: 24px;
-  padding: 3rem;
+  padding: 25px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.05);
   animation: slideUp 0.6s ease-out;
 }
@@ -281,7 +281,7 @@ body {
   padding: 0.6rem 1.5rem;
   border-radius: 30px;
   font-size: 0.85rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 13px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -291,7 +291,7 @@ body {
 .details-main h1 {
   color: #1a202c;
   font-size: 2.8rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 10px;
   line-height: 1.2;
   font-weight: 700;
 }
@@ -300,14 +300,14 @@ body {
   color: #4a5568;
   font-size: 1.15rem;
   line-height: 1.8;
-  margin-bottom: 2.5rem;
+  margin-bottom: 10px;
 }
 
 .features-list {
   background: #f7fafc;
   padding: 2rem;
   border-radius: 16px;
-  margin-top: 2rem;
+  margin-top: 15px;
 }
 
 .features-list h3 {
@@ -339,7 +339,7 @@ body {
 .purchase-card {
   background: white;
   border-radius: 24px;
-  padding: 2.5rem;
+  padding: 30px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.05);
   position: sticky;
   top: 100px;
@@ -679,124 +679,86 @@ body {
 }
 
 
-/* Enhanced Shimmer Loading Styles for Details Page */
-.shimmer-details-main {
-  background: white;
-  border-radius: 24px;
-  padding: 3rem;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
-  animation: slideUp 0.6s ease-out;
-}
-
-.shimmer-purchase-card {
-  background: white;
-  border-radius: 24px;
-  padding: 2.5rem;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
-  position: sticky;
-  top: 100px;
-  animation: slideUp 0.6s ease-out 0.2s both;
-}
-
+/* Shimmer Loading Styles for Details Page */
 .shimmer-element {
-  background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 50%, #f1f5f9 100%);
+  background: #e2e8f0;
   border-radius: 8px;
   position: relative;
   overflow: hidden;
-  background-size: 200% 100%;
-  animation: shimmerWave 2s infinite ease-in-out;
 }
 
-.shimmer-element::before {
+.shimmer-element::after {
   content: '';
   position: absolute;
   top: 0;
-  left: -150%;
-  width: 150%;
+  left: -100%;
+  width: 100%;
   height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(255, 255, 255, 0.8) 50%,
-    transparent 100%
-  );
-  animation: shimmer 2.5s infinite;
-  z-index: 1;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.7), transparent);
+  animation: detailShimmer 1.5s infinite;
 }
 
-@keyframes shimmer {
-  0% {
-    left: -150%;
-  }
-  100% {
-    left: 150%;
-  }
-}
-
-@keyframes shimmerWave {
-  0% {
-    background-position: 200% 0;
-  }
-  100% {
-    background-position: -200% 0;
-  }
+@keyframes detailShimmer {
+  0% { left: -100%; }
+  100% { left: 100%; }
 }
 
 .shimmer-badge {
-  width: 140px;
-  height: 36px;
-  margin-bottom: 1.5rem;
+  width: 130px;
+  height: 32px;
   border-radius: 30px;
+  margin-bottom: 13px;
 }
 
 .shimmer-title {
-  width: 85%;
-  height: 52px;
-  margin-bottom: 1.5rem;
-  border-radius: 12px;
+  width: 80%;
+  height: 44px;
+  margin-bottom: 10px;
+  border-radius: 8px;
 }
 
-.shimmer-description {
+.shimmer-desc {
   width: 100%;
-  height: 18px;
-  margin-bottom: 14px;
+  height: 16px;
+  margin-bottom: 10px;
   border-radius: 6px;
 }
 
-.shimmer-description:nth-child(2) {
-  width: 95%;
+.shimmer-desc-mid {
+  width: 92%;
 }
 
-.shimmer-description:nth-child(3) {
-  width: 85%;
-  margin-bottom: 2.5rem;
+.shimmer-desc-short {
+  width: 78%;
+  margin-bottom: 0;
 }
 
 .shimmer-features {
   background: #f7fafc;
   padding: 2rem;
   border-radius: 16px;
-  margin-top: 2rem;
+  margin-top: 15px;
 }
 
 .shimmer-features-title {
-  width: 45%;
-  height: 28px;
-  margin-bottom: 1.5rem;
-  border-radius: 8px;
+  width: 40%;
+  height: 24px;
+  margin-bottom: 1rem;
 }
 
 .shimmer-feature-item {
   width: 100%;
-  height: 22px;
-  margin-bottom: 16px;
+  height: 18px;
+  margin-bottom: 14px;
   border-radius: 6px;
 }
 
-.shimmer-feature-item:last-child {
+.shimmer-feature-item-short {
   width: 70%;
+  margin-bottom: 0;
 }
 
+/* Sidebar shimmer */
 .shimmer-price-section {
   text-align: center;
   padding: 2rem 0;
@@ -805,22 +767,21 @@ body {
 }
 
 .shimmer-price-label {
-  width: 80px;
-  height: 18px;
+  width: 70px;
+  height: 16px;
   margin: 0 auto 0.8rem;
-  border-radius: 6px;
 }
 
 .shimmer-price {
-  width: 140px;
-  height: 64px;
+  width: 120px;
+  height: 56px;
   margin: 0 auto;
-  border-radius: 12px;
+  border-radius: 8px;
 }
 
 .shimmer-button {
   width: 100%;
-  height: 64px;
+  height: 58px;
   border-radius: 16px;
   margin-bottom: 2rem;
 }
@@ -832,66 +793,26 @@ body {
 
 .shimmer-info-item {
   width: 85%;
-  height: 20px;
-  margin-bottom: 18px;
+  height: 18px;
+  margin-bottom: 16px;
   border-radius: 6px;
 }
 
-.shimmer-info-item:nth-child(2) {
-  width: 90%;
-}
+.shimmer-info-item-mid { width: 90%; }
+.shimmer-info-item-short { width: 70%; margin-bottom: 0; }
 
-.shimmer-info-item:last-child {
-  width: 75%;
-}
-
-/* Mobile Shimmer Adjustments */
-@media (max-width: 968px) {
-  .shimmer-purchase-card {
-    position: static;
-    margin-top: 2rem;
-  }
-  
-  .shimmer-features {
-    margin-top: 1.5rem;
-  }
+/* Mobile shimmer price block */
+.shimmer-mobile-price {
+  border: 2px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 2rem;
+  margin: 1.5rem 0;
+  text-align: center;
 }
 
 @media (max-width: 768px) {
-  .shimmer-details-main {
-    padding: 2rem 1.5rem;
-  }
-  
-  .shimmer-title {
-    height: 42px;
-    width: 90%;
-  }
-  
-  .shimmer-price {
-    height: 52px;
-    width: 120px;
-  }
-  
-  .shimmer-button {
-    height: 56px;
-  }
-  
-  .shimmer-badge {
-    width: 120px;
-    height: 32px;
-  }
-  
-  .shimmer-features {
-    padding: 1.5rem;
-  }
-  
-  .shimmer-features-title {
-    width: 50%;
-    height: 24px;
-  }
-  
-  .shimmer-feature-item {
-    height: 20px;
-    margin-bottom: 14px;
-  }
+  .shimmer-title { height: 36px; }
+  .shimmer-price { height: 44px; width: 100px; }
+  .shimmer-button { height: 52px; }
+  .shimmer-features { padding: 1.5rem; }
 }

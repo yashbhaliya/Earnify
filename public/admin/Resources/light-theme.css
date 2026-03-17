@@ -11,7 +11,7 @@ body.light-mode .sidebar {
 
 body.light-mode .sidebar h2 {
   color: #3b82f6;
-  border-bottom: 2px solid #dbeafe;
+  /* border-bottom: 2px solid #dbeafe; */
   text-shadow: none;
 }
 

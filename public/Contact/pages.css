@@ -53,20 +53,20 @@
 }
 
 .page-hero p {
-  font-size: 1.2rem;
+  font-size: 14px;
   opacity: 0.9;
   position: relative;
   z-index: 1;
 }
 
 .page-content {
-  padding: 4rem 0;
-  background: white;
+  padding: 40px;
+    background: white;
 }
 
 .content-box {
   background: white;
-  padding: 2rem;
+  padding: 20px;
   margin-bottom: 2rem;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
@@ -298,7 +298,6 @@
 
 .faq-item {
   margin-bottom: 1.5rem;
-  padding-bottom: 1.5rem;
   border-bottom: 1px solid #e2e8f0;
 }
 

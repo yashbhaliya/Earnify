@@ -37,6 +37,20 @@
       background: #f1f5f9;
       color: #ef4444;
     }
+    .logout-link {
+      background: white !important;
+      color: #1e293b !important;
+      border: 2px solid #ef4444 !important;
+      border-radius: 10px !important;
+      font-weight: 600 !important;
+      transition: all 0.3s !important;
+    }
+    .logout-link:hover {
+      background: rgb(251, 156, 156) !important;
+      color: white !important;
+      border-color: #dc2626 !important;
+      transform: translateY(-2px) !important;
+    }
     .sidebar.active .sidebar-close-btn {
       display: block;
     }
@@ -234,25 +248,36 @@
     }
 
     .btn-edit {
-      background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-      color: white;
+      background: white !important;
+      color: black !important;
+      border: 2px solid green;
+
       box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
     }
 
     .btn-edit:hover {
+      background: rgb(111, 219, 111) !important;
+      color: black !important;
       transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+      
+      box-shadow: 0 6px 20px rgba(0, 128, 0, 0.4);
     }
 
     .btn-logout {
-      background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-      color: white;
-      box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+       background: white !important;
+      color: black !important;
+      border: 2px solid red;
+
+      box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
     }
 
     .btn-logout:hover {
+       background: rgb(255, 165, 165) !important;
+      color: black !important;
       transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+      
+      box-shadow: 0 6px 20px rgba(255, 0, 0, 0.4);
+      
     }
 
     @keyframes shimmer {

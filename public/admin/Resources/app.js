@@ -1,4 +1,4 @@
-// API Configuration will be loaded from api-config.js
+﻿// API Configuration will be loaded from api-config.js
 // const API = "http://localhost:5000/api/users";
 // const RESOURCE_API = "http://localhost:5000/api/resources";
 
@@ -157,7 +157,7 @@ async function loadPurchaseStatistics() {
     statsOverview.innerHTML = `
       <div class="stat-card">
         <div class="stat-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-          📦
+          ðŸ“¦
         </div>
         <div class="stat-content">
           <h3>My Sales</h3>
@@ -167,17 +167,17 @@ async function loadPurchaseStatistics() {
       </div>
       <div class="stat-card">
         <div class="stat-icon" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
-          💰
+          ðŸ’°
         </div>
         <div class="stat-content">
           <h3>My Revenue</h3>
-          <div class="stat-number" id="totalRevenue">₹${data.totalRevenue || 0}</div>
+          <div class="stat-number" id="totalRevenue">â‚¹${data.totalRevenue || 0}</div>
           <div class="stat-label">Total earnings from my resources</div>
         </div>
       </div>
       <div class="stat-card">
         <div class="stat-icon" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
-          👥
+          ðŸ‘¥
         </div>
         <div class="stat-content">
           <h3>My Customers</h3>
@@ -197,7 +197,7 @@ async function loadPurchaseStatistics() {
       <tr>
         <td>${customer.email}</td>
         <td>${customer.totalPurchases}</td>
-        <td>₹${customer.totalAmount.toFixed(2)}</td>
+        <td>â‚¹${customer.totalAmount.toFixed(2)}</td>
         <td>${customer.resources.join(', ')}</td>
       </tr>
     `).join('');
@@ -211,7 +211,7 @@ async function loadPurchaseStatistics() {
     statsOverview.innerHTML = `
       <div class="stat-card">
         <div class="stat-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-          📦
+          ðŸ“¦
         </div>
         <div class="stat-content">
           <h3>My Sales</h3>
@@ -221,17 +221,17 @@ async function loadPurchaseStatistics() {
       </div>
       <div class="stat-card">
         <div class="stat-icon" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
-          💰
+          ðŸ’°
         </div>
         <div class="stat-content">
           <h3>My Revenue</h3>
-          <div class="stat-number" id="totalRevenue">₹0</div>
+          <div class="stat-number" id="totalRevenue">â‚¹0</div>
           <div class="stat-label">Total earnings from my resources</div>
         </div>
       </div>
       <div class="stat-card">
         <div class="stat-icon" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
-          👥
+          ðŸ‘¥
         </div>
         <div class="stat-content">
           <h3>My Customers</h3>
@@ -241,7 +241,7 @@ async function loadPurchaseStatistics() {
       </div>
     `;
     tbody.innerHTML = `<tr><td colspan="4" style="text-align: center; padding: 40px; color: #ef4444;">
-      ⚠️ ${error.message}<br><br>
+      âš ï¸ ${error.message}<br><br>
       <small>Make sure you are logged in and have created some resources.</small>
     </td></tr>`;
   }
@@ -291,7 +291,7 @@ function filterStatsByType(type) {
   statsOverview.innerHTML = `
     <div class="stat-card">
       <div class="stat-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-        📦
+        ðŸ“¦
       </div>
       <div class="stat-content">
         <h3>Total Purchases</h3>
@@ -301,17 +301,17 @@ function filterStatsByType(type) {
     </div>
     <div class="stat-card">
       <div class="stat-icon" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
-        💰
+        ðŸ’°
       </div>
       <div class="stat-content">
         <h3>Total Revenue</h3>
-        <div class="stat-number">₹${totalRevenue.toFixed(2)}</div>
+        <div class="stat-number">â‚¹${totalRevenue.toFixed(2)}</div>
         <div class="stat-label">Total earnings</div>
       </div>
     </div>
     <div class="stat-card">
       <div class="stat-icon" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
-        👥
+        ðŸ‘¥
       </div>
       <div class="stat-content">
         <h3>Total Customers</h3>
@@ -331,7 +331,7 @@ function filterStatsByType(type) {
     <tr>
       <td>${user.email}</td>
       <td>${user.totalPurchases}</td>
-      <td>₹${user.totalAmount.toFixed(2)}</td>
+      <td>â‚¹${user.totalAmount.toFixed(2)}</td>
       <td>${user.resources.join(', ')}</td>
     </tr>
   `).join('');
@@ -369,7 +369,7 @@ async function loadResources(type) {
   if (!userEmail) {
     grid.innerHTML = `
       <div class="empty-state">
-        <div class="empty-icon">🔒</div>
+        <div class="empty-icon">ðŸ”’</div>
         <h3>Login Required</h3>
         <p>Please login to view resources</p>
       </div>
@@ -445,11 +445,11 @@ async function loadResources(type) {
     
     if (resources.length === 0) {
       const emptyStates = {
-        all: { icon: '📦', title: 'No Resources Yet', text: 'Click the buttons above to add your first resource!' },
-        pdf: { icon: '📄', title: 'No PDF Notes', text: 'Go to "All Resources" tab to add PDF notes' },
-        excel: { icon: '📊', title: 'No Excel Templates', text: 'Go to "All Resources" tab to add Excel templates' },
-        exam: { icon: '📝', title: 'No Exam Materials', text: 'Go to "All Resources" tab to add exam materials' },
-        freelance: { icon: '💼', title: 'No Freelance Services', text: 'Go to "All Resources" tab to add freelance services' }
+        all: { icon: 'ðŸ“¦', title: 'No Resources Yet', text: 'Click the buttons above to add your first resource!' },
+        pdf: { icon: 'ðŸ“„', title: 'No PDF Notes', text: 'Go to "All Resources" tab to add PDF notes' },
+        excel: { icon: 'ðŸ“Š', title: 'No Excel Templates', text: 'Go to "All Resources" tab to add Excel templates' },
+        exam: { icon: 'ðŸ“', title: 'No Exam Materials', text: 'Go to "All Resources" tab to add exam materials' },
+        freelance: { icon: 'ðŸ’¼', title: 'No Freelance Services', text: 'Go to "All Resources" tab to add freelance services' }
       };
       const state = emptyStates[type];
       grid.innerHTML = `
@@ -467,11 +467,11 @@ async function loadResources(type) {
         <div class="resource-icon">${getTypeIcon(r.type)}</div>
         <h3>${r.title}</h3>
         <p>${r.description}</p>
-        <div class="resource-price">₹${r.price}</div>
+        <div class="resource-price">â‚¹${r.price}</div>
         <div class="resource-actions">
-          <button onclick="openFile(${r.id})" class="btn-view">📂 Open</button>
-          <button onclick="editResource(${r.id})" class="btn-edit">✏️ Edit</button>
-          <button onclick="deleteResource(${r.id})" class="btn-delete">🗑️ Delete</button>
+          <button onclick="editResource(${r.id})" class="btn-edit"><img src="../../../file/${r.type === 'freelance' ? 'service' : r.type}.jpg" alt="edit" style="width:16px;height:16px;object-fit:contain;vertical-align:middle;margin-right:4px;"> Edit</button>
+
+          <button onclick="deleteResource(${r.id})" class="btn-delete">ðŸ—‘ï¸ Delete</button>
         </div>
       </div>
     `).join('');
@@ -479,7 +479,7 @@ async function loadResources(type) {
     console.error('Error loading resources:', error);
     grid.innerHTML = `
       <div class="empty-state">
-        <div class="empty-icon">⚠️</div>
+        <div class="empty-icon">âš ï¸</div>
         <h3>Server Connection Error</h3>
         <p>Please make sure the server is running at <strong>http://localhost:5000</strong></p>
         <p style="margin-top: 10px; font-size: 12px; color: #ef4444;">${error.message}</p>
@@ -490,12 +490,12 @@ async function loadResources(type) {
 
 function getTypeIcon(type) {
   const icons = {
-    pdf: '📄',
-    excel: '📊',
-    exam: '📝',
-    freelance: '💼'
+    pdf: 'ðŸ“„',
+    excel: 'ðŸ“Š',
+    exam: 'ðŸ“',
+    freelance: 'ðŸ’¼'
   };
-  return icons[type] || '📦';
+  return icons[type] || 'ðŸ“¦';
 }
 
 function setupRealtimeResources() {

@@ -236,12 +236,14 @@ async function loadResources() {
   if (grid) {
     grid.innerHTML = Array(6).fill(0).map(() => `
       <div class="shimmer-card">
-        <div class="shimmer shimmer-icon"></div>
-        <div class="shimmer shimmer-type"></div>
-        <div class="shimmer shimmer-title"></div>
-        <div class="shimmer shimmer-description"></div>
-        <div class="shimmer shimmer-description"></div>
+        <div class="shimmer-card-header">
+          <div class="shimmer shimmer-icon"></div>
+          <div class="shimmer shimmer-title"></div>
+        </div>
+        <div class="shimmer shimmer-desc"></div>
+        <div class="shimmer shimmer-desc shimmer-desc-short"></div>
         <div class="shimmer shimmer-price"></div>
+        <div class="shimmer shimmer-type"></div>
         <div class="shimmer shimmer-button"></div>
       </div>
     `).join('');
@@ -339,11 +341,13 @@ function displayResources(resources, userPurchases = []) {
     
     return `
       <div class="resource-card" onclick="viewDetails(${resource.id})" style="cursor: pointer;">
-        <div class="resource-icon">${icon}</div>
+        <div class="card-header">
+          <div class="resource-icon">${icon}</div>
+          <div class="resource-type">${resource.type.toUpperCase()}</div>
+        </div>
         <h3>${resource.title}</h3>
         <p>${resource.description}</p>
         <div class="resource-price">₹${resource.price}</div>
-        <div class="resource-type">${resource.type.toUpperCase()}</div>
         ${isPurchased ? 
           '<button class="btn-purchased" disabled onclick="event.stopPropagation()">✓ Purchased</button>' :
           `<button class="btn-buy" onclick="event.stopPropagation(); buyResource(${resource.id})">Buy Now</button>`
