@@ -606,18 +606,8 @@ footer {
     gap: 1rem;
   }
 
-  .resources-grid {
-    grid-template-columns: 1fr;
-    gap: 16px;
-    padding: 0.5rem 0;
-  }
-
   .resource-card {
     padding: 2rem;
-  }
-
-  .resource-icon {
-    font-size: 3.5rem;
   }
 
   .resource-price {
@@ -637,7 +627,7 @@ footer {
 @media (max-width: 480px) {
   .resource-card {
     padding: 1.5rem;
-    min-height: 360px;
+    /* min-height: 360px; */
   }
 
   .resource-icon {
@@ -1281,18 +1271,18 @@ footer {
 
   .resource-card h3 {
     font-size: 1.2rem;
-    margin-bottom: 0.6rem;
+    /* margin-bottom: 0.6rem; */
   }
 
   .resource-card p {
     font-size: 0.9rem;
-    margin-bottom: 0.8rem;
+    /* margin-bottom: 0.8rem; */
     line-height: 1.5;
   }
 
   .resource-price {
     font-size: 1.6rem;
-    margin-bottom: 0.8rem;
+    /* margin-bottom: 0.8rem; */
   }
 
   .btn-buy,

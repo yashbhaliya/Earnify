@@ -1,4 +1,4 @@
-﻿// API Configuration will be loaded from api-config.js
+// API Configuration will be loaded from api-config.js
 // const API = "http://localhost:5000/api/users";
 // const RESOURCE_API = "http://localhost:5000/api/resources";
 
@@ -18,10 +18,10 @@ async function loadDashboard() {
   try {
     const res = await fetch(API_CONFIG.getURL(API_CONFIG.endpoints.admin.users));
     const users = await res.json();
-    
+
     const sidebarCount = document.getElementById("sidebarUserCount");
     if (sidebarCount) sidebarCount.textContent = users.length;
-    
+
     if (!Array.isArray(users)) {
       console.error('Users data is not an array:', users);
       document.getElementById("totalUsers").innerText = "Total Users: Error";
@@ -65,8 +65,8 @@ async function loadAnalytics() {
     const female = users.filter(u => u.gender === "Female").length;
 
     if (document.getElementById("activeRate")) {
-      document.getElementById("activeRate").innerText = total ? Math.round((active/total)*100) + "%" : "0%";
-      document.getElementById("blockRate").innerText = total ? Math.round((inactive/total)*100) + "%" : "0%";
+      document.getElementById("activeRate").innerText = total ? Math.round((active / total) * 100) + "%" : "0%";
+      document.getElementById("blockRate").innerText = total ? Math.round((inactive / total) * 100) + "%" : "0%";
       document.getElementById("growthRate").innerText = "+" + total;
       document.getElementById("maleCount").innerText = male;
       document.getElementById("femaleCount").innerText = female;
@@ -92,10 +92,10 @@ async function loadSettings() {
     const res = await fetch(API_CONFIG.getURL(API_CONFIG.endpoints.admin.users));
     if (!res.ok) throw new Error('Failed to fetch settings');
     const users = await res.json();
-    
+
     const sidebarCount = document.getElementById("sidebarUserCount");
     if (sidebarCount) sidebarCount.textContent = Array.isArray(users) ? users.length : 0;
-    
+
     if (document.getElementById("totalRecords")) {
       document.getElementById("totalRecords").innerText = Array.isArray(users) ? users.length : 0;
     }
@@ -119,40 +119,40 @@ async function loadPurchaseStatistics() {
   const shimmerStats = document.getElementById('shimmerStats');
   const statsOverview = document.getElementById('statsOverview');
   const tbody = document.getElementById('purchaseTableBody');
-  
+
   // Show shimmer, hide actual content
   shimmerStats.style.display = 'grid';
   statsOverview.style.display = 'none';
-  
+
   try {
     // Get current user email
     const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
     const userEmail = currentUser.email;
-    
+
     if (!userEmail) {
       throw new Error('Please login to view statistics');
     }
-    
+
     console.log('Loading statistics for user:', userEmail);
-    
+
     // Use user-specific statistics endpoint
     const res = await fetch(API_CONFIG.getURL(`${API_CONFIG.endpoints.userStatistics}/${encodeURIComponent(userEmail)}`));
-    
+
     if (!res.ok) {
       throw new Error('Failed to load statistics. Please try again.');
     }
-    
+
     const data = await res.json();
-    
+
     console.log('Statistics data:', data);
-    
+
     // Hide shimmer, show actual content
     shimmerStats.style.display = 'none';
     statsOverview.style.display = 'grid';
-    
+
     // Store full data globally for filtering
     window.fullStatsData = data;
-    
+
     // Update stats cards with user-specific data
     statsOverview.innerHTML = `
       <div class="stat-card">
@@ -186,12 +186,12 @@ async function loadPurchaseStatistics() {
         </div>
       </div>
     `;
-    
+
     if (!data.userStats || data.userStats.length === 0) {
       tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 40px; color: #666;">No sales data available yet.<br><small>Sales will appear here when customers purchase your resources.</small></td></tr>';
       return;
     }
-    
+
     // Show customer purchase data (people who bought from this user)
     tbody.innerHTML = data.userStats.map(customer => `
       <tr>
@@ -203,11 +203,11 @@ async function loadPurchaseStatistics() {
     `).join('');
   } catch (error) {
     console.error('Error loading purchase statistics:', error);
-    
+
     // Hide shimmer on error
     shimmerStats.style.display = 'none';
     statsOverview.style.display = 'grid';
-    
+
     statsOverview.innerHTML = `
       <div class="stat-card">
         <div class="stat-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
@@ -251,24 +251,24 @@ function filterStatsByType(type) {
   // Update active tab
   document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
   event.target.closest('.tab-btn').classList.add('active');
-  
+
   const data = window.fullStatsData;
   if (!data || !data.userStats) return;
-  
+
   const tbody = document.getElementById('purchaseTableBody');
   const statsOverview = document.getElementById('statsOverview');
-  
+
   let filteredStats = data.userStats;
   let totalPurchases = 0;
   let totalRevenue = 0;
   let totalCustomers = 0;
-  
+
   if (type !== 'all') {
     // Filter user stats by resource type
     filteredStats = data.userStats.map(user => {
       const filteredResources = user.resources.filter(r => r.toLowerCase().includes(type));
       if (filteredResources.length === 0) return null;
-      
+
       return {
         email: user.email,
         totalPurchases: filteredResources.length,
@@ -276,7 +276,7 @@ function filterStatsByType(type) {
         resources: filteredResources
       };
     }).filter(u => u !== null);
-    
+
     // Calculate filtered totals
     totalPurchases = filteredStats.reduce((sum, u) => sum + u.totalPurchases, 0);
     totalRevenue = filteredStats.reduce((sum, u) => sum + u.totalAmount, 0);
@@ -286,7 +286,7 @@ function filterStatsByType(type) {
     totalRevenue = data.totalRevenue || 0;
     totalCustomers = data.totalCustomers || 0;
   }
-  
+
   // Update stats cards
   statsOverview.innerHTML = `
     <div class="stat-card">
@@ -320,13 +320,13 @@ function filterStatsByType(type) {
       </div>
     </div>
   `;
-  
+
   // Update table
   if (filteredStats.length === 0) {
     tbody.innerHTML = `<tr><td colspan="4" style="text-align: center; padding: 40px; color: #666;">No ${type === 'all' ? '' : type.toUpperCase() + ' '}purchase data available</td></tr>`;
     return;
   }
-  
+
   tbody.innerHTML = filteredStats.map(user => `
     <tr>
       <td>${user.email}</td>
@@ -346,26 +346,26 @@ function showTab(type) {
   document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.getElementById(type).classList.add('active');
-  
+
   // Find and activate the correct button
   const buttons = document.querySelectorAll('.tab-btn');
   buttons.forEach(btn => {
-    if (btn.textContent.toLowerCase().includes(type) || 
-        (type === 'all' && btn.textContent.includes('All Resources'))) {
+    if (btn.textContent.toLowerCase().includes(type) ||
+      (type === 'all' && btn.textContent.includes('All Resources'))) {
       btn.classList.add('active');
     }
   });
-  
+
   loadResources(type);
 }
 
 async function loadResources(type) {
   const grid = document.getElementById(type + 'Grid');
   if (!grid) return;
-  
+
   const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
   const userEmail = currentUser.email;
-  
+
   if (!userEmail) {
     grid.innerHTML = `
       <div class="empty-state">
@@ -376,7 +376,7 @@ async function loadResources(type) {
     `;
     return;
   }
-  
+
   // Show shimmer loading
   grid.innerHTML = `
     <div class="shimmer-card">
@@ -416,7 +416,7 @@ async function loadResources(type) {
       </div>
     </div>
   `;
-  
+
   try {
     const res = await fetch(API_CONFIG.getURL(API_CONFIG.endpoints.resources), {
       method: 'GET',
@@ -424,32 +424,32 @@ async function loadResources(type) {
         'Content-Type': 'application/json'
       }
     });
-    
+
     if (!res.ok) {
       throw new Error(`Server error: ${res.status}`);
     }
-    
+
     const allResources = await res.json();
-    
+
     // Filter by user email and type
     let resources = allResources.filter(r => r.user_email === userEmail);
     if (type !== 'all') {
       resources = resources.filter(r => r.type === type);
     }
-    
+
     // Update resource count
     const countElement = document.getElementById(type + 'Count');
     if (countElement) {
       countElement.textContent = `${resources.length} item${resources.length !== 1 ? 's' : ''}`;
     }
-    
+
     if (resources.length === 0) {
       const emptyStates = {
         all: { icon: 'ðŸ“¦', title: 'No Resources Yet', text: 'Click the buttons above to add your first resource!' },
         pdf: { icon: 'ðŸ“„', title: 'No PDF Notes', text: 'Go to "All Resources" tab to add PDF notes' },
         excel: { icon: 'ðŸ“Š', title: 'No Excel Templates', text: 'Go to "All Resources" tab to add Excel templates' },
         exam: { icon: 'ðŸ“', title: 'No Exam Materials', text: 'Go to "All Resources" tab to add exam materials' },
-        freelance: { icon: 'ðŸ’¼', title: 'No Freelance Services', text: 'Go to "All Resources" tab to add freelance services' }
+        freelance: { icon: '', title: 'No Freelance Services', text: 'Go to "All Resources" tab to add freelance services' }
       };
       const state = emptyStates[type];
       grid.innerHTML = `
@@ -461,19 +461,21 @@ async function loadResources(type) {
       `;
       return;
     }
-    
-    grid.innerHTML = resources.map(r => `
-      <div class="resource-card">
-        <div class="resource-icon">${getTypeIcon(r.type)}</div>
-        <h3>${r.title}</h3>
-        <p>${r.description}</p>
-        <div class="resource-price">â‚¹${r.price}</div>
-        <div class="resource-actions">
-          <button onclick="editResource(${r.id})" class="btn-edit"><img src="../../../file/${r.type === 'freelance' ? 'service' : r.type}.jpg" alt="edit" style="width:16px;height:16px;object-fit:contain;vertical-align:middle;margin-right:4px;"> Edit</button>
 
-          <button onclick="deleteResource(${r.id})" class="btn-delete">Delete</button>
-        </div>
-      </div>
+    grid.innerHTML = resources.map(r => `
+       <div class="resource-card">
+    <div class="resource-icon">
+      ${getIcon(r.type)}
+    </div>
+    <h3>${r.title}</h3>
+    <p>${r.description}</p>
+    <div class="resource-price">&#8377;${r.price}</div>
+    <div class="resource-actions">
+      <button onclick="openFile(${r.id})" class="btn-view">Open</button>
+      <button onclick="editResource(${r.id})" class="btn-edit"> Edit</button>
+      <button onclick="deleteResource(${r.id})" class="btn-delete"> Delete</button>
+    </div>
+  </div>
     `).join('');
   } catch (error) {
     console.error('Error loading resources:', error);
@@ -488,14 +490,23 @@ async function loadResources(type) {
   }
 }
 
-function getTypeIcon(type) {
-  const icons = {
-    pdf: 'ðŸ“„',
-    excel: 'ðŸ“Š',
-    exam: 'ðŸ“',
-    freelance: 'ðŸ’¼'
-  };
-  return icons[type] || 'ðŸ“¦';
+function getIcon(type) {
+  switch (type) {
+    case 'pdf':
+      return '<img src="/file/pdf.jpg" style="width:40px;height:40px;">';
+
+    case 'excel':
+      return '<img src="/file/excel.jpg" style="width:40px;height:40px;">';
+
+    case 'exam':
+      return '<img src="/file/exam.jpg" style="width:40px;height:40px;">';
+
+    case 'freelance':
+      return '<img src="/file/service.jpg" style="width:40px;height:40px;">';
+
+    default:
+      return '<img src="/file/default.jpg" style="width:40px;height:40px;">';
+  }
 }
 
 function setupRealtimeResources() {
@@ -505,7 +516,7 @@ function setupRealtimeResources() {
   }
   const channel = supabaseClient
     .channel('resources-changes')
-    .on('postgres_changes', 
+    .on('postgres_changes',
       { event: '*', schema: 'public', table: 'resources' },
       (payload) => {
         if (document.getElementById('pdfGrid')) {
@@ -522,14 +533,14 @@ function showAddModal(type) {
   const modal = document.getElementById('addModal');
   const fileInput = document.getElementById('fileUpload');
   const modalTitle = document.getElementById('modalTitle');
-  
+
   if (!modal) {
     console.error('Modal element not found');
     return;
   }
-  
+
   // Set file input accept attribute based on type
-  switch(type) {
+  switch (type) {
     case 'pdf':
       fileInput.accept = '.pdf';
       modalTitle.textContent = 'Add PDF Resource';
@@ -550,7 +561,7 @@ function showAddModal(type) {
       fileInput.accept = '.pdf,.xlsx,.xls,.doc,.docx';
       modalTitle.textContent = 'Add Resource';
   }
-  
+
   modal.style.display = 'flex';
   console.log('Modal display set to flex');
 }
@@ -579,17 +590,17 @@ async function openFile(id) {
     const res = await fetch(API_CONFIG.getURL(API_CONFIG.endpoints.resources));
     const resources = await res.json();
     const resource = resources.find(r => r.id === id);
-    
+
     console.log('Resource data:', resource);
-    
+
     if (!resource) {
       alert('Resource not found');
       return;
     }
-    
+
     // Check both fileUrl and fileurl (case sensitivity)
     const url = resource.fileUrl || resource.fileurl;
-    
+
     if (url && url !== '#' && url !== 'null') {
       window.open(url, '_blank');
     } else {
@@ -606,7 +617,7 @@ async function viewResource(id) {
     const res = await fetch(API_CONFIG.getURL(API_CONFIG.endpoints.resources));
     const resources = await res.json();
     const resource = resources.find(r => r.id === id);
-    
+
     if (resource) {
       document.getElementById('viewTitle').textContent = resource.title;
       document.getElementById('viewDescription').textContent = resource.description;
@@ -625,22 +636,22 @@ async function editResource(id) {
     const res = await fetch(API_CONFIG.getURL(API_CONFIG.endpoints.resources));
     const resources = await res.json();
     const resource = resources.find(r => r.id === id);
-    
+
     if (resource) {
       document.getElementById('editId').value = resource.id;
       document.getElementById('editTitle').value = resource.title;
       document.getElementById('editDescription').value = resource.description;
       document.getElementById('editPrice').value = resource.price;
-      
+
       // Show last uploaded file based on resource type
       const fileTypes = {
         pdf: 'PDF file',
-        excel: 'Excel file', 
+        excel: 'Excel file',
         exam: 'Exam material',
         freelance: 'Service file'
       };
       document.getElementById('lastFileName').textContent = fileTypes[resource.type] || 'File uploaded';
-      
+
       document.getElementById('editModal').style.display = 'flex';
     }
   } catch (error) {
@@ -657,15 +668,15 @@ async function deleteResource(id) {
 if (document.getElementById('resourceForm')) {
   document.getElementById('resourceForm').onsubmit = async (e) => {
     e.preventDefault();
-    
+
     const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
     const userEmail = currentUser.email;
-    
+
     if (!userEmail) {
       alert('Please login to add resources');
       return;
     }
-    
+
     const formData = new FormData();
     formData.append('type', currentType);
     formData.append('title', document.getElementById('title').value);
@@ -673,20 +684,20 @@ if (document.getElementById('resourceForm')) {
     formData.append('price', document.getElementById('price').value);
     formData.append('file', document.getElementById('fileUpload').files[0]);
     formData.append('user_email', userEmail);
-    
+
     document.getElementById('uploadProgress').style.display = 'block';
-    
+
     try {
       const response = await fetch(API_CONFIG.getURL(API_CONFIG.endpoints.resources), {
         method: 'POST',
         body: formData
       });
-      
+
       if (!response.ok) {
         const error = await response.json();
         throw new Error(error.error || 'Upload failed');
       }
-      
+
       document.getElementById('uploadProgress').style.display = 'none';
       loadResources(currentType);
       closeModal();
@@ -703,10 +714,10 @@ if (document.getElementById('resourceForm')) {
 if (document.getElementById('editForm')) {
   document.getElementById('editForm').onsubmit = async (e) => {
     e.preventDefault();
-    
+
     const id = document.getElementById('editId').value;
     const file = document.getElementById('editFileUpload').files[0];
-    
+
     if (file) {
       // If file is selected, use FormData for file upload
       const formData = new FormData();
@@ -714,18 +725,18 @@ if (document.getElementById('editForm')) {
       formData.append('description', document.getElementById('editDescription').value);
       formData.append('price', document.getElementById('editPrice').value);
       formData.append('file', file);
-      
+
       try {
         const response = await fetch(API_CONFIG.getURL(API_CONFIG.endpoints.resources) + '/' + id, {
           method: 'PUT',
           body: formData
         });
-        
+
         if (!response.ok) {
           const error = await response.json();
           throw new Error(error.error || 'Update failed');
         }
-        
+
         loadResources(currentType);
         closeEditModal();
         alert('Resource updated successfully!');
@@ -739,19 +750,19 @@ if (document.getElementById('editForm')) {
         description: document.getElementById('editDescription').value,
         price: document.getElementById('editPrice').value
       };
-      
+
       try {
         const response = await fetch(API_CONFIG.getURL(API_CONFIG.endpoints.resources) + '/' + id, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(updateData)
         });
-        
+
         if (!response.ok) {
           const error = await response.json();
           throw new Error(error.error || 'Update failed');
         }
-        
+
         loadResources(currentType);
         closeEditModal();
         alert('Resource updated successfully!');

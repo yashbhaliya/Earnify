@@ -336,13 +336,13 @@ function displayResources(resources, userPurchases = []) {
   
   grid.innerHTML = paginatedResources.map(resource => {
     const isPurchased = purchasedIds.includes(resource.id);
-    const icons = { pdf: '📄', excel: '📊', exam: '📝', freelance: '💼' };
-    const icon = icons[resource.type] || '📦';
+    const imgMap = { pdf: '/file/pdf.jpg', excel: '/file/excel.jpg', exam: '/file/exam.jpg', freelance: '/file/service.jpg' };
+    const imgSrc = imgMap[resource.type] || '/file/all.jpg';
     
     return `
       <div class="resource-card" onclick="viewDetails(${resource.id})" style="cursor: pointer;">
         <div class="card-header">
-          <div class="resource-icon">${icon}</div>
+          <div class="resource-icon"><img src="${imgSrc}" alt="${resource.type}" style="width:48px;height:48px;object-fit:contain;border-radius:10px;"></div>
           <div class="resource-type">${resource.type.toUpperCase()}</div>
         </div>
         <h3>${resource.title}</h3>

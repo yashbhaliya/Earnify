@@ -445,16 +445,16 @@ async function loadResources(type) {
     
     if (resources.length === 0) {
       const emptyStates = {
-        all: { icon: '📦', title: 'No Resources Yet', text: 'Click the buttons above to add your first resource!' },
-        pdf: { icon: '📄', title: 'No PDF Notes', text: 'Go to "All Resources" tab to add PDF notes' },
-        excel: { icon: '📊', title: 'No Excel Templates', text: 'Go to "All Resources" tab to add Excel templates' },
-        exam: { icon: '📝', title: 'No Exam Materials', text: 'Go to "All Resources" tab to add exam materials' },
-        freelance: { icon: '💼', title: 'No Freelance Services', text: 'Go to "All Resources" tab to add freelance services' }
+        all:       { img: '/file/all.jpg',     title: 'No Resources Yet',      text: 'Click the buttons above to add your first resource!' },
+        pdf:       { img: '/file/pdf.jpg',     title: 'No PDF Notes',          text: 'Go to "All Resources" tab to add PDF notes' },
+        excel:     { img: '/file/excel.jpg',   title: 'No Excel Templates',    text: 'Go to "All Resources" tab to add Excel templates' },
+        exam:      { img: '/file/exam.jpg',    title: 'No Exam Materials',     text: 'Go to "All Resources" tab to add exam materials' },
+        freelance: { img: '/file/service.jpg', title: 'No Freelance Services', text: 'Go to "All Resources" tab to add freelance services' }
       };
-      const state = emptyStates[type];
+      const state = emptyStates[type] || emptyStates.all;
       grid.innerHTML = `
         <div class="empty-state">
-          <div class="empty-icon">${state.icon}</div>
+          <div class="empty-icon"><img src="${state.img}" alt="${type}" style="width:56px;height:56px;object-fit:contain;"></div>
           <h3>${state.title}</h3>
           <p>${state.text}</p>
         </div>
@@ -489,13 +489,14 @@ async function loadResources(type) {
 }
 
 function getTypeIcon(type) {
-  const icons = {
-    pdf: '📄',
-    excel: '📊',
-    exam: '📝',
-    freelance: '💼'
+  const imgs = {
+    pdf: '/file/pdf.jpg',
+    excel: '/file/excel.jpg',
+    exam: '/file/exam.jpg',
+    freelance: '/file/service.jpg'
   };
-  return icons[type] || '📦';
+  const src = imgs[type] || '/file/all.jpg';
+  return '<img src="' + src + '" alt="' + type + '" style="width:48px;height:48px;object-fit:contain;border-radius:10px;">';
 }
 
 function setupRealtimeResources() {

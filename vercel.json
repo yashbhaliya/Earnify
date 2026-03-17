@@ -30,6 +30,18 @@
       }
     },
     {
+      "src": "/admin/Resources/?$",
+      "dest": "/public/admin/Resources/index.html"
+    },
+    {
+      "src": "/admin/Statistics/?$",
+      "dest": "/public/admin/Statistics/index.html"
+    },
+    {
+      "src": "/admin/Profile/?$",
+      "dest": "/public/admin/Profile/index.html"
+    },
+    {
       "src": "/admin/(.*)",
       "dest": "/public/admin/$1"
     },
