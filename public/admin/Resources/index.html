@@ -1,5 +1,6 @@
 ﻿<!DOCTYPE html>
 <html>
+
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Resources - Earnify Admin</title>
@@ -7,10 +8,149 @@
   <link rel="stylesheet" href="../light-theme.css">
   <link rel="stylesheet" href="../mobile-responsive.css">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    .sidebar-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 30px 30px;
+      border-bottom: 2px solid rgba(59, 130, 246, 0.2);
+    }
+
+    .sidebar-header h2 {
+      padding: 0;
+      border-bottom: none;
+      margin: 0;
+    }
+
+    .sidebar-close-btn {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 26px;
+      line-height: 1;
+      cursor: pointer;
+      color: #64748b;
+      padding: 2px 6px;
+      border-radius: 6px;
+      transition: background 0.2s, color 0.2s;
+      box-shadow: none !important;
+    }
+
+    .sidebar-close-btn:hover {
+      background: #f1f5f9;
+      color: #ef4444;
+    }
+
+    .logout-link {
+      background: white !important;
+      color: #1e293b !important;
+      border: 2px solid #ef4444 !important;
+      border-radius: 10px !important;
+      font-weight: 600 !important;
+      transition: all 0.3s !important;
+    }
+
+    .logout-link:hover {
+      background: #fee2e2 !important;
+      color: #dc2626 !important;
+      border-color: #dc2626 !important;
+      transform: translateY(-2px) !important;
+    }
+
+    .sidebar.active .sidebar-close-btn {
+      display: block;
+    }
+
+    @media (min-width: 769px) {
+      .sidebar-close-btn {
+        display: none !important;
+      }
+    }
+
+    /* Add buttons - white bg, black text, colored border */
+    .add-btn {
+      background: white !important;
+      color: #1e293b !important;
+      border: 2px solid transparent !important;
+    }
+
+    .pdf-btn {
+      border-color: #ef4444 !important;
+    }
+
+    .excel-btn {
+      border-color: #10b981 !important;
+    }
+
+    .exam-btn {
+      border-color: #f59e0b !important;
+    }
+
+    .freelance-btn {
+      border-color: #8b5cf6 !important;
+    }
+
+    .add-btn:hover {
+      background: white !important;
+      color: #1e293b !important;
+      transform: translateY(-2px);
+    }
+
+    .pdf-btn:hover {
+      background: #f59393 !important;
+    }
+
+    .excel-btn:hover {
+      background: #7be8c4 !important;
+    }
+
+    .exam-btn:hover {
+      background: #fdcc78 !important;
+    }
+
+    .freelance-btn:hover {
+      background: #b797ff !important;
+    }
+
+    /* Resource action buttons - white bg, black text, colored border */
+    .resource-actions .btn-view,
+    .resource-actions .btn-edit,
+    .resource-actions .btn-delete {
+      background: white !important;
+      color: #1e293b !important;
+      border: 2px solid transparent !important;
+    }
+
+    .resource-actions .btn-view {
+      border-color: #3b82f6 !important;
+    }
+
+    .resource-actions .btn-edit {
+      border-color: #f59e0b !important;
+    }
+
+    .resource-actions .btn-delete {
+      border-color: #ef4444 !important;
+    }
+
+    .resource-actions .btn-view:hover {
+      background: #9bc1ff !important;
+    }
+
+    .resource-actions .btn-edit:hover {
+      background: #ffd07e !important;
+    }
+
+    .resource-actions .btn-delete:hover {
+      background: #ff8f8f !important;
+    }
+  </style>
 </head>
+
 <body class="light-mode">
 
-<button class="mobile-menu-toggle" onclick="toggleSidebar()">
+  <button class="mobile-menu-toggle" onclick="toggleSidebar()">
   <div class="hamburger"></div>
   <div class="hamburger"></div>
   <div class="hamburger"></div>
@@ -88,49 +228,57 @@
 <div class="main">
   <div class="page-header">
     <div class="header-content">
-      <h1> My Resources</h1>
+      <h1>📋 My Resources</h1>
       <p class="subtitle">Manage your PDF notes, Excel templates, Exam materials, and Freelance services</p>
     </div>
   </div>
 
-   <div class="resource-dropdown-container">
-      <label for="resourceSelect" class="dropdown-label">&#128194; Select Resource Type:</label>
-      <select id="resourceSelect" class="resource-dropdown" onchange="showTab(this.value)">
-        <option value="all">&#128203;<img src="../../../file/exam.jpg" alt=""> All Resources</option>
-        <option value="pdf">&#128196; <img src="../../../file/pdf.jpg" alt="">PDF Notes</option>
-        <option value="excel">&#128202; <img src="../../../file/excel.jpg" alt="">Excel Templates</option>
-        <option value="exam">&#128221; <img src="../../../file/exam.jpg" alt="">Exam Materials</option>
-        <option value="freelance">&#128188; <img src="../../../file/service.jpg" alt="">Freelance Services</option>
-      </select>
-    </div>
-    <div class="section-header">
-      <div class="section-title">
-        <h2> All Resources</h2>
-        <span class="resource-count" id="allCount">0 items</span>
+  <div class="resource-dropdown-container">
+    <label for="resourceSelect" class="dropdown-label">📂 Select Resource Type:</label>
+    <select id="resourceSelect" class="resource-dropdown" onchange="showTab(this.value)">
+      <option value="all">📋 All Resources</option>
+      <option value="pdf">📄 PDF Notes</option>
+      <option value="excel">📊 Excel Templates</option>
+      <option value="exam">📝 Exam Materials</option>
+      <option value="freelance">💼 Freelance Services</option>
+    </select>
+  </div>
+
+  <div id="all" class="tab-content active">
+    <div class="resource-section">
+      <div class="section-header">
+        <div class="section-title">
+          <h2>All Resources</h2>
+          <span class="resource-count" id="allCount">0 items</span>
+        </div>
+        <div class="add-buttons-group">
+          <button class="add-btn pdf-btn" onclick="showAddModal('pdf')">
+            <span class="btn-icon">📄</span>
+            <span class="btn-text">Add PDF</span>
+          </button>
+          <button class="add-btn excel-btn" onclick="showAddModal('excel')">
+            <span class="btn-icon">📊</span>
+            <span class="btn-text">Add Excel</span>
+          </button>
+          <button class="add-btn exam-btn" onclick="showAddModal('exam')">
+            <span class="btn-icon">📝</span>
+            <span class="btn-text">Add Exam</span>
+          </button>
+          <button class="add-btn freelance-btn" onclick="showAddModal('freelance')">
+            <span class="btn-icon">💼</span>
+            <span class="btn-text">Add Service</span>
+          </button>
+        </div>
       </div>
-      <div class="add-buttons-group">
-        <button class="add-btn pdf-btn" onclick="showAddModal('pdf')">
-          <span class="btn-icon"><img src="../../../file/pdf.jpg" alt="PDF"
-              style="width:20px;height:20px;object-fit:contain;vertical-align:middle;"></span>
-          <span class="btn-text">Add PDF</span>
-        </button>
-        <button class="add-btn excel-btn" onclick="showAddModal('excel')">
-          <span class="btn-icon"><img src="../../../file/excel.jpg" alt="Excel"
-              style="width:20px;height:20px;object-fit:contain;vertical-align:middle;"></span>
-          <span class="btn-text">Add Excel</span>
-        </button>
-        <button class="add-btn exam-btn" onclick="showAddModal('exam')">
-          <span class="btn-icon"><img src="../../../file/exam.jpg" alt="Exam"
-              style="width:20px;height:20px;object-fit:contain;vertical-align:middle;"></span>
-          <span class="btn-text">Add Exam</span>
-        </button>
-        <button class="add-btn freelance-btn" onclick="showAddModal('freelance')">
-          <span class="btn-icon"><img src="../../../file/service.jpg" alt="Service"
-              style="width:20px;height:20px;object-fit:contain;vertical-align:middle;"></span>
-          <span class="btn-text">Add Service</span>
-        </button>
+      <div class="resource-grid" id="allGrid">
+        <div class="empty-state">
+          <div class="empty-icon">📦</div>
+          <h3>No Resources Yet</h3>
+          <p>Click the buttons above to add your first resource!</p>
+        </div>
       </div>
     </div>
+  </div>
 
   <div id="pdf" class="tab-content">
     <div class="resource-section">
@@ -253,74 +401,101 @@
   </div>
 </div>
 
-<script src="../api-config.js"></script>
-<script src="../supabase-config.js"></script>
-<script src="../app.js"></script>
-<script src="../auth-modal.js"></script>
-<script>
-  // Make sure functions are globally accessible
-  window.showAddModal = window.showAddModal || function(type) {
-    console.log('showAddModal called with type:', type);
-    const modal = document.getElementById('addModal');
-    if (modal) {
-      modal.style.display = 'flex';
+  <script src="../api-config.js"></script>
+  <script src="../supabase-config.js"></script>
+  <script src="../app.js"></script>
+  <script src="../auth-modal.js"></script>
+  <script src="dropdown.js"></script>
+  <script>
+    // Make sure functions are globally accessible
+    window.showAddModal = window.showAddModal || function (type) {
+      console.log('showAddModal called with type:', type);
+      const modal = document.getElementById('addModal');
+      if (modal) {
+        modal.style.display = 'flex';
+      }
+    };
+
+    window.showTab = window.showTab || function (type) {
+      console.log('showTab called with type:', type);
+    };
+
+    // Check login status and update sidebar
+    (function () {
+      const token = localStorage.getItem('adminToken');
+      const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+      const sidebarUser = document.getElementById('sidebarUser');
+
+      if (token && currentUser.email) {
+        if (sidebarUser) sidebarUser.style.display = 'block';
+
+        const userName = currentUser.user_metadata?.name || currentUser.email?.split('@')[0] || 'User';
+        const userEmail = currentUser.email || '';
+
+        const sidebarUserName = document.getElementById('sidebarUserName');
+        const sidebarUserEmail = document.getElementById('sidebarUserEmail');
+        const sidebarAvatar = document.getElementById('sidebarAvatar');
+
+        if (sidebarUserName) sidebarUserName.textContent = userName;
+        if (sidebarUserEmail) sidebarUserEmail.textContent = userEmail;
+        if (sidebarAvatar) sidebarAvatar.textContent = userName.charAt(0).toUpperCase();
+      }
+    })();
+
+    function logout() {
+      // Clear all authentication data
+      localStorage.removeItem('adminToken');
+      localStorage.removeItem('currentUser');
+      localStorage.removeItem('userLoggedIn');
+      localStorage.removeItem('adminUser');
+      localStorage.removeItem('authToken');
+      localStorage.removeItem('user');
+
+      // Clear session storage as well
+      sessionStorage.clear();
+
+      // Sign out from Supabase if available
+      if (typeof supabaseClient !== 'undefined') {
+        supabaseClient.auth.signOut().catch(console.error);
+      }
+
+      // Force redirect to main site index page
+      window.location.href = '../../index.html';
+
+      // Fallback redirect after a short delay
+      setTimeout(() => {
+        window.location.replace('../../index.html');
+      }, 100);
     }
-  };
-  
-  window.showTab = window.showTab || function(type) {
-    console.log('showTab called with type:', type);
-  };
-  
-  // Check login status and update sidebar
-  (function() {
-    const token = localStorage.getItem('adminToken');
-    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
-    const sidebarUser = document.getElementById('sidebarUser');
-    
-    if (token && currentUser.email) {
-      if (sidebarUser) sidebarUser.style.display = 'block';
-      
-      const userName = currentUser.user_metadata?.name || currentUser.email?.split('@')[0] || 'User';
-      const userEmail = currentUser.email || '';
-      
-      const sidebarUserName = document.getElementById('sidebarUserName');
-      const sidebarUserEmail = document.getElementById('sidebarUserEmail');
-      const sidebarAvatar = document.getElementById('sidebarAvatar');
-      
-      if (sidebarUserName) sidebarUserName.textContent = userName;
-      if (sidebarUserEmail) sidebarUserEmail.textContent = userEmail;
-      if (sidebarAvatar) sidebarAvatar.textContent = userName.charAt(0).toUpperCase();
+
+    function toggleSidebar() {
+      const sidebar = document.querySelector('.sidebar');
+      const overlay = document.querySelector('.sidebar-overlay');
+      const body = document.body;
+      const toggleBtn = document.querySelector('.mobile-menu-toggle');
+
+      const isOpening = !sidebar.classList.contains('active');
+      sidebar.classList.toggle('active');
+      overlay.classList.toggle('active');
+      body.classList.toggle('sidebar-open');
+
+      if (toggleBtn) toggleBtn.style.display = isOpening ? 'none' : '';
     }
-  })();
-  
-  function logout() {
-    localStorage.removeItem('adminToken');
-    localStorage.removeItem('currentUser');
-    localStorage.removeItem('userLoggedIn');
-    window.location.href = '../index.html';
-  }
-  
-  function toggleSidebar() {
-    const sidebar = document.querySelector('.sidebar');
-    const overlay = document.querySelector('.sidebar-overlay');
-    const body = document.body;
-    
-    sidebar.classList.toggle('active');
-    overlay.classList.toggle('active');
-    body.classList.toggle('sidebar-open');
-  }
-  
-  function closeMobileSidebar() {
-    const sidebar = document.querySelector('.sidebar');
-    const overlay = document.querySelector('.sidebar-overlay');
-    const body = document.body;
-    
-    if (sidebar.classList.contains('active')) {
-      sidebar.classList.remove('active');
-      overlay.classList.remove('active');
-      body.classList.remove('sidebar-open');
+
+    function closeMobileSidebar() {
+      const sidebar = document.querySelector('.sidebar');
+      const overlay = document.querySelector('.sidebar-overlay');
+      const body = document.body;
+      const toggleBtn = document.querySelector('.mobile-menu-toggle');
+
+      if (sidebar.classList.contains('active')) {
+        sidebar.classList.remove('active');
+        overlay.classList.remove('active');
+        body.classList.remove('sidebar-open');
+        if (toggleBtn) toggleBtn.style.display = '';
+      }
     }
-  }
-</script>
+  </script>
 </body>
+
 </html>
