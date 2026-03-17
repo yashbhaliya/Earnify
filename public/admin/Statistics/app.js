@@ -469,9 +469,9 @@ async function loadResources(type) {
         <p>${r.description}</p>
         <div class="resource-price">₹${r.price}</div>
         <div class="resource-actions">
-          <button onclick="openFile(${r.id})" class="btn-view">📂 Open</button>
-          <button onclick="editResource(${r.id})" class="btn-edit">✏️ Edit</button>
-          <button onclick="deleteResource(${r.id})" class="btn-delete">🗑️ Delete</button>
+          <button onclick="openFile(${r.id})" class="btn-view">Open</button>
+          <button onclick="editResource(${r.id})" class="btn-edit">Edit</button>
+          <button onclick="deleteResource(${r.id})" class="btn-delete">Delete</button>
         </div>
       </div>
     `).join('');

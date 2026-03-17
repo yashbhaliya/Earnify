@@ -471,7 +471,7 @@ async function loadResources(type) {
         <div class="resource-actions">
           <button onclick="editResource(${r.id})" class="btn-edit"><img src="../../../file/${r.type === 'freelance' ? 'service' : r.type}.jpg" alt="edit" style="width:16px;height:16px;object-fit:contain;vertical-align:middle;margin-right:4px;"> Edit</button>
 
-          <button onclick="deleteResource(${r.id})" class="btn-delete">ðŸ—‘ï¸ Delete</button>
+          <button onclick="deleteResource(${r.id})" class="btn-delete">Delete</button>
         </div>
       </div>
     `).join('');
