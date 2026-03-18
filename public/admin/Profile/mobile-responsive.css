@@ -14,11 +14,11 @@
 
     .main {
         transition: margin-left 0.3s ease;
-        padding: 10pxpx;
+        padding: 10px;
         width: 100%;
         box-sizing: border-box;
         margin-left: 0 !important;
-        padding-top: 20px; /* Space for the floating hamburger */
+        padding-top: 20px; /* Space for the floating hamburger (15px top + 50px height + 10px gap) */
     }
 
     /* --- Hamburger Menu Button --- */
@@ -314,5 +314,183 @@
 
     .add-btn .btn-text {
         font-size: 11px !important;
+    }
+}
+
+/* ── Profile Page Mobile ── */
+@media (max-width: 768px) {
+    .profile-container {
+        padding: 0 !important;
+    }
+
+    .profile-page-header {
+        display: block !important;
+        padding: 25px 20px !important;
+        border-radius: 16px !important;
+        margin-bottom: 20px !important;
+    }
+
+    .profile-page-header h1 {
+        font-size: 22px !important;
+        margin-bottom: 6px !important;
+    }
+
+    .profile-page-header p {
+        font-size: 13px !important;
+    }
+
+    .profile-grid {
+        grid-template-columns: 1fr !important;
+        gap: 14px !important;
+        margin-bottom: 14px !important;
+    }
+
+    .profile-card {
+        border-radius: 16px !important;
+        padding: 18px !important;
+    }
+
+    .profile-avatar-large {
+        width: 80px !important;
+        height: 80px !important;
+        font-size: 36px !important;
+        margin-bottom: 12px !important;
+    }
+
+    .profile-name {
+        font-size: 18px !important;
+        margin-bottom: 4px !important;
+    }
+
+    .profile-email {
+        font-size: 12px !important;
+        margin-bottom: 14px !important;
+    }
+
+    .profile-actions {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 10px !important;
+        margin-top: 16px !important;
+    }
+
+    .action-btn {
+        padding: 11px 8px !important;
+        font-size: 13px !important;
+        border-radius: 10px !important;
+    }
+
+    .profile-card h2 {
+        font-size: 16px !important;
+        margin-bottom: 12px !important;
+        padding-bottom: 12px !important;
+    }
+
+    .detail-row {
+        padding: 12px 0 !important;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 4px !important;
+    }
+
+    .detail-label {
+        font-size: 11px !important;
+        color: #94a3b8 !important;
+    }
+
+    .detail-value {
+        font-size: 13px !important;
+        word-break: break-all !important;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr !important;
+        gap: 10px !important;
+        margin-bottom: 14px !important;
+    }
+
+    .stat-card {
+        padding: 12px 14px !important;
+        gap: 12px !important;
+        min-height: 64px !important;
+        border-radius: 12px !important;
+    }
+
+    .stat-icon {
+        width: 40px !important;
+        height: 40px !important;
+        font-size: 18px !important;
+        border-radius: 9px !important;
+        flex-shrink: 0 !important;
+        margin-bottom: 0 !important;
+    }
+
+    .stat-content {
+        flex: 1 !important;
+        text-align: right !important;
+    }
+
+    .stat-value {
+        font-size: 20px !important;
+    }
+
+    .stat-label {
+        font-size: 9px !important;
+    }
+
+    .resource-item {
+        padding: 12px 10px !important;
+        flex-wrap: wrap !important;
+        gap: 8px !important;
+    }
+
+    .resource-info {
+        gap: 10px !important;
+        flex: 1 !important;
+        min-width: 0 !important;
+    }
+
+    .resource-type-icon {
+        font-size: 24px !important;
+        flex-shrink: 0 !important;
+    }
+
+    .resource-details h4 {
+        font-size: 13px !important;
+        margin-bottom: 3px !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        max-width: 180px !important;
+    }
+
+    .resource-details p {
+        font-size: 11px !important;
+    }
+
+    .resource-price-tag {
+        font-size: 12px !important;
+        padding: 5px 12px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .profile-page-header h1 {
+        font-size: 18px !important;
+    }
+
+    .profile-actions {
+        grid-template-columns: 1fr 1fr !important;
+    }
+
+    .detail-value {
+        font-size: 12px !important;
+    }
+
+    .stat-value {
+        font-size: 18px !important;
+    }
+
+    .resource-details h4 {
+        max-width: 130px !important;
     }
 }

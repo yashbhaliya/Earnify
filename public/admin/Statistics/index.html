@@ -1,11 +1,12 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
- <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap rel=stylesheet>
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Statistics - Earnify Admin</title>
-  <link rel="stylesheet" href="../style.css">
-  <link rel="stylesheet" href="../mobile-responsive.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="mobile-responsive.css">
   <style>
     .sidebar-header {
       display: flex;
@@ -72,145 +73,6 @@
       }
     }
 
-    /* Shimmer Stats Grid - Compact Layout */
-    .shimmer-stats {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 16px;
-      margin-bottom: 35px;
-    }
-
-    .stats-overview.loaded {
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    }
-
-    /* Enhanced Shimmer Stat Card - Compact */
-    .shimmer-stat-card {
-      background: white;
-      border-radius: 12px;
-      padding: 16px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-      border: 1px solid rgba(0, 0, 0, 0.04);
-      position: relative;
-      overflow: hidden;
-      min-height: 80px;
-    }
-
-    .shimmer-stat-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-    }
-
-    .shimmer-stat-card:nth-child(2)::before {
-      background: linear-gradient(90deg, #f093fb 0%, #f5576c 100%);
-    }
-
-    .shimmer-stat-card:nth-child(3)::before {
-      background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
-    }
-
-    /* Shimmer Icon - Compact */
-    .shimmer-stat-icon {
-      width: 48px;
-      height: 48px;
-      border-radius: 10px;
-      background: linear-gradient(
-        90deg,
-        #f5f5f5 0%,
-        #eeeeee 25%,
-        #f5f5f5 50%,
-        #eeeeee 75%,
-        #f5f5f5 100%
-      );
-      background-size: 800px 100%;
-      animation: shimmer 2s infinite linear;
-      flex-shrink: 0;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .shimmer-stat-icon::after {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 20px;
-      height: 20px;
-      background: rgba(102, 126, 234, 0.08);
-      border-radius: 50%;
-    }
-
-    /* Shimmer Content - Compact */
-    .shimmer-stat-content {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      text-align: right;
-      align-self: stretch;
-      justify-content: center;
-    }
-
-    .shimmer-stat-title {
-      width: 60%;
-      height: 10px;
-      border-radius: 3px;
-      background: linear-gradient(
-        90deg,
-        #f5f5f5 0%,
-        #eeeeee 25%,
-        #f5f5f5 50%,
-        #eeeeee 75%,
-        #f5f5f5 100%
-      );
-      background-size: 800px 100%;
-      animation: shimmer 2s infinite linear;
-      margin-left: auto;
-    }
-
-    .shimmer-stat-number {
-      width: 75%;
-      height: 24px;
-      border-radius: 4px;
-      background: linear-gradient(
-        90deg,
-        #f5f5f5 0%,
-        #eeeeee 25%,
-        #f5f5f5 50%,
-        #eeeeee 75%,
-        #f5f5f5 100%
-      );
-      background-size: 800px 100%;
-      animation: shimmer 2s infinite linear;
-      margin-left: auto;
-    }
-
-    .shimmer-stat-label {
-      width: 50%;
-      height: 8px;
-      border-radius: 2px;
-      background: linear-gradient(
-        90deg,
-        #f5f5f5 0%,
-        #eeeeee 25%,
-        #f5f5f5 50%,
-        #eeeeee 75%,
-        #f5f5f5 100%
-      );
-      background-size: 800px 100%;
-      animation: shimmer 2s infinite linear;
-      margin-left: auto;
-    }
-
     #analyticsShimmer .modern-table thead {
       background: #f1f5f9;
     }
@@ -252,164 +114,6 @@
       margin: 8px 0;
     }
 
-    @media (max-width: 768px) {
-      .shimmer-stats,
-      .stats-overview {
-        grid-template-columns: 1fr;
-        gap: 12px;
-      }
-      
-      .shimmer-stat-card,
-      .stat-card {
-        display: flex !important;
-        flex-direction: row !important;
-        align-items: center !important;
-        padding: 14px;
-        gap: 10px;
-        min-height: 70px;
-      }
-      
-      .shimmer-stat-icon,
-      .stat-icon {
-        width: 40px;
-        height: 40px;
-        font-size: 18px;
-        border-radius: 8px;
-        flex-shrink: 0;
-      }
-      
-      .shimmer-stat-content,
-      .stat-content {
-        flex: 1;
-        text-align: right !important;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        gap: 4px;
-      }
-      
-      .stat-number {
-        font-size: 22px;
-      }
-      
-      .stat-content h3 {
-        font-size: 10px;
-      }
-      
-      .stat-label {
-        font-size: 9px;
-      }
-      
-      /* Mobile Page Header */
-      .page-header {
-        display: block !important;
-        visibility: visible !important;
-        padding: 20px 15px !important;
-        margin-bottom: 20px;
-      }
-      
-      .header-content {
-        display: block !important;
-        visibility: visible !important;
-        text-align: center;
-      }
-      
-      .header-content h1 {
-        font-size: 24px !important;
-        margin-bottom: 10px;
-        display: block !important;
-      }
-      
-      .header-content .subtitle {
-        font-size: 14px !important;
-        margin-bottom: 20px;
-        display: none !important;
-      }
-      
-      /* Show dropdown on mobile, hide buttons */
-      .date-filter-buttons {
-        display: none !important;
-      }
-      
-      .date-filter-dropdown {
-        display: block !important;
-        margin-top: 10px;
-      }
-      
-      .date-filter-section {
-        display: block !important;
-        visibility: visible !important;
-      }
-      
-      .filter-label {
-        font-size: 14px;
-        margin-bottom: 12px;
-        text-align: left;
-      }
-    }
-
-    /* Ultra Mobile - Keep horizontal layout but smaller */
-    @media (max-width: 480px) {
-      .stat-card,
-      .shimmer-stat-card {
-        display: flex !important;
-        flex-direction: row !important;
-        align-items: center !important;
-        padding: 12px;
-        gap: 8px;
-        min-height: 60px;
-      }
-      
-      .stat-content,
-      .shimmer-stat-content {
-        flex: 1;
-        text-align: right !important;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        gap: 2px;
-      }
-      
-      .stat-icon,
-      .shimmer-stat-icon {
-        width: 36px;
-        height: 36px;
-        font-size: 16px;
-        border-radius: 6px;
-        flex-shrink: 0;
-      }
-      
-      .stat-number {
-        font-size: 20px;
-      }
-      
-      .stat-content h3 {
-        font-size: 9px;
-      }
-      
-      .stat-label {
-        font-size: 8px;
-      }
-      
-      .shimmer-stat-title,
-      .shimmer-stat-number,
-      .shimmer-stat-label {
-        margin-left: auto;
-        margin-right: 0;
-      }
-      
-      .shimmer-stat-title {
-        height: 9px;
-      }
-      
-      .shimmer-stat-number {
-        height: 20px;
-      }
-      
-      .shimmer-stat-label {
-        height: 8px;
-      }
-    }
 
     /* Page Header Base Styles */
     .page-header {
@@ -439,6 +143,7 @@
       opacity: 0.9;
       margin: 0 0 20px 0;
       font-weight: 400;
+      display: none;
     }
     
     /* Date Filter Section - Desktop and Mobile */
@@ -469,17 +174,51 @@
     /* Desktop View - Buttons */
     .date-filter-buttons {
       display: flex;
-      gap: 12px;
+      gap: 10px;
       flex-wrap: wrap;
     }
-    
+
     @media (min-width: 769px) {
       .date-filter-buttons {
         display: flex !important;
       }
-      
       .date-filter-dropdown {
         display: none !important;
+      }
+    }
+
+    /* Mobile View - show buttons in 3-col grid, hide dropdown */
+    @media (max-width: 768px) {
+      .date-filter-buttons {
+        display: grid !important;
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 8px !important;
+        width: 100% !important;
+      }
+      .date-filter-dropdown {
+        display: none !important;
+      }
+      .filter-btn {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 4px !important;
+        padding: 10px 6px !important;
+        font-size: 11px !important;
+        border-radius: 10px !important;
+        white-space: normal !important;
+        text-align: center !important;
+        min-height: 56px !important;
+      }
+      .filter-btn .btn-icon {
+        font-size: 18px !important;
+        display: block !important;
+      }
+      .filter-btn .btn-text {
+        font-size: 11px !important;
+        font-weight: 600 !important;
+        line-height: 1.2 !important;
       }
     }
 
@@ -901,172 +640,164 @@
       animation: shimmer 2s infinite linear;
     }
 
-    /* Enhanced Statistics Cards - Compact Layout */
-    .stats-overview {
+    /* ── Stat Cards & Shimmer: single source of truth ── */
+    .stats-overview,
+    .shimmer-stats {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
       gap: 16px;
-      margin-bottom: 35px;
+      margin-bottom: 30px;
     }
 
-    .stat-card {
+    /* Shared card shell */
+    .stat-card,
+    .shimmer-stat-card {
       background: white;
       border-radius: 12px;
       padding: 16px;
       display: flex;
+      flex-direction: row;
       align-items: center;
-      gap: 12px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-      transition: all 0.2s ease;
-      border: 1px solid rgba(0, 0, 0, 0.04);
+      gap: 14px;
+      border: 1px solid rgba(0,0,0,0.05);
       position: relative;
       overflow: hidden;
-      cursor: pointer;
-      min-height: 80px !important;
+      min-height: 80px;
     }
 
-    .stat-card::before {
+    /* Coloured top bar */
+    .stat-card::before,
+    .shimmer-stat-card::before {
       content: '';
       position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
+      top: 0; left: 0; right: 0;
       height: 3px;
       background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-      transition: height 0.2s ease;
     }
+    .stat-card:nth-child(2)::before,
+    .shimmer-stat-card:nth-child(2)::before { background: linear-gradient(90deg,#f093fb,#f5576c); }
+    .stat-card:nth-child(3)::before,
+    .shimmer-stat-card:nth-child(3)::before { background: linear-gradient(90deg,#4facfe,#00f2fe); }
 
-    .stat-card:nth-child(2)::before {
-      background: linear-gradient(90deg, #f093fb 0%, #f5576c 100%);
-    }
+    /* Hover — only real cards */
+    .stat-card { cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; }
+    .stat-card:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,0.08); }
+    .stat-card:hover::before { height: 4px; }
 
-    .stat-card:nth-child(3)::before {
-      background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
-    }
-
-    .stat-card::after {
-      content: '';
-      position: absolute;
-      top: -50%;
-      right: -50%;
-      width: 200px;
-      height: 200px;
-      background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
-      border-radius: 50%;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-
-    .stat-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    }
-
-    .stat-card:hover::before {
-      height: 4px;
-    }
-
-    .stat-card:hover::after {
-      opacity: 1;
-    }
-
+    /* Icon */
     .stat-icon {
-      width: 48px;
-      height: 48px;
+      width: 48px; height: 48px;
       border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
       font-size: 22px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
       flex-shrink: 0;
-      background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
       border: 1px solid #e2e8f0;
-      transition: all 0.2s ease;
-      position: relative;
-      overflow: hidden;
+      transition: transform 0.2s;
+    }
+    .stat-card:hover .stat-icon { transform: scale(1.06); }
+
+    /* Shimmer icon placeholder */
+    .shimmer-stat-icon {
+      width: 48px; height: 48px;
+      border-radius: 10px;
+      flex-shrink: 0;
+      background: linear-gradient(90deg,#f0f0f0 25%,#e0e0e0 50%,#f0f0f0 75%);
+      background-size: 400px 100%;
+      animation: shimmerSlide 1.4s infinite linear;
     }
 
-    .stat-icon::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.3) 50%, transparent 70%);
-      transform: rotate(45deg);
-      transition: transform 0.6s ease;
-    }
-
-    .stat-card:hover .stat-icon {
-      transform: scale(1.02);
-      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .stat-card:hover .stat-icon::before {
-      transform: rotate(45deg) translate(100%, 100%);
-    }
-
+    /* Content area */
     .stat-content {
       flex: 1;
       text-align: right;
-      display: flex;
-      flex-direction: column;
+      display: flex; flex-direction: column;
       justify-content: center;
+      gap: 4px;
+    }
+    .stat-content h3 {
+      font-size: 11px; color: #64748b;
+      text-transform: uppercase; letter-spacing: 0.6px;
+      margin: 0; font-weight: 600;
+    }
+    .stat-number {
+      font-size: 28px; font-weight: 800;
+      background: linear-gradient(135deg,#1e293b,#475569);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin: 0; line-height: 1.1;
+    }
+    .stat-card:hover .stat-number {
+      background: linear-gradient(135deg,#667eea,#764ba2);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .stat-label {
+      font-size: 10px; color: #94a3b8;
+      font-weight: 500; text-transform: uppercase;
+      letter-spacing: 0.5px; margin: 0;
+    }
+
+    /* Shimmer content placeholders */
+    .shimmer-stat-content {
+      flex: 1;
+      display: flex; flex-direction: column;
+      align-items: flex-end;
       gap: 8px;
     }
+    .shimmer-stat-title,
+    .shimmer-stat-number,
+    .shimmer-stat-label {
+      border-radius: 4px;
+      background: linear-gradient(90deg,#f0f0f0 25%,#e0e0e0 50%,#f0f0f0 75%);
+      background-size: 400px 100%;
+      animation: shimmerSlide 1.4s infinite linear;
+    }
+    .shimmer-stat-title  { width: 55%; height: 10px; }
+    .shimmer-stat-number { width: 70%; height: 24px; }
+    .shimmer-stat-label  { width: 45%; height: 8px; }
 
-    .stat-content h3 {
-      font-size: 11px;
-      color: #64748b;
-      text-transform: uppercase;
-      letter-spacing: 0.6px;
-      margin: 0;
-      font-weight: 600;
-      opacity: 0.8;
-      transition: all 0.2s ease;
+    @keyframes shimmerSlide {
+      0%   { background-position: -400px 0; }
+      100% { background-position:  400px 0; }
     }
 
-    .stat-card:hover .stat-content h3 {
-      opacity: 1;
-      transform: translateY(-1px);
+    /* ── Mobile ── */
+    @media (max-width: 768px) {
+      .stats-overview,
+      .shimmer-stats {
+        grid-template-columns: 1fr !important;
+        gap: 10px !important;
+      }
+      .stat-card,
+      .shimmer-stat-card {
+        padding: 12px 14px !important;
+        gap: 12px !important;
+        min-height: 68px !important;
+      }
+      .stat-icon,
+      .shimmer-stat-icon {
+        width: 42px !important; height: 42px !important;
+        font-size: 19px !important;
+        border-radius: 9px !important;
+      }
+      .stat-number { font-size: 22px !important; }
+      .stat-content h3 { font-size: 10px !important; }
+      .stat-label { font-size: 9px !important; }
+      .shimmer-stat-number { height: 20px !important; }
     }
-
-    .stat-number {
-      font-size: 28px;
-      font-weight: 800;
-      background: linear-gradient(135deg, #1e293b 0%, #475569 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin: 0;
-      line-height: 1.1;
-      transition: all 0.2s ease;
-      position: relative;
-    }
-
-    .stat-card:hover .stat-number {
-      transform: scale(1.02);
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .stat-label {
-      font-size: 10px;
-      color: #94a3b8;
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      transition: all 0.2s ease;
-      margin: 0;
-    }
-
-    .stat-card:hover .stat-label {
-      color: #64748b;
-      transform: translateY(-1px);
+    @media (max-width: 480px) {
+      .stat-card,
+      .shimmer-stat-card {
+        padding: 10px 12px !important;
+        gap: 10px !important;
+        min-height: 60px !important;
+      }
+      .stat-icon,
+      .shimmer-stat-icon {
+        width: 36px !important; height: 36px !important;
+        font-size: 16px !important;
+      }
+      .stat-number { font-size: 20px !important; }
     }
   </style>
 </head>
@@ -1262,7 +993,7 @@
     </div>
     
     <!-- Actual Stats (Hidden Initially) -->
-    <div class="stats-overview loaded" id="statsOverview" style="display: none; opacity: 0; transform: translateY(20px); transition: all 0.5s ease;">
+    <div class="stats-overview loaded" id="statsOverview" style="display:none; opacity:0; transform:translateY(20px); transition:opacity 0.4s ease, transform 0.4s ease;">
    
 
       <div class="stat-card">
@@ -1527,10 +1258,10 @@
     if (analyticsSection) analyticsSection.style.display = '';
     if (statsOverview) {
       statsOverview.style.display = 'grid';
-      setTimeout(() => {
+      requestAnimationFrame(() => {
         statsOverview.style.opacity = '1';
         statsOverview.style.transform = 'translateY(0)';
-      }, 100);
+      });
     }
   }
   
@@ -1584,10 +1315,10 @@
     if (analyticsSectionND) analyticsSectionND.style.display = '';
     if (statsOverview) {
       statsOverview.style.display = 'grid';
-      setTimeout(() => {
+      requestAnimationFrame(() => {
         statsOverview.style.opacity = '1';
         statsOverview.style.transform = 'translateY(0)';
-      }, 100);
+      });
     }
     const contentND = document.getElementById('analyticsContent');
     if (contentND) contentND.innerHTML = `
@@ -1604,7 +1335,13 @@
     const tbody = document.getElementById('purchaseTableBody');
     
     if (shimmerStats) shimmerStats.style.display = 'none';
-    if (statsOverview) statsOverview.style.display = 'flex';
+    if (statsOverview) {
+      statsOverview.style.display = 'grid';
+      requestAnimationFrame(() => {
+        statsOverview.style.opacity = '1';
+        statsOverview.style.transform = 'translateY(0)';
+      });
+    }
     const analyticsShimmerErr = document.getElementById('analyticsShimmer');
     const analyticsSectionErr = document.getElementById('analyticsSection');
     if (analyticsShimmerErr) analyticsShimmerErr.style.display = 'none';
