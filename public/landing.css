@@ -317,6 +317,17 @@ body {
   cursor: pointer;
   font-weight: 600;
   transition: all 0.3s;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.filter-btn img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  border-radius: 4px;
+  flex-shrink: 0;
 }
 
 .filter-btn:hover,

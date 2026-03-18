@@ -1284,16 +1284,16 @@
         <table class="modern-table">
           <thead>
             <tr>
+              <th><div class="th-content"><span>Customer Email</span></div></th>
               <th><div class="th-content"><span>Quantity</span></div></th>
               <th><div class="th-content"><span>Total Amount</span></div></th>
               <th><div class="th-content"><span>Resources Purchased</span></div></th>
-              <th><div class="th-content"><span>Customer Email</span></div></th>
             </tr>
           </thead>
           <tbody>
             ${Object.entries(customerStats).map(([userId, stats]) => `
               <tr>
-                <td><div class="customer-info"><div class="customer-avatar">👤</div><div class="customer-details"><div class="customer-email">${stats.email}</div><div class="customer-id">ID: ${userId.substring(0, 8)}...</div></div></div></td>
+                <td><div class="customer-info"><div class="customer-details"><div class="customer-email">${stats.email}</div><div class="customer-id">ID: ${userId.substring(0, 8)}...</div></div></div></td>
                 <td><span class="quantity-badge">${stats.quantity}</span></td>
                 <td><span class="amount-value">₹${stats.totalAmount.toFixed(0)}</span></td>
                 <td><div class="resources-list">${stats.resources.slice(0, 2).map(r => `<span class="resource-tag">${r}</span>`).join('')}${stats.resources.length > 2 ? `<span class="resource-tag more">+${stats.resources.length - 2} more</span>` : ''}</div></td>
