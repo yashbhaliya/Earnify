@@ -2904,7 +2904,7 @@ grid-template-columns: repeat(3, 1fr);  gap: 30px;
 }
 
 .resource-count {
-background: linear-gradient(135deg, #2563EB 0%, #7C3AED 100%);  color: #3b82f6;
+background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);  color: #3b82f6;
   padding: 6px 16px;
   border-radius: 20px;
   font-size: 13px;

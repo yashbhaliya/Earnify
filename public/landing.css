@@ -174,7 +174,7 @@ body {
 
 /* Gradient text on "Earn" */
 .hero-gradient-text {
-  background: linear-gradient(135deg, #2563EB 0%, #7C3AED 100%);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -263,7 +263,7 @@ body {
 
 .cta-btn {
   display: inline-block;
-  background: linear-gradient(135deg, #2563EB 0%, #7C3AED 100%);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   padding: 1rem 2.5rem;
   border-radius: 30px;
@@ -332,7 +332,7 @@ body {
 
 .filter-btn:hover,
 .filter-btn.active {
-background: linear-gradient(135deg, #2563EB 0%, #7C3AED 100%);
+background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   border-color: transparent;
   transform: translateY(-2px);
@@ -391,7 +391,7 @@ background: linear-gradient(135deg, #2563EB 0%, #7C3AED 100%);
 
 .resource-type {
   display: inline-block;
-  background: linear-gradient(135deg, #2563EB 0%, #7C3AED 100%);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   padding: 0.25rem 0.75rem;
   border-radius: 999px;
@@ -426,7 +426,7 @@ background: linear-gradient(135deg, #2563EB 0%, #7C3AED 100%);
 .buy-btn {
   width: 100%;
   padding: 10px;
-  background: linear-gradient(135deg, #2563EB 0%, #7C3AED 100%);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   border: none;
   border-radius: 12px;
@@ -951,7 +951,7 @@ footer {
 }
 
 .user-menu-btn {
-  background: linear-gradient(135deg, #2563EB 0%, #7C3AED 100%);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   padding: 0.5rem 1rem;
   border-radius: 25px;
@@ -1082,14 +1082,14 @@ footer {
 }
 
 .pagination-buttons button:hover:not(:disabled) {
-  background: linear-gradient(135deg, #2563EB 0%, #7C3AED 100%);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   border-color: #2563EB;
   transform: translateY(-2px);
 }
 
 .pagination-buttons button.active {
-  background: linear-gradient(135deg, #2563EB 0%, #7C3AED 100%);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   border-color: #2563EB;
 }
