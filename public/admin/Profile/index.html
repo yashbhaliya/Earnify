@@ -526,7 +526,12 @@
     }
 
     .resource-type-icon {
-      font-size: 32px;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
     }
 
     .resource-details h4 {
@@ -1148,10 +1153,10 @@
       }
 
       const typeIcons = {
-        pdf: '📄',
-        excel: '📊',
-        exam: '📝',
-        freelance: '💼'
+        pdf: '<img src="/file/pdf.jpg" style="width:32px;height:32px;object-fit:contain;border-radius:6px;">',
+        excel: '<img src="/file/excel.jpg" style="width:32px;height:32px;object-fit:contain;border-radius:6px;">',
+        exam: '<img src="/file/exam.jpg" style="width:32px;height:32px;object-fit:contain;border-radius:6px;">',
+        freelance: '<img src="/file/service.jpg" style="width:32px;height:32px;object-fit:contain;border-radius:6px;">'
       };
 
       // Show last 5 resources
@@ -1160,7 +1165,7 @@
       container.innerHTML = recentResources.map(resource => `
       <div class="resource-item">
         <div class="resource-info">
-          <div class="resource-type-icon">${typeIcons[resource.type] || '📦'}</div>
+          <div class="resource-type-icon">${typeIcons[resource.type] || '<img src="/file/pdf.jpg" style="width:32px;height:32px;object-fit:contain;border-radius:6px;">'}  </div>
           <div class="resource-details">
             <h4>${resource.title}</h4>
             <p>${resource.description.substring(0, 60)}${resource.description.length > 60 ? '...' : ''}</p>

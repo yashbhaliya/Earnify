@@ -358,7 +358,7 @@ button:last-child:hover {
 
 .analytics-section h2 {
   color: #3b82f6;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   font-size: 24px;
 }
 
@@ -4188,6 +4188,15 @@ button, .btn, .add-btn, .tab-btn, input[type="button"], input[type="submit"] {
   background-clip: text;
   font-size: 28px;
   font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.section-title h2 img {
+  -webkit-text-fill-color: initial;
+  flex-shrink: 0;
 }
 
 /* Resource Count Badge Enhancement */

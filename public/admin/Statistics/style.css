@@ -364,8 +364,11 @@ button:last-child:hover {
 
 .analytics-section h2 {
   color: #3b82f6;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   font-size: 24px;
+}
+.analytics-section p {
+    margin-bottom: 10px;
 }
 
 .stat-grid {
