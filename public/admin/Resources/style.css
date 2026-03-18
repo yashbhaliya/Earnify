@@ -774,9 +774,6 @@ button:last-child:hover {
   font-weight: 600;
   box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
   text-decoration: none;
-}op: auto;
-  padding: 20px;
-  border-top: 2px solid #334155;
 }
 
 .user-info {
@@ -2813,28 +2810,20 @@ grid-template-columns: repeat(3, 1fr);  gap: 30px;
 .add-buttons-group {
   display: flex;
   gap: 10px;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   justify-content: flex-start;
   align-items: center;
   width: 100%;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: thin;
+  
+  
+  
 }
 
-.add-buttons-group::-webkit-scrollbar {
-  height: 6px;
-}
 
-.add-buttons-group::-webkit-scrollbar-track {
-  background: #f1f5f9;
-  border-radius: 10px;
-}
 
-.add-buttons-group::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, #cbd5e1 0%, #94a3b8 100%);
-  border-radius: 10px;
-}
+
+
+
 
 .add-btn {
   display: inline-flex;
@@ -2880,6 +2869,7 @@ grid-template-columns: repeat(3, 1fr);  gap: 30px;
   background: white;
   border-radius: 20px;
   padding: 20px;
+  margin-top: 10px;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
 }
 
@@ -2917,27 +2907,19 @@ grid-template-columns: repeat(3, 1fr);  gap: 30px;
 .add-buttons-group {
   display: flex;
   gap: 10px;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   justify-content: flex-start;
   align-items: center;
   width: 100%;
-  overflow-x: auto;
+  
 
 }
 
-.add-buttons-group::-webkit-scrollbar {
-  height: 6px;
-}
 
-.add-buttons-group::-webkit-scrollbar-track {
-  background: #f1f5f9;
-  border-radius: 10px;
-}
 
-.add-buttons-group::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, #cbd5e1 0%, #94a3b8 100%);
-  border-radius: 10px;
-}
+
+
+
 
 .add-btn {
   display: inline-flex;
@@ -3283,33 +3265,23 @@ grid-template-columns: repeat(3, 1fr);  gap: 30px;
   
   .add-buttons-group {
     display: flex !important;
-    flex-wrap: nowrap !important;
-    overflow-x: auto !important;
+    flex-wrap: wrap !important;
+    
     width: 100% !important;
     gap: 8px !important;
-    padding-bottom: 10px !important;
-    -webkit-overflow-scrolling: touch !important;
-    scrollbar-width: thin;
+    
+    
+    
     justify-content: flex-start !important;
   }
   
-  .add-buttons-group::-webkit-scrollbar {
-    height: 8px;
-  }
   
-  .add-buttons-group::-webkit-scrollbar-track {
-    background: #f1f5f9;
-    border-radius: 10px;
-  }
   
-  .add-buttons-group::-webkit-scrollbar-thumb {
-    background: linear-gradient(135deg, #cbd5e1 0%, #94a3b8 100%);
-    border-radius: 10px;
-  }
   
-  .add-buttons-group::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(135deg, #94a3b8 0%, #64748b 100%);
-  }
+  
+  
+  
+  
   
   .add-btn {
     flex-shrink: 0 !important;
@@ -3912,11 +3884,6 @@ body.sidebar-open {
 }
 /* Global Box Shadow Refinement - All Pages, All Views */
 
-/* Reduce All Existing Box Shadows */
-* {
-  box-shadow: none !important;
-}
-
 /* Refined Global Box Shadows */
 .card,
 .stat-card,
@@ -4076,17 +4043,17 @@ button, .btn, .add-btn, .tab-btn, input[type="button"], input[type="submit"] {
 
 /* Button Container No-Wrap */
 .button-container, .btn-group, .add-buttons-group, .resource-tabs {
-  flex-wrap: nowrap !important;
-  overflow-x: auto !important;
-  -webkit-overflow-scrolling: touch !important;
+  flex-wrap: wrap;
+  
+  
 }
 
 /* Desktop Specific Button Styling */
 @media (min-width: 769px) {
   .add-buttons-group {
-    flex-wrap: nowrap !important;
-    justify-content: flex-start !important;
-    overflow-x: auto !important;
+    flex-wrap: wrap !important;
+    justify-content: flex-end !important;
+    
     width: 100% !important;
   }
   
@@ -4291,14 +4258,24 @@ button, .btn, .add-btn, .tab-btn, input[type="button"], input[type="submit"] {
 }
 /* Enhanced Stats Overview - No Wrap Layout */
 .stats-overview {
-  display: flex !important;
-  flex-wrap: nowrap !important;
-  gap: 20px !important;
-  overflow-x: auto !important;
-  -webkit-overflow-scrolling: touch !important;
-  scrollbar-width: thin !important;
-  padding: 10px 0 !important;
-  margin-bottom: 30px !important;
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 20px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  padding: 10px 0;
+  margin-bottom: 30px;
+}
+
+@media (max-width: 768px) {
+  .stats-overview {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    flex-wrap: unset !important;
+    overflow-x: unset !important;
+    gap: 15px !important;
+  }
 }
 
 .stats-overview::-webkit-scrollbar {
@@ -4435,7 +4412,6 @@ button, .btn, .add-btn, .tab-btn, input[type="button"], input[type="submit"] {
   color: #ec4899 !important;
 }
 
-/
 /* Force Remove Sticky Positioning */
 .resource-dropdown-container,
 .resource-filter-section {

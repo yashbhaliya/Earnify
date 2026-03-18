@@ -1,13 +1,14 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 
 <head>
- <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap rel=stylesheet>
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Resources - Earnify Admin</title>
-  <link rel="stylesheet" href="../style.css">
-  <link rel="stylesheet" href="../light-theme.css">
-  <link rel="stylesheet" href="../mobile-responsive.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="light-theme.css">
+  <link rel="stylesheet" href="mobile-responsive.css">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     .sidebar-header {
@@ -315,7 +316,7 @@
     <!-- User Profile Section -->
     <div class="sidebar-user" id="sidebarUser" style="display: none;">
       <div class="user-info">
-        <div class="user-avatar" id="sidebarAvatar">👤</div>
+        <div class="user-avatar" id="sidebarAvatar">??</div>
         <div class="user-details">
           <div class="user-name" id="sidebarUserName">User</div>
           <div class="user-email" id="sidebarUserEmail">user@email.com</div>
@@ -385,7 +386,7 @@
       <div class="custom-select" onclick="toggleDropdown()">
         <img src="/file/all.jpg" class="select-icon" id="selectedIcon">
         <span id="selectedText">All Resources</span>
-        <span class="arrow">▼</span>
+        <span class="arrow">&#9660;</span>
       </div>
 
       <div class="dropdown" id="dropdownMenu">
@@ -531,7 +532,7 @@
       <form id="resourceForm">
         <input type="text" id="title" placeholder="Title" required>
         <textarea id="description" placeholder="Description" required></textarea>
-        <input type="text" id="price" placeholder="Price (₹)" required>
+        <input type="text" id="price" placeholder="Price (?)" required>
         <input type="file" id="fileUpload" accept=".pdf,.xlsx,.xls,.doc,.docx" required>
         <div id="uploadProgress" style="display:none;">Uploading...</div>
         <button type="submit">Add Resource</button>
@@ -546,7 +547,7 @@
       <div id="viewContent">
         <p><strong>Title:</strong> <span id="viewTitle"></span></p>
         <p><strong>Description:</strong> <span id="viewDescription"></span></p>
-        <p><strong>Price:</strong> ₹<span id="viewPrice"></span></p>
+        <p><strong>Price:</strong> ?<span id="viewPrice"></span></p>
         <p><strong>Type:</strong> <span id="viewType"></span></p>
         <p><strong>File:</strong> <span id="viewFileName">No file uploaded</span></p>
       </div>
@@ -561,7 +562,7 @@
         <input type="hidden" id="editId">
         <input type="text" id="editTitle" placeholder="Title" required>
         <textarea id="editDescription" placeholder="Description" required></textarea>
-        <input type="text" id="editPrice" placeholder="Price (₹)" required>
+        <input type="text" id="editPrice" placeholder="Price (?)" required>
         <input type="file" id="editFileUpload" accept=".pdf,.xlsx,.xls,.doc,.docx">
         <small style="color: #64748b; margin-bottom: 10px; display: block;">Leave empty to keep current file</small>
         <div class="last-file-info">

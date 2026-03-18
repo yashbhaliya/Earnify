@@ -414,7 +414,7 @@ body {
 .btn-buy,
 .buy-btn {
   width: 100%;
-  padding: 0.85rem 1rem;
+  padding: 10px;
   background: #6366f1;
   color: white;
   border: none;
