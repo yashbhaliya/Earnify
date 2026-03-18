@@ -734,7 +734,7 @@
       <div class="profile-grid">
         <div class="profile-card profile-avatar-section">
           <!-- Shimmer Loading -->
-          <div id="profileAvatarShimmer" style="display: none;">
+          <div id="profileAvatarShimmer">
             <div class="shimmer-profile-avatar shimmer-gradient"></div>
             <div class="shimmer-profile-name shimmer-gradient"></div>
             <div class="shimmer-profile-email shimmer-gradient"></div>
@@ -742,7 +742,7 @@
           </div>
 
           <!-- Actual Content -->
-          <div id="profileAvatarContent">
+          <div id="profileAvatarContent" style="display: none;">
             <div class="profile-avatar-large" id="profileAvatarLarge">👤</div>
             <div class="profile-name" id="profileName">User Name</div>
             <div class="profile-email" id="profileEmail">user@email.com</div>
@@ -765,7 +765,7 @@
           <h2>📝 Profile Information</h2>
 
           <!-- Shimmer Loading -->
-          <div id="profileDetailsShimmer" style="display: none;">
+          <div id="profileDetailsShimmer">
             <div class="shimmer-detail-row">
               <div class="shimmer-detail-label shimmer-gradient"></div>
               <div class="shimmer-detail-value shimmer-gradient"></div>
@@ -789,7 +789,7 @@
           </div>
 
           <!-- Actual Content -->
-          <div id="profileDetailsContent">
+          <div id="profileDetailsContent" style="display: none;">
             <div class="detail-row">
               <span class="detail-label">👤 Full Name:</span>
               <span class="detail-value" id="detailName">-</span>
@@ -818,22 +818,22 @@
         <div class="stat-card shimmer-active" id="statCard1">
           <div class="stat-icon shimmer-icon" id="statIcon1"></div>
           <div class="stat-content">
-            <div class="stat-value shimmer-bar" id="totalResources">0</div>
-            <div class="stat-label shimmer-bar" id="statLabel1">Resources</div>
+            <div class="stat-value shimmer-bar" id="totalResources">&nbsp;</div>
+            <div class="stat-label shimmer-bar" id="statLabel1">&nbsp;</div>
           </div>
         </div>
         <div class="stat-card shimmer-active" id="statCard2">
           <div class="stat-icon shimmer-icon" id="statIcon2"></div>
           <div class="stat-content">
-            <div class="stat-value shimmer-bar" id="totalEarnings">&#8377;0</div>
-            <div class="stat-label shimmer-bar" id="statLabel2">Earnings</div>
+            <div class="stat-value shimmer-bar" id="totalEarnings">&nbsp;</div>
+            <div class="stat-label shimmer-bar" id="statLabel2">&nbsp;</div>
           </div>
         </div>
         <div class="stat-card shimmer-active" id="statCard3">
           <div class="stat-icon shimmer-icon" id="statIcon3"></div>
           <div class="stat-content">
-            <div class="stat-value shimmer-bar" id="totalCustomers">0</div>
-            <div class="stat-label shimmer-bar" id="statLabel3">Sales</div>
+            <div class="stat-value shimmer-bar" id="totalCustomers">&nbsp;</div>
+            <div class="stat-label shimmer-bar" id="statLabel3">&nbsp;</div>
           </div>
         </div>
       </div>
@@ -893,11 +893,13 @@
       document.getElementById('profileDetailsShimmer').style.display = 'none';
       document.getElementById('profileDetailsContent').style.display = 'block';
       const icons = ['📚', '💰', '👥'];
+      const labels = ['Resources', 'Earnings', 'Sales'];
       [1, 2, 3].forEach(i => {
         document.getElementById('statCard' + i).classList.remove('shimmer-active');
         const icon = document.getElementById('statIcon' + i);
         icon.classList.remove('shimmer-icon');
         icon.textContent = icons[i - 1];
+        document.getElementById('statLabel' + i).textContent = labels[i - 1];
       });
       document.querySelectorAll('.stat-value, .stat-label').forEach(el => el.classList.remove('shimmer-bar'));
     }
@@ -929,7 +931,7 @@
       document.getElementById('detailCreated').textContent = createdAt;
       document.getElementById('detailLastLogin').textContent = lastLogin;
 
-      hideShimmers();
+      setTimeout(() => hideShimmers(), 600);
     }
 
     function editProfile() {
