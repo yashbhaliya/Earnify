@@ -164,8 +164,7 @@ body {
 }
 
 .filter-btn:hover, .filter-btn.active {
-  background: #2563EB;
-  color: white;
+background: linear-gradient(135deg, #2563EB 0%, #7C3AED 100%);  color: white;
   border-color: transparent;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
@@ -749,7 +748,7 @@ footer {
 }
 
 .user-menu-btn {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #2563EB 0%, #7C3AED 100%);
   color: white;
   padding: 0.5rem 1rem;
   border-radius: 25px;

@@ -332,7 +332,7 @@ body {
 
 .filter-btn:hover,
 .filter-btn.active {
-  background: #2563EB;
+background: linear-gradient(135deg, #2563EB 0%, #7C3AED 100%);
   color: white;
   border-color: transparent;
   transform: translateY(-2px);
@@ -391,7 +391,7 @@ body {
 
 .resource-type {
   display: inline-block;
-  background: #6366f1;
+  background: linear-gradient(135deg, #2563EB 0%, #7C3AED 100%);
   color: white;
   padding: 0.25rem 0.75rem;
   border-radius: 999px;
@@ -426,7 +426,7 @@ body {
 .buy-btn {
   width: 100%;
   padding: 10px;
-  background: #6366f1;
+  background: linear-gradient(135deg, #2563EB 0%, #7C3AED 100%);
   color: white;
   border: none;
   border-radius: 12px;
@@ -495,6 +495,16 @@ footer {
   color: #2563EB;
   margin-bottom: 1rem;
   font-weight: 700;
+}
+
+.footer-logo-link {
+  text-decoration: none;
+  color: inherit;
+  display: inline-block;
+}
+
+.footer-logo-link:hover h3.footer-logo {
+  opacity: 0.85;
 }
 
 .footer-col h4 {
@@ -941,7 +951,7 @@ footer {
 }
 
 .user-menu-btn {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #2563EB 0%, #7C3AED 100%);
   color: white;
   padding: 0.5rem 1rem;
   border-radius: 25px;
@@ -1072,14 +1082,14 @@ footer {
 }
 
 .pagination-buttons button:hover:not(:disabled) {
-  background: #2563EB;
+  background: linear-gradient(135deg, #2563EB 0%, #7C3AED 100%);
   color: white;
   border-color: #2563EB;
   transform: translateY(-2px);
 }
 
 .pagination-buttons button.active {
-  background: #2563EB;
+  background: linear-gradient(135deg, #2563EB 0%, #7C3AED 100%);
   color: white;
   border-color: #2563EB;
 }

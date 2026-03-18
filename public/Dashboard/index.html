@@ -1,207 +1,11 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap rel=stylesheet>
   <title>Dashboard - Earnify</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <link rel="stylesheet" href="../landing.css?v=2">
-  <style>
-    body { margin: 0; background: #f8fafc; }
-    .content-wrapper { padding: 3rem 0; min-height: 80vh; }
-    #purchases {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 20px;
-      max-width: 100%;
-    }
-    .purchase-card { 
-      background: white;
-      border: 1px solid #e2e8f0; 
-      padding: 20px; 
-      margin: 0; 
-      border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-      transition: transform 0.3s;
-      position: relative;
-      width: 100%;
-      box-sizing: border-box;
-    }
-    .purchase-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
-    }
-    .purchase-card h3 {
-      color: #1e293b;
-      margin-bottom: 10px;
-      padding-right: 90px;
-    }
-    .purchase-card p {
-      color: #64748b;
-      margin: 8px 0;
-      word-break: break-word;
-    }
-    .status { 
-      padding: 6px 14px; 
-      border-radius: 20px; 
-      font-size: 12px;
-      font-weight: 600;
-      display: inline-block;
-      position: absolute;
-      top: 15px;
-      right: 15px;
-    }
-    .completed { background: #10b981; color: white; }
-    .pending { background: #f59e0b; color: white; }
-    .failed { background: #ef4444; color: white; }
-    .container h1 {
-      color: #1e293b;
-      margin-bottom: 30px;
-      font-size: 32px;
-    }
-    .empty-state {
-      text-align: center;
-      padding: 60px 20px;
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-    }
-    .empty-state p {
-      color: #64748b;
-      font-size: 18px;
-    }
-    .empty-state a {
-      color: #3b82f6;
-      text-decoration: none;
-      font-weight: 600;
-    }
-    .price-tag {
-      color: #10b981;
-      font-weight: 700;
-      font-size: 18px;
-    }
-    .shimmer-card {
-      background: white;
-      border: 1px solid #e2e8f0;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-      position: relative;
-      overflow: hidden;
-    }
-    .shimmer-line {
-      height: 20px;
-      background: #e2e8f0;
-      border-radius: 4px;
-      margin: 10px 0;
-      position: relative;
-      overflow: hidden;
-    }
-    .shimmer-line::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent);
-      animation: shimmer 1.5s infinite;
-    }
-    @keyframes shimmer {
-      100% { left: 100%; }
-    }
-
-    /* Mobile Responsive Styles */
-    @media (max-width: 768px) {
-      .content-wrapper {
-        padding: 1.5rem 0 !important;
-      }
-      
-      .container {
-        padding: 0 15px !important;
-      }
-      
-      .container h1 {
-        font-size: 22px !important;
-        margin-bottom: 20px !important;
-      }
-      
-      #purchases {
-        grid-template-columns: 1fr !important;
-        gap: 15px !important;
-      }
-      
-      .purchase-card {
-        padding: 15px !important;
-      }
-      
-      .purchase-card h3 {
-        font-size: 16px !important;
-        padding-right: 75px !important;
-      }
-      
-      .purchase-card p {
-        font-size: 13px !important;
-      }
-      
-      .status {
-        font-size: 10px !important;
-        padding: 4px 10px !important;
-      }
-      
-      .purchase-card > div {
-        flex-direction: column !important;
-        gap: 8px !important;
-      }
-      
-      .purchase-card button,
-      .purchase-card a {
-        width: 100% !important;
-        flex: 1 !important;
-        font-size: 13px !important;
-        padding: 10px 15px !important;
-      }
-      
-      .empty-state {
-        padding: 40px 15px !important;
-      }
-      
-      .empty-state h2 {
-        font-size: 18px !important;
-      }
-      
-      .empty-state p {
-        font-size: 14px !important;
-      }
-      
-      footer .footer-grid {
-        grid-template-columns: 1fr !important;
-        text-align: center !important;
-      }
-      
-      footer .social-icons {
-        justify-content: center !important;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .container h1 {
-        font-size: 20px !important;
-      }
-      
-      .purchase-card {
-        padding: 12px !important;
-      }
-      
-      .purchase-card h3 {
-        font-size: 15px !important;
-      }
-      
-      .purchase-card p {
-        font-size: 12px !important;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="landing.css">
 </head>
 <body>
 
@@ -424,10 +228,10 @@
             <p><strong>Order ID:</strong> ${purchase.order_id || 'N/A'}</p>
             <p><strong>Date:</strong> ${new Date(purchase.created_at).toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
             <span class="status ${purchase.status.toLowerCase()}">${purchase.status.toUpperCase()}</span>
-            <div style="display: flex; gap: 10px; margin-top: 15px;">
-              <button onclick="downloadReceipt('${purchase.payment_id}', '${purchase.order_id}', '${resource.title || 'Resource'}', '${resource.price || 0}')" style="flex: 1; background: #10b981; color: white; padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">🧾 Download Receipt</button>
-              ${resource.fileurl ? `<a href="${resource.fileurl}" target="_blank" download style="flex: 1; background: #3b82f6; color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; display: flex; align-items: center; justify-content: center; font-weight: 600;">📥 Download Content</a>` : '<button disabled style="flex: 1; background: #94a3b8; color: white; padding: 10px 20px; border: none; border-radius: 8px; cursor: not-allowed; font-weight: 600;">📥 Download Content</button>'}
-              <a href="../Detail/?id=${resource.id}" style="flex: 1; background: #8b5cf6; color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; display: flex; align-items: center; justify-content: center; font-weight: 600;">👁️ View Details</a>
+            <div class="card-actions">
+              <button onclick="downloadReceipt('${purchase.payment_id}', '${purchase.order_id}', '${resource.title || 'Resource'}', '${resource.price || 0}')" class="ca-btn" style="background:#10b981;">🧾 Download Receipt</button>
+              ${resource.fileurl ? `<a href="${resource.fileurl}" target="_blank" download class="ca-btn" style="background:#3b82f6;">📥 Download Content</a>` : '<button disabled class="ca-btn" style="background:#94a3b8;cursor:not-allowed;">📥 Download Content</button>'}
+              <a href="../Detail/?id=${resource.id}" class="ca-btn" style="background:#8b5cf6;">👁️ View Details</a>
             </div>
           </div>
         `;

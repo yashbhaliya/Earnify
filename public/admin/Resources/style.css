@@ -2928,8 +2928,7 @@ grid-template-columns: repeat(3, 1fr);  gap: 30px;
 }
 
 .resource-count {
-  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
-  color: #3b82f6;
+background: linear-gradient(135deg, #2563EB 0%, #7C3AED 100%); color: #3b82f6;
   padding: 6px 16px;
   border-radius: 20px;
   font-size: 13px;
@@ -4243,6 +4242,8 @@ button, .btn, .add-btn, .tab-btn, input[type="button"], input[type="submit"] {
   letter-spacing: 0.5px;
   box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
   animation: pulse 2s infinite;
+  white-space: nowrap;
+
 }
 
 @keyframes pulse {

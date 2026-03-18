@@ -337,6 +337,7 @@
 
     .profile-page-header p {
         font-size: 13px !important;
+                display: none;
     }
 
     .profile-grid {
