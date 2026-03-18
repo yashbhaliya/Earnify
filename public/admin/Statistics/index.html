@@ -816,11 +816,11 @@
     <h2>Earnify Admin</h2>
     <button class="sidebar-close-btn" onclick="toggleSidebar()">&times;</button>
   </div>
-  <a href="../Resources/" onclick="closeMobileSidebar()">📚 Resources</a>
-  <a href="../Statistics/" onclick="closeMobileSidebar()">📈 Statistics</a>
-  <a href="../Profile/" onclick="closeMobileSidebar()">👤 Profile</a>
-  <a href="/" style="margin-top: 20px; border-top: 1px solid #ddd; padding-top: 10px;" onclick="closeMobileSidebar()">🏠 Main Site</a>
-            <a onclick="logout()"><span>🚪</span> Logout</a>
+  <a href="../Resources/" onclick="closeMobileSidebar()" class="nav-link">📚 Resources</a>
+  <a href="../Statistics/" onclick="closeMobileSidebar()" class="nav-link active-link">📈 Statistics</a>
+  <a href="../Profile/" onclick="closeMobileSidebar()" class="nav-link">👤 Profile</a>
+  <a href="/" class="nav-link nav-link-divider" onclick="closeMobileSidebar()">🏠 Main Site</a>
+  <a onclick="logout()" class="nav-link nav-link-logout"><span>🚪</span> Logout</a>
   
   <!-- User Profile Section -->
   <div class="sidebar-user" id="sidebarUser" style="display: none;">
