@@ -327,7 +327,7 @@ background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 
 .btn-buy:hover,
 .buy-btn:hover {
-  background: #4f46e5;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   transform: none;
 }
 
