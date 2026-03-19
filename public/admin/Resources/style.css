@@ -767,7 +767,7 @@ button:last-child:hover {
 .user-avatar {
   width: 40px;
   height: 40px;
-  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -823,7 +823,7 @@ button:last-child:hover {
 .user-avatar {
   width: 40px;
   height: 40px;
-  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -995,7 +995,7 @@ button:last-child:hover {
 }
 
 .user-avatar {
-  background: #334155;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -1858,8 +1858,7 @@ button:last-child:hover {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-  display: flex;
+background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);    display: flex;
   align-items: center;
   justify-content: center;
   color: white;

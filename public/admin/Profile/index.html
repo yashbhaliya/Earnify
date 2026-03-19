@@ -181,13 +181,16 @@
     .profile-badge {
       display: inline-block;
       background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
-      color: #3b82f6;
       padding: 8px 16px;
       border-radius: 20px;
       font-size: 12px;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.5px;
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-image: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     }
 
     .profile-details h2 {
