@@ -437,7 +437,14 @@ body.sidebar-open { overflow: hidden; }
 
 .empty-state h2 { color: #1e293b; font-size: 22px; margin-bottom: 10px; }
 .empty-state p  { color: #64748b; font-size: 16px; }
-.empty-state a  { color: #3b82f6; text-decoration: none; font-weight: 600; }
+.empty-state a {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-decoration: none;
+  font-weight: 600;
+}
 
 .shimmer-card {
   background: white;
@@ -489,14 +496,35 @@ footer {
 
 .footer-col h3.footer-logo {
   font-size: 1.6rem;
-  color: #2563eb;
   margin-bottom: 0.8rem;
   font-weight: 700;
 }
 
-.footer-logo-link { text-decoration: none; color: inherit; display: inline-block; }
+.footer-logo-link { text-decoration: none; display: inline-block; }
 
-.footer-col h4 { font-size: 1.1rem; margin-bottom: 0.8rem; color: #60a5fa; font-weight: 600; }
+.logo-text {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.footer-logo-text {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.footer-col h4 {
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 600;
+}
 .footer-desc   { color: #94a3b8; line-height: 1.6; font-size: 0.9rem; }
 .footer-links  { list-style: none; }
 .footer-links li { margin-bottom: 0.6rem; }

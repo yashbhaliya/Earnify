@@ -887,7 +887,7 @@ footer {
 .pagination-buttons button.active {
   background: #2563EB;
   color: white;
-  border-color: #2563EB;
+  /* border-color: #2563EB; */
 }
 
 .pagination-buttons button:disabled {

@@ -65,6 +65,13 @@ body {
   font-weight: 700;
 }
 
+.logo-text {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
 .nav-links {
   display: flex;
   gap: 2rem;
@@ -316,15 +323,29 @@ footer {
 
 .footer-col h3.footer-logo {
   font-size: 1.8rem;
-  color: #2563EB;
   margin-bottom: 1rem;
   font-weight: 700;
+}
+
+.footer-logo-link {
+  text-decoration: none;
+  display: inline-block;
+}
+
+.footer-logo-text {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .footer-col h4 {
   font-size: 1.2rem;
   margin-bottom: 1rem;
-  color: #60a5fa;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   font-weight: 600;
 }
 
@@ -924,7 +945,7 @@ footer {
 .pagination-buttons button.active {
   background: #2563EB;
   color: white;
-  border-color: #2563EB;
+  /* border-color: #2563EB; */
 }
 
 .pagination-buttons button:disabled {

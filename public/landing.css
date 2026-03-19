@@ -65,6 +65,13 @@ body {
   font-weight: 700;
 }
 
+.logo-text {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
 .nav-links {
   display: flex;
   gap: 2rem;
@@ -492,15 +499,20 @@ footer {
 
 .footer-col h3.footer-logo {
   font-size: 1.8rem;
-  color: #2563EB;
   margin-bottom: 1rem;
   font-weight: 700;
 }
 
 .footer-logo-link {
   text-decoration: none;
-  color: inherit;
   display: inline-block;
+}
+
+.footer-logo-text {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .footer-logo-link:hover h3.footer-logo {
@@ -510,7 +522,10 @@ footer {
 .footer-col h4 {
   font-size: 1.2rem;
   margin-bottom: 1rem;
-  color: #60a5fa;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   font-weight: 600;
 }
 
@@ -1084,14 +1099,14 @@ footer {
 .pagination-buttons button:hover:not(:disabled) {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
-  border-color: #2563EB;
+  border-color: transparent;
   transform: translateY(-2px);
 }
 
 .pagination-buttons button.active {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
-  border-color: #2563EB;
+  /* border-color: #2563EB; */
 }
 
 .pagination-buttons button:disabled {
@@ -1387,6 +1402,10 @@ footer {
     font-size: 1.5rem;
   }
 
+  .footer-logo-text {
+    font-size: 1.5rem;
+  }
+
   .footer-col h4 {
     font-size: 1.1rem;
     margin-bottom: 0.8rem;
@@ -1421,6 +1440,10 @@ footer {
 
 @media (max-width: 480px) {
   .footer-col h3.footer-logo {
+    font-size: 1.3rem;
+  }
+
+  .footer-logo-text {
     font-size: 1.3rem;
   }
 

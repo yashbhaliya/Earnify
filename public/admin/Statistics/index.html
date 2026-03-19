@@ -1055,7 +1055,7 @@
     <!-- Real analytics section (hidden until loaded) -->
     <div class="analytics-section" id="analyticsSection" style="display:none;">
       <div class="section-header">
-        <h2>📈 My Customer Purchase Details</h2>
+        <h2><span style="-webkit-text-fill-color:initial;">📈</span> <span class="analytics-h2-text">My Customer Purchase Details</span></h2>
         <p>Customers who purchased your resources :</p>
       </div>
       <div id="analyticsContent">
@@ -1414,10 +1414,10 @@
   }
   
   function updateSectionHeader() {
-    const sectionHeader = document.querySelector('#analyticsSection .section-header h2');
+    const sectionHeader = document.querySelector('#analyticsSection .section-header h2 .analytics-h2-text');
     if (sectionHeader) {
       const filterText = getFilterDisplayText();
-      sectionHeader.textContent = `📈 Customer Purchase Details - ${filterText}`;
+      sectionHeader.textContent = `Customer Purchase Details - ${filterText}`;
     }
   }
   

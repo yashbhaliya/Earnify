@@ -34,7 +34,10 @@ body {
 }
 
 .sidebar h2 {
-  color: #3b82f6;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   padding: 0 30px 30px;
   font-size: 24px;
   border-bottom: 2px solid rgba(59, 130, 246, 0.2);
@@ -2111,8 +2114,10 @@ body.light-mode .sidebar {
 }
 
 body.light-mode .sidebar h2 {
-  color: #3b82f6;
-  /* border-bottom: 2px solid #e2e8f0; */
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 body.light-mode .sidebar a {
@@ -2221,7 +2226,10 @@ body.light-mode .resource-card {
 }
 
 body.light-mode .resource-card h3 {
-  color: #3b82f6;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 body.light-mode .resource-card p {
@@ -2386,7 +2394,7 @@ body.light-mode #viewContent span {
 .pagination-buttons button.active {
   background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
   color: white;
-  border-color: #3b82f6;
+  /* border-color: #3b82f6; */
   box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
 }
 

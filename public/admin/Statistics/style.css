@@ -40,7 +40,10 @@ body {
 }
 
 .sidebar h2 {
-  color: #3b82f6;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   padding: 0 30px 30px;
   font-size: 24px;
   text-shadow: none;
@@ -114,14 +117,15 @@ body {
 }
 
 .sidebar a.active-link {
-  background: linear-gradient(90deg, rgba(59, 130, 246, 0.12) 0%, rgba(59, 130, 246, 0.05) 100%);
-  border-left-color: #3b82f6;
-  color: #2563eb;
+  background: linear-gradient(90deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.06) 100%);
+  border-left-color: #667eea;
+  color: #667eea;
   font-weight: 700;
 }
 
 .sidebar a.active-link:hover {
-  background: linear-gradient(90deg, rgba(59, 130, 246, 0.18) 0%, rgba(59, 130, 246, 0.08) 100%);
+  background: linear-gradient(90deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.1) 100%);
+  color: #764ba2;
   transform: translateX(4px);
 }
 
@@ -397,9 +401,14 @@ button:last-child:hover {
 }
 
 .analytics-section h2 {
-  color: #3b82f6;
   margin-bottom: 10px;
   font-size: 24px;
+}
+.analytics-section h2 .analytics-h2-text {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 .analytics-section p {
     margin-bottom: 10px;
@@ -2139,7 +2148,10 @@ body.light-mode .sidebar {
 }
 
 body.light-mode .sidebar h2 {
-  color: #3b82f6;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 body.light-mode .sidebar a {
@@ -2193,8 +2205,11 @@ body.light-mode .analytics-section {
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
 }
 
-body.light-mode .analytics-section h2 {
-  color: #3b82f6;
+body.light-mode .analytics-section h2 .analytics-h2-text {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 body.light-mode .stat-item {
@@ -2248,7 +2263,10 @@ body.light-mode .resource-card {
 }
 
 body.light-mode .resource-card h3 {
-  color: #3b82f6;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 body.light-mode .resource-card p {
@@ -2413,7 +2431,7 @@ body.light-mode #viewContent span {
 .pagination-buttons button.active {
   background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
   color: white;
-  border-color: #3b82f6;
+  /* border-color: #3b82f6; */
   box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
 }
 
