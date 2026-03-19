@@ -91,14 +91,21 @@
 }
 
 @media (max-width: 768px) {
+  .hero {
+    min-height: 45vh !important;
+  }
   .hero .container {
-    padding: 4rem 1.5rem;
+    padding: 3rem 1.5rem;
   }
   .hero h1 {
-    font-size: 2rem;
+    font-size: clamp(1.6rem, 6vw, 2rem);
   }
   .hero p {
-    font-size: 1rem;
+    font-size: 0.95rem;
+  }
+  .hero-badge {
+    font-size: 0.78rem;
+    padding: 5px 12px;
   }
 }
 
