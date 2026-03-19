@@ -8,6 +8,148 @@
   <title>Earnify - Your Learning Marketplace</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="landing.css">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      font-family: 'Material Symbols Outlined';
+    }
+    .glass-card {
+      background: rgba(255,255,255,0.75);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid rgba(102,126,234,0.15);
+      box-shadow: 0 8px 32px rgba(102,126,234,0.08);
+    }
+    .hero-gradient {
+      background:url("/file/hero.png") ;;
+      min-height: 50vh;
+      display: flex;
+      align-items: center;
+    }
+    
+    .hero-section {
+      min-height: 50vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+      padding: 4rem 2rem;
+      max-width: 1280px;
+      margin: 0 auto;
+      width: 100%;
+      position: relative;
+      z-index: 1;
+    }
+    .hero-right {
+      position: relative;
+      height: 70vh;
+      min-height: 480px;
+      max-height: 680px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .hero-main-card {
+      width: 320px;
+      position: relative;
+      z-index: 20;
+    }
+    .hero-main-card .card-img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 16px;
+      margin-bottom: 1rem;
+      display: block;
+    }
+    .hero-glow {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 420px; height: 420px;
+      background: rgba(102,126,234,0.12);
+      filter: blur(80px);
+      border-radius: 50%;
+      z-index: 0;
+    }
+    /* Floating cards positioning */
+    .fc-pdf   { position: absolute; top: 6%;  right: -2%; z-index: 30; }
+    .fc-exam  { position: absolute; bottom: 22%; left: -8%; z-index: 30; }
+    .fc-excel { position: absolute; bottom: 4%; right: 8%;  z-index: 30; }
+    .fc-free  { position: absolute; top: 42%; right: -14%; z-index: 10; }
+    .float-card {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 16px;
+      white-space: nowrap;
+    }
+    .float-icon {
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    @media (max-width: 1024px) {
+      .hero-section { grid-template-columns: 1fr; min-height: auto; padding: 3rem 1.5rem; }
+      .hero-right { display: none; }
+      .hero-left { text-align: center; }
+      .hero-left .btn-group { justify-content: center; }
+      .hero-left .skill-tags { justify-content: center; }
+    }
+    @media (max-width: 640px) {
+      .hero-gradient { min-height: auto; }
+      .hero-section { padding: 2.5rem 1rem; }
+    }
+    :root {
+      --primary: #667eea;
+      --primary-container: #764ba2;
+      --on-primary: #ffffff;
+      --tertiary: #764ba2;
+      --tertiary-fixed-dim: #f59e0b;
+      --on-surface: #1a1a2e;
+      --on-surface-variant: #555;
+      --surface-container: #f1f5f9;
+      --surface-container-highest: #e2e8f0;
+      --surface-container-high: #cbd5e1;
+      --secondary-container: #dbeafe;
+      --tertiary-container: #ede9fe;
+      --error: #ef4444;
+      --error-container: #fee2e2;
+    }
+    .text-primary { color: var(--primary); }
+    .text-tertiary { color: var(--tertiary); }
+    .text-on-primary { color: var(--on-primary); }
+    .text-on-surface { color: var(--on-surface); }
+    .text-on-surface-variant { color: var(--on-surface-variant); }
+    .text-tertiary-fixed-dim { color: var(--tertiary-fixed-dim); }
+    .text-error { color: var(--error); }
+    .text-emerald-600 { color: #059669; }
+    .bg-primary { background-color: var(--primary); }
+    .bg-surface-container { background-color: var(--surface-container); }
+    .bg-surface-container-highest { background-color: var(--surface-container-highest); }
+    .bg-surface-container-high { background-color: var(--surface-container-high); }
+    .bg-secondary-container\/30 { background-color: rgba(219,234,254,0.3); }
+    .bg-tertiary-container\/20 { background-color: rgba(237,233,254,0.2); }
+    .bg-error-container\/20 { background-color: rgba(254,226,226,0.2); }
+    .bg-green-100 { background-color: #dcfce7; }
+    .bg-primary\/10 { background-color: rgba(102,126,234,0.1); }
+    .from-primary { --tw-gradient-from: var(--primary); }
+    .to-primary-container { --tw-gradient-to: var(--primary-container); }
+    .to-tertiary { --tw-gradient-to: var(--tertiary); }
+    .shadow-primary\/20 { --tw-shadow-color: rgba(102,126,234,0.2); }
+    .shadow-primary\/30 { --tw-shadow-color: rgba(102,126,234,0.3); }
+    .shadow-on-surface\/5 { --tw-shadow-color: rgba(26,26,46,0.05); }
+    .font-headline { font-family: 'Inter', sans-serif; }
+    @keyframes bounce-subtle {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+    .animate-bounce-subtle { animation: bounce-subtle 3s ease-in-out infinite; }
+  </style>
 </head>
 
 <body>
@@ -88,20 +230,107 @@
     <div class="mobile-sidebar-overlay" id="mobileSidebarOverlay" onclick="toggleMobileMenu()"></div>
   </nav>
 
-  <section class="hero">
-    <div class="container">
-      <div class="hero-badge">
-        <span class="hero-badge-dot"></span>
-        <span>Premium Resources Available for 2026</span>
+  <main class="hero-gradient relative overflow-hidden">
+    <div class="hero-section">
+
+      <!-- LEFT: Text Content -->
+      <div class="hero-left">
+        <h1 class="font-headline font-extrabold tracking-tight text-on-surface leading-tight mb-6"
+            style="font-size: clamp(2.2rem, 4.5vw, 4rem);">
+          Turn Skills into
+          <span style="background:linear-gradient(135deg,#667eea,#764ba2);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Income</span>
+          <span class="material-symbols-outlined text-tertiary align-middle" style="font-size:clamp(1.8rem,3.5vw,3rem);font-variation-settings:'FILL' 1;">rocket_launch</span>
+        </h1>
+        <p style="font-size:1.15rem;color:#555;max-width:480px;line-height:1.75;margin-bottom:2.5rem;">
+          Access premium study materials, templates, and freelance opportunities — all in one platform.
+        </p>
+        <div class="btn-group" style="display:flex;flex-wrap:wrap;gap:1rem;margin-bottom:3rem;">
+          <a href="#resources" style="text-decoration:none;display:inline-block;padding:0.9rem 2rem;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border-radius:50px;font-weight:700;font-size:1rem;box-shadow:0 8px 24px rgba(102,126,234,0.35);transition:transform .2s,box-shadow .2s;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 12px 28px rgba(102,126,234,0.45)'" onmouseout="this.style.transform='';this.style.boxShadow='0 8px 24px rgba(102,126,234,0.35)'">Explore Resources</a>
+          <a href="./About/" style="text-decoration:none;display:inline-block;padding:0.9rem 2rem;background:#e8eaf6;color:#667eea;border-radius:50px;font-weight:700;font-size:1rem;transition:background .2s;" onmouseover="this.style.background='#d5d8f0'" onmouseout="this.style.background='#e8eaf6'">Learn More</a>
+        </div>
+        <div class="skill-tags" style="display:flex;flex-wrap:wrap;gap:0.75rem;opacity:0.85;">
+          <span class="glass-card" style="padding:0.45rem 1.1rem;border-radius:50px;font-size:0.85rem;font-weight:600;display:flex;align-items:center;gap:6px;">
+            <span class="material-symbols-outlined text-tertiary" style="font-size:10px;font-variation-settings:'FILL' 1;">circle</span> Design
+          </span>
+          <span class="glass-card" style="padding:0.45rem 1.1rem;border-radius:50px;font-size:0.85rem;font-weight:600;display:flex;align-items:center;gap:6px;">
+            <span class="material-symbols-outlined text-tertiary" style="font-size:10px;font-variation-settings:'FILL' 1;">circle</span> Marketing
+          </span>
+          <span class="glass-card" style="padding:0.45rem 1.1rem;border-radius:50px;font-size:0.85rem;font-weight:600;display:flex;align-items:center;gap:6px;">
+            <span class="material-symbols-outlined text-tertiary" style="font-size:10px;font-variation-settings:'FILL' 1;">circle</span> Finance
+          </span>
+          <span class="glass-card" style="padding:0.45rem 1.1rem;border-radius:50px;font-size:0.85rem;font-weight:600;display:flex;align-items:center;gap:6px;">
+            <span class="material-symbols-outlined text-tertiary" style="font-size:10px;font-variation-settings:'FILL' 1;">circle</span> Freelance
+          </span>
+        </div>
       </div>
-      <h1>Learn, Grow &amp; <span class="hero-gradient-text">Earn</span></h1>
-      <p>Access premium study materials, templates, and services</p>
-      <div class="hero-cta-group">
-        <a href="#resources" class="cta-btn">Browse Resources</a>
-        <a href="./About/" class="cta-btn-secondary">Learn More</a>
+
+      <!-- RIGHT: Illustration -->
+      <div class="hero-right">
+        <div class="hero-glow"></div>
+
+        <!-- Main Card -->
+        <div class="glass-card hero-main-card" style="border-radius:24px;padding:1.25rem;">
+          <img
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDkqaJvszpiaXddFEVP5emc5cocBcJdmJWNiG-FdQKdVGkGKw4RrzYv0AUZ3LIZ7-tU7vbH7f_TT7Z2lgBW58ZhKmcnXn_4JeTRBouH8ao5O1sls6rDUTb8N3drRWV29QztSslkDkfqX6v-7gcBIQwpsU6sihFPHxaN3Nw-R1ShUU91vVrb6cCnXvrhzB1Rnilz0vU9_D3G_xJaZG7oN2vqw_tKjlV1uBOsfhGfa_QVjaqjWPh6BB3pNJtrDIFWjommd8E4aczegnrh"
+            alt="UI/UX Design Masterclass" class="card-img" />
+          <h3 style="font-weight:700;font-size:1.05rem;margin-bottom:0.5rem;color:#1a1a2e;">UI/UX Design Masterclass</h3>
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:1rem;">
+            <span style="color:#f59e0b;font-size:0.85rem;letter-spacing:1px;">★★★★</span><span style="color:#d1d5db;font-size:0.85rem;">★</span>
+            <span style="font-size:0.75rem;color:#888;font-weight:500;">(4.5)</span>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <span style="font-size:1.3rem;font-weight:900;color:#1a1a2e;">&#8377;1299</span>
+            <a href="#resources" style="text-decoration:none;padding:0.5rem 1.2rem;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border-radius:10px;font-size:0.8rem;font-weight:700;box-shadow:0 4px 14px rgba(102,126,234,0.3);">BUY NOW</a>
+          </div>
+        </div>
+
+        <!-- Floating Card: PDF Notes -->
+        <div class="glass-card float-card fc-pdf animate-bounce-subtle">
+          <div class="float-icon" style="background:rgba(254,226,226,0.5);">
+            <span class="material-symbols-outlined text-error" style="font-size:20px;font-variation-settings:'FILL' 1;">description</span>
+          </div>
+          <div>
+            <p style="font-size:0.78rem;font-weight:700;margin:0;color:#1a1a2e;">PDF Notes</p>
+            <p style="font-size:0.68rem;color:#888;margin:0;">240+ Pages</p>
+          </div>
+        </div>
+
+        <!-- Floating Card: Exam Prep -->
+        <div class="glass-card float-card fc-exam">
+          <div class="float-icon" style="background:rgba(219,234,254,0.5);">
+            <span class="material-symbols-outlined text-primary" style="font-size:20px;font-variation-settings:'FILL' 1;">work</span>
+          </div>
+          <div>
+            <p style="font-size:0.78rem;font-weight:700;margin:0;color:#1a1a2e;">Exam Prep</p>
+            <p style="font-size:0.68rem;color:#888;margin:0;">Expert Guide</p>
+          </div>
+        </div>
+
+        <!-- Floating Card: Excel Templates -->
+        <div class="glass-card float-card fc-excel">
+          <div class="float-icon" style="background:rgba(220,252,231,0.6);">
+            <span class="material-symbols-outlined text-emerald-600" style="font-size:20px;font-variation-settings:'FILL' 1;">table_chart</span>
+          </div>
+          <div>
+            <p style="font-size:0.78rem;font-weight:700;margin:0;color:#1a1a2e;">Excel Templates</p>
+            <p style="font-size:0.68rem;color:#888;margin:0;">Automated</p>
+          </div>
+        </div>
+
+        <!-- Floating Card: Freelance Services -->
+        <div class="glass-card float-card fc-free">
+          <div class="float-icon" style="background:rgba(237,233,254,0.5);">
+            <span class="material-symbols-outlined text-tertiary" style="font-size:20px;font-variation-settings:'FILL' 1;">business_center</span>
+          </div>
+          <div>
+            <p style="font-size:0.78rem;font-weight:700;margin:0;color:#1a1a2e;">Freelance</p>
+            <p style="font-size:0.68rem;color:#888;margin:0;">New Projects</p>
+          </div>
+        </div>
+
       </div>
     </div>
-  </section>
+  </main>
 
   <section id="resources" class="resources-section">
     <div class="container">
