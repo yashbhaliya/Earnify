@@ -93,19 +93,30 @@
 @media (max-width: 768px) {
   .hero {
     min-height: 45vh !important;
+    width: 100% !important;
+    background: none !important;
+  }
+  .hero::before {
+    
   }
   .hero .container {
     padding: 3rem 1.5rem;
   }
   .hero h1 {
     font-size: clamp(1.6rem, 6vw, 2rem);
+    color: black !important;
   }
   .hero p {
     font-size: 0.95rem;
+    color: black !important;
   }
   .hero-badge {
     font-size: 0.78rem;
     padding: 5px 12px;
+    color: black !important;
+  background: rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(10px);  
+  border: 1px solid rgba(255,255,255,0.3);
   }
 }
 

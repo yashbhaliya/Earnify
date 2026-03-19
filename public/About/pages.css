@@ -1,15 +1,19 @@
 /* HERO SECTION */
 .hero {
-  position: relative !important;
-  width: 100% !important;
-  min-height: 55vh !important;
+   position: relative !important;
+  width: 1200px !important;
+  /* min-height: 55vh !important; */
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
   text-align: center !important;
   overflow: hidden !important;
   padding: 0 !important;
-  background: none !important;
+  margin: auto;
+  margin-bottom: 10px;
+  margin-top: 2px;
+
+  border-radius: 20px;
 }
 
 .hero img {
@@ -27,7 +31,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(102,126,234,0.82) 0%, rgba(118,75,162,0.82) 100%);
+  
   z-index: 1;
 }
 
@@ -47,10 +51,11 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: rgba(255,255,255,0.15);
+    background: rgba(0, 0, 0, 0.15);
+
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255,255,255,0.3);
-  color: #fff;
+  color: black;
   padding: 6px 14px;
   border-radius: 50px;
   font-size: 0.85rem;
@@ -69,19 +74,19 @@
 .hero h1 {
   font-size: clamp(2rem, 5vw, 3.2rem);
   font-weight: 800;
-  color: #fff;
+  color: black;
   margin-bottom: 1rem;
 }
 
 .hero-gradient-text {
-  background: linear-gradient(135deg, #ffd700, #ffaa00);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .hero p {
   font-size: 1.1rem;
-  color: rgba(255,255,255,0.9);
+  color: black;
   max-width: 550px;
   line-height: 1.6;
 }
@@ -89,19 +94,30 @@
 @media (max-width: 768px) {
   .hero {
     min-height: 45vh !important;
+    width: 100% !important;
+    background: none !important;
+  }
+  .hero::before {
+    
   }
   .hero .container {
     padding: 3rem 1.5rem;
   }
   .hero h1 {
     font-size: clamp(1.6rem, 6vw, 2rem);
+    color: black !important;
   }
   .hero p {
     font-size: 0.95rem;
+    color: black !important;
   }
   .hero-badge {
     font-size: 0.78rem;
     padding: 5px 12px;
+    color: black !important;
+  background: rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(10px);  
+  border: 1px solid rgba(255,255,255,0.3);
   }
 }
 
