@@ -23,44 +23,58 @@
       box-shadow: 0 8px 32px rgba(102,126,234,0.08);
     }
     .hero-gradient {
-      background:url("/file/hero.png") ;;
-      min-height: 50vh;
-      display: flex;
-      align-items: center;
+      background: url(/file/hero.png);
+      position: relative;
+      overflow: hidden;
     }
-    
+    .hero-gradient::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 50% 60% at 75% 40%, rgba(102,126,234,0.15) 0%, transparent 65%),
+        radial-gradient(ellipse 35% 45% at 10% 80%, rgba(118,75,162,0.1) 0%, transparent 60%);
+      pointer-events: none;
+      z-index: 0;
+    }
     .hero-section {
-      min-height: 50vh;
+      min-height: 70vh;
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 3rem;
       align-items: center;
-      padding: 4rem 2rem;
+      padding: 5rem 3rem;
       max-width: 1280px;
       margin: 0 auto;
       width: 100%;
       position: relative;
       z-index: 1;
     }
+    /* hero-right: relative container, sized to fit card + floating tags */
     .hero-right {
       position: relative;
-      height: 70vh;
-      min-height: 480px;
-      max-height: 680px;
+      width: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
+      padding: 60px 20px;
     }
+    /* Main card — white, centered, solid shadow like reference */
     .hero-main-card {
-      width: 320px;
+      background: #fff;
+      border-radius: 20px;
+      padding: 22px;
+      box-shadow: 0 20px 50px rgba(102,126,234,0.18);
+      width: 300px;
       position: relative;
       z-index: 20;
+      flex-shrink: 0;
     }
     .hero-main-card .card-img {
       width: 100%;
-      height: 180px;
+      height: 170px;
       object-fit: cover;
-      border-radius: 16px;
+      border-radius: 14px;
       margin-bottom: 1rem;
       display: block;
     }
@@ -68,31 +82,41 @@
       position: absolute;
       top: 50%; left: 50%;
       transform: translate(-50%, -50%);
-      width: 420px; height: 420px;
-      background: rgba(102,126,234,0.12);
-      filter: blur(80px);
+      width: 380px; height: 380px;
+      background: rgba(102,126,234,0.13);
+      filter: blur(70px);
       border-radius: 50%;
       z-index: 0;
+      pointer-events: none;
     }
-    /* Floating cards positioning */
-    .fc-pdf   { position: absolute; top: 6%;  right: -2%; z-index: 30; }
-    .fc-exam  { position: absolute; bottom: 22%; left: -8%; z-index: 30; }
-    .fc-excel { position: absolute; bottom: 4%; right: 8%;  z-index: 30; }
-    .fc-free  { position: absolute; top: 42%; right: -14%; z-index: 10; }
+    /* Floating cards — tag-style, white bg, soft shadow */
     .float-card {
+      position: absolute;
+      background: #fff;
       display: flex;
       align-items: center;
       gap: 10px;
-      padding: 10px 14px;
-      border-radius: 16px;
+      padding: 10px 15px;
+      border-radius: 15px;
+      box-shadow: 0 10px 28px rgba(102,126,234,0.15);
       white-space: nowrap;
+      font-size: 13px;
+      z-index: 30;
     }
     .float-icon {
-      width: 40px; height: 40px;
-      border-radius: 10px;
+      width: 36px; height: 36px;
+      border-radius: 9px;
       display: flex; align-items: center; justify-content: center;
       flex-shrink: 0;
     }
+    /* tag1: top-left of container */
+    .fc-pdf  { top: 15px;  left: 14%; }
+    /* tag2: right-middle */
+    .fc-free { bottom: 5%;   right: 5px; }
+    /* tag3: bottom-left */
+    .fc-exam { bottom: 60%; left:-5%; }
+    /* tag4: bottom-right */
+    .fc-excel { bottom:5%; left: 10px; }
     @media (max-width: 1024px) {
       .hero-section { grid-template-columns: 1fr; min-height: auto; padding: 3rem 1.5rem; }
       .hero-right { display: none; }
@@ -144,11 +168,26 @@
     .shadow-primary\/30 { --tw-shadow-color: rgba(102,126,234,0.3); }
     .shadow-on-surface\/5 { --tw-shadow-color: rgba(26,26,46,0.05); }
     .font-headline { font-family: 'Inter', sans-serif; }
-    @keyframes bounce-subtle {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-6px); }
+    @keyframes float1 {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-8px); }
     }
-    .animate-bounce-subtle { animation: bounce-subtle 3s ease-in-out infinite; }
+    @keyframes float2 {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+    @keyframes float3 {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-7px); }
+    }
+    @keyframes float4 {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-9px); }
+    }
+    .fc-pdf  { animation: float1 3.0s ease-in-out infinite; }
+    .fc-free { animation: float2 3.6s ease-in-out infinite; }
+    .fc-exam { animation: float3 4.2s ease-in-out infinite; }
+    .fc-excel{ animation: float4 2.8s ease-in-out infinite; }
   </style>
 </head>
 
@@ -269,7 +308,7 @@
         <div class="hero-glow"></div>
 
         <!-- Main Card -->
-        <div class="glass-card hero-main-card" style="border-radius:24px;padding:1.25rem;">
+        <div class="hero-main-card">
           <img
             src="https://lh3.googleusercontent.com/aida-public/AB6AXuDkqaJvszpiaXddFEVP5emc5cocBcJdmJWNiG-FdQKdVGkGKw4RrzYv0AUZ3LIZ7-tU7vbH7f_TT7Z2lgBW58ZhKmcnXn_4JeTRBouH8ao5O1sls6rDUTb8N3drRWV29QztSslkDkfqX6v-7gcBIQwpsU6sihFPHxaN3Nw-R1ShUU91vVrb6cCnXvrhzB1Rnilz0vU9_D3G_xJaZG7oN2vqw_tKjlV1uBOsfhGfa_QVjaqjWPh6BB3pNJtrDIFWjommd8E4aczegnrh"
             alt="UI/UX Design Masterclass" class="card-img" />
@@ -285,7 +324,7 @@
         </div>
 
         <!-- Floating Card: PDF Notes -->
-        <div class="glass-card float-card fc-pdf animate-bounce-subtle">
+        <div class="float-card fc-pdf">
           <div class="float-icon" style="background:rgba(254,226,226,0.5);">
             <span class="material-symbols-outlined text-error" style="font-size:20px;font-variation-settings:'FILL' 1;">description</span>
           </div>
