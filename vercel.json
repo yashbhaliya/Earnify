@@ -16,6 +16,10 @@
       "dest": "/server.js"
     },
     {
+      "src": "/file/(.*)",
+      "dest": "/public/file/$1"
+    },
+    {
       "src": "/(.*\\.js)$",
       "dest": "/public/$1",
       "headers": {
