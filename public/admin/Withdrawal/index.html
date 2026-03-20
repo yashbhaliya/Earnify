@@ -198,7 +198,7 @@
     .history-table th {
       padding: 14px 18px; text-align: left; color: #fff;
       font-size: 11px; font-weight: 700; text-transform: uppercase;
-      letter-spacing: .8px; border: none;
+      letter-spacing: .8px; border: 1px solid #f1f5f9;
     }
     .history-table th:first-child { border-radius: 12px 0 0 0; }
     .history-table th:last-child  { border-radius: 0 12px 0 0; }
@@ -207,7 +207,7 @@
       color: #475569; font-size: 14px;
     }
     .history-table tbody tr:hover { background: #fafbff; }
-    .history-table tbody tr:last-child td { border-bottom: none; }
+    .history-table tbody tr:last-child td { border-bottom: 1px solid black; }
     .amount-cell { font-weight: 800; color: #1e293b; font-size: 15px; }
 
     /* status badges */
@@ -403,8 +403,30 @@
       </div>
     </div>
 
+    <!-- ── Withdrawal Form Shimmer ── -->
+    <div class="w-card" id="withdrawalFormShimmer">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:24px;padding-bottom:16px;border-bottom:2px solid #f8fafc;">
+        <div class="shimmer-dark" style="width:24px;height:24px;border-radius:6px;"></div>
+        <div class="shimmer-dark" style="width:200px;height:18px;"></div>
+      </div>
+      <div class="shimmer-dark" style="width:80px;height:11px;margin-bottom:8px;"></div>
+      <div class="shimmer-dark" style="width:100%;height:46px;border-radius:12px;margin-bottom:20px;"></div>
+      <div class="shimmer-dark" style="width:100px;height:11px;margin-bottom:10px;"></div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px;">
+        <div class="shimmer-dark" style="width:80px;height:38px;border-radius:50px;"></div>
+        <div class="shimmer-dark" style="width:110px;height:38px;border-radius:50px;"></div>
+        <div class="shimmer-dark" style="width:80px;height:38px;border-radius:50px;"></div>
+        <div class="shimmer-dark" style="width:80px;height:38px;border-radius:50px;"></div>
+      </div>
+      <div class="shimmer-dark" style="width:60px;height:11px;margin-bottom:8px;"></div>
+      <div class="shimmer-dark" style="width:100%;height:46px;border-radius:12px;margin-bottom:20px;"></div>
+      <div class="shimmer-dark" style="width:80px;height:11px;margin-bottom:8px;"></div>
+      <div class="shimmer-dark" style="width:100%;height:80px;border-radius:12px;margin-bottom:20px;"></div>
+      <div class="shimmer-dark" style="width:100%;height:52px;border-radius:14px;"></div>
+    </div>
+
     <!-- ── Withdrawal Form ── -->
-    <div class="w-card" id="withdrawalForm">
+    <div class="w-card" id="withdrawalForm" style="display:none;">
       <div class="w-card-title"><span>📝</span> New Withdrawal Request</div>
       <form onsubmit="submitWithdrawal(event)">
 
@@ -613,6 +635,8 @@
       } catch (e) { /* silent */ } finally {
         document.getElementById('heroShimmer').style.display = 'none';
         document.getElementById('heroBanner').style.display = '';
+        document.getElementById('withdrawalFormShimmer').style.display = 'none';
+        document.getElementById('withdrawalForm').style.display = '';
       }
     }
 
