@@ -619,14 +619,28 @@ app.get("/api/statistics/purchases/:userEmail", async (req, res) => {
       }
     });
     
+    // Platform fee rates by resource type
+    const PLATFORM_FEES = { pdf: 0.05, excel: 0.04, exam: 0.05, service: 0.06 };
+
     const totalRevenue = relevantPayments.reduce((sum, p) => {
+      const resource = allResources?.find(r => r.id === p.resource_id);
+      const price = parseFloat(resource?.price || 0);
+      const feeRate = PLATFORM_FEES[resource?.type?.toLowerCase()] || 0.05;
+      return sum + price * (1 - feeRate);
+    }, 0);
+
+    const totalGross = relevantPayments.reduce((sum, p) => {
       const resource = allResources?.find(r => r.id === p.resource_id);
       return sum + parseFloat(resource?.price || 0);
     }, 0);
+
+    const totalFees = totalGross - totalRevenue;
     
     res.json({
       totalPurchases: relevantPayments.length,
       totalRevenue: totalRevenue,
+      totalGross: totalGross,
+      totalFees: totalFees,
       totalCustomers: Object.keys(userStats).length,
       userStats: Object.values(userStats),
       userResourcesCount: userResources.length

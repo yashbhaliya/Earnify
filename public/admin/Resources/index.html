@@ -291,6 +291,49 @@
       .header-content .subtitle {
         display: none;
       }
+      /* hide the fixed floating toggle — use the one inside page-header */
+      .mobile-menu-toggle:not(.page-header-toggle) {
+        display: none !important;
+      }
+      .page-header-toggle {
+        display: flex !important;
+        position: static !important;
+        width: 44px !important;
+        height: 44px !important;
+        min-width: 44px !important;
+        padding: 8px !important;
+        border-radius: 10px !important;
+        flex-shrink: 0 !important;
+        box-shadow: none !important;
+        background: rgba(255,255,255,0.25) !important;
+        border: 2px solid rgba(255,255,255,0.5) !important;
+        align-items: center !important;
+        justify-content: center !important;
+        flex-direction: column !important;
+        gap: 5px !important;
+      }
+      .page-header-toggle .hamburger {
+        width: 22px !important;
+        height: 2px !important;
+        background: #ffffff !important;
+        border-radius: 2px !important;
+        display: block !important;
+        margin: 0 !important;
+      }
+      .header-content {
+        display: flex !important;
+        align-items: center !important;
+        gap: 14px !important;
+      }
+      .header-content h1 {
+        font-size: 22px !important;
+        margin: 0 !important;
+      }
+    }
+    @media (min-width: 769px) {
+      .page-header-toggle {
+        display: none !important;
+      }
     }
   </style>
 </head>
@@ -379,7 +422,12 @@
   <div class="main">
     <div class="page-header">
       <div class="header-content">
-        <h1> My Resources</h1>
+        <button class="mobile-menu-toggle page-header-toggle" onclick="toggleSidebar()">
+          <div class="hamburger"></div>
+          <div class="hamburger"></div>
+          <div class="hamburger"></div>
+        </button>
+        <h1>My Resources</h1>
         <p class="subtitle">Manage your PDF notes, Excel templates, Exam materials, and Freelance services</p>
       </div>
     </div>
@@ -648,27 +696,21 @@
       const sidebar = document.querySelector('.sidebar');
       const overlay = document.querySelector('.sidebar-overlay');
       const body = document.body;
-      const toggleBtn = document.querySelector('.mobile-menu-toggle');
 
-      const isOpening = !sidebar.classList.contains('active');
       sidebar.classList.toggle('active');
       overlay.classList.toggle('active');
       body.classList.toggle('sidebar-open');
-
-      if (toggleBtn) toggleBtn.style.display = isOpening ? 'none' : '';
     }
 
     function closeMobileSidebar() {
       const sidebar = document.querySelector('.sidebar');
       const overlay = document.querySelector('.sidebar-overlay');
       const body = document.body;
-      const toggleBtn = document.querySelector('.mobile-menu-toggle');
 
       if (sidebar.classList.contains('active')) {
         sidebar.classList.remove('active');
         overlay.classList.remove('active');
         body.classList.remove('sidebar-open');
-        if (toggleBtn) toggleBtn.style.display = '';
       }
     }
   </script>

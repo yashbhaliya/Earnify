@@ -250,11 +250,33 @@
     @media (max-width: 768px) {
       .hero-banner { padding: 28px 22px; }
       .hero-amount { font-size: 38px; }
-      .hero-stats  { gap: 20px; }
+      .hero-stats  { gap: 10px; }
       .hero-top    { flex-direction: column; }
       .hero-cta    { width: 100%; text-align: center; }
       .form-grid   { grid-template-columns: 1fr; }
       .w-card      { padding: 22px 18px; }
+    }
+    @media (max-width: 768px) {
+      .mobile-menu-toggle:not(.page-header-toggle) { display: none !important; }
+      .page-header-toggle {
+        display: flex !important;
+        position: static !important;
+        width: 44px !important; height: 44px !important; min-width: 44px !important;
+        padding: 8px !important; border-radius: 10px !important;
+        flex-shrink: 0 !important; box-shadow: none !important;
+        background: rgba(255,255,255,0.25) !important;
+        border: 2px solid rgba(255,255,255,0.5) !important;
+        align-items: center !important; justify-content: center !important;
+        flex-direction: column !important; gap: 5px !important;
+      }
+      .page-header-toggle .hamburger {
+        width: 22px !important; height: 2px !important;
+        background: #ffffff !important; border-radius: 2px !important;
+        display: block !important; margin: 0 !important;
+      }
+    }
+    @media (min-width: 769px) {
+      .page-header-toggle { display: none !important; }
     }
   </style>
 </head>
@@ -298,10 +320,17 @@
     <!-- ── Hero Balance Banner ── -->
     <div class="hero-banner">
       <div class="hero-top">
-        <div>
-          <div class="hero-label">Available Balance</div>
-          <div class="hero-amount" id="availableBalance">₹0</div>
-          <div class="hero-sub">Ready to withdraw to your account</div>
+        <div style="display:flex;align-items:flex-start;gap:14px;">
+          <button class="mobile-menu-toggle page-header-toggle" onclick="toggleSidebar()" style="display:none;margin-top:4px;">
+            <div class="hamburger"></div>
+            <div class="hamburger"></div>
+            <div class="hamburger"></div>
+          </button>
+          <div>
+            <div class="hero-label">Available Balance</div>
+            <div class="hero-amount" id="availableBalance">₹0</div>
+            <div class="hero-sub">Ready to withdraw to your account</div>
+          </div>
         </div>
         <button class="hero-cta" onclick="scrollToForm()">💸 Request Withdrawal</button>
       </div>
@@ -330,7 +359,9 @@
 
         <div class="form-group" style="margin-bottom:16px;">
           <label>Amount (₹)</label>
-          <input type="number" id="withdrawAmount" placeholder="Min ₹100" min="100" required>
+          <input type="number" id="withdrawAmount" placeholder="Min ₹100" min="100" required oninput="updateAmountPreview()">
+          <div id="amountPreview" style="display:none; margin-top:8px; background:#f8fafc; border:1px solid #e8edf5; border-radius:12px; padding:14px; font-size:13px; font-family:monospace;"></div>
+          <div id="amountError" style="display:none; margin-top:6px; font-size:12px; color:#ef4444; font-weight:600;"></div>
         </div>
 
         <div class="form-group" style="margin-bottom:16px;">
@@ -444,6 +475,40 @@
       });
     }
 
+    const PLATFORM_FEE = 0.05;
+    let _availableBalance = 0;
+
+    function updateAmountPreview() {
+      const amt    = parseFloat(document.getElementById('withdrawAmount').value);
+      const preview = document.getElementById('amountPreview');
+      const errEl   = document.getElementById('amountError');
+      errEl.style.display = 'none';
+      if (!amt || amt <= 0) { preview.style.display = 'none'; return; }
+      if (amt < 100) {
+        preview.style.display = 'none';
+        errEl.textContent = 'Minimum withdrawal amount is ₹100';
+        errEl.style.display = 'block';
+        return;
+      }
+      if (amt > _availableBalance) {
+        preview.style.display = 'none';
+        errEl.textContent = `Amount exceeds available balance of ₹${_availableBalance.toFixed(0)}`;
+        errEl.style.display = 'block';
+        return;
+      }
+      const fee = +(amt * PLATFORM_FEE).toFixed(2);
+      const net = +(amt - fee).toFixed(2);
+      const line = (label, val, color) =>
+        `<div style="display:flex;justify-content:space-between;padding:3px 0;color:${color};font-weight:600;font-size:13px;">`+
+        `<span>${label}</span><span>${val}</span></div>`;
+      document.getElementById('amountPreview').innerHTML =
+        line('Withdrawal Amount', `₹${amt.toLocaleString('en-IN')}`, '#1e293b') +
+        line('− Platform Fee (5%)', `-₹${fee.toLocaleString('en-IN')}`, '#ef4444') +
+        `<div style="border-top:1px dashed #cbd5e1;margin:6px 0;"></div>` +
+        line('You Receive', `₹${net.toLocaleString('en-IN')}`, '#667eea');
+      preview.style.display = 'block';
+    }
+
     async function loadStats() {
       try {
         const user = getCurrentUser();
@@ -454,16 +519,17 @@
           fetch(API_CONFIG.getURL(`${API_CONFIG.endpoints.withdrawals}/${encodeURIComponent(user.email)}`))
         ]);
 
-        const statsData = statsRes.ok ? await statsRes.json() : {};
-        const withdrawals = wRes.ok ? await wRes.json() : [];
+        const statsData   = statsRes.ok ? await statsRes.json() : {};
+        const withdrawals  = wRes.ok ? await wRes.json() : [];
 
-        const totalEarned    = parseFloat(statsData.totalRevenue || 0);
+        const totalGross     = parseFloat(statsData.totalGross || statsData.totalRevenue || 0);
         const totalWithdrawn = withdrawals.filter(w => w.status === 'approved').reduce((s, w) => s + parseFloat(w.amount), 0);
         const pending        = withdrawals.filter(w => w.status === 'pending').reduce((s, w) => s + parseFloat(w.amount), 0);
-        const available      = Math.max(0, totalEarned - totalWithdrawn - pending);
+        const available      = Math.max(0, totalGross - totalWithdrawn - pending);
+        _availableBalance    = available;
 
         document.getElementById('availableBalance').textContent = `₹${available.toFixed(0)}`;
-        document.getElementById('totalEarned').textContent      = `₹${totalEarned.toFixed(0)}`;
+        document.getElementById('totalEarned').textContent      = `₹${totalGross.toFixed(0)}`;
         document.getElementById('totalWithdrawn').textContent   = `₹${totalWithdrawn.toFixed(0)}`;
         document.getElementById('pendingAmount').textContent    = `₹${pending.toFixed(0)}`;
       } catch (e) { /* silent */ }
@@ -496,6 +562,7 @@
               <tr>
                 <th>Date</th>
                 <th>Amount</th>
+                <th>Net Amount</th>
                 <th>Method</th>
                 <th>Account</th>
                 <th>Status</th>
@@ -505,7 +572,8 @@
               ${list.map(w => `
                 <tr>
                   <td>${new Date(w.created_at).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'})}</td>
-                  <td><span class="amount-cell">₹${w.amount.toLocaleString()}</span></td>
+                  <td><span class="amount-cell">₹${parseFloat(w.amount).toLocaleString('en-IN')}</span></td>
+                  <td><span class="amount-cell" style="color:#667eea;">₹${(parseFloat(w.amount) * 0.95).toLocaleString('en-IN', {maximumFractionDigits:2})}</span></td>
                   <td><span class="method-chip">${METHOD_ICONS[w.method] || ''} ${w.method.toUpperCase()}</span></td>
                   <td>${w.account || '—'}</td>
                   <td><span class="badge badge-${w.status}">${w.status}</span></td>
@@ -534,19 +602,24 @@
       if (!account)      { showToast('Please fill in your account details', 'error'); return; }
       if (!user.email)   { showToast('User not logged in', 'error'); return; }
 
+      if (amount > _availableBalance) { showToast(`Amount exceeds available balance of ₹${_availableBalance.toFixed(0)}`, 'error'); return; }
+
+      const fee       = +(amount * PLATFORM_FEE).toFixed(2);
+      const netAmount = +(amount - fee).toFixed(2);
       _pendingPayload = { user_email: user.email, amount, method, account, note };
 
       const methodLabels = { upi: '🔗 UPI', bank: '🏦 Bank Transfer', paytm: '💙 Paytm', gpay: '💚 GPay' };
-      document.getElementById('confirmDetails').innerHTML = [
-        ['Amount',  `₹${amount.toLocaleString()}`],
-        ['Method',  methodLabels[method] || method],
-        ['Account', account],
-        ...(note ? [['Note', note]] : [])
-      ].map(([k,v]) => `
-        <div style="display:flex; justify-content:space-between; font-size:14px;">
-          <span style="color:#64748b; font-weight:600;">${k}</span>
-          <span style="color:#1e293b; font-weight:700;">${v}</span>
-        </div>`).join('');
+      const row = (k, v, color) => `<div style="display:flex;justify-content:space-between;font-size:14px;padding:5px 0;">
+        <span style="color:#64748b;font-weight:600;">${k}</span>
+        <span style="color:${color};font-weight:700;">${v}</span></div>`;
+      document.getElementById('confirmDetails').innerHTML =
+        row('Withdrawal Amount', `₹${amount.toLocaleString('en-IN')}`, '#1e293b') +
+        row('− Platform Fee (5%)', `-₹${fee.toLocaleString('en-IN')}`, '#ef4444') +
+        `<div style="height:1px;background:#e8edf5;margin:4px 0;"></div>` +
+        row('You Receive', `₹${netAmount.toLocaleString('en-IN')}`, '#667eea') +
+        row('Payment Method', methodLabels[method] || method, '#1e293b') +
+        row('Account', account, '#1e293b') +
+        (note ? row('Note', note, '#1e293b') : '');
 
       const overlay = document.getElementById('confirmOverlay');
       overlay.style.display = 'flex';
@@ -579,7 +652,9 @@
           document.getElementById('fields-' + m).style.display = (m === 'upi') ? '' : 'none';
         });
         renderHistory();
-        loadStats();
+        await loadStats();
+        document.getElementById('amountPreview').style.display = 'none';
+        document.getElementById('amountError').style.display = 'none';
       } catch (err) {
         closeConfirm();
         showToast('❌ ' + (err.message || 'Failed to submit request'), 'error');
@@ -602,24 +677,19 @@
       const sidebar = document.querySelector('.sidebar');
       const overlay = document.querySelector('.sidebar-overlay');
       const body = document.body;
-      const toggleBtn = document.querySelector('.mobile-menu-toggle');
-      const isOpening = !sidebar.classList.contains('active');
       sidebar.classList.toggle('active');
       overlay.classList.toggle('active');
       body.classList.toggle('sidebar-open');
-      if (toggleBtn) toggleBtn.style.display = isOpening ? 'none' : '';
     }
 
     function closeMobileSidebar() {
       const sidebar = document.querySelector('.sidebar');
       const overlay = document.querySelector('.sidebar-overlay');
       const body = document.body;
-      const toggleBtn = document.querySelector('.mobile-menu-toggle');
       if (sidebar.classList.contains('active')) {
         sidebar.classList.remove('active');
         overlay.classList.remove('active');
         body.classList.remove('sidebar-open');
-        if (toggleBtn) toggleBtn.style.display = '';
       }
     }
 
