@@ -669,6 +669,46 @@ app.post("/api/test-payment", async (req, res) => {
   }
 });
 
+// Get Withdrawals for a user
+app.get("/api/withdrawals/:userEmail", async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from("withdrawals")
+      .select("*")
+      .eq("user_email", req.params.userEmail)
+      .order("created_at", { ascending: false });
+    if (error) throw error;
+    res.json(data || []);
+  } catch (err) {
+    console.error('Error fetching withdrawals:', err);
+    res.json([]);
+  }
+});
+
+// Submit Withdrawal Request
+app.post("/api/withdrawals", async (req, res) => {
+  try {
+    const { user_email, amount, method, account, note } = req.body;
+    if (!user_email || !amount) return res.status(400).json({ error: 'user_email and amount are required' });
+    const { data, error } = await supabase
+      .from("withdrawals")
+      .insert([{ user_email, amount: parseFloat(amount), method, account, note, status: 'pending' }])
+      .select()
+      .single();
+    if (error) {
+      console.error('Withdrawal insert error:', error);
+      if (error.message.includes('relation "withdrawals" does not exist')) {
+        return res.status(500).json({ error: 'Withdrawals table not found. Please create it in Supabase.' });
+      }
+      return res.status(500).json({ error: error.message });
+    }
+    res.json(data);
+  } catch (err) {
+    console.error('Error saving withdrawal:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // Contact Form Submission
 app.post("/api/contact", async (req, res) => {
   try {

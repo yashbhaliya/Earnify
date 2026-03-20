@@ -32,6 +32,7 @@ const API_CONFIG = {
       users: '/api/users'
     },
     contact: '/api/contact',
+    withdrawals: '/api/withdrawals',
     statistics: '/api/statistics/purchases',
     userStatistics: '/api/statistics/purchases' // Will append /{userEmail}
   },
