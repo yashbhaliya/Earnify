@@ -69,7 +69,7 @@
 
     /* ── Hero balance banner ── */
     .hero-banner {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       border-radius: 24px;
       padding: 40px;
       margin-bottom: 28px;
@@ -246,7 +246,23 @@
     .toast.error   { background: linear-gradient(135deg,#ef4444,#dc2626); }
     @keyframes toastIn { from { transform: translateY(16px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
-    /* ── Responsive ── */
+    /* ── Shimmer ── */
+    @keyframes shimmerSlide {
+      0%   { background-position: -600px 0; }
+      100% { background-position:  600px 0; }
+    }
+    .shimmer-box {
+      background: linear-gradient(90deg, rgba(255,255,255,.12) 25%, rgba(255,255,255,.28) 50%, rgba(255,255,255,.12) 75%);
+      background-size: 600px 100%;
+      animation: shimmerSlide 1.4s infinite linear;
+      border-radius: 10px;
+    }
+    .shimmer-dark {
+      background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+      background-size: 600px 100%;
+      animation: shimmerSlide 1.4s infinite linear;
+      border-radius: 6px;
+    }
     @media (max-width: 768px) {
       .hero-banner { padding: 28px 22px; }
       .hero-amount { font-size: 38px; }
@@ -318,7 +334,7 @@
   <div class="main">
 
     <!-- ── Hero Balance Banner ── -->
-    <div class="hero-banner">
+    <div class="hero-banner" id="heroBanner" style="display:none;">
       <div class="hero-top">
         <div style="display:flex;align-items:flex-start;gap:14px;">
           <button class="mobile-menu-toggle page-header-toggle" onclick="toggleSidebar()" style="display:none;margin-top:4px;">
@@ -348,6 +364,41 @@
         <div class="hero-stat-item">
           <div class="hero-stat-val" id="pendingAmount">₹0</div>
           <div class="hero-stat-lbl">Pending</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Hero Shimmer ── -->
+    <div class="hero-banner" id="heroShimmer">
+      <div class="hero-top">
+        <div style="display:flex;align-items:flex-start;gap:14px;">
+          <button class="mobile-menu-toggle page-header-toggle" onclick="toggleSidebar()" style="display:none;margin-top:4px;">
+            <div class="hamburger"></div>
+            <div class="hamburger"></div>
+            <div class="hamburger"></div>
+          </button>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <div class="shimmer-box" style="width:120px;height:11px;"></div>
+            <div class="shimmer-box" style="width:180px;height:44px;border-radius:8px;"></div>
+            <div class="shimmer-box" style="width:200px;height:11px;"></div>
+          </div>
+        </div>
+        <div class="shimmer-box" style="width:180px;height:48px;border-radius:14px;align-self:center;"></div>
+      </div>
+      <div class="hero-stats" style="margin-top:28px;">
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div class="shimmer-box" style="width:70px;height:20px;"></div>
+          <div class="shimmer-box" style="width:80px;height:10px;"></div>
+        </div>
+        <div class="hero-divider"></div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div class="shimmer-box" style="width:70px;height:20px;"></div>
+          <div class="shimmer-box" style="width:80px;height:10px;"></div>
+        </div>
+        <div class="hero-divider"></div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div class="shimmer-box" style="width:70px;height:20px;"></div>
+          <div class="shimmer-box" style="width:80px;height:10px;"></div>
         </div>
       </div>
     </div>
@@ -419,7 +470,34 @@
       <div class="w-card-title" style="justify-content:space-between;">
         <span style="display:flex;align-items:center;gap:10px;"><span>📋</span> Withdrawal History</span>
       </div>
-      <div id="historyContainer">
+      <!-- History Shimmer -->
+      <div id="historyShimmer">
+        <div style="display:flex;gap:16px;padding:16px 0;border-bottom:1px solid #f1f5f9;align-items:center;">
+          <div class="shimmer-dark" style="width:80px;height:14px;"></div>
+          <div class="shimmer-dark" style="width:70px;height:14px;"></div>
+          <div class="shimmer-dark" style="width:70px;height:14px;"></div>
+          <div class="shimmer-dark" style="width:60px;height:22px;border-radius:20px;"></div>
+          <div class="shimmer-dark" style="width:90px;height:14px;"></div>
+          <div class="shimmer-dark" style="width:60px;height:22px;border-radius:20px;"></div>
+        </div>
+        <div style="display:flex;gap:16px;padding:16px 0;border-bottom:1px solid #f1f5f9;align-items:center;">
+          <div class="shimmer-dark" style="width:80px;height:14px;"></div>
+          <div class="shimmer-dark" style="width:70px;height:14px;"></div>
+          <div class="shimmer-dark" style="width:70px;height:14px;"></div>
+          <div class="shimmer-dark" style="width:60px;height:22px;border-radius:20px;"></div>
+          <div class="shimmer-dark" style="width:90px;height:14px;"></div>
+          <div class="shimmer-dark" style="width:60px;height:22px;border-radius:20px;"></div>
+        </div>
+        <div style="display:flex;gap:16px;padding:16px 0;align-items:center;">
+          <div class="shimmer-dark" style="width:80px;height:14px;"></div>
+          <div class="shimmer-dark" style="width:70px;height:14px;"></div>
+          <div class="shimmer-dark" style="width:70px;height:14px;"></div>
+          <div class="shimmer-dark" style="width:60px;height:22px;border-radius:20px;"></div>
+          <div class="shimmer-dark" style="width:90px;height:14px;"></div>
+          <div class="shimmer-dark" style="width:60px;height:22px;border-radius:20px;"></div>
+        </div>
+      </div>
+      <div id="historyContainer" style="display:none;">
         <div class="empty-state">
           <div class="empty-icon">📭</div>
           <h3>No Withdrawals Yet</h3>
@@ -532,7 +610,10 @@
         document.getElementById('totalEarned').textContent      = `₹${totalGross.toFixed(0)}`;
         document.getElementById('totalWithdrawn').textContent   = `₹${totalWithdrawn.toFixed(0)}`;
         document.getElementById('pendingAmount').textContent    = `₹${pending.toFixed(0)}`;
-      } catch (e) { /* silent */ }
+      } catch (e) { /* silent */ } finally {
+        document.getElementById('heroShimmer').style.display = 'none';
+        document.getElementById('heroBanner').style.display = '';
+      }
     }
 
     const METHOD_ICONS = { upi: '🔗', bank: '🏦', paytm: '💙', phonepe: '💜' };
@@ -545,6 +626,9 @@
         const res = await fetch(API_CONFIG.getURL(`${API_CONFIG.endpoints.withdrawals}/${encodeURIComponent(user.email)}`));
         if (res.ok) list = await res.json();
       } catch (e) { /* silent */ }
+
+      document.getElementById('historyShimmer').style.display = 'none';
+      container.style.display = '';
 
       if (!list.length) {
         container.innerHTML = `
