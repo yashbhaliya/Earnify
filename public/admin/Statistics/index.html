@@ -1252,9 +1252,14 @@
     const totalSalesEl = document.getElementById('totalSales');
     const totalCustomersEl = document.getElementById('totalCustomers');
     
-    const revenue = statsData.totalRevenue || 0;
-    const sales = statsData.totalPurchases || 0;
-    const customers = statsData.totalCustomers || 0;
+    const userStats = statsData.userStats || [];
+    const revenue = userStats.length
+      ? userStats.reduce((s, u) => s + (parseFloat(u.totalAmount) || 0), 0)
+      : (statsData.totalRevenue || 0);
+    const sales = userStats.length
+      ? userStats.reduce((s, u) => s + (parseInt(u.totalPurchases) || 0), 0)
+      : (statsData.totalPurchases || 0);
+    const customers = userStats.length ? userStats.length : (statsData.totalCustomers || 0);
     
     if (totalRevenueEl) totalRevenueEl.textContent = `₹${revenue.toFixed(0)}`;
     if (totalSalesEl) totalSalesEl.textContent = sales;
