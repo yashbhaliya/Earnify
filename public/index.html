@@ -14,11 +14,13 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     /* HERO BACKGROUND */
+.hero-wrapper {
+  margin-top: 10px;
+}
 .hero-gradient {
   position: relative;
-  width: 100%;;
-  border-radius: 20px;
-  margin: auto;
+  width: 100%;
+  border-radius: 24px;
   background: url('/file/hero.png') center/cover no-repeat;
   display: flex;
   justify-content: center;
@@ -279,7 +281,8 @@
     <div class="mobile-sidebar-overlay" id="mobileSidebarOverlay" onclick="toggleMobileMenu()"></div>
   </nav>
 
-  <main class="hero-gradient relative overflow-hidden">
+  <div class="hero-wrapper">
+  <main class="hero-gradient">
     <div class="hero-section">
 
       <!-- LEFT: Text Content -->
@@ -380,6 +383,7 @@
       </div>
     </div>
   </main>
+  </div>
 
   <section id="resources" class="resources-section">
     <div class="container">
