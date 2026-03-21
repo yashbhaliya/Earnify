@@ -271,6 +271,97 @@
       .hero-cta    { width: 100%; text-align: center; }
       .form-grid   { grid-template-columns: 1fr; }
       .w-card      { padding: 22px 18px; }
+
+      /* History table mobile: show only Date, Net Amount, View */
+      .col-amount, .col-method, .col-account, .col-status { display: none !important; }
+      .col-view { display: table-cell !important; }
+      .history-table th, .history-table td { padding: 11px 10px !important; font-size: 12px !important; }
+      .history-wrap { overflow-x: unset !important; }
+      .history-table { min-width: unset !important; width: 100% !important; }
+    }
+    @media (min-width: 769px) {
+      .col-view { display: none !important; }
+    }
+
+    /* View button */
+    .view-btn {
+      background: white;
+      border: 1.5px solid #667eea;
+      border-radius: 8px;
+      width: 58px; height: 28px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      margin: 0 auto;
+      padding: 0;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: none;
+    }
+    .view-btn span {
+      display: block;
+      font-size: 11px; font-weight: 700; letter-spacing: 0.3px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      color: transparent;
+      line-height: 1;
+    }
+    .view-btn:first-child, .view-btn:last-child, .view-btn:nth-child(2) {
+      background: white !important;
+      color: transparent !important;
+      box-shadow: none !important;
+    }
+    .view-btn:hover { transform: scale(1.05); box-shadow: 0 3px 10px rgba(102,126,234,0.2) !important; }
+
+    /* Withdrawal detail bottom sheet */
+    #withdrawalDetailModal {
+      display: none; position: fixed; inset: 0; z-index: 9999;
+      align-items: flex-end; justify-content: center;
+      background: rgba(0,0,0,0.45);
+    }
+    #withdrawalDetailModal.open { display: flex; }
+    .wd-sheet {
+      background: white; border-radius: 20px 20px 0 0;
+      padding: 24px 20px 32px; width: 100%; max-width: 480px;
+      max-height: 85vh; overflow-y: auto;
+      animation: wdSlideUp 0.3s ease;
+    }
+    @keyframes wdSlideUp {
+      from { transform: translateY(100%); opacity: 0; }
+      to   { transform: translateY(0);    opacity: 1; }
+    }
+    .wd-handle {
+      width: 40px; height: 4px; background: #e2e8f0;
+      border-radius: 2px; margin: 0 auto 20px;
+    }
+    .wd-sheet h3 {
+      font-size: 17px; font-weight: 700; color: #1e293b;
+      margin: 0 0 18px; text-align: center;
+    }
+    .wd-row {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      padding: 12px 0; border-bottom: 1px solid #f1f5f9; gap: 12px;
+    }
+    .wd-row:last-child { border-bottom: none; }
+    .wd-label {
+      font-size: 12px; font-weight: 600; color: #64748b;
+      text-transform: uppercase; letter-spacing: 0.5px; flex-shrink: 0;
+    }
+    .wd-value {
+      font-size: 14px; font-weight: 600; color: #1e293b;
+      text-align: right; word-break: break-all;
+    }
+    .wd-close-btn {
+      width: 100%; margin-top: 20px; padding: 14px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white; border: none; border-radius: 12px;
+      font-size: 15px; font-weight: 700; cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .wd-close-btn:hover { opacity: 0.9; }
+    .wd-close-btn:first-child, .wd-close-btn:last-child, .wd-close-btn:nth-child(2) {
+      background: linear-gradient(135deg, #667eea, #764ba2) !important;
+      color: white !important;
     }
     @media (max-width: 768px) {
       .mobile-menu-toggle:not(.page-header-toggle) { display: none !important; }
@@ -544,6 +635,16 @@
     </div>
   </div>
 
+  <!-- Withdrawal Detail Modal (mobile) -->
+  <div id="withdrawalDetailModal" onclick="if(event.target===this)closeWithdrawalDetail()">
+    <div class="wd-sheet">
+      <div class="wd-handle"></div>
+      <h3>💸 Withdrawal Details</h3>
+      <div id="withdrawalDetailBody"></div>
+      <button class="wd-close-btn" onclick="closeWithdrawalDetail()">Close</button>
+    </div>
+  </div>
+
   <div class="toast" id="toast"></div>
 
   <script src="../api-config.js"></script>
@@ -663,32 +764,61 @@
           </div>`;
         return;
       }
+
+      window._withdrawalList = list;
+
       container.innerHTML = `
         <div class="history-wrap">
           <table class="history-table">
             <thead>
               <tr>
                 <th>Date</th>
-                <th>Amount</th>
+                <th class="col-amount">Amount</th>
                 <th>Net Amount</th>
-                <th>Method</th>
-                <th>Account</th>
-                <th>Status</th>
+                <th class="col-method">Method</th>
+                <th class="col-account">Account</th>
+                <th class="col-status">Status</th>
+                <th class="col-view">Details</th>
               </tr>
             </thead>
             <tbody>
-              ${list.map(w => `
+              ${list.map((w, i) => `
                 <tr>
                   <td>${new Date(w.created_at).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'})}</td>
-                  <td><span class="amount-cell">₹${parseFloat(w.amount).toLocaleString('en-IN')}</span></td>
-                  <td><span class="amount-cell" style="color:#667eea;">₹${(parseFloat(w.amount) * 0.95).toLocaleString('en-IN', {maximumFractionDigits:2})}</span></td>
-                  <td><span class="method-chip">${METHOD_ICONS[w.method] || ''} ${w.method.toUpperCase()}</span></td>
-                  <td>${w.account || '—'}</td>
-                  <td><span class="badge badge-${w.status}">${w.status}</span></td>
+                  <td class="col-amount"><span class="amount-cell">₹${parseFloat(w.amount).toLocaleString('en-IN')}</span></td>
+                  <td><span class="amount-cell" style="color:#667eea;">₹${(parseFloat(w.amount)*0.95).toLocaleString('en-IN',{maximumFractionDigits:2})}</span></td>
+                  <td class="col-method"><span class="method-chip">${METHOD_ICONS[w.method]||''} ${w.method.toUpperCase()}</span></td>
+                  <td class="col-account">${w.account||'—'}</td>
+                  <td class="col-status"><span class="badge badge-${w.status}">${w.status}</span></td>
+                  <td class="col-view"><button class="view-btn" onclick="openWithdrawalDetail(${i})" title="View Details"><span>View</span></button></td>
                 </tr>`).join('')}
             </tbody>
           </table>
         </div>`;
+    }
+
+    function openWithdrawalDetail(i) {
+      const w = window._withdrawalList && window._withdrawalList[i];
+      if (!w) return;
+      const net = (parseFloat(w.amount) * 0.95).toLocaleString('en-IN', {maximumFractionDigits:2});
+      const date = new Date(w.created_at).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});
+      const statusColors = { pending:'#b45309', approved:'#065f46', rejected:'#991b1b' };
+      document.getElementById('withdrawalDetailBody').innerHTML = `
+        <div class="wd-row"><span class="wd-label">Date</span><span class="wd-value">${date}</span></div>
+        <div class="wd-row"><span class="wd-label">Amount</span><span class="wd-value">₹${parseFloat(w.amount).toLocaleString('en-IN')}</span></div>
+        <div class="wd-row"><span class="wd-label">Net Amount</span><span class="wd-value" style="color:#667eea;font-size:17px;">₹${net}</span></div>
+        <div class="wd-row"><span class="wd-label">Platform Fee</span><span class="wd-value" style="color:#ef4444;">₹${(parseFloat(w.amount)*0.05).toLocaleString('en-IN',{maximumFractionDigits:2})} (5%)</span></div>
+        <div class="wd-row"><span class="wd-label">Method</span><span class="wd-value">${METHOD_ICONS[w.method]||''} ${w.method.toUpperCase()}</span></div>
+        <div class="wd-row"><span class="wd-label">Account</span><span class="wd-value">${w.account||'—'}</span></div>
+        <div class="wd-row"><span class="wd-label">Status</span><span class="wd-value" style="color:${statusColors[w.status]||'#1e293b'};text-transform:capitalize;">${w.status}</span></div>
+        ${w.note ? `<div class="wd-row"><span class="wd-label">Note</span><span class="wd-value">${w.note}</span></div>` : ''}`;
+      document.getElementById('withdrawalDetailModal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeWithdrawalDetail() {
+      document.getElementById('withdrawalDetailModal').classList.remove('open');
+      document.body.style.overflow = '';
     }
 
     let _pendingPayload = null;

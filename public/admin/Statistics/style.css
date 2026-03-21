@@ -2661,6 +2661,24 @@ body.sidebar-open {
 }
 /* Global Box Shadow Refinement - All Pages, All Views */
 
+/* Eye button override — must come after global button rules */
+.eye-btn,
+.eye-btn:first-child,
+.eye-btn:nth-child(2),
+.eye-btn:last-child {
+  background: white !important;
+  color: transparent !important;
+  box-shadow: none !important;
+}
+.eye-btn:hover,
+.eye-btn:first-child:hover,
+.eye-btn:nth-child(2):hover,
+.eye-btn:last-child:hover {
+  background: white !important;
+  box-shadow: 0 3px 10px rgba(102,126,234,0.25) !important;
+  transform: scale(1.05);
+}
+
 /* Refined Global Box Shadows */
 .card,
 .stat-card,
