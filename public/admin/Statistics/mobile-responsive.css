@@ -18,7 +18,8 @@
         width: 100%;
         box-sizing: border-box;
         margin-left: 0 !important;
-        padding-top: 20px; /* Space for the floating hamburger (15px top + 50px height + 10px gap) */
+        padding-top: 20px;
+        overflow-x: hidden;
     }
 
     /* --- Hamburger Menu Button --- */
@@ -254,10 +255,12 @@
         -webkit-overflow-scrolling: touch !important;
         border-radius: 12px !important;
         margin: 0 !important;
+        max-width: 100% !important;
     }
 
     .modern-table {
-        min-width: 550px !important;
+        min-width: unset !important;
+        width: 100% !important;
         font-size: 12px !important;
     }
 

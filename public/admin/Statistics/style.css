@@ -12,11 +12,16 @@
   display: none !important;
 }
 
+html {
+  overflow-x: hidden;
+}
+
 body {
   font-family: 'Inter', sans-serif;
   display: flex;
   background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 @media (max-width: 768px) {
@@ -360,13 +365,13 @@ button:nth-child(2):hover {
 }
 
 button:last-child {
-  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  background:linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
 }
 
 button:last-child:hover {
-  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+  background: linear-gradient(135deg, #4e62bf 0%, #6b3c99 100%);
   transform: scale(1.02);
   box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
 }
@@ -1125,13 +1130,13 @@ button:last-child:hover {
 }
 
 .resource-actions button:last-child {
-  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  background:linear-gradient(135deg, #1D4ED8 0%, #7c3aed 100%);
   color: white;
   box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
 }
 
 .resource-actions button:last-child:hover {
-  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+  background: linear-gradient(135deg, #1D4ED8 0%, #7c3aed 100%);
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
 }
