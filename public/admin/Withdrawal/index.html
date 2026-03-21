@@ -770,7 +770,9 @@
         console.log('[loadStats] statsData =>', statsData, '| withdrawals =>', withdrawals);
 
         const userStats = Array.isArray(statsData.userStats) ? statsData.userStats : [];
-        const totalGross = userStats.reduce((s, u) => s + (parseFloat(u.totalAmount) || 0), 0);
+        // Use totalGross from backend (gross earnings before fees) — same figure as Dashboard
+        const totalGross = parseFloat(statsData.totalGross || 0) ||
+          userStats.reduce((s, u) => s + (parseFloat(u.totalAmount) || 0), 0);
 
         const WD_FEE = 0.05;
         const wdList = Array.isArray(withdrawals) ? withdrawals : [];

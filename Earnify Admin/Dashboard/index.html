@@ -235,83 +235,98 @@
     .stat-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 20px;
+      grid-template-rows: auto auto;
+      gap: 16px;
       margin-bottom: 30px;
     }
 
-    .stat-card {
-      background: white;
-      border-radius: 16px;
-      padding: 22px 20px;
+    /* Available Balance spans full width on its own row */
+    .stat-card:nth-child(1) {
+      grid-column: 1 / -1;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 20px;
+      padding: 28px 32px;
       display: flex;
       align-items: center;
-      gap: 16px;
-      border: 1px solid rgba(0,0,0,0.05);
+      gap: 24px;
+      box-shadow: 0 8px 32px rgba(102,126,234,0.30);
       position: relative;
       overflow: hidden;
       transition: transform 0.22s, box-shadow 0.22s;
       cursor: default;
     }
-
-    .stat-card::before {
+    .stat-card:nth-child(1)::after {
       content: '';
       position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 3px;
-      transition: height 0.2s;
+      top: -50px; right: -50px;
+      width: 200px; height: 200px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+      pointer-events: none;
     }
+    .stat-card:nth-child(1):hover { transform: translateY(-3px); box-shadow: 0 14px 40px rgba(102,126,234,0.40); }
+    .stat-card:nth-child(1) .stat-icon {
+      width: 72px; height: 72px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.20);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 34px; flex-shrink: 0;
+    }
+    .stat-card:nth-child(1) .stat-label { font-size: 12px; color: rgba(255,255,255,0.75); text-transform: uppercase; letter-spacing: 1px; font-weight: 700; margin-bottom: 6px; }
+    .stat-card:nth-child(1) .stat-value { font-size: 42px; font-weight: 900; color: #fff; line-height: 1; margin-bottom: 6px; letter-spacing: -1px; }
+    .stat-card:nth-child(1) .stat-sub   { font-size: 13px; color: rgba(255,255,255,0.65); font-weight: 500; }
 
-    .stat-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.09); }
-    .stat-card:hover::before { height: 4px; }
+    /* Bottom 4 cards */
+    .stat-card:nth-child(n+2) {
+      background: #fff;
+      border-radius: 18px;
+      padding: 22px 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      border: 1px solid rgba(0,0,0,0.06);
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.22s, box-shadow 0.22s;
+      cursor: default;
+    }
+    .stat-card:nth-child(n+2):hover { transform: translateY(-3px); box-shadow: 0 8px 28px rgba(0,0,0,0.09); }
 
-    .stat-card:nth-child(1)::before { background: linear-gradient(90deg, #667eea, #764ba2); }
-    .stat-card:nth-child(2)::before { background: linear-gradient(90deg, #f093fb, #f5576c); }
-    .stat-card:nth-child(3)::before { background: linear-gradient(90deg, #ff6b6b, #ee5a24); }
-    .stat-card:nth-child(4)::before { background: linear-gradient(90deg, #f9ca24, #f0932b); }
+    /* Colored left accent bar */
+    .stat-card:nth-child(n+2)::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 4px;
+      border-radius: 18px 0 0 18px;
+    }
+    .stat-card:nth-child(2)::before { background: linear-gradient(180deg, #f093fb, #f5576c); }
+    .stat-card:nth-child(3)::before { background: linear-gradient(180deg, #ff6b6b, #ee5a24); }
+    .stat-card:nth-child(4)::before { background: linear-gradient(180deg, #11998e, #38ef7d); }
+    .stat-card:nth-child(5)::before { background: linear-gradient(180deg, #f9ca24, #f0932b); }
 
-    .stat-icon {
-      width: 54px; height: 54px;
+    .stat-card:nth-child(n+2) .stat-icon {
+      width: 52px; height: 52px;
       border-radius: 14px;
       display: flex; align-items: center; justify-content: center;
-      font-size: 24px;
-      flex-shrink: 0;
+      font-size: 24px; flex-shrink: 0;
       transition: transform 0.2s;
     }
+    .stat-card:nth-child(n+2):hover .stat-icon { transform: scale(1.1); }
+    .stat-card:nth-child(2) .stat-icon { background: linear-gradient(135deg, rgba(240,147,251,0.15), rgba(245,87,108,0.15)); }
+    .stat-card:nth-child(3) .stat-icon { background: linear-gradient(135deg, rgba(255,107,107,0.15), rgba(238,90,36,0.15)); }
+    .stat-card:nth-child(4) .stat-icon { background: linear-gradient(135deg, rgba(17,153,142,0.15), rgba(56,239,125,0.15)); }
+    .stat-card:nth-child(5) .stat-icon { background: linear-gradient(135deg, rgba(249,202,36,0.15), rgba(240,147,43,0.15)); }
 
-    .stat-card:hover .stat-icon { transform: scale(1.08); }
+    .stat-card:nth-child(n+2) .stat-label { font-size: 11px; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.7px; font-weight: 700; margin-bottom: 5px; }
+    .stat-card:nth-child(n+2) .stat-value { font-size: 26px; font-weight: 900; color: #1e293b; line-height: 1; margin-bottom: 4px; transition: color 0.2s; }
+    .stat-card:nth-child(2):hover .stat-value { color: #f5576c; }
+    .stat-card:nth-child(3):hover .stat-value { color: #ee5a24; }
+    .stat-card:nth-child(4):hover .stat-value { color: #11998e; }
+    .stat-card:nth-child(5):hover .stat-value { color: #f0932b; }
+    .stat-card:nth-child(n+2) .stat-sub { font-size: 11px; color: #64748b; font-weight: 500; }
 
-    .stat-card:nth-child(1) .stat-icon { background: linear-gradient(135deg, #667eea, #764ba2); }
-    .stat-card:nth-child(2) .stat-icon { background: linear-gradient(135deg, #f093fb, #f5576c); }
-    .stat-card:nth-child(3) .stat-icon { background: linear-gradient(135deg, #ff6b6b, #ee5a24); }
-    .stat-card:nth-child(4) .stat-icon { background: linear-gradient(135deg, #f9ca24, #f0932b); }
-
-    .stat-body { flex: 1; }
-
-    .stat-label {
-      font-size: 11px;
-      color: #94a3b8;
-      text-transform: uppercase;
-      letter-spacing: 0.6px;
-      font-weight: 600;
-      margin-bottom: 6px;
-    }
-
-    .stat-value {
-      font-size: 30px;
-      font-weight: 900;
-      color: #1e293b;
-      line-height: 1;
-      margin-bottom: 5px;
-      transition: color 0.2s;
-    }
-
-    .stat-card:hover .stat-value { color: #667eea; }
-
-    .stat-sub {
-      font-size: 11px;
-      color: #64748b;
-      font-weight: 500;
-    }
+    .stat-body { flex: 1; position: relative; z-index: 1; }
 
     /* ── Shimmer ── */
     .shimmer {
@@ -406,7 +421,7 @@
     .empty-state .empty-icon { font-size: 44px; margin-bottom: 10px; }
     .empty-state p { font-size: 14px; }
 
-    /* ── Error Banner ── */
+/* ── Error Banner ── */
     .error-banner {
       display: none;
       background: #fee2e2;
@@ -422,6 +437,7 @@
     /* ── Responsive ── */
     @media (max-width: 1100px) {
       .stat-grid { grid-template-columns: repeat(2, 1fr); }
+      .stat-card:nth-child(1) { grid-column: 1 / -1; }
     }
 
     @media (max-width: 768px) {
@@ -430,8 +446,8 @@
       .sidebar.active { transform: translateX(0); }
       .main { margin-left: 0; padding: 20px 16px; padding-top: 64px; }
       .stat-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-      .stat-value { font-size: 24px; }
-      .stat-icon { width: 44px; height: 44px; font-size: 20px; }
+      .stat-card:nth-child(1) { grid-column: 1 / -1; }
+      .stat-card:nth-child(1) .stat-value { font-size: 32px; }
       .page-header { padding: 20px 20px; }
       .page-header h1 { font-size: 20px; }
       th, td { padding: 10px 12px; font-size: 12px; }
@@ -439,8 +455,10 @@
 
     @media (max-width: 480px) {
       .stat-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
-      .stat-card { padding: 16px 14px; gap: 12px; }
-      .stat-value { font-size: 22px; }
+      .stat-card:nth-child(1) { grid-column: 1 / -1; padding: 20px 18px; }
+      .stat-card:nth-child(1) .stat-value { font-size: 28px; }
+      .stat-card:nth-child(n+2) { padding: 16px 14px; }
+      .stat-card:nth-child(n+2) .stat-value { font-size: 20px; }
       .header-meta { display: none; }
     }
   </style>
@@ -497,124 +515,57 @@
   </div>
 
   <!-- Error Banner -->
-  <div class="error-banner" id="errorBanner">
-    ⚠️ Could not connect to the server. Showing cached or empty data.
-  </div>
+  <div class="error-banner" id="errorBanner" style="display:none;"></div>
 
-  <!-- 4 Stat Cards -->
-  <div class="stat-grid">
 
-    <!-- 1. Total Revenue -->
+
+  <!-- Stat Cards -->
+  <div class="stat-grid" id="statGrid" style="display:none;">
+    <div class="stat-card">
+      <div class="stat-icon">🏦</div>
+      <div class="stat-body">
+        <div class="stat-label">Available Balance</div>
+        <div class="stat-value" id="cardAvailable">₹0</div>
+        <div class="stat-sub">Ready to withdraw</div>
+      </div>
+    </div>
     <div class="stat-card">
       <div class="stat-icon">💰</div>
       <div class="stat-body">
-        <div class="stat-label">Total Revenue</div>
-        <div class="stat-value" id="valRevenue">
-          <div class="shimmer shimmer-value"></div>
-        </div>
-        <div class="stat-sub" id="subRevenue">
-          <div class="shimmer shimmer-sub"></div>
-        </div>
+        <div class="stat-label">Total Earned</div>
+        <div class="stat-value" id="cardRevenue">₹0</div>
+        <div class="stat-sub" id="cardRevenueSub">completed sales</div>
       </div>
     </div>
-
-    <!-- 2. Withdrawn Amount -->
     <div class="stat-card">
       <div class="stat-icon">💸</div>
       <div class="stat-body">
-        <div class="stat-label">Withdrawn Amount</div>
-        <div class="stat-value" id="valWithdrawn">
-          <div class="shimmer shimmer-value"></div>
-        </div>
-        <div class="stat-sub" id="subWithdrawn">
-          <div class="shimmer shimmer-sub"></div>
-        </div>
+        <div class="stat-label">Withdrawn</div>
+        <div class="stat-value" id="cardWithdrawn">₹0</div>
+        <div class="stat-sub" id="cardWithdrawnSub">approved withdrawals</div>
       </div>
     </div>
-
-    <!-- 3. Platform Fees -->
     <div class="stat-card">
       <div class="stat-icon">🏦</div>
       <div class="stat-body">
         <div class="stat-label">Platform Fees</div>
-        <div class="stat-value" id="valFees">
-          <div class="shimmer shimmer-value"></div>
-        </div>
-        <div class="stat-sub" id="subFees">
-          <div class="shimmer shimmer-sub"></div>
-        </div>
+        <div class="stat-value" id="cardFees">₹0</div>
+        <div class="stat-sub">5% platform fee</div>
       </div>
     </div>
-
-    <!-- 4. Pending Amount -->
     <div class="stat-card">
       <div class="stat-icon">⏳</div>
       <div class="stat-body">
-        <div class="stat-label">Pending Amount</div>
-        <div class="stat-value" id="valPending">
-          <div class="shimmer shimmer-value"></div>
-        </div>
-        <div class="stat-sub" id="subPending">
-          <div class="shimmer shimmer-sub"></div>
-        </div>
+        <div class="stat-label">Pending</div>
+        <div class="stat-value" id="cardPending">₹0</div>
+        <div class="stat-sub">awaiting approval</div>
       </div>
-    </div>
-
-  </div>
-
-  <!-- Recent Purchases Table -->
-  <div class="table-card">
-    <div class="table-header">
-      <h3>🛒 Recent Purchases</h3>
-      <span id="purchaseCount">Loading...</span>
-    </div>
-    <div>
-      <table>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Buyer Email</th>
-            <th>Resource</th>
-            <th>Amount</th>
-            <th>Status</th>
-            <th>Date</th>
-          </tr>
-        </thead>
-        <tbody id="purchaseTbody">
-          <tr><td colspan="6"><div class="empty-state"><div class="empty-icon">⏳</div><p>Loading...</p></div></td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- Withdrawals Table -->
-  <div class="table-card">
-    <div class="table-header">
-      <h3>💸 Withdrawal Requests</h3>
-      <span id="wdCount">Loading...</span>
-    </div>
-    <div>
-      <table>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>User Email</th>
-            <th>Amount</th>
-            <th>Net Amount</th>
-            <th>Fee</th>
-            <th>Status</th>
-            <th>Date</th>
-          </tr>
-        </thead>
-        <tbody id="wdTbody">
-          <tr><td colspan="7"><div class="empty-state"><div class="empty-icon">⏳</div><p>Loading...</p></div></td></tr>
-        </tbody>
-      </table>
     </div>
   </div>
 
 </div><!-- /main -->
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="dashboard.js"></script>
 </body>
 </html>

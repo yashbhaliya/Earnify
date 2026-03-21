@@ -602,32 +602,38 @@
 </div>
 
 <script>
-  // ── Supabase direct config ──
-  const SUPA_URL = 'https://emnrgsgerfjvndexomro.supabase.co';
-  const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVtbnJnc2dlcmZqdm5kZXhvbXJvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI0MjAyMTAsImV4cCI6MjA4Nzk5NjIxMH0.uXr8lipxLbB4D_5JwQkpLzc-HudQw23tOFBfV4C6hqY';
+  const API_BASE = (location.hostname === 'localhost' || location.hostname === '127.0.0.1')
+    ? 'http://127.0.0.1:5000' : location.origin;
 
-  async function supa(path) {
-    const res = await fetch(`${SUPA_URL}/rest/v1/${path}`, {
-      headers: { apikey: SUPA_KEY, Authorization: `Bearer ${SUPA_KEY}`, Accept: 'application/json' }
-    });
-    if (!res.ok) throw new Error(`Supabase ${res.status}`);
-    return res.json();
+  console.log('[Statistics] API_BASE =>', API_BASE);
+
+  async function apiFetch(path) {
+    const url = API_BASE + path;
+    console.log('[apiFetch] GET', url);
+    const res = await fetch(url);
+    console.log('[apiFetch] status', res.status, path);
+    if (!res.ok) throw new Error(`HTTP ${res.status} — ${path}`);
+    const data = await res.json();
+    console.log('[apiFetch] data', path, data);
+    return data;
   }
 
-  // ── Auth ──
+  // ── Auth sidebar ──
   (function() {
-    const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
-    if (user.email) {
-      const name = user.user_metadata?.name || user.email.split('@')[0];
-      document.getElementById('adminName').textContent = name;
-      document.getElementById('adminAvatar').textContent = name.charAt(0).toUpperCase();
+    const token = localStorage.getItem('adminToken');
+    if (token) {
+      try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        const name = payload.email?.split('@')[0] || 'Admin';
+        document.getElementById('adminName').textContent = name;
+        document.getElementById('adminAvatar').textContent = name.charAt(0).toUpperCase();
+      } catch(e) { console.warn('[Statistics] token decode failed', e); }
     }
   })();
 
   function logout() {
-    localStorage.removeItem('adminToken');
-    localStorage.removeItem('currentUser');
-    window.location.href = '../../public/admin/login.html';
+    localStorage.clear(); sessionStorage.clear();
+    location.href = '../../public/admin/login.html';
   }
 
   function toggleSidebar() {
@@ -640,7 +646,7 @@
     document.getElementById(subId).textContent = sub;
   }
 
-  function fmt(n) { return '₹' + Math.round(n).toLocaleString('en-IN'); }
+  function fmt(n) { return '₹' + Math.round(n || 0).toLocaleString('en-IN'); }
 
   function fmtDate(d) {
     return d ? new Date(d).toLocaleDateString('en-IN', {day:'2-digit', month:'short', year:'numeric'}) : '—';
@@ -649,46 +655,39 @@
   let allPurchases = [];
 
   async function loadStats() {
+    console.log('[Statistics] loadStats() called');
     ['valRevenue','valPurchases','valAvgOrder','valBuyers'].forEach(id =>
       document.getElementById(id).innerHTML = '<div class="shimmer shimmer-value"></div>');
     ['subRevenue','subPurchases','subAvgOrder','subBuyers'].forEach(id =>
       document.getElementById(id).innerHTML = '<div class="shimmer shimmer-sub"></div>');
 
     try {
-      const [payments, resources] = await Promise.all([
-        supa('payments?select=*&order=created_at.desc'),
-        supa('resources?select=id,title,type,price,user_email')
-      ]);
+      // /api/admin/purchases already joins buyer email + resource info server-side
+      allPurchases = await apiFetch('/api/admin/purchases');
+      console.log('[Statistics] allPurchases =>', allPurchases.length, allPurchases);
 
-      // Enrich payments with resource info
-      allPurchases = payments.map((p, i) => {
-        const r = resources.find(r => r.id === p.resource_id) || {};
-        return {
-          ...p,
-          buyer_email:    p.user_id,
-          resource_title: r.title || '—',
-          resource_type:  r.type  || '—',
-          amount:         parseFloat(r.price || 0)
-        };
-      });
-
-      const completed = allPurchases.filter(p => p.status === 'completed');
-      const totalRevenue = completed.reduce((s, p) => s + p.amount, 0);
+      const completed    = allPurchases.filter(p => p.status === 'completed');
+      const totalRevenue = completed.reduce((s, p) => s + parseFloat(p.amount || p.resource_price || 0), 0);
       const uniqueBuyers = new Set(allPurchases.map(p => p.buyer_email)).size;
-      const avgOrder = completed.length > 0 ? totalRevenue / completed.length : 0;
+      const avgOrder     = completed.length ? totalRevenue / completed.length : 0;
 
-      setCard('valRevenue',   'subRevenue',   fmt(totalRevenue),   `From ${completed.length} sales`);
-      setCard('valPurchases', 'subPurchases', allPurchases.length, `${completed.length} completed`);
-      setCard('valAvgOrder',  'subAvgOrder',  fmt(avgOrder),       'Per transaction`);
-      setCard('valBuyers',    'subBuyers',    uniqueBuyers,        'Unique customers');
+      console.log('[Statistics] computed =>', { totalRevenue, uniqueBuyers, avgOrder, completed: completed.length });
+
+      setCard('valRevenue',   'subRevenue',   fmt(totalRevenue),      `From ${completed.length} sales`);
+      setCard('valPurchases', 'subPurchases', allPurchases.length,    `${completed.length} completed`);
+      setCard('valAvgOrder',  'subAvgOrder',  fmt(avgOrder),          'Per transaction');
+      setCard('valBuyers',    'subBuyers',    uniqueBuyers,           'Unique customers');
 
       renderTable(allPurchases);
 
     } catch (err) {
-      console.error(err);
+      console.error('[Statistics] loadStats error =>', err);
+      const subIds = ['subRevenue','subPurchases','subAvgOrder','subBuyers'];
       ['valRevenue','valPurchases','valAvgOrder','valBuyers'].forEach((id, i) =>
-        setCard(id, ['subRevenue','subPurchases','subAvgOrder','subBuyers'][i], '—', 'Error loading'));
-      renderTable([]);
+        setCard(id, subIds[i], '—', 'Error loading'));
+      document.getElementById('purchaseTbody').innerHTML =
+        `<tr><td colspan="6"><div class="empty-state"><div class="empty-icon">⚠️</div><p>${err.message}<br><small>Is the server running at ${API_BASE}?</small></p></div></td></tr>`;
+      document.getElementById('recordCount').textContent = 'Error';
     }
   }
 
@@ -702,13 +701,14 @@
     }
 
     tbody.innerHTML = rows.map((p, i) => {
-      const status = p.status || 'completed';
+      const status   = p.status || 'completed';
+      const amount   = parseFloat(p.amount || p.resource_price || 0);
       const badgeCls = status === 'completed' ? 'badge-completed' : status === 'pending' ? 'badge-pending' : 'badge-failed';
       return `<tr>
-        <td style="color:#94a3b8;font-weight:600;">${i+1}</td>
+        <td style="color:#94a3b8;font-weight:600;">${i + 1}</td>
         <td style="font-weight:500;color:#1e293b;">${p.buyer_email || '—'}</td>
-        <td>${p.resource_title}</td>
-        <td style="font-weight:700;color:#10b981;">₹${p.amount.toLocaleString('en-IN',{maximumFractionDigits:0})}</td>
+        <td>${p.resource_title || '—'}</td>
+        <td style="font-weight:700;color:#10b981;">${fmt(amount)}</td>
         <td><span class="badge ${badgeCls}">${status}</span></td>
         <td>${fmtDate(p.created_at)}</td>
       </tr>`;
@@ -718,15 +718,14 @@
   function filterTable() {
     const search = document.getElementById('searchInput').value.toLowerCase();
     const status = document.getElementById('statusFilter').value;
-
     const filtered = allPurchases.filter(p => {
-      const matchSearch = !search || 
-        p.buyer_email.toLowerCase().includes(search) || 
-        p.resource_title.toLowerCase().includes(search);
+      const matchSearch = !search ||
+        (p.buyer_email || '').toLowerCase().includes(search) ||
+        (p.resource_title || '').toLowerCase().includes(search);
       const matchStatus = !status || p.status === status;
       return matchSearch && matchStatus;
     });
-
+    console.log('[Statistics] filterTable =>', filtered.length, 'rows');
     renderTable(filtered);
   }
 
