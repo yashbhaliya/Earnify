@@ -453,6 +453,11 @@
         </div>
         <div class="hero-divider"></div>
         <div class="hero-stat-item">
+          <div class="hero-stat-val" id="platformFees">₹0</div>
+          <div class="hero-stat-lbl">Platform Fees</div>
+        </div>
+        <div class="hero-divider"></div>
+        <div class="hero-stat-item">
           <div class="hero-stat-val" id="pendingAmount">₹0</div>
           <div class="hero-stat-lbl">Pending</div>
         </div>
@@ -477,6 +482,11 @@
         <div class="shimmer-box" style="width:180px;height:48px;border-radius:14px;align-self:center;"></div>
       </div>
       <div class="hero-stats" style="margin-top:28px;">
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div class="shimmer-box" style="width:70px;height:20px;"></div>
+          <div class="shimmer-box" style="width:80px;height:10px;"></div>
+        </div>
+        <div class="hero-divider"></div>
         <div style="display:flex;flex-direction:column;gap:6px;">
           <div class="shimmer-box" style="width:70px;height:20px;"></div>
           <div class="shimmer-box" style="width:80px;height:10px;"></div>
@@ -647,8 +657,28 @@
 
   <div class="toast" id="toast"></div>
 
-  <script src="../api-config.js"></script>
   <script>
+    const SUPA_URL = 'https://emnrgsgerfjvndexomro.supabase.co';
+    const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVtbnJnc2dlcmZqdm5kZXhvbXJvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI0MjAyMTAsImV4cCI6MjA4Nzk5NjIxMH0.uXr8lipxLbB4D_5JwQkpLzc-HudQw23tOFBfV4C6hqY';
+
+    async function supaFetch(path) {
+      const res = await fetch(`${SUPA_URL}/rest/v1/${path}`, {
+        headers: { apikey: SUPA_KEY, Authorization: `Bearer ${SUPA_KEY}`, Accept: 'application/json' }
+      });
+      if (!res.ok) throw new Error(`Supabase ${res.status}`);
+      return res.json();
+    }
+
+    async function supaPost(table, body) {
+      const res = await fetch(`${SUPA_URL}/rest/v1/${table}`, {
+        method: 'POST',
+        headers: { apikey: SUPA_KEY, Authorization: `Bearer ${SUPA_KEY}`, 'Content-Type': 'application/json', Prefer: 'return=representation' },
+        body: JSON.stringify(body)
+      });
+      if (!res.ok) { const e = await res.json(); throw new Error(e.message || `Supabase ${res.status}`); }
+      return res.json();
+    }
+
     function getCurrentUser() {
       return JSON.parse(localStorage.getItem('currentUser') || '{}');
     }
@@ -715,25 +745,39 @@
         const user = getCurrentUser();
         if (!user.email) return;
 
-        const [statsRes, wRes] = await Promise.all([
-          fetch(API_CONFIG.getURL(`${API_CONFIG.endpoints.userStatistics}/${encodeURIComponent(user.email)}`)),
-          fetch(API_CONFIG.getURL(`${API_CONFIG.endpoints.withdrawals}/${encodeURIComponent(user.email)}`))
+        const [payments, resources, withdrawals] = await Promise.all([
+          supaFetch('payments'),
+          supaFetch('resources'),
+          supaFetch(`withdrawals?user_email=eq.${encodeURIComponent(user.email)}`)
         ]);
 
-        const statsData   = statsRes.ok ? await statsRes.json() : {};
-        const withdrawals  = wRes.ok ? await wRes.json() : [];
+        const FEE_RATES = { pdf: 0.05, excel: 0.04, exam: 0.05, service: 0.06 };
+        const WD_FEE = 0.05;
 
-        const totalGross     = parseFloat(statsData.totalGross || statsData.totalRevenue || 0);
-        const totalWithdrawn = withdrawals.filter(w => w.status === 'approved').reduce((s, w) => s + parseFloat(w.amount), 0);
-        const pending        = withdrawals.filter(w => w.status === 'pending').reduce((s, w) => s + parseFloat(w.amount), 0);
-        const available      = Math.max(0, totalGross - totalWithdrawn - pending);
-        _availableBalance    = available;
+        const userPayments = payments.filter(p => p.user_id === user.email);
+        const completed = userPayments.filter(p => p.status === 'completed');
+        const totalGross = completed.reduce((s, p) => {
+          const r = resources.find(res => res.id === p.resource_id) || {};
+          return s + parseFloat(r.price || 0);
+        }, 0);
+
+        const approved = withdrawals.filter(w => w.status === 'approved' || w.status === 'completed');
+        const pending = withdrawals.filter(w => w.status === 'pending');
+        const totalWithdrawn = approved.reduce((s, w) => s + parseFloat(w.amount || 0), 0);
+        const totalPending = pending.reduce((s, w) => s + parseFloat(w.amount || 0), 0);
+        const available = Math.max(0, totalGross - totalWithdrawn - totalPending);
+        _availableBalance = available;
+
+        const platformFees = withdrawals.filter(w => ['approved','completed','pending'].includes(w.status)).reduce((s, w) => s + parseFloat(w.amount||0) * WD_FEE, 0);
 
         document.getElementById('availableBalance').textContent = `₹${available.toFixed(0)}`;
-        document.getElementById('totalEarned').textContent      = `₹${totalGross.toFixed(0)}`;
-        document.getElementById('totalWithdrawn').textContent   = `₹${totalWithdrawn.toFixed(0)}`;
-        document.getElementById('pendingAmount').textContent    = `₹${pending.toFixed(0)}`;
-      } catch (e) { /* silent */ } finally {
+        document.getElementById('totalEarned').textContent = `₹${totalGross.toFixed(0)}`;
+        document.getElementById('totalWithdrawn').textContent = `₹${totalWithdrawn.toFixed(0)}`;
+        document.getElementById('platformFees').textContent = `₹${platformFees.toFixed(0)}`;
+        document.getElementById('pendingAmount').textContent = `₹${totalPending.toFixed(0)}`;
+      } catch (e) {
+        console.error('loadStats error:', e);
+      } finally {
         document.getElementById('heroShimmer').style.display = 'none';
         document.getElementById('heroBanner').style.display = '';
         document.getElementById('withdrawalFormShimmer').style.display = 'none';
@@ -748,9 +792,10 @@
       const container = document.getElementById('historyContainer');
       let list = [];
       try {
-        const res = await fetch(API_CONFIG.getURL(`${API_CONFIG.endpoints.withdrawals}/${encodeURIComponent(user.email)}`));
-        if (res.ok) list = await res.json();
-      } catch (e) { /* silent */ }
+        list = await supaFetch(`withdrawals?user_email=eq.${encodeURIComponent(user.email)}&order=created_at.desc`);
+      } catch (e) {
+        console.error('renderHistory error:', e);
+      }
 
       document.getElementById('historyShimmer').style.display = 'none';
       container.style.display = '';
@@ -874,13 +919,7 @@
       btn.textContent = '⏳ Submitting...';
       btn.disabled = true;
       try {
-        const res = await fetch(API_CONFIG.getURL(API_CONFIG.endpoints.withdrawals), {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(_pendingPayload)
-        });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error || `Server error ${res.status}`);
+        await supaPost('withdrawals', _pendingPayload);
         closeConfirm();
         showToast('✅ Withdrawal request submitted!');
         document.querySelector('#withdrawalForm form').reset();

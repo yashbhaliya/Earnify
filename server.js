@@ -8,9 +8,20 @@ const { createClient } = require("@supabase/supabase-js");
 require("dotenv").config();
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: [
+    'http://localhost:5500',
+    'http://127.0.0.1:5500',
+    'http://localhost:5000',
+    'http://127.0.0.1:5000',
+    'https://earnify-gamma.vercel.app'
+  ],
+  methods: ['GET','POST','PUT','DELETE','OPTIONS'],
+  credentials: true
+}));
 app.use(express.json());
 app.use('/admin', express.static(path.join(__dirname, 'public/admin')));
+app.use('/earnify-admin', express.static(path.join(__dirname, 'Earnify Admin')));
 
 const upload = multer({ storage: multer.memoryStorage() });
 
@@ -657,6 +668,150 @@ app.get("/api/statistics/purchases/:userEmail", async (req, res) => {
   }
 });
 
+// Admin - Get ALL Withdrawals
+app.get("/api/admin/withdrawals", async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from("withdrawals")
+      .select("*")
+      .order("created_at", { ascending: false });
+    if (error) throw error;
+    res.json(data || []);
+  } catch (err) {
+    console.error('Error fetching all withdrawals:', err);
+    res.json([]);
+  }
+});
+
+// Admin - Dashboard Stats (single endpoint for all 4 cards)
+app.get("/api/admin/dashboard-stats", async (req, res) => {
+  try {
+    const WITHDRAWAL_FEE_RATE = 0.05; // 5% platform fee on each withdrawal
+    const FEE_RATES = { pdf: 0.05, excel: 0.04, exam: 0.05, service: 0.06 };
+
+    const [paymentsResult, resourcesResult, withdrawalsResult] = await Promise.all([
+      supabase.from("payments").select("*").order("created_at", { ascending: false }),
+      supabase.from("resources").select("id, title, type, price, user_email"),
+      supabase.from("withdrawals").select("amount, status")
+    ]);
+
+    const payments    = paymentsResult.data    || [];
+    const resources   = resourcesResult.data   || [];
+    const withdrawals = withdrawalsResult.data  || [];
+
+    // Get all users
+    const { data: { users } } = await supabase.auth.admin.listUsers();
+
+    // Enrich payments
+    const enriched = payments.map(p => {
+      const resource = resources.find(r => r.id === p.resource_id);
+      const user     = (users || []).find(u => u.id === p.user_id);
+      return {
+        ...p,
+        buyer_email:    user?.email    || p.user_id,
+        resource_title: resource?.title || '—',
+        resource_type:  resource?.type  || '—',
+        resource_price: parseFloat(resource?.price || 0),
+        seller_email:   resource?.user_email || '—',
+        amount:         parseFloat(resource?.price || 0)
+      };
+    });
+
+    const completed = enriched.filter(p => p.status === 'completed');
+
+    // 1. Total Revenue = sum of all completed payment amounts (gross)
+    const totalRevenue = completed.reduce((s, p) => s + p.amount, 0);
+
+    // All withdrawals (approved + completed + pending)
+    const allWithdrawals = withdrawals.filter(w =>
+      w.status === 'approved' || w.status === 'completed' || w.status === 'pending'
+    );
+    const approvedWithdrawals = withdrawals.filter(w =>
+      w.status === 'approved' || w.status === 'completed'
+    );
+
+    // 3. Platform Fees = sum of (amount × 5%) for ALL withdrawals (approved + completed + pending)
+    //    i.e. fee = withdrawal_amount - net_amount, where net = amount * (1 - 0.05)
+    const totalFees = allWithdrawals.reduce((s, w) => {
+      return s + parseFloat(w.amount || 0) * WITHDRAWAL_FEE_RATE;
+    }, 0);
+
+    // 2. Withdrawn Amount = sum of net amounts for approved/completed withdrawals
+    //    net = withdrawal_amount * (1 - 0.05)
+    const totalWithdrawn = approvedWithdrawals.reduce((s, w) => {
+      return s + parseFloat(w.amount || 0) * (1 - WITHDRAWAL_FEE_RATE);
+    }, 0);
+
+    // 4. Pending Amount = net earnings from sales - total net withdrawn
+    //    net earnings from sales = totalRevenue - sales-based fees
+    const salesFees = completed.reduce((s, p) => {
+      const rate = FEE_RATES[(p.resource_type || '').toLowerCase()] || 0.05;
+      return s + p.amount * rate;
+    }, 0);
+    const netEarnings = totalRevenue - salesFees;
+    const pendingAmount = Math.max(0, netEarnings - totalWithdrawn);
+
+    const withdrawalCount = approvedWithdrawals.length;
+
+    res.json({
+      totalRevenue,
+      totalWithdrawn,
+      totalFees,
+      pendingAmount,
+      completedCount: completed.length,
+      withdrawalCount,
+      feePercent: (WITHDRAWAL_FEE_RATE * 100).toFixed(1),
+      recentPurchases: enriched.slice(0, 20)
+    });
+  } catch (err) {
+    console.error('Dashboard stats error:', err);
+    res.json({
+      totalRevenue: 0, totalWithdrawn: 0, totalFees: 0, pendingAmount: 0,
+      completedCount: 0, withdrawalCount: 0, feePercent: '5.0', recentPurchases: []
+    });
+  }
+});
+
+// Admin - Get ALL Purchase Records (all users)
+app.get("/api/admin/purchases", async (req, res) => {
+  try {
+    // Fetch all completed payments
+    const { data: payments, error: paymentsError } = await supabase
+      .from("payments")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    if (paymentsError) throw paymentsError;
+
+    // Fetch all resources for joining
+    const { data: resources } = await supabase
+      .from("resources")
+      .select("id, title, type, price, user_email");
+
+    // Fetch all users for joining
+    const { data: { users } } = await supabase.auth.admin.listUsers();
+
+    const enriched = (payments || []).map(p => {
+      const resource = (resources || []).find(r => r.id === p.resource_id);
+      const user     = (users     || []).find(u => u.id === p.user_id);
+      return {
+        ...p,
+        buyer_email:    user?.email || p.user_id,
+        resource_title: resource?.title || '—',
+        resource_type:  resource?.type  || '—',
+        resource_price: resource?.price || 0,
+        seller_email:   resource?.user_email || '—',
+        amount:         resource?.price || 0
+      };
+    });
+
+    res.json(enriched);
+  } catch (err) {
+    console.error('Error fetching all purchases:', err);
+    res.json([]);
+  }
+});
+
 // Test endpoint to add payment
 app.post("/api/test-payment", async (req, res) => {
   try {
@@ -778,6 +933,10 @@ app.get("/admin/statistics", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "admin", "statistics.html"));
 });
 
+app.get("/admin/purchases", (req, res) => {
+  res.sendFile(path.join(__dirname, "Earnify Admin", "Purchases", "index.html"));
+});
+
 app.get("/admin/settings", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "admin", "settings.html"));
 });
@@ -803,4 +962,5 @@ app.use('/public', (req, res) => {
   res.status(403).json({ error: 'Access denied' });
 });
 
-app.listen(process.env.PORT, () => console.log("Server running on port 5000"));
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
