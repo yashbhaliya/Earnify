@@ -568,6 +568,9 @@
 
 
 
+  <!-- Error Banner -->
+  <div class="error-banner" id="errorBanner"></div>
+
   <!-- Stat Cards -->
   <div class="stat-grid" id="statGrid">
     <div class="stat-card is-shimmer">
@@ -638,6 +641,30 @@
         <canvas id="barChart"></canvas>
       </div>
     </div>
+  </div>
+
+  <!-- Purchases Table -->
+  <div class="table-card">
+    <div class="table-header">
+      <h3>🛒 Recent Purchases</h3>
+      <span id="purchaseCount">—</span>
+    </div>
+    <div><table>
+      <thead><tr><th>#</th><th>Email</th><th>Resources</th><th>Amount</th><th>Status</th><th>Date</th></tr></thead>
+      <tbody id="purchaseTbody"></tbody>
+    </table></div>
+  </div>
+
+  <!-- Withdrawals Table -->
+  <div class="table-card">
+    <div class="table-header">
+      <h3>💸 Withdrawal Requests</h3>
+      <span id="wdCount">—</span>
+    </div>
+    <div><table>
+      <thead><tr><th>#</th><th>Email</th><th>Gross</th><th>Net</th><th>Fee</th><th>Status</th><th>Date</th></tr></thead>
+      <tbody id="wdTbody"></tbody>
+    </table></div>
   </div>
 
 </div><!-- /main -->

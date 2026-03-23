@@ -141,6 +141,7 @@ function renderCharts(available, totalGross, totalWithdrawn, platformFees, total
 }
 
 
+async function loadDashboard() {
   console.log('[Dashboard] loadDashboard() called');
 
   // Reset cards to shimmer state
