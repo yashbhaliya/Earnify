@@ -657,6 +657,39 @@
     .chart-header { margin-bottom: 20px; }
     .chart-title { font-size: 15px; font-weight: 700; color: #1e293b; }
     .chart-sub   { font-size: 12px; color: #94a3b8; margin-top: 3px; }
+    .chart-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .chart-filters {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .filter-select {
+      padding: 6px 12px;
+      background: #f8fafc;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 8px;
+      color: #64748b;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+      outline: none;
+    }
+    .filter-select:hover {
+      border-color: #667eea;
+      color: #667eea;
+    }
+    .filter-select:focus {
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102,126,234,0.1);
+    }
     .chart-wrap  { position: relative; width: 100%; }
     .donut-wrap  { width: 200px; height: 200px; margin: 0 auto 16px; }
     .donut-center {
@@ -781,6 +814,22 @@
         display: flex;
         align-items: center;
         gap: 10px;
+      }
+      
+      /* Chart filters mobile */
+      .chart-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .chart-filters {
+        width: 100%;
+        flex-wrap: wrap;
+      }
+      .filter-select {
+        flex: 1;
+        min-width: 120px;
+        font-size: 11px;
+        padding: 6px 10px;
       }
     }
   </style>
@@ -912,8 +961,22 @@
     <div class="chart-card is-loading">
       <div class="chart-header">
         <div>
-          <div class="chart-title">📊 Revenue per Customer</div>
-          <div class="chart-sub">Amount earned from each buyer</div>
+          <div class="chart-title">📊 Revenue per Resources</div>
+          <div class="chart-sub">Top 10 resources by revenue earned</div>
+        </div>
+        <div class="chart-filters">
+          <select id="resourceFilter" class="filter-select" onchange="filterResourceChart()">
+            <option value="all">All Resources</option>
+            <option value="top5">Top 5</option>
+            <option value="top10" selected>Top 10</option>
+            <option value="top15">Top 15</option>
+          </select>
+          <select id="sortFilter" class="filter-select" onchange="filterResourceChart()">
+            <option value="revenue" selected>Highest Revenue</option>
+            <option value="purchases">Most Purchases</option>
+            <option value="avgPrice">Highest Avg Price</option>
+            <option value="name">Name (A-Z)</option>
+          </select>
         </div>
       </div>
       <div class="chart-wrap">

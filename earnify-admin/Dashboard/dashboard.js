@@ -70,6 +70,140 @@ function fmtDate(d) {
 
 let _donutChart = null;
 let _barChart   = null;
+let _allResourceData = []; // Store all resource data for filtering
+let _allPurchasesData = []; // Store all purchases for date filtering
+
+function renderResourceChart(limit = 10, sortBy = 'revenue') {
+  const barCtx = document.getElementById('barChart')?.getContext('2d');
+  if (!barCtx || !_allPurchasesData.length) return;
+  
+  if (_barChart) _barChart.destroy();
+  
+  // Aggregate data by resource
+  const resourceData = {};
+  _allPurchasesData.forEach(p => {
+    const resources = p.resources || [];
+    const amount = parseFloat(p.totalAmount || 0);
+    resources.forEach(resource => {
+      if (resource) {
+        if (!resourceData[resource]) {
+          resourceData[resource] = { revenue: 0, purchases: 0 };
+        }
+        resourceData[resource].revenue += amount;
+        resourceData[resource].purchases += 1;
+      }
+    });
+  });
+  
+  // Convert to array and calculate avg price
+  let sortedResources = Object.entries(resourceData).map(([name, data]) => ({
+    name,
+    revenue: data.revenue,
+    purchases: data.purchases,
+    avgPrice: data.purchases > 0 ? data.revenue / data.purchases : 0
+  }));
+  
+  // Apply sorting
+  switch(sortBy) {
+    case 'purchases':
+      sortedResources.sort((a, b) => b.purchases - a.purchases);
+      break;
+    case 'avgPrice':
+      sortedResources.sort((a, b) => b.avgPrice - a.avgPrice);
+      break;
+    case 'name':
+      sortedResources.sort((a, b) => a.name.localeCompare(b.name));
+      break;
+    case 'revenue':
+    default:
+      sortedResources.sort((a, b) => b.revenue - a.revenue);
+      break;
+  }
+  
+  // Apply limit
+  const limitNum = limit === 'all' ? sortedResources.length : limit;
+  sortedResources = sortedResources.slice(0, limitNum);
+  
+  if (!sortedResources.length) {
+    if (_barChart) _barChart.destroy();
+    return;
+  }
+  
+  const labels = sortedResources.map(r => r.name.length > 20 ? r.name.substring(0, 20) + '...' : r.name);
+  const values = sortedResources.map(r => {
+    switch(sortBy) {
+      case 'purchases': return r.purchases;
+      case 'avgPrice': return r.avgPrice;
+      default: return r.revenue;
+    }
+  });
+  
+  const colors = [
+    'rgba(102,126,234,0.8)', 'rgba(118,75,162,0.8)', 'rgba(240,147,251,0.8)',
+    'rgba(245,87,108,0.8)', 'rgba(255,107,107,0.8)', 'rgba(238,90,36,0.8)',
+    'rgba(17,153,142,0.8)', 'rgba(56,239,125,0.8)', 'rgba(249,202,36,0.8)',
+    'rgba(240,147,43,0.8)', 'rgba(99,102,241,0.8)', 'rgba(236,72,153,0.8)',
+    'rgba(34,197,94,0.8)', 'rgba(251,146,60,0.8)', 'rgba(168,85,247,0.8)'
+  ];
+  
+  const yAxisLabel = sortBy === 'purchases' ? 'Purchases' : sortBy === 'avgPrice' ? 'Avg Price (₹)' : 'Revenue (₹)';
+  
+  _barChart = new Chart(barCtx, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{
+        label: yAxisLabel,
+        data: values,
+        backgroundColor: colors.slice(0, values.length),
+        borderColor: colors.slice(0, values.length).map(c => c.replace('0.8', '1')),
+        borderWidth: 2,
+        borderRadius: 10,
+        borderSkipped: false
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      indexAxis: 'y',
+      plugins: {
+        legend: { display: false },
+        tooltip: { 
+          callbacks: { 
+            label: ctx => sortBy === 'purchases' ? ` ${ctx.raw} purchases` : ` ${fmt(ctx.raw)}`,
+            title: ctx => sortedResources[ctx[0].dataIndex].name
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid: { color: 'rgba(0,0,0,0.05)' },
+          ticks: { 
+            font: { size: 11 }, 
+            color: '#94a3b8',
+            callback: v => sortBy === 'purchases' ? v : '₹' + (v >= 1000 ? (v/1000).toFixed(0) + 'k' : v)
+          }
+        },
+        y: { 
+          grid: { display: false },
+          ticks: { 
+            font: { size: 11, weight: '600' },
+            color: '#64748b'
+          }
+        }
+      }
+    }
+  });
+}
+
+function filterResourceChart() {
+  const limitSelect = document.getElementById('resourceFilter')?.value;
+  const sortSelect = document.getElementById('sortFilter')?.value;
+  
+  let limit = limitSelect === 'all' ? 'all' : parseInt(limitSelect.replace('top', ''));
+  
+  renderResourceChart(limit, sortSelect);
+}
 
 function renderCharts(available, totalGross, totalWithdrawn, platformFees, totalPending, purchases) {
   // ── Donut Chart ──
@@ -102,41 +236,14 @@ function renderCharts(available, totalGross, totalWithdrawn, platformFees, total
       </div>`).join('');
   }
 
-  // ── Bar Chart ──
+  // ── Bar Chart - Revenue per Resources ──
   const barCtx = document.getElementById('barChart')?.getContext('2d');
   if (barCtx && purchases.length) {
-    if (_barChart) _barChart.destroy();
-    const labels = purchases.map(p => (p.email || '').split('@')[0]);
-    const values = purchases.map(p => parseFloat(p.totalAmount || 0));
-    _barChart = new Chart(barCtx, {
-      type: 'bar',
-      data: {
-        labels,
-        datasets: [{
-          label: 'Revenue (₹)',
-          data: values,
-          backgroundColor: 'rgba(102,126,234,0.18)',
-          borderColor: '#667eea',
-          borderWidth: 2,
-          borderRadius: 8,
-          borderSkipped: false
-        }]
-      },
-      options: {
-        responsive: true, maintainAspectRatio: true,
-        plugins: {
-          legend: { display: false },
-          tooltip: { callbacks: { label: ctx => ` ${fmt(ctx.raw)}` } }
-        },
-        scales: {
-          x: { grid: { display: false }, ticks: { font: { size: 12 }, color: '#64748b' } },
-          y: {
-            grid: { color: 'rgba(0,0,0,0.05)' },
-            ticks: { font: { size: 11 }, color: '#94a3b8', callback: v => '₹' + v.toLocaleString('en-IN') }
-          }
-        }
-      }
-    });
+    // Store all purchases data globally for date filtering
+    _allPurchasesData = purchases;
+    
+    // Initial render with default filters (revenue)
+    renderResourceChart(10, 'revenue');
   }
 }
 async function loadDashboard() {
