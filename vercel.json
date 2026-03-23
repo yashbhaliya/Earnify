@@ -8,12 +8,36 @@
     {
       "src": "public/**/*",
       "use": "@vercel/static"
+    },
+    {
+      "src": "earnify-admin/**/*",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
     {
       "src": "/api/(.*)",
       "dest": "/server.js"
+    },
+    {
+      "src": "/earnify-admin/Dashboard/?$",
+      "dest": "/earnify-admin/Dashboard/index.html"
+    },
+    {
+      "src": "/earnify-admin/Dashboard/(.*)",
+      "dest": "/earnify-admin/Dashboard/$1"
+    },
+    {
+      "src": "/earnify-admin/statistic/?$",
+      "dest": "/earnify-admin/statistic/index.html"
+    },
+    {
+      "src": "/earnify-admin/statistic/(.*)",
+      "dest": "/earnify-admin/statistic/$1"
+    },
+    {
+      "src": "/earnify-admin/(.*)",
+      "dest": "/earnify-admin/$1"
     },
     {
       "src": "/file/(.*)",

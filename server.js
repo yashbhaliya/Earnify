@@ -21,7 +21,7 @@ app.use(cors({
 }));
 app.use(express.json());
 app.use('/admin', express.static(path.join(__dirname, 'public/admin')));
-app.use('/earnify-admin', express.static(path.join(__dirname, 'Earnify Admin')));
+app.use('/earnify-admin', express.static(path.join(__dirname, 'earnify-admin')));
 
 const upload = multer({ storage: multer.memoryStorage() });
 
