@@ -220,7 +220,7 @@
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       padding: 28px 32px;
       border-radius: 18px;
-      margin-bottom: 28px;
+      margin-bottom: 10px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -541,6 +541,106 @@
     .empty-state .empty-icon { font-size: 44px; margin-bottom: 10px; }
     .empty-state p { font-size: 14px; }
 
+    /* ── Mobile Table View ── */
+    .mobile-table-row {
+      display: none;
+    }
+
+    /* ── Details Modal ── */
+    .details-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 300;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .details-modal.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      max-width: 500px;
+      width: 100%;
+      max-height: 80vh;
+      overflow-y: auto;
+      position: relative;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 2px solid #f1f5f9;
+    }
+
+    .modal-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #1e293b;
+    }
+
+    .modal-close {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: #f8fafc;
+      border: none;
+      color: #64748b;
+      font-size: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .modal-close:hover {
+      background: #fee2e2;
+      color: #dc2626;
+    }
+
+    .modal-body {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .detail-row {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .detail-label {
+      font-size: 11px;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-weight: 600;
+    }
+
+    .detail-value {
+      font-size: 14px;
+      color: #1e293b;
+      font-weight: 500;
+    }
+
+    .detail-value.amount {
+      font-size: 20px;
+      font-weight: 700;
+      color: #667eea;
+    }
+
     /* ── Charts ── */
     .charts-grid {
       display: grid;
@@ -604,22 +704,84 @@
       .sidebar { transform: translateX(-100%); }
       .sidebar.active { transform: translateX(0); }
       .main { margin-left: 0; padding: 20px 16px; }
-      .stat-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-      .stat-card:nth-child(1) { grid-column: 1 / -1; }
-      .stat-card:nth-child(1) .stat-value { font-size: 32px; }
+      .stat-grid { grid-template-columns: 1fr; gap: 14px; }
+      .stat-card:nth-child(1) { grid-column: 1 / -1; padding: 24px 22px; }
+      .stat-card:nth-child(1) .stat-icon { width: 60px; height: 60px; font-size: 28px; }
+      .stat-card:nth-child(1) .stat-value { font-size: 36px; }
+      .stat-card:nth-child(n+2) { padding: 18px 16px; }
+      .stat-card:nth-child(n+2) .stat-icon { width: 48px; height: 48px; font-size: 22px; }
+      .stat-card:nth-child(n+2) .stat-value { font-size: 24px; }
       .page-header { padding: 20px 20px; }
       .page-header h1 { font-size: 20px; }
       .page-header p { font-size: 13px; }
       th, td { padding: 10px 12px; font-size: 12px; }
-    }
-
-    @media (max-width: 480px) {
-      .stat-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
-      .stat-card:nth-child(1) { grid-column: 1 / -1; padding: 20px 18px; }
-      .stat-card:nth-child(1) .stat-value { font-size: 28px; }
-      .stat-card:nth-child(n+2) { padding: 16px 14px; }
-      .stat-card:nth-child(n+2) .stat-value { font-size: 20px; }
       .header-meta { display: none; }
+      
+      /* Mobile table styling */
+      .table-card { border-radius: 12px; margin-bottom: 20px; }
+      .table-header { padding: 14px 16px; }
+      .table-header h3 { font-size: 14px; }
+      .table-header span { font-size: 11px; }
+      
+      /* Hide desktop table structure */
+      table thead { display: none; }
+      table tbody tr:not(.mobile-table-row) { display: none; }
+      
+      /* Mobile rows as cards */
+      .mobile-table-row { 
+        display: block;
+        border-bottom: 1px solid #f1f5f9;
+      }
+      .mobile-table-row:last-child { border-bottom: none; }
+      .mobile-table-row td { 
+        display: block;
+        padding: 14px 16px;
+        border: none;
+      }
+      .mobile-table-row .mobile-cell { 
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .mobile-table-row .mobile-email { 
+        flex: 1;
+        font-weight: 600;
+        color: #1e293b;
+        font-size: 13px;
+        word-break: break-word;
+        min-width: 0;
+      }
+      .mobile-table-row .mobile-amount { 
+        font-weight: 700;
+        color: #667eea;
+        font-size: 15px;
+        white-space: nowrap;
+        margin-right: 8px;
+      }
+      .mobile-table-row .view-btn { 
+        padding: 8px 16px;
+        color: linear-gradient(135deg, #667eea, #764ba2);
+        border: 2px solid rgba(102,126,234,0.5);
+        background: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        white-space: nowrap;
+        flex-shrink: 0;
+        box-shadow: 0 2px 6px rgba(102,126,234,0.3);
+      }
+      .mobile-table-row .view-btn:active { 
+        transform: scale(0.95);
+      }
+      
+      /* Withdrawal table mobile rows */
+      .mobile-withdrawal-row .mobile-cell { 
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
     }
   </style>
 </head>
@@ -793,6 +955,19 @@
   </div>
 
 </div><!-- /main -->
+
+<!-- Details Modal -->
+<div class="details-modal" id="detailsModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <div class="modal-title">🛒 Purchase Details</div>
+      <button class="modal-close" onclick="closeDetailsModal()">×</button>
+    </div>
+    <div class="modal-body" id="modalBody">
+      <!-- Details will be populated here -->
+    </div>
+  </div>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>

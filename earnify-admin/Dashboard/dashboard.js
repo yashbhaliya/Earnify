@@ -139,8 +139,6 @@ function renderCharts(available, totalGross, totalWithdrawn, platformFees, total
     });
   }
 }
-
-
 async function loadDashboard() {
   console.log('[Dashboard] loadDashboard() called');
 
@@ -238,7 +236,16 @@ async function loadDashboard() {
       tbody.innerHTML = !purchases.length
         ? `<tr><td colspan="6"><div class="empty-state"><div class="empty-icon">📭</div><p>No purchases yet</p></div></td></tr>`
         : purchases.map((p, i) => `
-          <tr>
+          <tr class="mobile-table-row" data-index="${i}">
+            <td colspan="6">
+              <div class="mobile-cell">
+                <span class="mobile-email">${p.email || '—'}</span>
+                <span class="mobile-amount">${fmt(p.totalAmount)}</span>
+                <button class="view-btn" onclick="showPurchaseDetails(${i})">View</button>
+              </div>
+            </td>
+          </tr>
+          <tr data-index="${i}">
             <td>${i + 1}</td>
             <td>${p.email || '—'}</td>
             <td>${(p.resources || []).join(', ') || '—'}</td>
@@ -246,6 +253,9 @@ async function loadDashboard() {
             <td><span class="badge badge-completed">completed</span></td>
             <td>${fmtDate(p.created_at)}</td>
           </tr>`).join('');
+      
+      // Store purchases data globally for modal access
+      window.purchasesData = purchases;
     }
 
     // ── Withdrawals Table ──
@@ -267,7 +277,16 @@ async function loadDashboard() {
             const fee   = gross * 0.05;
             const net   = gross - fee;
             return `
-              <tr>
+              <tr class="mobile-table-row mobile-withdrawal-row" data-index="${i}">
+                <td colspan="7">
+                  <div class="mobile-cell">
+                    <span class="mobile-email">${w.user_email || '—'}</span>
+                    <span class="mobile-amount">${fmt(net)}</span>
+                    <button class="view-btn" onclick="showWithdrawalDetails(${i})">View</button>
+                  </div>
+                </td>
+              </tr>
+              <tr data-index="${i}">
                 <td>${i + 1}</td>
                 <td>${w.user_email || '—'}</td>
                 <td style="font-weight:700;color:#1e293b;">${fmt(gross)}</td>
@@ -277,6 +296,9 @@ async function loadDashboard() {
                 <td>${fmtDate(w.created_at)}</td>
               </tr>`;
           }).join('');
+      
+      // Store withdrawals data globally for modal access
+      window.withdrawalsData = wdList;
     }
 
     // ── Sidebar admin info ──
@@ -314,5 +336,94 @@ function toggleSidebar() {
   document.getElementById('sidebar').classList.toggle('active');
   document.getElementById('overlay').classList.toggle('active');
 }
+
+function showPurchaseDetails(index) {
+  const purchase = window.purchasesData?.[index];
+  if (!purchase) return;
+  
+  const modalBody = document.getElementById('modalBody');
+  const resources = (purchase.resources || []).join(', ') || '—';
+  
+  modalBody.innerHTML = `
+    <div class="detail-row">
+      <div class="detail-label"># Order Number</div>
+      <div class="detail-value">${index + 1}</div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-label">📧 Buyer Email</div>
+      <div class="detail-value">${purchase.email || '—'}</div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-label">📚 Resources Purchased</div>
+      <div class="detail-value">${resources}</div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-label">💰 Total Amount</div>
+      <div class="detail-value amount">${fmt(purchase.totalAmount)}</div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-label">✅ Status</div>
+      <div class="detail-value"><span class="badge badge-completed">completed</span></div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-label">📅 Purchase Date</div>
+      <div class="detail-value">${fmtDate(purchase.created_at)}</div>
+    </div>
+  `;
+  
+  document.getElementById('detailsModal').classList.add('active');
+}
+
+function showWithdrawalDetails(index) {
+  const withdrawal = window.withdrawalsData?.[index];
+  if (!withdrawal) return;
+  
+  const modalBody = document.getElementById('modalBody');
+  const gross = parseFloat(withdrawal.amount || 0);
+  const fee = gross * 0.05;
+  const net = gross - fee;
+  
+  modalBody.innerHTML = `
+    <div class="detail-row">
+      <div class="detail-label"># Request Number</div>
+      <div class="detail-value">${index + 1}</div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-label">📧 User Email</div>
+      <div class="detail-value">${withdrawal.user_email || '—'}</div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-label">💵 Gross Amount</div>
+      <div class="detail-value">${fmt(gross)}</div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-label">💰 Net Amount</div>
+      <div class="detail-value amount">${fmt(net)}</div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-label">📊 Platform Fee (5%)</div>
+      <div class="detail-value" style="color:#ef4444;">-${fmt(fee)}</div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-label">📊 Status</div>
+      <div class="detail-value"><span class="badge ${badgeClass(withdrawal.status)}">${withdrawal.status}</span></div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-label">📅 Request Date</div>
+      <div class="detail-value">${fmtDate(withdrawal.created_at)}</div>
+    </div>
+  `;
+  
+  document.getElementById('detailsModal').classList.add('active');
+}
+
+function closeDetailsModal() {
+  document.getElementById('detailsModal').classList.remove('active');
+}
+
+// Close modal when clicking outside
+document.getElementById('detailsModal')?.addEventListener('click', (e) => {
+  if (e.target.id === 'detailsModal') closeDetailsModal();
+});
 
 loadDashboard();
