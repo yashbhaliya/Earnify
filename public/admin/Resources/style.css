@@ -130,6 +130,7 @@ body {
 
 .sidebar a.nav-link-logout {
   color: #ef4444;
+  display: none;
 }
 
 .sidebar a.nav-link-logout:hover {

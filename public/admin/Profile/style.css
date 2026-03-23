@@ -130,6 +130,7 @@ body {
 
 .sidebar a.nav-link-logout {
   color: #ef4444;
+  display: none;
 }
 
 .sidebar a.nav-link-logout:hover {
@@ -783,7 +784,7 @@ button:last-child:hover {
 }
 
 .user-name {
-  color: #f1f5f9;
+  color: #1e293b;
   font-weight: 600;
   font-size: 14px;
   white-space: nowrap;
@@ -792,91 +793,11 @@ button:last-child:hover {
 }
 
 .user-email {
-  color: #94a3b8;
+  color: #64748b;
   font-size: 12px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-.logout-link {
-  display: block;
-  color: white;
-  padding: 12px 15px;
-  text-align: center;
-  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-  border-radius: 8px;
-  cursor: pointer;
-  border: none;
-  font-weight: 600;
-  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
-  text-decoration: none;
-}op: auto;
-  padding: 20px;
-  border-top: 2px solid #334155;
-}
-
-.user-info {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 15px;
-}
-
-.user-avatar {
-  width: 40px;
-  height: 40px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 20px;
-  color: white;
-  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
-}
-
-.user-details {
-  flex: 1;
-  overflow: hidden;
-}
-
-.user-name {
-  color: #f1f5f9;
-  font-weight: 600;
-  font-size: 14px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.user-email {
-  color: #94a3b8;
-  font-size: 12px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.logout-link {
-  display: block;
-  color: white;
-  padding: 12px 15px;
-  text-align: center;
-  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.3s;
-  border: none;
-  font-weight: 600;
-  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
-  text-decoration: none;
-}
-
-.logout-link:hover {
-  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
 }
 
 .auth-modal {
@@ -997,56 +918,7 @@ button:last-child:hover {
   border-left: 4px solid #10b981;
 }
 
-.user-avatar {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 20px;
-}
 
-.user-details {
-  flex: 1;
-  overflow: hidden;
-}
-
-.user-name {
-  color: #f1f5f9;
-  font-weight: 600;
-  font-size: 14px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.user-email {
-  color: #94a3b8;
-  font-size: 12px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.logout-link {
-  display: block;
-  padding: 12px 15px;
-  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-  color: white;
-  text-align: center;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: all 0.3s;
-  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
-  border-left: none;
-}
-
-.logout-link:hover {
-  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
-}
 
 .download-btn {
   display: inline-block;

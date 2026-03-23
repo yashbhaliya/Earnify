@@ -219,12 +219,22 @@ async function loadDashboard() {
 
     // ── Charts ──
     renderCharts(available, totalGross, totalWithdrawn, platformFees, totalPending, statsData.userStats || []);
+    
+    // Remove chart loader
+    document.querySelectorAll('.chart-card.is-loading').forEach(c => c.classList.remove('is-loading'));
 
     const purchases = statsData.userStats || [];
     const tbody = document.getElementById('purchaseTbody');
     const pcEl = document.getElementById('purchaseCount');
     if (pcEl) pcEl.textContent = `${completedCount} records`;
     if (tbody) {
+      // Remove thead shimmer
+      const purchaseTable = tbody.closest('table');
+      if (purchaseTable) {
+        const thead = purchaseTable.querySelector('thead');
+        if (thead) thead.classList.remove('is-loading');
+      }
+      
       tbody.innerHTML = !purchases.length
         ? `<tr><td colspan="6"><div class="empty-state"><div class="empty-icon">📭</div><p>No purchases yet</p></div></td></tr>`
         : purchases.map((p, i) => `
@@ -243,6 +253,13 @@ async function loadDashboard() {
     const wdEl = document.getElementById('wdCount');
     if (wdEl) wdEl.textContent = `${wdList.length} requests`;
     if (wdTbody) {
+      // Remove thead shimmer
+      const wdTable = wdTbody.closest('table');
+      if (wdTable) {
+        const thead = wdTable.querySelector('thead');
+        if (thead) thead.classList.remove('is-loading');
+      }
+      
       wdTbody.innerHTML = !wdList.length
         ? `<tr><td colspan="7"><div class="empty-state"><div class="empty-icon">📭</div><p>No withdrawal requests yet</p></div></td></tr>`
         : wdList.map((w, i) => {
@@ -263,6 +280,9 @@ async function loadDashboard() {
     }
 
     // ── Sidebar admin info ──
+    const adminBadge = document.querySelector('.admin-badge');
+    if (adminBadge) adminBadge.classList.remove('is-loading');
+    
     if (userEmail) {
       document.getElementById('adminEmail').textContent = userEmail;
       document.getElementById('adminAvatar').textContent = userEmail.charAt(0).toUpperCase();
