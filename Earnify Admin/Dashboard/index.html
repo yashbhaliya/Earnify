@@ -344,6 +344,11 @@
     .shimmer-value { width: 80px; height: 28px; margin-bottom: 6px; }
     .shimmer-sub   { width: 100px; height: 11px; }
 
+    .stat-card.is-shimmer .stat-icon { background-image: linear-gradient(90deg, #f0f0f0 25%, #e8e8e8 50%, #f0f0f0 75%) !important; background-size: 400% 100% !important; animation: shimmer-slide 1.4s infinite linear !important; }
+    .stat-card.is-shimmer .stat-icon span { visibility: hidden; }
+    .stat-card:nth-child(1).is-shimmer { background: #e2e8f0 !important; box-shadow: none !important; }
+    .stat-card:nth-child(1).is-shimmer::after { display: none; }
+
     /* ── Recent Purchases Table ── */
     .section-title {
       font-size: 17px;
@@ -477,10 +482,10 @@
     <p>Platform Management</p>
   </div>
 
-  <a href="index.html" class="nav-link active">
+  <a href="./" class="nav-link active">
     <span class="nav-icon">🏠</span> Dashboard
   </a>
-  <a href="../statistic/index.html" class="nav-link">
+  <a href="../statistic" class="nav-link">
     <span class="nav-icon">📈</span> Statistics
   </a>
 
@@ -518,45 +523,45 @@
 
 
   <!-- Stat Cards -->
-  <div class="stat-grid" id="statGrid" style="display:none;">
-    <div class="stat-card">
-      <div class="stat-icon">🏦</div>
+  <div class="stat-grid" id="statGrid">
+    <div class="stat-card is-shimmer">
+      <div class="stat-icon"><span>🏦</span></div>
       <div class="stat-body">
         <div class="stat-label">Available Balance</div>
-        <div class="stat-value" id="cardAvailable">₹0</div>
-        <div class="stat-sub">Ready to withdraw</div>
+        <div class="shimmer shimmer-value" id="cardAvailable"></div>
+        <div class="shimmer shimmer-sub"></div>
       </div>
     </div>
-    <div class="stat-card">
-      <div class="stat-icon">💰</div>
+    <div class="stat-card is-shimmer">
+      <div class="stat-icon"><span>💰</span></div>
       <div class="stat-body">
         <div class="stat-label">Total Earned</div>
-        <div class="stat-value" id="cardRevenue">₹0</div>
-        <div class="stat-sub" id="cardRevenueSub">completed sales</div>
+        <div class="shimmer shimmer-value" id="cardRevenue"></div>
+        <div class="shimmer shimmer-sub" id="cardRevenueSub"></div>
       </div>
     </div>
-    <div class="stat-card">
-      <div class="stat-icon">💸</div>
+    <div class="stat-card is-shimmer">
+      <div class="stat-icon"><span>💸</span></div>
       <div class="stat-body">
         <div class="stat-label">Withdrawn</div>
-        <div class="stat-value" id="cardWithdrawn">₹0</div>
-        <div class="stat-sub" id="cardWithdrawnSub">approved withdrawals</div>
+        <div class="shimmer shimmer-value" id="cardWithdrawn"></div>
+        <div class="shimmer shimmer-sub" id="cardWithdrawnSub"></div>
       </div>
     </div>
-    <div class="stat-card">
-      <div class="stat-icon">🏦</div>
+    <div class="stat-card is-shimmer">
+      <div class="stat-icon"><span>🏦</span></div>
       <div class="stat-body">
         <div class="stat-label">Platform Fees</div>
-        <div class="stat-value" id="cardFees">₹0</div>
-        <div class="stat-sub">5% platform fee</div>
+        <div class="shimmer shimmer-value" id="cardFees"></div>
+        <div class="shimmer shimmer-sub"></div>
       </div>
     </div>
-    <div class="stat-card">
-      <div class="stat-icon">⏳</div>
+    <div class="stat-card is-shimmer">
+      <div class="stat-icon"><span>⏳</span></div>
       <div class="stat-body">
         <div class="stat-label">Pending</div>
-        <div class="stat-value" id="cardPending">₹0</div>
-        <div class="stat-sub">awaiting approval</div>
+        <div class="shimmer shimmer-value" id="cardPending"></div>
+        <div class="shimmer shimmer-sub"></div>
       </div>
     </div>
   </div>
@@ -564,6 +569,6 @@
 </div><!-- /main -->
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="dashboard.js"></script>
+<script src="../Dashboard/dashboard.js"></script>
 </body>
 </html>

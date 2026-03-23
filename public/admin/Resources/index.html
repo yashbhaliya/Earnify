@@ -646,23 +646,15 @@
 
     // Check login status and update sidebar
     (function () {
-      const token = localStorage.getItem('adminToken');
       const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
       const sidebarUser = document.getElementById('sidebarUser');
 
-      if (token && currentUser.email) {
+      if (currentUser.email) {
         if (sidebarUser) sidebarUser.style.display = 'block';
-
-        const userName = currentUser.user_metadata?.name || currentUser.email?.split('@')[0] || 'User';
-        const userEmail = currentUser.email || '';
-
-        const sidebarUserName = document.getElementById('sidebarUserName');
-        const sidebarUserEmail = document.getElementById('sidebarUserEmail');
-        const sidebarAvatar = document.getElementById('sidebarAvatar');
-
-        if (sidebarUserName) sidebarUserName.textContent = userName;
-        if (sidebarUserEmail) sidebarUserEmail.textContent = userEmail;
-        if (sidebarAvatar) sidebarAvatar.textContent = userName.charAt(0).toUpperCase();
+        const userName = currentUser.user_metadata?.name || currentUser.email.split('@')[0] || 'User';
+        document.getElementById('sidebarUserName').textContent  = userName;
+        document.getElementById('sidebarUserEmail').textContent = currentUser.email;
+        document.getElementById('sidebarAvatar').textContent    = userName.charAt(0).toUpperCase();
       }
     })();
 

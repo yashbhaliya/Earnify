@@ -109,20 +109,27 @@ async function loadDashboard() {
     console.log('[Dashboard] computed =>', { totalGross, totalWithdrawn, totalPending, platformFees, available });
 
     // ── Stat Cards ──
-    const cards = {
-      cardAvailable: fmt(available),
-      cardRevenue:  fmt(totalGross),
-      cardWithdrawn: fmt(totalWithdrawn),
-      cardFees:     fmt(platformFees),
-      cardPending:  fmt(totalPending)
-    };
-    Object.entries(cards).forEach(([id, val]) => {
-      const el = document.getElementById(id); if (el) el.textContent = val;
+    const cardData = [
+      { id: 'cardAvailable', value: fmt(available), sub: 'Ready to withdraw', subId: null },
+      { id: 'cardRevenue',   value: fmt(totalGross), sub: `${completedCount} completed sales`, subId: 'cardRevenueSub' },
+      { id: 'cardWithdrawn', value: fmt(totalWithdrawn), sub: `${approvedCount} approved withdrawals`, subId: 'cardWithdrawnSub' },
+      { id: 'cardFees',      value: fmt(platformFees), sub: '5% platform fee', subId: null },
+      { id: 'cardPending',   value: fmt(totalPending), sub: 'awaiting approval', subId: null }
+    ];
+    cardData.forEach(({ id, value, sub, subId }) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.className = 'stat-value';
+      el.textContent = value;
+      const subEl = el.nextElementSibling;
+      if (subEl) { subEl.className = 'stat-sub'; subEl.textContent = sub; }
+      if (subId) { const s = document.getElementById(subId); if (s) { s.className = 'stat-sub'; s.textContent = sub; } }
     });
-    const cardRevSub = document.getElementById('cardRevenueSub');
-    if (cardRevSub) cardRevSub.textContent = `${completedCount} completed sales`;
-    const cardWdSub = document.getElementById('cardWithdrawnSub');
-    if (cardWdSub) cardWdSub.textContent = `${approvedCount} approved withdrawals`;
+    document.querySelectorAll('.stat-card.is-shimmer').forEach(c => {
+      c.classList.remove('is-shimmer');
+      const icon = c.querySelector('.stat-icon span');
+      if (icon) { icon.style.visibility = ''; }
+    });
 
     // ── Recent Purchases Table ──
     const purchases = statsData.userStats || [];
@@ -178,9 +185,7 @@ async function loadDashboard() {
       } catch(e) { console.error('[Dashboard] sidebar decode error =>', e); }
     }
 
-    console.log('[Dashboard] ✅ done, showing statGrid');
-    const sg = document.getElementById('statGrid');
-    if (sg) sg.style.display = '';
+    console.log('[Dashboard] ✅ done');
 
   } catch (err) {
     console.error('[Dashboard] ❌ loadDashboard error =>', err);
