@@ -38,12 +38,18 @@
     }
 
     .sidebar-brand h2 {
+      font-size: 21px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .sidebar-brand h2 .brand-text {
       background: linear-gradient(135deg, #667eea, #764ba2);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      font-size: 21px;
-      font-weight: 800;
     }
 
     .sidebar-brand p {
@@ -478,7 +484,7 @@
 <!-- Sidebar -->
 <div class="sidebar" id="sidebar">
   <div class="sidebar-brand">
-    <h2>💰 Earnify Admin</h2>
+    <h2><span>💰</span><span class="brand-text">Earnify Admin</span></h2>
     <p>Platform Management</p>
   </div>
 

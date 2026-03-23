@@ -626,7 +626,7 @@
   </div>
 
   <script src="../api-config.js"></script>
-  <script src="../supabase-config.js"></script>
+  <script src="supabase-config.js"></script>
   <script src="../app.js"></script>
   <script src="../auth-modal.js"></script>
   <script src="dropdown.js"></script>
@@ -644,18 +644,39 @@
       console.log('showTab called with type:', type);
     };
 
-    // Check login status and update sidebar
-    (function () {
+    // Check login status, update sidebar, and show Super Admin button if applicable
+    (async function () {
       const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
       const sidebarUser = document.getElementById('sidebarUser');
 
-      if (currentUser.email) {
-        if (sidebarUser) sidebarUser.style.display = 'block';
-        const userName = currentUser.user_metadata?.name || currentUser.email.split('@')[0] || 'User';
-        document.getElementById('sidebarUserName').textContent  = userName;
-        document.getElementById('sidebarUserEmail').textContent = currentUser.email;
-        document.getElementById('sidebarAvatar').textContent    = userName.charAt(0).toUpperCase();
-      }
+      if (!currentUser.email) return;
+
+      if (sidebarUser) sidebarUser.style.display = 'block';
+      const userName = currentUser.user_metadata?.name || currentUser.email.split('@')[0] || 'User';
+      document.getElementById('sidebarUserName').textContent  = userName;
+      document.getElementById('sidebarUserEmail').textContent = currentUser.email;
+      document.getElementById('sidebarAvatar').textContent    = userName.charAt(0).toUpperCase();
+
+      // Check role from profiles table
+      try {
+        const { data } = await supabaseClient
+          .from('profiles')
+          .select('role')
+          .eq('id', currentUser.id)
+          .single();
+
+        if (data?.role === 'super_admin') {
+          const logoutLink = sidebarUser.querySelector('.logout-link');
+          if (logoutLink) {
+            const adminBtn = document.createElement('a');
+            adminBtn.textContent = '🛡️ Super Admin Panel';
+            adminBtn.className = 'logout-link';
+            adminBtn.style.cssText = 'background:#667eea!important;color:#fff!important;border-color:#667eea!important;margin-bottom:8px;display:block;text-align:center;cursor:pointer;';
+            adminBtn.onclick = () => { window.location.href = 'http://127.0.0.1:5500/Earnify%20Admin/Dashboard/'; };
+            sidebarUser.insertBefore(adminBtn, logoutLink);
+          }
+        }
+      } catch(e) { console.warn('Role check failed', e); }
     })();
 
     function logout() {

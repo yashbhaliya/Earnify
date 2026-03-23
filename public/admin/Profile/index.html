@@ -1066,11 +1066,11 @@
     }
 
     // Load profile on page load
-    window.addEventListener('DOMContentLoaded', function () {
+    window.addEventListener('DOMContentLoaded', async function () {
       loadProfile();
       loadProfileStats();
 
-      // Update sidebar profile
+      // Update sidebar profile + Super Admin button
       const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
       const sidebarUser = document.getElementById('sidebarUser');
       if (currentUser.email) {
@@ -1079,6 +1079,24 @@
         document.getElementById('sidebarUserName').textContent  = userName;
         document.getElementById('sidebarUserEmail').textContent = currentUser.email;
         document.getElementById('sidebarAvatar').textContent    = userName.charAt(0).toUpperCase();
+
+        try {
+          const SUPA_URL = 'https://emnrgsgerfjvndexomro.supabase.co';
+          const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVtbnJnc2dlcmZqdm5kZXhvbXJvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI0MjAyMTAsImV4cCI6MjA4Nzk5NjIxMH0.uXr8lipxLbB4D_5JwQkpLzc-HudQw23tOFBfV4C6hqY';
+          const _sc = window.supabase.createClient(SUPA_URL, SUPA_KEY);
+          const { data } = await _sc.from('profiles').select('role').eq('id', currentUser.id).single();
+          if (data?.role === 'super_admin') {
+            const logoutLink = sidebarUser.querySelector('.logout-link');
+            if (logoutLink) {
+              const adminBtn = document.createElement('a');
+              adminBtn.textContent = '🛡️ Super Admin Panel';
+              adminBtn.className = 'logout-link';
+              adminBtn.style.cssText = 'background:#667eea!important;color:#fff!important;border-color:#667eea!important;margin-bottom:8px;display:block;text-align:center;cursor:pointer;';
+              adminBtn.onclick = () => { window.location.href = 'http://127.0.0.1:5500/Earnify%20Admin/Dashboard/'; };
+              sidebarUser.insertBefore(adminBtn, logoutLink);
+            }
+          }
+        } catch(e) { console.warn('Role check failed', e); }
       }
     });
 
