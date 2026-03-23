@@ -1,6 +1,6 @@
 const API_BASE = (location.hostname === 'localhost' || location.hostname === '127.0.0.1')
   ? 'http://127.0.0.1:5000'
-  : location.origin;
+  : 'https://earnify-gamma.vercel.app';
 
 const SUPA_URL = 'https://emnrgsgerfjvndexomro.supabase.co';
 const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVtbnJnc2dlcmZqdm5kZXhvbXJvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI0MjAyMTAsImV4cCI6MjA4Nzk5NjIxMH0.uXr8lipxLbB4D_5JwQkpLzc-HudQw23tOFBfV4C6hqY';
