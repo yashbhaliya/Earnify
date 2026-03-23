@@ -70,9 +70,22 @@ function fmtDate(d) {
 
 async function loadDashboard() {
   console.log('[Dashboard] loadDashboard() called');
-  console.log('[Dashboard] location.hostname =>', location.hostname);
-  console.log('[Dashboard] API_BASE =>', API_BASE);
 
+  // Reset cards to shimmer state
+  const shimmerCards = [
+    { id: 'cardAvailable', subId: null },
+    { id: 'cardRevenue',   subId: 'cardRevenueSub' },
+    { id: 'cardWithdrawn', subId: 'cardWithdrawnSub' },
+    { id: 'cardFees',      subId: null },
+    { id: 'cardPending',   subId: null }
+  ];
+  shimmerCards.forEach(({ id, subId }) => {
+    const el = document.getElementById(id);
+    if (el) { el.className = 'shimmer shimmer-value'; el.textContent = ''; }
+    const subEl = subId ? document.getElementById(subId) : el?.nextElementSibling;
+    if (subEl) { subEl.className = 'shimmer shimmer-sub'; subEl.textContent = ''; }
+  });
+  document.querySelectorAll('.stat-card').forEach(c => c.classList.add('is-shimmer'));
   const errEl = document.getElementById('errorBanner');
   if (errEl) errEl.style.display = 'none';
 
