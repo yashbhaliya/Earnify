@@ -68,7 +68,79 @@ function fmtDate(d) {
   return new Date(d).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
 }
 
-async function loadDashboard() {
+let _donutChart = null;
+let _barChart   = null;
+
+function renderCharts(available, totalGross, totalWithdrawn, platformFees, totalPending, purchases) {
+  // ── Donut Chart ──
+  const donutCtx = document.getElementById('donutChart')?.getContext('2d');
+  if (donutCtx) {
+    if (_donutChart) _donutChart.destroy();
+    const labels  = ['Available', 'Withdrawn', 'Fees', 'Pending'];
+    const values  = [available, totalWithdrawn, platformFees, totalPending];
+    const colors  = ['#667eea', '#10b981', '#f59e0b', '#f5576c'];
+    _donutChart = new Chart(donutCtx, {
+      type: 'doughnut',
+      data: { labels, datasets: [{ data: values, backgroundColor: colors, borderWidth: 3, borderColor: '#fff', hoverOffset: 8 }] },
+      options: {
+        cutout: '72%', responsive: true, maintainAspectRatio: true,
+        plugins: {
+          legend: { display: false },
+          tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ${fmt(ctx.raw)}` } }
+        }
+      }
+    });
+    // Center label
+    const center = document.getElementById('donutCenter');
+    if (center) center.innerHTML = `${fmt(totalGross)}<br><span style="font-size:10px;color:#94a3b8;font-weight:500;">Total Earned</span>`;
+    // Legend
+    const legend = document.getElementById('donutLegend');
+    if (legend) legend.innerHTML = labels.map((l, i) =>
+      `<div class="legend-item">
+        <span class="legend-label"><span class="legend-dot" style="background:${colors[i]}"></span>${l}</span>
+        <span class="legend-val">${fmt(values[i])}</span>
+      </div>`).join('');
+  }
+
+  // ── Bar Chart ──
+  const barCtx = document.getElementById('barChart')?.getContext('2d');
+  if (barCtx && purchases.length) {
+    if (_barChart) _barChart.destroy();
+    const labels = purchases.map(p => (p.email || '').split('@')[0]);
+    const values = purchases.map(p => parseFloat(p.totalAmount || 0));
+    _barChart = new Chart(barCtx, {
+      type: 'bar',
+      data: {
+        labels,
+        datasets: [{
+          label: 'Revenue (₹)',
+          data: values,
+          backgroundColor: 'rgba(102,126,234,0.18)',
+          borderColor: '#667eea',
+          borderWidth: 2,
+          borderRadius: 8,
+          borderSkipped: false
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: true,
+        plugins: {
+          legend: { display: false },
+          tooltip: { callbacks: { label: ctx => ` ${fmt(ctx.raw)}` } }
+        },
+        scales: {
+          x: { grid: { display: false }, ticks: { font: { size: 12 }, color: '#64748b' } },
+          y: {
+            grid: { color: 'rgba(0,0,0,0.05)' },
+            ticks: { font: { size: 11 }, color: '#94a3b8', callback: v => '₹' + v.toLocaleString('en-IN') }
+          }
+        }
+      }
+    });
+  }
+}
+
+
   console.log('[Dashboard] loadDashboard() called');
 
   // Reset cards to shimmer state
@@ -144,7 +216,9 @@ async function loadDashboard() {
       if (icon) { icon.style.visibility = ''; }
     });
 
-    // ── Recent Purchases Table ──
+    // ── Charts ──
+    renderCharts(available, totalGross, totalWithdrawn, platformFees, totalPending, statsData.userStats || []);
+
     const purchases = statsData.userStats || [];
     const tbody = document.getElementById('purchaseTbody');
     const pcEl = document.getElementById('purchaseCount');
