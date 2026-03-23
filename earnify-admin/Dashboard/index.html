@@ -113,8 +113,15 @@
       font-size: 15px; color: white; font-weight: 700; flex-shrink: 0;
     }
 
-    .admin-info { flex: 1; overflow: hidden; }
-    .admin-name { font-size: 13px; font-weight: 700; color: #1e293b; }
+    .admin-info { flex: 1; min-width: 0; }
+    .admin-name { 
+      font-size: 11px; 
+      font-weight: 600; 
+      color: #1e293b; 
+      word-break: break-all;
+      line-height: 1.3;
+      margin-bottom: 2px;
+    }
     .admin-role { font-size: 10px; color: #94a3b8; font-weight: 500; }
 
     .logout-btn {
@@ -543,7 +550,7 @@
     <div class="admin-badge">
       <div class="admin-avatar" id="adminAvatar">A</div>
       <div class="admin-info">
-        <div class="admin-name" id="adminName">Admin</div>
+        <div class="admin-name" id="adminEmail">Loading...</div>
         <div class="admin-role">Super Admin</div>
       </div>
     </div>

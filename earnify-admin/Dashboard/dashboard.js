@@ -263,13 +263,15 @@ async function loadDashboard() {
     }
 
     // ── Sidebar admin info ──
-    if (token) {
+    if (userEmail) {
+      document.getElementById('adminEmail').textContent = userEmail;
+      document.getElementById('adminAvatar').textContent = userEmail.charAt(0).toUpperCase();
+    } else if (token) {
       try {
         const payload = JSON.parse(atob(token.split('.')[1]));
-        const name = payload.email?.split('@')[0] || 'Admin';
-        console.log('[Dashboard] sidebar name =>', name);
-        document.getElementById('adminName').textContent = name;
-        document.getElementById('adminAvatar').textContent = name.charAt(0).toUpperCase();
+        const email = payload.email || 'admin@earnify.com';
+        document.getElementById('adminEmail').textContent = email;
+        document.getElementById('adminAvatar').textContent = email.charAt(0).toUpperCase();
       } catch(e) { console.error('[Dashboard] sidebar decode error =>', e); }
     }
 
