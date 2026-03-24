@@ -59,9 +59,9 @@ function setCard(id, subId, value, sub) {
 }
 
 function badgeClass(status) {
-  if (status === 'completed') return 'badge-completed';
+  if (status === 'completed' || status === 'approved') return 'badge-approved';
   if (status === 'pending')   return 'badge-pending';
-  return 'badge-failed';
+  return 'badge-rejected';
 }
 
 function fmtDate(d) {
