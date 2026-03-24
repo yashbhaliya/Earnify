@@ -350,7 +350,9 @@
     }
     .wd-value {
       font-size: 14px; font-weight: 600; color: #1e293b;
-      text-align: right; word-break: break-all;
+      text-align: right; word-break: break-word;
+      white-space: pre-line;
+      line-height: 1.6;
     }
     .wd-close-btn {
       width: 100%; margin-top: 20px; padding: 14px;
@@ -867,13 +869,26 @@
       const net = (parseFloat(w.amount) * 0.95).toLocaleString('en-IN', {maximumFractionDigits:2});
       const date = new Date(w.created_at).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});
       const statusColors = { pending:'#b45309', approved:'#065f46', rejected:'#991b1b' };
+      
+      let accountDisplay = w.account || '—';
+      if (w.method === 'bank' && w.account && w.account.includes('AC:') && w.account.includes('IFSC:')) {
+        const parts = w.account.split(' ');
+        const acPart = parts.find(p => p.startsWith('AC:'));
+        const ifscPart = parts.find(p => p.startsWith('IFSC:'));
+        if (acPart && ifscPart) {
+          const acNum = acPart.replace('AC:', '');
+          const ifscCode = ifscPart.replace('IFSC:', '');
+          accountDisplay = `Account: ${acNum}\nIFSC: ${ifscCode}`;
+        }
+      }
+      
       document.getElementById('withdrawalDetailBody').innerHTML = `
         <div class="wd-row"><span class="wd-label">Date</span><span class="wd-value">${date}</span></div>
         <div class="wd-row"><span class="wd-label">Amount</span><span class="wd-value">₹${parseFloat(w.amount).toLocaleString('en-IN')}</span></div>
         <div class="wd-row"><span class="wd-label">Net Amount</span><span class="wd-value" style="color:#667eea;font-size:17px;">₹${net}</span></div>
         <div class="wd-row"><span class="wd-label">Platform Fee</span><span class="wd-value" style="color:#ef4444;">₹${(parseFloat(w.amount)*0.05).toLocaleString('en-IN',{maximumFractionDigits:2})} (5%)</span></div>
         <div class="wd-row"><span class="wd-label">Method</span><span class="wd-value">${METHOD_ICONS[w.method]||''} ${w.method.toUpperCase()}</span></div>
-        <div class="wd-row"><span class="wd-label">Account</span><span class="wd-value">${w.account||'—'}</span></div>
+        <div class="wd-row"><span class="wd-label">Account</span><span class="wd-value">${accountDisplay}</span></div>
         <div class="wd-row"><span class="wd-label">Status</span><span class="wd-value" style="color:${statusColors[w.status]||'#1e293b'};text-transform:capitalize;">${w.status}</span></div>
         ${w.note ? `<div class="wd-row"><span class="wd-label">Note</span><span class="wd-value">${w.note}</span></div>` : ''}`;
       document.getElementById('withdrawalDetailModal').classList.add('open');

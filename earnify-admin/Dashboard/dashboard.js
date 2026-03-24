@@ -378,7 +378,7 @@ function renderResourceChart(limit = 10, sortBy = 'revenue') {
         backgroundColor: colors.slice(0, values.length),
         borderColor: colors.slice(0, values.length).map(c => c.replace('0.8', '1')),
         borderWidth: 2,
-        borderRadius: 10,
+        borderRadius: 0,
         borderSkipped: false
       }]
     },
