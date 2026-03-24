@@ -93,24 +93,28 @@ function showToast(message, type = 'success') {
 }
 
 let allPayments = [];
+let selectedPaymentIndex = null;
 
 async function loadPayments() {
   console.log('[Payments] loadPayments() called');
   
   try {
-    // Fetch pending withdrawal requests
     const withdrawals = await apiFetch('/api/admin/withdrawals');
     console.log('[Payments] withdrawals =>', withdrawals);
     
-    allPayments = withdrawals.filter(w => w.status === 'pending');
+    allPayments = Array.isArray(withdrawals) ? withdrawals.filter(w => w.status === 'pending') : [];
     
-    // Update stats
-    const totalAmount = allPayments.reduce((sum, p) => sum + parseFloat(p.net_amount || 0), 0);
-    const processedToday = withdrawals.filter(w => {
+    const totalAmount = allPayments.reduce((sum, p) => {
+      const amount = parseFloat(p.amount || 0);
+      const netAmount = amount * 0.95;
+      return sum + netAmount;
+    }, 0);
+    
+    const processedToday = Array.isArray(withdrawals) ? withdrawals.filter(w => {
       const today = new Date().toDateString();
       const wDate = new Date(w.updated_at || w.created_at).toDateString();
       return wDate === today && (w.status === 'approved' || w.status === 'rejected');
-    }).length;
+    }).length : 0;
     
     document.getElementById('statPending').textContent = allPayments.length;
     document.getElementById('statAmount').textContent = fmt(totalAmount);
@@ -147,9 +151,10 @@ function renderPayments(payments) {
   grid.innerHTML = payments.map((p, i) => {
     const email = p.user_email || p.email || 'Unknown';
     const avatar = email.charAt(0).toUpperCase();
-    const grossAmount = parseFloat(p.gross_amount || 0);
-    const netAmount = parseFloat(p.net_amount || 0);
-    const fee = parseFloat(p.fee || 0);
+    const grossAmount = parseFloat(p.amount || 0);
+    const fee = grossAmount * 0.05;
+    const netAmount = grossAmount - fee;
+    const method = p.method || 'Bank Transfer';
     
     return `
       <div class="payment-card">
@@ -173,8 +178,8 @@ function renderPayments(payments) {
             <div class="detail-value">${fmt(grossAmount)}</div>
           </div>
           <div class="detail-item">
-            <div class="detail-label">Platform Fee</div>
-            <div class="detail-value">${fmt(fee)}</div>
+            <div class="detail-label">Platform Fee (5%)</div>
+            <div class="detail-value" style="color:#ef4444;">${fmt(fee)}</div>
           </div>
           <div class="detail-item">
             <div class="detail-label">Request Date</div>
@@ -182,12 +187,12 @@ function renderPayments(payments) {
           </div>
           <div class="detail-item">
             <div class="detail-label">Payment Method</div>
-            <div class="detail-value">${p.payment_method || 'Bank Transfer'}</div>
+            <div class="detail-value">${method.toUpperCase()}</div>
           </div>
         </div>
         
         <div class="payment-actions">
-          <button class="action-btn btn-accept" onclick="handlePayment(${i}, 'approve')" id="accept-${i}">
+          <button class="action-btn btn-accept" onclick="openConfirmModal(${i})" id="accept-${i}">
             ✓ Accept
           </button>
           <button class="action-btn btn-reject" onclick="handlePayment(${i}, 'reject')" id="reject-${i}">
@@ -197,6 +202,84 @@ function renderPayments(payments) {
       </div>
     `;
   }).join('');
+}
+
+function openConfirmModal(index) {
+  selectedPaymentIndex = index;
+  const payment = allPayments[index];
+  if (!payment) return;
+  
+  const email = payment.user_email || payment.email || 'Unknown';
+  const grossAmount = parseFloat(payment.amount || 0);
+  const fee = grossAmount * 0.05;
+  const netAmount = grossAmount - fee;
+  const method = payment.method || 'Bank Transfer';
+  const account = payment.account || '—';
+  
+  document.getElementById('modalDetails').innerHTML = `
+    <div class="modal-detail-item">
+      <div class="modal-detail-label">User Email</div>
+      <div class="modal-detail-value">${email}</div>
+    </div>
+    <div class="modal-detail-item">
+      <div class="modal-detail-label">Request ID</div>
+      <div class="modal-detail-value">${payment.id || '—'}</div>
+    </div>
+    <div class="modal-detail-item">
+      <div class="modal-detail-label">Gross Amount</div>
+      <div class="modal-detail-value">${fmt(grossAmount)}</div>
+    </div>
+    <div class="modal-detail-item">
+      <div class="modal-detail-label">Platform Fee (5%)</div>
+      <div class="modal-detail-value" style="color:#ef4444;">${fmt(fee)}</div>
+    </div>
+    <div class="modal-detail-item full">
+      <div class="modal-detail-label">Net Amount (To Transfer)</div>
+      <div class="modal-detail-value highlight">${fmt(netAmount)}</div>
+    </div>
+    <div class="modal-detail-item">
+      <div class="modal-detail-label">Payment Method</div>
+      <div class="modal-detail-value">${method.toUpperCase()}</div>
+    </div>
+    <div class="modal-detail-item">
+      <div class="modal-detail-label">Request Date</div>
+      <div class="modal-detail-value">${fmtDate(payment.created_at)}</div>
+    </div>
+    <div class="modal-detail-item full">
+      <div class="modal-detail-label">Account Details</div>
+      <div class="modal-detail-value" style="font-size:14px;">${account}</div>
+    </div>
+    ${payment.note ? `
+    <div class="modal-detail-item full">
+      <div class="modal-detail-label">Note</div>
+      <div class="modal-detail-value" style="font-size:14px;">${payment.note}</div>
+    </div>` : ''}
+  `;
+  
+  document.getElementById('confirmModal').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeConfirmModal() {
+  document.getElementById('confirmModal').classList.remove('show');
+  document.body.style.overflow = '';
+  selectedPaymentIndex = null;
+}
+
+async function confirmPayment() {
+  if (selectedPaymentIndex === null) return;
+  
+  const confirmBtn = document.getElementById('confirmBtn');
+  confirmBtn.disabled = true;
+  confirmBtn.textContent = '⏳ Processing...';
+  
+  try {
+    await handlePayment(selectedPaymentIndex, 'approve');
+    closeConfirmModal();
+  } catch (err) {
+    confirmBtn.disabled = false;
+    confirmBtn.innerHTML = '✓ Approve Payment';
+  }
 }
 
 async function handlePayment(index, action) {
@@ -218,9 +301,10 @@ async function handlePayment(index, action) {
       body: JSON.stringify({ status: newStatus })
     });
     
+    const netAmount = parseFloat(payment.amount || 0) * 0.95;
     showToast(
       action === 'approve' 
-        ? `Payment approved successfully! ${fmt(payment.net_amount)} will be transferred.`
+        ? `Payment approved successfully! ${fmt(netAmount)} will be transferred.`
         : 'Payment request rejected.',
       'success'
     );
