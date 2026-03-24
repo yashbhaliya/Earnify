@@ -179,7 +179,7 @@
       background: rgba(255, 255, 255, 0.25);
       border: 2px solid rgba(255,255,255,0.5) !important;
       border-radius: 10px;
-      padding: 10px 12px;
+      padding: 14px 12px;
       cursor: pointer;
       flex-direction: column;
       gap: 5px;
@@ -1033,6 +1033,37 @@
       <div class="chart-wrap">
         <canvas id="barChart"></canvas>
       </div>
+    </div>
+  </div>
+
+  <!-- Day-wise Revenue Chart -->
+  <div class="chart-card is-loading" style="margin-bottom: 30px;">
+    <div class="chart-header">
+      <div>
+        <div class="chart-title">📅 Daily Revenue - <span id="currentMonth">—</span></div>
+        <div class="chart-sub">Day-wise revenue breakdown for selected month</div>
+      </div>
+      <div class="chart-filters">
+        <select id="monthFilter" class="filter-select" onchange="filterDayWiseChart()">
+          <option value="0">January</option>
+          <option value="1">February</option>
+          <option value="2">March</option>
+          <option value="3">April</option>
+          <option value="4">May</option>
+          <option value="5">June</option>
+          <option value="6">July</option>
+          <option value="7">August</option>
+          <option value="8">September</option>
+          <option value="9">October</option>
+          <option value="10">November</option>
+          <option value="11">December</option>
+        </select>
+        <select id="yearFilter" class="filter-select" onchange="filterDayWiseChart()">
+        </select>
+      </div>
+    </div>
+    <div class="chart-wrap">
+      <canvas id="dayWiseChart"></canvas>
     </div>
   </div>
 

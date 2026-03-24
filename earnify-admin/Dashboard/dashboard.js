@@ -70,8 +70,228 @@ function fmtDate(d) {
 
 let _donutChart = null;
 let _barChart   = null;
-let _allResourceData = []; // Store all resource data for filtering
-let _allPurchasesData = []; // Store all purchases for date filtering
+let _dayChart   = null;
+let _dayWiseChart = null;
+let _allResourceData = [];
+let _allPurchasesData = [];
+
+function renderDayWiseChart(purchases, selectedMonth, selectedYear) {
+  const dayWiseCtx = document.getElementById('dayWiseChart')?.getContext('2d');
+  if (!dayWiseCtx) return;
+  
+  if (_dayWiseChart) _dayWiseChart.destroy();
+  
+  const now = new Date();
+  const month = selectedMonth !== undefined ? selectedMonth : now.getMonth();
+  const year = selectedYear !== undefined ? selectedYear : now.getFullYear();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  
+  const monthLabel = document.getElementById('currentMonth');
+  if (monthLabel) {
+    const date = new Date(year, month);
+    monthLabel.textContent = date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+  }
+  
+  const dailyRevenue = new Array(daysInMonth + 1).fill(0);
+  
+  if (purchases.length) {
+    purchases.forEach(p => {
+      const purchaseDate = new Date(p.created_at);
+      if (purchaseDate.getMonth() === month && purchaseDate.getFullYear() === year) {
+        const day = purchaseDate.getDate();
+        const amount = parseFloat(p.totalAmount || 0);
+        dailyRevenue[day] += amount;
+      }
+    });
+  }
+  
+  const labels = Array.from({ length: daysInMonth }, (_, i) => (i + 1).toString());
+  const values = dailyRevenue.slice(1);
+  
+  _dayWiseChart = new Chart(dayWiseCtx, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{
+        label: 'Revenue (₹)',
+        data: values,
+        backgroundColor: 'rgba(102,126,234,0.7)',
+        borderColor: 'rgba(102,126,234,1)',
+        borderWidth: 2,
+        borderRadius: 8,
+        borderSkipped: false
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      plugins: {
+        legend: { display: false },
+        tooltip: { 
+          callbacks: { 
+            label: ctx => ` ${fmt(ctx.raw)}`,
+            title: ctx => `Day ${ctx[0].label}`
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid: { display: false },
+          ticks: { 
+            font: { size: 10 }, 
+            color: '#94a3b8',
+            maxRotation: 0,
+            autoSkip: true,
+            maxTicksLimit: 31
+          },
+          title: {
+            display: true,
+            text: 'Day of Month',
+            color: '#64748b',
+            font: { size: 12, weight: '600' }
+          }
+        },
+        y: { 
+          grid: { color: 'rgba(0,0,0,0.05)' },
+          ticks: { 
+            font: { size: 11 },
+            color: '#94a3b8',
+            callback: v => '₹' + (v >= 1000 ? (v/1000).toFixed(0) + 'k' : v)
+          },
+          title: {
+            display: true,
+            text: 'Revenue (₹)',
+            color: '#64748b',
+            font: { size: 12, weight: '600' }
+          }
+        }
+      }
+    }
+  });
+}
+
+function filterDayWiseChart() {
+  const monthSelect = document.getElementById('monthFilter')?.value;
+  const yearSelect = document.getElementById('yearFilter')?.value;
+  
+  const month = parseInt(monthSelect);
+  const year = parseInt(yearSelect);
+  
+  renderDayWiseChart(_allPurchasesData, month, year);
+}
+
+function initializeDateFilters() {
+  const now = new Date();
+  const currentMonth = now.getMonth();
+  const currentYear = now.getFullYear();
+  
+  const monthSelect = document.getElementById('monthFilter');
+  if (monthSelect) {
+    monthSelect.value = currentMonth.toString();
+  }
+  
+  const yearSelect = document.getElementById('yearFilter');
+  if (yearSelect) {
+    yearSelect.innerHTML = '';
+    for (let y = currentYear; y >= currentYear - 5; y--) {
+      const option = document.createElement('option');
+      option.value = y;
+      option.textContent = y;
+      if (y === currentYear) option.selected = true;
+      yearSelect.appendChild(option);
+    }
+  }
+}
+
+function renderDayChart(days = 7) {
+  const dayCtx = document.getElementById('dayChart')?.getContext('2d');
+  if (!dayCtx || !_allPurchasesData.length) return;
+  
+  if (_dayChart) _dayChart.destroy();
+  
+  // Group purchases by date
+  const dayData = {};
+  const today = new Date();
+  const cutoffDate = days === 'all' ? new Date(0) : new Date(today.getTime() - (days * 24 * 60 * 60 * 1000));
+  
+  _allPurchasesData.forEach(p => {
+    const date = new Date(p.created_at);
+    if (date >= cutoffDate) {
+      const dateKey = date.toISOString().split('T')[0];
+      if (!dayData[dateKey]) dayData[dateKey] = 0;
+      dayData[dateKey] += parseFloat(p.totalAmount || 0);
+    }
+  });
+  
+  // Sort by date and prepare data
+  const sortedDates = Object.keys(dayData).sort();
+  const labels = sortedDates.map(d => {
+    const date = new Date(d);
+    return date.toLocaleDateString('en-IN', { day: '2-digit', month: 'short' });
+  });
+  const values = sortedDates.map(d => dayData[d]);
+  
+  if (!labels.length) {
+    if (_dayChart) _dayChart.destroy();
+    return;
+  }
+  
+  _dayChart = new Chart(dayCtx, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{
+        label: 'Revenue',
+        data: values,
+        backgroundColor: 'rgba(102,126,234,0.1)',
+        borderColor: '#667eea',
+        borderWidth: 3,
+        fill: true,
+        tension: 0.4,
+        pointBackgroundColor: '#667eea',
+        pointBorderColor: '#fff',
+        pointBorderWidth: 2,
+        pointRadius: 5,
+        pointHoverRadius: 7
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      plugins: {
+        legend: { display: false },
+        tooltip: { 
+          callbacks: { 
+            label: ctx => ` Revenue: ${fmt(ctx.raw)}`
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid: { color: 'rgba(0,0,0,0.05)' },
+          ticks: { 
+            font: { size: 11 }, 
+            color: '#94a3b8'
+          }
+        },
+        y: { 
+          grid: { color: 'rgba(0,0,0,0.05)' },
+          ticks: { 
+            font: { size: 11 },
+            color: '#94a3b8',
+            callback: v => '₹' + (v >= 1000 ? (v/1000).toFixed(0) + 'k' : v)
+          }
+        }
+      }
+    }
+  });
+}
+
+function filterDayChart() {
+  const daySelect = document.getElementById('dayFilter')?.value;
+  const days = daySelect === 'all' ? 'all' : parseInt(daySelect);
+  renderDayChart(days);
+}
 
 function renderResourceChart(limit = 10, sortBy = 'revenue') {
   const barCtx = document.getElementById('barChart')?.getContext('2d');
@@ -244,6 +464,19 @@ function renderCharts(available, totalGross, totalWithdrawn, platformFees, total
     
     // Initial render with default filters (revenue)
     renderResourceChart(10, 'revenue');
+  }
+  
+  // ── Day-wise Revenue Chart ──
+  const dayCtx = document.getElementById('dayChart')?.getContext('2d');
+  if (dayCtx && purchases.length) {
+    renderDayChart(7);
+  }
+  
+  // ── Day-wise Monthly Chart ──
+  const dayWiseCtx = document.getElementById('dayWiseChart')?.getContext('2d');
+  if (dayWiseCtx) {
+    initializeDateFilters();
+    renderDayWiseChart(purchases);
   }
 }
 async function loadDashboard() {
