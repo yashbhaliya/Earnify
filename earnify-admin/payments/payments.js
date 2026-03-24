@@ -191,9 +191,12 @@
     const newStatus = action === 'approve' ? 'approved' : 'rejected';
     console.log(`[Payments] Updating id=${p.id} status=${newStatus}`);
 
+    const updateData = { status: newStatus };
+    if (action === 'approve') updateData.approved_at = new Date().toISOString();
+
     const { error } = await db
       .from('withdrawals')
-      .update({ status: newStatus })
+      .update(updateData)
       .eq('id', p.id);
 
     if (error) {

@@ -4,6 +4,7 @@ const API_BASE = (location.hostname === 'localhost' || location.hostname === '12
 
 const SUPA_URL = 'https://emnrgsgerfjvndexomro.supabase.co';
 const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVtbnJnc2dlcmZqdm5kZXhvbXJvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI0MjAyMTAsImV4cCI6MjA4Nzk5NjIxMH0.uXr8lipxLbB4D_5JwQkpLzc-HudQw23tOFBfV4C6hqY';
+const db = window.supabase.createClient(SUPA_URL, SUPA_KEY);
 
 async function getUserEmail() {
   // 1. Try Supabase session (works across origins)
@@ -507,28 +508,31 @@ async function loadDashboard() {
 
   try {
     console.log('[Dashboard] fetching stats for =>', userEmail);
-    const [statsData, withdrawals] = await Promise.all([
+    const [statsData, wdResult] = await Promise.all([
       userEmail ? apiFetch(`/api/statistics/purchases/${encodeURIComponent(userEmail)}`) : Promise.resolve({}),
-      userEmail ? apiFetch(`/api/withdrawals/${encodeURIComponent(userEmail)}`) : Promise.resolve([])
+      userEmail ? db.from('withdrawals').select('*').eq('user_email', userEmail).order('created_at', { ascending: false }) : Promise.resolve({ data: [] })
     ]);
 
     console.log('[Dashboard] statsData =>', statsData);
-    console.log('[Dashboard] withdrawals =>', withdrawals);
 
     const totalGross     = parseFloat(statsData.totalGross || 0);
-    const wdList         = Array.isArray(withdrawals) ? withdrawals : [];
+    const wdList         = wdResult.data || [];
+    console.log('[Dashboard] withdrawals from Supabase =>', wdList);
+
+    // Net = gross * 0.95 (after 5% fee)
     const totalWithdrawn = wdList
       .filter(w => w.status === 'approved' || w.status === 'completed')
-      .reduce((s, w) => s + parseFloat(w.amount || 0), 0);
+      .reduce((s, w) => s + parseFloat(w.amount || 0) * 0.95, 0);
     const totalPending   = wdList
       .filter(w => w.status === 'pending')
-      .reduce((s, w) => s + parseFloat(w.amount || 0), 0);
+      .reduce((s, w) => s + parseFloat(w.amount || 0) * 0.95, 0);
     const platformFees   = wdList
       .filter(w => ['approved','completed','pending'].includes(w.status))
       .reduce((s, w) => s + parseFloat(w.amount || 0) * 0.05, 0);
-    const available      = Math.max(0, totalGross - totalWithdrawn - totalPending);
+    const available      = Math.max(0, totalGross - totalWithdrawn - totalPending - platformFees);
     const completedCount = statsData.totalPurchases || 0;
     const approvedCount  = wdList.filter(w => w.status === 'approved' || w.status === 'completed').length;
+    const pendingCount   = wdList.filter(w => w.status === 'pending').length;
 
     console.log('[Dashboard] computed =>', { totalGross, totalWithdrawn, totalPending, platformFees, available });
 
@@ -536,9 +540,9 @@ async function loadDashboard() {
     const cardData = [
       { id: 'cardAvailable', value: fmt(available), sub: 'Ready to withdraw', subId: null },
       { id: 'cardRevenue',   value: fmt(totalGross), sub: `${completedCount} completed sales`, subId: 'cardRevenueSub' },
-      { id: 'cardWithdrawn', value: fmt(totalWithdrawn), sub: `${approvedCount} approved withdrawals`, subId: 'cardWithdrawnSub' },
-      { id: 'cardFees',      value: fmt(platformFees), sub: '5% platform fee', subId: null },
-      { id: 'cardPending',   value: fmt(totalPending), sub: 'awaiting approval', subId: null }
+      { id: 'cardWithdrawn', value: fmt(totalWithdrawn), sub: `${approvedCount} approved • net after 5% fee`, subId: 'cardWithdrawnSub' },
+      { id: 'cardFees',      value: fmt(platformFees),   sub: '5% of all withdrawal requests', subId: null },
+      { id: 'cardPending',   value: fmt(totalPending),   sub: `${pendingCount} pending • net after 5% fee`, subId: null }
     ];
     cardData.forEach(({ id, value, sub, subId }) => {
       const el = document.getElementById(id);

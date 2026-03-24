@@ -452,7 +452,7 @@
         <div class="hero-divider"></div>
         <div class="hero-stat-item">
           <div class="hero-stat-val" id="totalWithdrawn">₹0</div>
-          <div class="hero-stat-lbl">Withdrawn</div>
+          <div class="hero-stat-lbl">Withdrawn (Net)</div>
         </div>
         <div class="hero-divider"></div>
         <div class="hero-stat-item">
@@ -462,7 +462,7 @@
         <div class="hero-divider"></div>
         <div class="hero-stat-item">
           <div class="hero-stat-val" id="pendingAmount">₹0</div>
-          <div class="hero-stat-lbl">Pending</div>
+          <div class="hero-stat-lbl">Pending (Net)</div>
         </div>
       </div>
     </div>
@@ -781,19 +781,25 @@
         const wdList = Array.isArray(withdrawals) ? withdrawals : [];
         const approved = wdList.filter(w => w.status === 'approved' || w.status === 'completed');
         const pending  = wdList.filter(w => w.status === 'pending');
-        const totalWithdrawn = approved.reduce((s, w) => s + parseFloat(w.amount || 0), 0);
-        const totalPending   = pending.reduce((s, w)  => s + parseFloat(w.amount || 0), 0);
-        const available = Math.max(0, totalGross - totalWithdrawn - totalPending);
-        _availableBalance = available;
         const platformFees = wdList
           .filter(w => ['approved','completed','pending'].includes(w.status))
           .reduce((s, w) => s + parseFloat(w.amount || 0) * WD_FEE, 0);
+        const totalWithdrawn = approved.reduce((s, w) => s + parseFloat(w.amount || 0) * 0.95, 0);
+        const totalPending   = pending.reduce((s, w)  => s + parseFloat(w.amount || 0) * 0.95, 0);
+        const available = Math.max(0, totalGross - totalWithdrawn - totalPending - platformFees);
+        _availableBalance = available;
 
         document.getElementById('availableBalance').textContent = `₹${available.toFixed(0)}`;
         document.getElementById('totalEarned').textContent      = `₹${totalGross.toFixed(0)}`;
         document.getElementById('totalWithdrawn').textContent   = `₹${totalWithdrawn.toFixed(0)}`;
         document.getElementById('platformFees').textContent     = `₹${platformFees.toFixed(0)}`;
         document.getElementById('pendingAmount').textContent    = `₹${totalPending.toFixed(0)}`;
+
+        // Update labels to clarify net amounts
+        const wdLabel = document.querySelector('#totalWithdrawn + .hero-stat-lbl');
+        const pdLabel = document.querySelector('#pendingAmount + .hero-stat-lbl');
+        if (wdLabel) wdLabel.textContent = 'Withdrawn (Net)';
+        if (pdLabel) pdLabel.textContent = 'Pending (Net)';
       } catch (e) {
         console.error('loadStats error:', e);
       } finally {
@@ -848,16 +854,25 @@
               </tr>
             </thead>
             <tbody>
-              ${list.map((w, i) => `
+              ${list.map((w, i) => {
+                const isApproved = w.status === 'approved' || w.status === 'completed';
+                const dateVal = isApproved && w.approved_at ? w.approved_at : w.created_at;
+                const dateLabel = isApproved && w.approved_at ? 'Approved' : 'Submitted';
+                const dateStr = new Date(dateVal).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});
+                return `
                 <tr>
-                  <td>${new Date(w.created_at).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'})}</td>
+                  <td>
+                    <div style="font-size:13px;font-weight:700;color:#1e293b;">${dateStr}</div>
+                    <div style="font-size:10px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;margin-top:2px;">${dateLabel}</div>
+                  </td>
                   <td class="col-amount"><span class="amount-cell">₹${parseFloat(w.amount).toLocaleString('en-IN')}</span></td>
                   <td><span class="amount-cell" style="color:#667eea;">₹${(parseFloat(w.amount)*0.95).toLocaleString('en-IN',{maximumFractionDigits:2})}</span></td>
                   <td class="col-method"><span class="method-chip">${METHOD_ICONS[w.method]||''} ${w.method.toUpperCase()}</span></td>
                   <td class="col-account">${w.account||'—'}</td>
                   <td class="col-status"><span class="badge badge-${w.status}">${w.status}</span></td>
                   <td class="col-view"><button class="view-btn" onclick="openWithdrawalDetail(${i})" title="View Details"><span>View</span></button></td>
-                </tr>`).join('')}
+                </tr>`;
+              }).join('')}
             </tbody>
           </table>
         </div>`;
@@ -882,8 +897,12 @@
         }
       }
       
+      const isApproved = w.status === 'approved' || w.status === 'completed';
+      const submittedDate = new Date(w.created_at).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});
+      const approvedDate = w.approved_at ? new Date(w.approved_at).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}) : null;
       document.getElementById('withdrawalDetailBody').innerHTML = `
-        <div class="wd-row"><span class="wd-label">Date</span><span class="wd-value">${date}</span></div>
+        <div class="wd-row"><span class="wd-label">Submitted</span><span class="wd-value">${submittedDate}</span></div>
+        ${approvedDate ? `<div class="wd-row"><span class="wd-label">Approved On</span><span class="wd-value" style="color:#065f46;">${approvedDate}</span></div>` : ''}
         <div class="wd-row"><span class="wd-label">Amount</span><span class="wd-value">₹${parseFloat(w.amount).toLocaleString('en-IN')}</span></div>
         <div class="wd-row"><span class="wd-label">Net Amount</span><span class="wd-value" style="color:#667eea;font-size:17px;">₹${net}</span></div>
         <div class="wd-row"><span class="wd-label">Platform Fee</span><span class="wd-value" style="color:#ef4444;">₹${(parseFloat(w.amount)*0.05).toLocaleString('en-IN',{maximumFractionDigits:2})} (5%)</span></div>
