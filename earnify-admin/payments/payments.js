@@ -1,322 +1,217 @@
-const API_BASE = (location.hostname === 'localhost' || location.hostname === '127.0.0.1')
-  ? 'http://127.0.0.1:5000' : location.origin;
+(function () {
+  'use strict';
 
-console.log('[Payments] API_BASE =>', API_BASE);
+  const SUPA_URL = 'https://emnrgsgerfjvndexomro.supabase.co';
+  const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVtbnJnc2dlcmZqdm5kZXhvbXJvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI0MjAyMTAsImV4cCI6MjA4Nzk5NjIxMH0.uXr8lipxLbB4D_5JwQkpLzc-HudQw23tOFBfV4C6hqY';
+  const db = window.supabase.createClient(SUPA_URL, SUPA_KEY);
 
-async function apiFetch(path, options = {}) {
-  const url = API_BASE + path;
-  console.log('[apiFetch]', options.method || 'GET', url);
-  const res = await fetch(url, options);
-  console.log('[apiFetch] status', res.status, path);
-  if (!res.ok) throw new Error(`HTTP ${res.status} — ${path}`);
-  const data = await res.json();
-  console.log('[apiFetch] data', path, data);
-  return data;
-}
+  console.log('[Payments] Supabase ready');
 
-// Auth sidebar
-(async function() {
-  try {
-    const SUPA_URL = 'https://emnrgsgerfjvndexomro.supabase.co';
-    const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVtbnJnc2dlcmZqdm5kZXhvbXJvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI0MjAyMTAsImV4cCI6MjA4Nzk5NjIxMH0.uXr8lipxLbB4D_5JwQkpLzc-HudQw23tOFBfV4C6hqY';
-    
-    if (typeof window.supabase !== 'undefined') {
-      const _supa = window.supabase.createClient(SUPA_URL, SUPA_KEY);
-      const { data: { user } } = await _supa.auth.getUser();
-      if (user?.email) {
-        document.getElementById('adminEmail').textContent = user.email;
-        document.getElementById('adminAvatar').textContent = user.email.charAt(0).toUpperCase();
-        return;
-      }
-    }
-  } catch(e) { 
-    console.warn('[Payments] Supabase auth failed =>', e.message); 
-  }
-
-  const token = localStorage.getItem('adminToken');
-  if (token) {
+  /* ── Auth sidebar ── */
+  (async function () {
+    let email = 'Admin';
     try {
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      const email = payload.email || 'admin@earnify.com';
-      document.getElementById('adminEmail').textContent = email;
-      document.getElementById('adminAvatar').textContent = email.charAt(0).toUpperCase();
-      return;
-    } catch(e) { 
-      console.warn('[Payments] token decode failed', e); 
+      const { data: { user } } = await db.auth.getUser();
+      if (user?.email) email = user.email;
+    } catch (_) {}
+
+    if (email === 'Admin') {
+      try {
+        const token = localStorage.getItem('adminToken');
+        if (token) {
+          const p = JSON.parse(atob(token.split('.')[1]));
+          if (p.email) email = p.email;
+        }
+      } catch (_) {}
     }
+
+    if (email === 'Admin') {
+      try {
+        const u = JSON.parse(localStorage.getItem('currentUser') || '{}');
+        if (u.email) email = u.email;
+      } catch (_) {}
+    }
+
+    document.getElementById('adminEmail').textContent = email;
+    document.getElementById('adminAvatar').textContent = email.charAt(0).toUpperCase();
+  })();
+
+  /* ── Helpers ── */
+  window.logout = () => { localStorage.clear(); sessionStorage.clear(); location.href = '/admin/login.html'; };
+  window.toggleSidebar = () => {
+    document.getElementById('sidebar').classList.toggle('active');
+    document.getElementById('overlay').classList.toggle('active');
+  };
+
+  const fmt = n => '₹' + Math.round(n || 0).toLocaleString('en-IN');
+  const fmtDate = d => d ? new Date(d).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }) : '—';
+
+  function showToast(msg, type = 'success') {
+    const t = document.getElementById('toast');
+    t.className = `toast ${type} show`;
+    document.getElementById('toastIcon').textContent = type === 'success' ? '✅' : '❌';
+    document.getElementById('toastMessage').textContent = msg;
+    setTimeout(() => t.classList.remove('show'), 3500);
   }
 
-  try {
-    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
-    if (currentUser.email) {
-      document.getElementById('adminEmail').textContent = currentUser.email;
-      document.getElementById('adminAvatar').textContent = currentUser.email.charAt(0).toUpperCase();
-      return;
-    }
-  } catch(e) {
-    console.warn('[Payments] currentUser parse failed', e);
-  }
+  /* ── State ── */
+  let allPayments = [];
+  let selectedIdx = null;
 
-  document.getElementById('adminEmail').textContent = 'Admin';
-  document.getElementById('adminAvatar').textContent = 'A';
-})();
-
-function logout() {
-  localStorage.clear(); sessionStorage.clear();
-  location.href = '/admin/login.html';
-}
-
-function toggleSidebar() {
-  document.getElementById('sidebar').classList.toggle('active');
-  document.getElementById('overlay').classList.toggle('active');
-}
-
-function fmt(n) { return '₹' + Math.round(n || 0).toLocaleString('en-IN'); }
-
-function fmtDate(d) {
-  return d ? new Date(d).toLocaleDateString('en-IN', {day:'2-digit', month:'short', year:'numeric'}) : '—';
-}
-
-function showToast(message, type = 'success') {
-  const toast = document.getElementById('toast');
-  const icon = document.getElementById('toastIcon');
-  const msg = document.getElementById('toastMessage');
-  
-  toast.className = `toast ${type}`;
-  icon.textContent = type === 'success' ? '✅' : '❌';
-  msg.textContent = message;
-  
-  toast.classList.add('show');
-  setTimeout(() => {
-    toast.classList.remove('show');
-  }, 3000);
-}
-
-let allPayments = [];
-let selectedPaymentIndex = null;
-
-async function loadPayments() {
-  console.log('[Payments] loadPayments() called');
-  
-  try {
-    const withdrawals = await apiFetch('/api/admin/withdrawals');
-    console.log('[Payments] withdrawals =>', withdrawals);
-    
-    allPayments = Array.isArray(withdrawals) ? withdrawals.filter(w => w.status === 'pending') : [];
-    
-    const totalAmount = allPayments.reduce((sum, p) => {
-      const amount = parseFloat(p.amount || 0);
-      const netAmount = amount * 0.95;
-      return sum + netAmount;
-    }, 0);
-    
-    const processedToday = Array.isArray(withdrawals) ? withdrawals.filter(w => {
-      const today = new Date().toDateString();
-      const wDate = new Date(w.updated_at || w.created_at).toDateString();
-      return wDate === today && (w.status === 'approved' || w.status === 'rejected');
-    }).length : 0;
-    
-    document.getElementById('statPending').textContent = allPayments.length;
-    document.getElementById('statAmount').textContent = fmt(totalAmount);
-    document.getElementById('statProcessed').textContent = processedToday;
-    
-    renderPayments(allPayments);
-    
-  } catch (err) {
-    console.error('[Payments] loadPayments error =>', err);
+  /* ── Load from Supabase ── */
+  async function loadPayments() {
     document.getElementById('paymentsGrid').innerHTML = `
-      <div class="empty-state">
-        <div class="empty-icon">⚠️</div>
-        <h3>Error Loading Payments</h3>
-        <p>${err.message}</p>
-      </div>
-    `;
-  }
-}
+      <div class="empty-state"><div class="empty-icon">⏳</div><h3>Loading...</h3><p>Fetching from Supabase</p></div>`;
 
-function renderPayments(payments) {
-  const grid = document.getElementById('paymentsGrid');
-  
-  if (!payments.length) {
-    grid.innerHTML = `
-      <div class="empty-state">
-        <div class="empty-icon">✅</div>
-        <h3>All Caught Up!</h3>
-        <p>No pending payment requests at the moment</p>
-      </div>
-    `;
-    return;
+    const { data, error } = await db.from('withdrawals').select('*').order('created_at', { ascending: false });
+
+    console.log('[Payments] Supabase fetch =>', { data, error });
+
+    if (error) {
+      document.getElementById('paymentsGrid').innerHTML = `
+        <div class="empty-state">
+          <div class="empty-icon">⚠️</div>
+          <h3>Supabase Error</h3>
+          <p>${error.message}</p>
+          <small style="color:#94a3b8">Table may not exist — run the SQL schema first</small>
+        </div>`;
+      return;
+    }
+
+    const all = data || [];
+    allPayments = all.filter(w => w.status === 'pending');
+
+    const totalNet = allPayments.reduce((s, p) => s + parseFloat(p.amount || 0) * 0.95, 0);
+    const today = new Date().toDateString();
+    const processedToday = all.filter(w =>
+      new Date(w.updated_at || w.created_at).toDateString() === today &&
+      (w.status === 'approved' || w.status === 'rejected')
+    ).length;
+
+    document.getElementById('statPending').textContent = allPayments.length;
+    document.getElementById('statAmount').textContent = fmt(totalNet);
+    document.getElementById('statProcessed').textContent = processedToday;
+
+    renderPayments(allPayments);
   }
-  
-  grid.innerHTML = payments.map((p, i) => {
-    const email = p.user_email || p.email || 'Unknown';
-    const avatar = email.charAt(0).toUpperCase();
-    const grossAmount = parseFloat(p.amount || 0);
-    const fee = grossAmount * 0.05;
-    const netAmount = grossAmount - fee;
-    const method = p.method || 'Bank Transfer';
-    
-    return `
-      <div class="payment-card">
-        <div class="payment-header">
-          <div class="payment-user">
-            <div class="user-avatar">${avatar}</div>
-            <div class="user-info">
-              <h3>${email}</h3>
-              <p>Request ID: ${p.id || '—'}</p>
+
+  /* ── Render cards ── */
+  function renderPayments(payments) {
+    const grid = document.getElementById('paymentsGrid');
+    if (!payments.length) {
+      grid.innerHTML = `<div class="empty-state"><div class="empty-icon">✅</div><h3>All Caught Up!</h3><p>No pending payment requests</p></div>`;
+      return;
+    }
+
+    grid.innerHTML = payments.map((p, i) => {
+      const email = p.user_email || p.email || 'Unknown';
+      const gross = parseFloat(p.amount || 0);
+      const fee = gross * 0.05;
+      const net = gross - fee;
+      const method = (p.method || 'Bank Transfer').toUpperCase();
+      return `
+        <div class="payment-card">
+          <div class="payment-header">
+            <div class="payment-user">
+              <div class="user-avatar">${email.charAt(0).toUpperCase()}</div>
+              <div class="user-info">
+                <h3>${email}</h3>
+                <p>ID: ${p.id}</p>
+              </div>
+            </div>
+            <div class="payment-amount">
+              <div class="amount-label">Net Amount</div>
+              <div class="amount-value">${fmt(net)}</div>
             </div>
           </div>
-          <div class="payment-amount">
-            <div class="amount-label">Net Amount</div>
-            <div class="amount-value">${fmt(netAmount)}</div>
+          <div class="payment-details">
+            <div class="detail-item"><div class="detail-label">Gross Amount</div><div class="detail-value">${fmt(gross)}</div></div>
+            <div class="detail-item"><div class="detail-label">Platform Fee (5%)</div><div class="detail-value" style="color:#ef4444">${fmt(fee)}</div></div>
+            <div class="detail-item"><div class="detail-label">Request Date</div><div class="detail-value">${fmtDate(p.created_at)}</div></div>
+            <div class="detail-item"><div class="detail-label">Method</div><div class="detail-value">${method}</div></div>
           </div>
-        </div>
-        
-        <div class="payment-details">
-          <div class="detail-item">
-            <div class="detail-label">Gross Amount</div>
-            <div class="detail-value">${fmt(grossAmount)}</div>
+          <div class="payment-actions">
+            <button class="action-btn btn-accept" id="accept-${i}" onclick="openConfirmModal(${i})">✓ Accept</button>
+            <button class="action-btn btn-reject" id="reject-${i}" onclick="handlePayment(${i},'reject')">✕ Reject</button>
           </div>
-          <div class="detail-item">
-            <div class="detail-label">Platform Fee (5%)</div>
-            <div class="detail-value" style="color:#ef4444;">${fmt(fee)}</div>
-          </div>
-          <div class="detail-item">
-            <div class="detail-label">Request Date</div>
-            <div class="detail-value">${fmtDate(p.created_at)}</div>
-          </div>
-          <div class="detail-item">
-            <div class="detail-label">Payment Method</div>
-            <div class="detail-value">${method.toUpperCase()}</div>
-          </div>
-        </div>
-        
-        <div class="payment-actions">
-          <button class="action-btn btn-accept" onclick="openConfirmModal(${i})" id="accept-${i}">
-            ✓ Accept
-          </button>
-          <button class="action-btn btn-reject" onclick="handlePayment(${i}, 'reject')" id="reject-${i}">
-            ✕ Reject
-          </button>
-        </div>
-      </div>
-    `;
-  }).join('');
-}
-
-function openConfirmModal(index) {
-  selectedPaymentIndex = index;
-  const payment = allPayments[index];
-  if (!payment) return;
-  
-  const email = payment.user_email || payment.email || 'Unknown';
-  const grossAmount = parseFloat(payment.amount || 0);
-  const fee = grossAmount * 0.05;
-  const netAmount = grossAmount - fee;
-  const method = payment.method || 'Bank Transfer';
-  const account = payment.account || '—';
-  
-  document.getElementById('modalDetails').innerHTML = `
-    <div class="modal-detail-item">
-      <div class="modal-detail-label">User Email</div>
-      <div class="modal-detail-value">${email}</div>
-    </div>
-    <div class="modal-detail-item">
-      <div class="modal-detail-label">Request ID</div>
-      <div class="modal-detail-value">${payment.id || '—'}</div>
-    </div>
-    <div class="modal-detail-item">
-      <div class="modal-detail-label">Gross Amount</div>
-      <div class="modal-detail-value">${fmt(grossAmount)}</div>
-    </div>
-    <div class="modal-detail-item">
-      <div class="modal-detail-label">Platform Fee (5%)</div>
-      <div class="modal-detail-value" style="color:#ef4444;">${fmt(fee)}</div>
-    </div>
-    <div class="modal-detail-item full">
-      <div class="modal-detail-label">Net Amount (To Transfer)</div>
-      <div class="modal-detail-value highlight">${fmt(netAmount)}</div>
-    </div>
-    <div class="modal-detail-item">
-      <div class="modal-detail-label">Payment Method</div>
-      <div class="modal-detail-value">${method.toUpperCase()}</div>
-    </div>
-    <div class="modal-detail-item">
-      <div class="modal-detail-label">Request Date</div>
-      <div class="modal-detail-value">${fmtDate(payment.created_at)}</div>
-    </div>
-    <div class="modal-detail-item full">
-      <div class="modal-detail-label">Account Details</div>
-      <div class="modal-detail-value" style="font-size:14px;">${account}</div>
-    </div>
-    ${payment.note ? `
-    <div class="modal-detail-item full">
-      <div class="modal-detail-label">Note</div>
-      <div class="modal-detail-value" style="font-size:14px;">${payment.note}</div>
-    </div>` : ''}
-  `;
-  
-  document.getElementById('confirmModal').classList.add('show');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeConfirmModal() {
-  document.getElementById('confirmModal').classList.remove('show');
-  document.body.style.overflow = '';
-  selectedPaymentIndex = null;
-}
-
-async function confirmPayment() {
-  if (selectedPaymentIndex === null) return;
-  
-  const confirmBtn = document.getElementById('confirmBtn');
-  confirmBtn.disabled = true;
-  confirmBtn.textContent = '⏳ Processing...';
-  
-  try {
-    await handlePayment(selectedPaymentIndex, 'approve');
-    closeConfirmModal();
-  } catch (err) {
-    confirmBtn.disabled = false;
-    confirmBtn.innerHTML = '✓ Approve Payment';
+        </div>`;
+    }).join('');
   }
-}
 
-async function handlePayment(index, action) {
-  const payment = allPayments[index];
-  if (!payment) return;
-  
-  const acceptBtn = document.getElementById(`accept-${index}`);
-  const rejectBtn = document.getElementById(`reject-${index}`);
-  
-  acceptBtn.disabled = true;
-  rejectBtn.disabled = true;
-  
-  try {
+  /* ── Confirm modal ── */
+  window.openConfirmModal = function (i) {
+    selectedIdx = i;
+    const p = allPayments[i];
+    if (!p) return;
+    const gross = parseFloat(p.amount || 0);
+    const fee = gross * 0.05;
+    const net = gross - fee;
+    document.getElementById('modalDetails').innerHTML = `
+      <div class="modal-detail-item"><div class="modal-detail-label">User Email</div><div class="modal-detail-value">${p.user_email || '—'}</div></div>
+      <div class="modal-detail-item"><div class="modal-detail-label">Request ID</div><div class="modal-detail-value">${p.id}</div></div>
+      <div class="modal-detail-item"><div class="modal-detail-label">Gross Amount</div><div class="modal-detail-value">${fmt(gross)}</div></div>
+      <div class="modal-detail-item"><div class="modal-detail-label">Platform Fee (5%)</div><div class="modal-detail-value" style="color:#ef4444">${fmt(fee)}</div></div>
+      <div class="modal-detail-item full"><div class="modal-detail-label">Net Amount</div><div class="modal-detail-value highlight">${fmt(net)}</div></div>
+      <div class="modal-detail-item"><div class="modal-detail-label">Method</div><div class="modal-detail-value">${(p.method || '—').toUpperCase()}</div></div>
+      <div class="modal-detail-item"><div class="modal-detail-label">Request Date</div><div class="modal-detail-value">${fmtDate(p.created_at)}</div></div>
+      <div class="modal-detail-item full"><div class="modal-detail-label">Account Details</div><div class="modal-detail-value" style="font-size:14px;white-space:pre-line">${p.account || '—'}</div></div>
+      ${p.note ? `<div class="modal-detail-item full"><div class="modal-detail-label">Note</div><div class="modal-detail-value" style="font-size:14px">${p.note}</div></div>` : ''}`;
+    document.getElementById('confirmModal').classList.add('show');
+    document.body.style.overflow = 'hidden';
+  };
+
+  window.closeConfirmModal = function () {
+    document.getElementById('confirmModal').classList.remove('show');
+    document.body.style.overflow = '';
+    selectedIdx = null;
+    const btn = document.getElementById('confirmBtn');
+    btn.disabled = false;
+    btn.textContent = '✓ Approve Payment';
+  };
+
+  window.confirmPayment = async function () {
+    if (selectedIdx === null) return;
+    const btn = document.getElementById('confirmBtn');
+    btn.disabled = true;
+    btn.textContent = '⏳ Processing...';
+    await handlePayment(selectedIdx, 'approve');
+    window.closeConfirmModal();
+  };
+
+  /* ── Approve / Reject via Supabase ── */
+  window.handlePayment = async function (i, action) {
+    const p = allPayments[i];
+    if (!p) return;
+
+    const acceptBtn = document.getElementById(`accept-${i}`);
+    const rejectBtn = document.getElementById(`reject-${i}`);
+    if (acceptBtn) acceptBtn.disabled = true;
+    if (rejectBtn) rejectBtn.disabled = true;
+
     const newStatus = action === 'approve' ? 'approved' : 'rejected';
-    
-    await apiFetch(`/api/admin/withdrawals/${payment.id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ status: newStatus })
-    });
-    
-    const netAmount = parseFloat(payment.amount || 0) * 0.95;
+    console.log(`[Payments] Updating id=${p.id} status=${newStatus}`);
+
+    const { error } = await db
+      .from('withdrawals')
+      .update({ status: newStatus })
+      .eq('id', p.id);
+
+    if (error) {
+      console.error('[Payments] Update error =>', error);
+      showToast(`Failed: ${error.message}`, 'error');
+      if (acceptBtn) acceptBtn.disabled = false;
+      if (rejectBtn) rejectBtn.disabled = false;
+      return;
+    }
+
+    const net = parseFloat(p.amount || 0) * 0.95;
     showToast(
-      action === 'approve' 
-        ? `Payment approved successfully! ${fmt(netAmount)} will be transferred.`
-        : 'Payment request rejected.',
+      action === 'approve' ? `Approved! ${fmt(net)} will be transferred.` : 'Request rejected.',
       'success'
     );
-    
-    setTimeout(() => loadPayments(), 1000);
-    
-  } catch (err) {
-    console.error('[Payments] handlePayment error =>', err);
-    showToast(`Failed to ${action} payment: ${err.message}`, 'error');
-    acceptBtn.disabled = false;
-    rejectBtn.disabled = false;
-  }
-}
+    setTimeout(loadPayments, 1000);
+  };
 
-loadPayments();
+  window.loadPayments = loadPayments;
+  loadPayments();
+})();
