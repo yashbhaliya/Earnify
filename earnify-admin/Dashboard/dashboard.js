@@ -620,14 +620,31 @@ async function loadDashboard() {
             const gross = parseFloat(w.amount || 0);
             const fee   = gross * 0.05;
             const net   = gross - fee;
+            const reasonCell = w.reject_reason
+              ? `<div style="display:flex;align-items:flex-start;gap:5px;max-width:160px;">
+                   <span style="color:#dc2626;flex-shrink:0;">⚠</span>
+                   <span style="font-size:12px;font-weight:600;color:#991b1b;line-height:1.4;word-break:break-word;">${w.reject_reason}</span>
+                 </div>`
+              : `<span style="color:#cbd5e1;">—</span>`;
+            const mobileReason = w.reject_reason
+              ? `<div style="margin-top:6px;padding:7px 10px;background:#fef2f2;border:1px solid #fecaca;border-radius:8px;display:flex;align-items:flex-start;gap:6px;">
+                   <span style="font-size:12px;color:#dc2626;flex-shrink:0;">⚠</span>
+                   <span style="font-size:12px;font-weight:600;color:#991b1b;line-height:1.4;">${w.reject_reason}</span>
+                 </div>`
+              : '';
             return `
               <tr class="mobile-table-row mobile-withdrawal-row" data-index="${i}">
-                <td colspan="7">
+                <td colspan="8">
                   <div class="mobile-cell">
                     <span class="mobile-email">${w.user_email || '—'}</span>
                     <span class="mobile-amount">${fmt(net)}</span>
                     <button class="view-btn" onclick="showWithdrawalDetails(${i})">View</button>
                   </div>
+                  <div style="display:flex;align-items:center;gap:8px;margin-top:4px;">
+                    <span class="badge ${badgeClass(w.status)}" style="font-size:10px;">${w.status}</span>
+                    <span style="font-size:11px;color:#94a3b8;">${fmtDate(w.created_at)}</span>
+                  </div>
+                  ${mobileReason}
                 </td>
               </tr>
               <tr data-index="${i}">
@@ -637,6 +654,7 @@ async function loadDashboard() {
                 <td style="font-weight:700;color:#667eea;">${fmt(net)}</td>
                 <td style="color:#ef4444;">-${fmt(fee)}</td>
                 <td><span class="badge ${badgeClass(w.status)}">${w.status}</span></td>
+                <td>${reasonCell}</td>
                 <td>${fmtDate(w.created_at)}</td>
               </tr>`;
           }).join('');
@@ -756,6 +774,11 @@ function showWithdrawalDetails(index) {
       <div class="detail-label">📅 Request Date</div>
       <div class="detail-value">${fmtDate(withdrawal.created_at)}</div>
     </div>
+    ${withdrawal.reject_reason ? `
+    <div style="padding:12px 14px;background:#fef2f2;border:1.5px solid #fecaca;border-radius:12px;">
+      <div style="font-size:11px;font-weight:700;color:#991b1b;text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px;">⚠ Rejection Reason</div>
+      <div style="font-size:13px;font-weight:600;color:#991b1b;line-height:1.5;">${withdrawal.reject_reason}</div>
+    </div>` : ''}
   `;
   
   document.getElementById('detailsModal').classList.add('active');
