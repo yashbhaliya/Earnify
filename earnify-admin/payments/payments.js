@@ -132,7 +132,7 @@
           </div>
           <div class="payment-actions">
             <button class="action-btn btn-accept" id="accept-${i}" onclick="openConfirmModal(${i})">✓ Accept</button>
-            <button class="action-btn btn-reject" id="reject-${i}" onclick="handlePayment(${i},'reject')">✕ Reject</button>
+            <button class="action-btn btn-reject" id="reject-${i}" onclick="openRejectModal(${i})">✕ Reject</button>
           </div>
         </div>`;
     }).join('');
@@ -178,8 +178,42 @@
     window.closeConfirmModal();
   };
 
+  let rejectIdx = null;
+
+  window.openRejectModal = function (i) {
+    rejectIdx = i;
+    const input = document.getElementById('rejectReasonInput');
+    const errEl = document.getElementById('rejectReasonError');
+    if (input) input.value = '';
+    if (errEl) errEl.style.display = 'none';
+    document.getElementById('rejectModal').classList.add('show');
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => input && input.focus(), 100);
+  };
+
+  window.closeRejectModal = function () {
+    document.getElementById('rejectModal').classList.remove('show');
+    document.body.style.overflow = '';
+    rejectIdx = null;
+    const btn = document.getElementById('rejectConfirmBtn');
+    if (btn) { btn.disabled = false; btn.textContent = '✕ Confirm Reject'; }
+  };
+
+  window.confirmReject = async function () {
+    if (rejectIdx === null) return;
+    const reason = document.getElementById('rejectReasonInput').value.trim();
+    const errEl = document.getElementById('rejectReasonError');
+    if (!reason) { errEl.style.display = 'block'; return; }
+    errEl.style.display = 'none';
+    const btn = document.getElementById('rejectConfirmBtn');
+    btn.disabled = true;
+    btn.textContent = '⏳ Rejecting...';
+    await handlePayment(rejectIdx, 'reject', reason);
+    window.closeRejectModal();
+  };
+
   /* ── Approve / Reject via Supabase ── */
-  window.handlePayment = async function (i, action) {
+  window.handlePayment = async function (i, action, rejectReason = '') {
     const p = allPayments[i];
     if (!p) return;
 
@@ -193,6 +227,7 @@
 
     const updateData = { status: newStatus };
     if (action === 'approve') updateData.approved_at = new Date().toISOString();
+    if (action === 'reject' && rejectReason) updateData.reject_reason = rejectReason;
 
     const { error } = await db
       .from('withdrawals')

@@ -273,15 +273,17 @@
       .form-grid   { grid-template-columns: 1fr; }
       .w-card      { padding: 22px 18px; }
 
-      /* History table mobile: show only Date, Net Amount, View */
-      .col-amount, .col-method, .col-account, .col-status { display: none !important; }
+      /* History table mobile: show only Date (with status), Net Amount, View */
+      .col-amount, .col-method, .col-reason, .col-status { display: none !important; }
       .col-view { display: table-cell !important; }
+      .mobile-status { display: inline-block !important; }
       .history-table th, .history-table td { padding: 11px 10px !important; font-size: 12px !important; }
       .history-wrap { overflow-x: unset !important; }
       .history-table { min-width: unset !important; width: 100% !important; }
     }
     @media (min-width: 769px) {
       .col-view { display: none !important; }
+      .mobile-status { display: none !important; }
     }
 
     /* View button */
@@ -818,8 +820,13 @@
       let list = [];
       try {
         if (!user) throw new Error('not logged in');
-        const data = await apiFetch(`${API_CONFIG.endpoints.withdrawals}/${encodeURIComponent(user.email)}`);
-        list = Array.isArray(data) ? data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)) : [];
+        const { data, error } = await _supa
+          .from('withdrawals')
+          .select('*')
+          .eq('user_email', user.email)
+          .order('created_at', { ascending: false });
+        if (error) throw error;
+        list = data || [];
       } catch (e) {
         console.error('renderHistory error:', e);
       }
@@ -848,8 +855,8 @@
                 <th class="col-amount">Amount</th>
                 <th>Net Amount</th>
                 <th class="col-method">Method</th>
-                <th class="col-account">Account</th>
                 <th class="col-status">Status</th>
+                <th class="col-reason">Reason</th>
                 <th class="col-view">Details</th>
               </tr>
             </thead>
@@ -864,12 +871,16 @@
                   <td>
                     <div style="font-size:13px;font-weight:700;color:#1e293b;">${dateStr}</div>
                     <div style="font-size:10px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;margin-top:2px;">${dateLabel}</div>
+                    <span class="badge badge-${w.status} mobile-status" style="margin-top:5px;font-size:10px;padding:3px 9px;">${w.status}</span>
                   </td>
-                  <td class="col-amount"><span class="amount-cell">₹${parseFloat(w.amount).toLocaleString('en-IN')}</span></td>
-                  <td><span class="amount-cell" style="color:#667eea;">₹${(parseFloat(w.amount)*0.95).toLocaleString('en-IN',{maximumFractionDigits:2})}</span></td>
+                  <td class="col-amount"><span class="amount-cell">&#8377;${parseFloat(w.amount).toLocaleString('en-IN')}</span></td>
+                  <td><span class="amount-cell" style="color:#667eea;">&#8377;${(parseFloat(w.amount)*0.95).toLocaleString('en-IN',{maximumFractionDigits:2})}</span></td>
                   <td class="col-method"><span class="method-chip">${METHOD_ICONS[w.method]||''} ${w.method.toUpperCase()}</span></td>
-                  <td class="col-account">${w.account||'—'}</td>
                   <td class="col-status"><span class="badge badge-${w.status}">${w.status}</span></td>
+                  <td class="col-reason">${w.reject_reason
+                    ? `<div style="display:flex;align-items:flex-start;gap:6px;padding:7px 10px;border-radius:8px;max-width:180px;"><span style="font-size:13px;flex-shrink:0;">&#9888;</span><span style="font-size:12px;font-weight:600;color:#991b1b;line-height:1.4;">${w.reject_reason}</span></div>`
+                    : '<span style="color:#cbd5e1;font-size:13px;">—</span>'}
+                  </td>
                   <td class="col-view"><button class="view-btn" onclick="openWithdrawalDetail(${i})" title="View Details"><span>View</span></button></td>
                 </tr>`;
               }).join('')}
@@ -909,6 +920,7 @@
         <div class="wd-row"><span class="wd-label">Method</span><span class="wd-value">${METHOD_ICONS[w.method]||''} ${w.method.toUpperCase()}</span></div>
         <div class="wd-row"><span class="wd-label">Account</span><span class="wd-value">${accountDisplay}</span></div>
         <div class="wd-row"><span class="wd-label">Status</span><span class="wd-value" style="color:${statusColors[w.status]||'#1e293b'};text-transform:capitalize;">${w.status}</span></div>
+        ${w.reject_reason ? `<div class="wd-row" style="border:none;"><div style="width:100%;padding:12px 14px;background:#fef2f2;border:1.5px solid #fecaca;border-radius:12px;"><div style="font-size:11px;font-weight:700;color:#991b1b;text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px;">&#9888; Rejection Reason</div><div style="font-size:13px;font-weight:600;color:#991b1b;line-height:1.5;">${w.reject_reason}</div></div></div>` : ''}
         ${w.note ? `<div class="wd-row"><span class="wd-label">Note</span><span class="wd-value">${w.note}</span></div>` : ''}`;
       document.getElementById('withdrawalDetailModal').classList.add('open');
       document.body.style.overflow = 'hidden';
