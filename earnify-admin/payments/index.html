@@ -7,7 +7,7 @@
   <link rel="icon" href="/file/logo1.jpeg" type="image/jpeg">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
 
     body {
       font-family: 'Inter', sans-serif;
@@ -498,8 +498,8 @@
     .modal-content {
       background: white;
       border-radius: 20px;
-      padding: 32px;
-      max-width: 600px;
+      padding: 16px;
+      max-width: 500px;
       width: 100%;
       max-height: 85vh;
       overflow-y: auto;
@@ -728,13 +728,13 @@
       .sidebar { transform: translateX(-100%); }
       .sidebar.active { transform: translateX(0); }
       .main { margin-left: 0; padding: 20px 16px; }
-      .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+      .stats-grid { grid-template-columns: 1fr; gap: 12px; }
       .page-header { padding: 20px 20px; }
       .page-header h1 { font-size: 20px; }
       .page-header p { font-size: 13px; }
-      .payment-header { flex-direction: column; align-items: flex-start; gap: 16px; }
+      .payment-header { flex-direction: row; align-items: flex-start; gap: 16px; }
       .payment-amount { text-align: left; }
-      .payment-details { grid-template-columns: 1fr; gap: 12px; padding: 14px; }
+      .payment-details { display: none; }
       .payment-actions { flex-direction: row; }
       .modal-details { grid-template-columns: 1fr; }
     }
