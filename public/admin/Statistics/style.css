@@ -35,13 +35,15 @@ body {
   background: linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%);
   box-shadow: 4px 0 30px rgba(0, 0, 0, 0.1);
   padding: 30px 0;
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
   height: 100vh;
   display: flex;
   flex-direction: column;
   overflow-y: auto;
   border-right: 2px solid rgba(59, 130, 246, 0.2);
+  z-index: 100;
 }
 
 .sidebar h2 {
@@ -49,7 +51,7 @@ body {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  padding: 0 30px 30px;
+
   font-size: 24px;
   text-shadow: none;
 }
@@ -153,9 +155,11 @@ body {
 
 .main {
   flex: 1;
+  margin-left: 260px;
   padding: 40px;
   background: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(10px);
+  min-height: 100vh;
 }
 
 .main h1 {

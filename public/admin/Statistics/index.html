@@ -1280,81 +1280,70 @@
   async function loadStatistics() {
     const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
     const userEmail = currentUser.email;
-    
-    if (!userEmail) {
-      showNoDataMessage();
-      return;
-    }
-    
+    if (!userEmail) { showNoDataMessage(); return; }
+
     try {
-      console.log('🔄 Loading statistics for user:', userEmail, 'with filter:', currentDateFilter);
-      
-      // Always load all data first, then filter client-side for better reliability
-      const res = await fetch(API_CONFIG.getURL(`${API_CONFIG.endpoints.userStatistics}/${encodeURIComponent(userEmail)}`));
-      
-      if (!res.ok) {
-        throw new Error('Failed to load statistics. Please try again.');
-      }
-      
-      const statsData = await res.json();
-      console.log('📊 Raw API Response:', statsData);
-      
-      // Ensure created_at dates are properly formatted and log the structure
-      if (statsData.userStats && Array.isArray(statsData.userStats)) {
-        console.log('👥 Processing user stats:', statsData.userStats.length, 'users');
-        
-        statsData.userStats = statsData.userStats.map((user, index) => {
-          console.log(`👤 User ${index + 1}:`, {
-            email: user.email,
-            created_at: user.created_at,
-            purchaseDate: user.purchaseDate,
-            totalAmount: user.totalAmount,
-            totalPurchases: user.totalPurchases
-          });
-          
-          // Ensure created_at is in proper ISO format
-          if (user.created_at) {
-            const testDate = new Date(user.created_at);
-            if (isNaN(testDate.getTime())) {
-              console.warn(`⚠️ Invalid created_at date for user ${user.email}:`, user.created_at);
-              user.created_at = new Date().toISOString();
-            } else {
-              console.log(`✅ Valid date for ${user.email}:`, testDate.toLocaleString());
-            }
-          } else {
-            console.warn(`⚠️ No created_at date for user ${user.email}, using current date`);
-            user.created_at = new Date().toISOString();
-          }
-          return user;
-        });
-      } else {
-        console.log('📭 No userStats found in response');
-      }
-      
-      // Store original data for filtering
+      const SUPA_URL = 'https://emnrgsgerfjvndexomro.supabase.co';
+      const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVtbnJnc2dlcmZqdm5kZXhvbXJvIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3MjQyMDIxMCwiZXhwIjoyMDg3OTk2MjEwfQ.mr4k_GsJ14CC1mqvEZgf9cTaNiLMlnj_sZxFjJud67k';
+      const db = window.supabase.createClient(SUPA_URL, SUPA_KEY);
+
+      // 1. Get this user's resources
+      const { data: resources } = await db.from('resources').select('id, title, price').eq('user_email', userEmail);
+      if (!resources || !resources.length) { displayStatsData({ userStats: [], totalRevenue: 0, totalPurchases: 0, totalCustomers: 0 }); return; }
+
+      const priceMap = {}, titleMap = {};
+      const resourceIds = resources.map(r => { priceMap[r.id] = parseFloat(r.price || 0); titleMap[r.id] = r.title; return r.id; });
+
+      // 2. Get all completed payments for those resources
+      const { data: payments } = await db.from('payments')
+        .select('user_id, resource_id, created_at')
+        .eq('status', 'completed')
+        .in('resource_id', resourceIds)
+        .order('created_at', { ascending: false });
+
+      if (!payments || !payments.length) { displayStatsData({ userStats: [], totalRevenue: 0, totalPurchases: 0, totalCustomers: 0 }); return; }
+
+      // 3. Resolve buyer emails from auth.users via Supabase
+      const uniqueUserIds = [...new Set(payments.map(p => p.user_id))];
+      const emailMap = {};
+      await Promise.all(uniqueUserIds.map(async uid => {
+        try {
+          const { data: profile } = await db.from('profiles').select('email').eq('id', uid).single();
+          emailMap[uid] = profile?.email || uid;
+        } catch { emailMap[uid] = uid; }
+      }));
+
+      // 4. Build one row per payment record
+      const userStats = payments.map(p => ({
+        email: emailMap[p.user_id] || p.user_id,
+        totalPurchases: 1,
+        totalAmount: priceMap[p.resource_id] || 0,
+        resources: [titleMap[p.resource_id] || 'Unknown'],
+        created_at: p.created_at
+      }));
+
+      const uniqueEmails = new Set(userStats.map(u => u.email));
+      const statsData = {
+        userStats,
+        totalRevenue:   userStats.reduce((s, u) => s + u.totalAmount, 0),
+        totalPurchases: userStats.length,
+        totalCustomers: uniqueEmails.size
+      };
+
       window.originalStatsData = statsData;
-      
-      console.log('💾 Stored original data:', statsData);
-      
-      // Apply client-side filtering based on current filter
+
       let displayData = statsData;
       if (currentDateFilter !== 'alltime') {
-        console.log('🔍 Applying filter:', currentDateFilter);
-        if (currentDateFilter === 'custom' && window.customStartDate && window.customEndDate) {
-          displayData = filterDataByDate(statsData, currentDateFilter, window.customStartDate, window.customEndDate);
-        } else {
-          displayData = filterDataByDate(statsData, currentDateFilter);
-        }
-      } else {
-        console.log('📈 Showing all time data (no filter)');
+        displayData = currentDateFilter === 'custom' && window.customStartDate && window.customEndDate
+          ? filterDataByDate(statsData, 'custom', window.customStartDate, window.customEndDate)
+          : filterDataByDate(statsData, currentDateFilter);
       }
-      
-      console.log('🎨 Final display data:', displayData);
+
       displayStatsData(displayData);
       updateSectionHeader();
-      
+
     } catch (error) {
-      console.error('❌ Error loading statistics:', error);
+      console.error('Error loading statistics:', error);
       showErrorMessage();
     }
   }
@@ -1368,13 +1357,9 @@
     const totalCustomersEl = document.getElementById('totalCustomers');
     
     const userStats = statsData.userStats || [];
-    const revenue = userStats.length
-      ? userStats.reduce((s, u) => s + (parseFloat(u.totalAmount) || 0), 0)
-      : (statsData.totalRevenue || 0);
-    const sales = userStats.length
-      ? userStats.reduce((s, u) => s + (parseInt(u.totalPurchases) || 0), 0)
-      : (statsData.totalPurchases || 0);
-    const customers = userStats.length ? userStats.length : (statsData.totalCustomers || 0);
+    const revenue = userStats.reduce((s, u) => s + (parseFloat(u.totalAmount) || 0), 0) || (statsData.totalRevenue || 0);
+    const sales = userStats.length || (statsData.totalPurchases || 0);
+    const customers = statsData.totalCustomers || new Set(userStats.map(u => u.email)).size;
     
     if (totalRevenueEl) totalRevenueEl.textContent = `₹${revenue.toFixed(0)}`;
     if (totalSalesEl) totalSalesEl.textContent = sales;
@@ -1443,21 +1428,25 @@
           <thead>
             <tr>
               <th><div class="th-content"><span>Customer Email</span></div></th>
-              <th class="col-quantity"><div class="th-content"><span>Quantity</span></div></th>
-              <th><div class="th-content"><span>Total Amount</span></div></th>
-              <th class="col-resources"><div class="th-content"><span>Resources Purchased</span></div></th>
+              <th class="col-quantity"><div class="th-content"><span>Date</span></div></th>
+              <th><div class="th-content"><span>Amount</span></div></th>
+              <th class="col-resources"><div class="th-content"><span>Resource Purchased</span></div></th>
               <th class="col-eye"><div class="th-content"><span>Details</span></div></th>
             </tr>
           </thead>
           <tbody>
-            ${Object.entries(customerStats).map(([userId, stats]) => `
+            ${Object.entries(customerStats).map(([userId, stats]) => {
+              const date = stats.purchaseDate ? new Date(stats.purchaseDate).toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' }) : '—';
+              const resource = stats.resources[0] || '—';
+              return `
               <tr>
                 <td><div class="customer-info"><div class="customer-details"><div class="customer-email">${stats.email}</div></div></div></td>
-                <td class="col-quantity"><span class="quantity-badge">${stats.quantity}</span></td>
+                <td class="col-quantity"><span style="font-size:13px;color:#475569;font-weight:500;">${date}</span></td>
                 <td><span class="amount-value">₹${parseFloat(stats.totalAmount).toFixed(0)}</span></td>
-                <td class="col-resources"><div class="resources-list">${stats.resources.slice(0, 2).map(r => `<span class="resource-tag">${r}</span>`).join('')}${stats.resources.length > 2 ? `<span class="resource-tag more">+${stats.resources.length - 2} more</span>` : ''}</div></td>
+                <td class="col-resources"><div class="resources-list"><span class="resource-tag">${resource}</span></div></td>
                 <td class="col-eye"><button class="eye-btn" onclick="openCustomerDetail('${userId}')" title="View Details"><span>View</span></button></td>
-              </tr>`).join('')}
+              </tr>`;
+            }).join('')}
           </tbody>
         </table>
       </div>`;
@@ -1717,8 +1706,8 @@
     return {
       ...originalData,
       totalRevenue:   filteredUserStats.reduce((s, u) => s + (parseFloat(u.totalAmount)  || 0), 0),
-      totalPurchases: filteredUserStats.reduce((s, u) => s + (parseInt(u.totalPurchases) || 0), 0),
-      totalCustomers: filteredUserStats.length,
+      totalPurchases: filteredUserStats.length,
+      totalCustomers: new Set(filteredUserStats.map(u => u.email)).size,
       userStats: filteredUserStats
     };
   }
