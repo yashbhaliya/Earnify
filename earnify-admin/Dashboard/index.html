@@ -1038,8 +1038,12 @@
           </select>
         </div>
       </div>
-      <div id="barChartWrap" style="position:relative;width:100%;height: 300px;">
+      <div id="barChartWrap" style="position:relative;width:100%;height:300px;">
         <canvas id="barChart"></canvas>
+        <div id="barChartEmpty" style="display:none;position:absolute;inset:0;display:none;align-items:center;justify-content:center;flex-direction:column;gap:12px;">
+          <div style="font-size:48px;opacity:.3;">📊</div>
+          <div style="font-size:14px;color:#94a3b8;font-weight:600;">No resource data available</div>
+        </div>
       </div>
     </div>
   </div>
@@ -1094,7 +1098,7 @@
   <!-- Withdrawals Table -->
   <div class="table-card">
     <div class="table-header">
-      <h3>💸 Withdrawal Requests</h3>
+      <h3>💸 Withdrawal Information</h3>
       <span id="wdCount">—</span>
     </div>
     <div><table>

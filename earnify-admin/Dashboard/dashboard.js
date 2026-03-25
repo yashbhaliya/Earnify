@@ -72,9 +72,10 @@ let _barChart   = null;
 let _dayChart   = null;
 let _dayWiseChart = null;
 let _allResourceData = [];
-let _allPurchasesData = [];
-let _resourcePriceMap = {}; // title -> actual price from DB
-let _resourceTypeMap  = {}; // title -> type (pdf/excel/exam/service/etc)
+let _allPurchasesData = [];   // used by day-wise chart (flat payment records)
+let _barChartData = [];       // used exclusively by bar chart (per-payment with resource title)
+let _resourcePriceMap = {};
+let _resourceTypeMap  = {};
 
 function renderDayWiseChart(purchases, selectedMonth, selectedYear) {
   const canvas = document.getElementById('dayWiseChart');
@@ -263,24 +264,23 @@ function filterDayChart() {
 }
 
 function renderResourceChart(limit = 10, sortBy = 'revenue') {
-  const barCtx = document.getElementById('barChart')?.getContext('2d');
-  if (!barCtx || !_allPurchasesData.length) return;
+  const canvas  = document.getElementById('barChart');
+  const wrap    = document.getElementById('barChartWrap');
+  const emptyEl = document.getElementById('barChartEmpty');
+  if (!canvas) return;
 
-  if (_barChart) _barChart.destroy();
+  // Always destroy previous chart instance cleanly
+  if (_barChart) { _barChart.destroy(); _barChart = null; }
 
-  // Build per-resource stats using actual unit prices from _resourcePriceMap.
-  // userStats is grouped by buyer: { resources: ['Title A','Title B'], totalAmount: X }
-  // totalAmount = sum of individual resource prices for that buyer.
-  // We look up each resource's real price instead of splitting totalAmount.
+  // Build per-resource stats
   const resourceData = {};
-  _allPurchasesData.forEach(p => {
-    const titles = (p.resources || []).filter(Boolean);
-    titles.forEach(title => {
-      const unitPrice = _resourcePriceMap[title] ?? 0;
-      if (!resourceData[title]) resourceData[title] = { revenue: 0, purchases: 0, unitPrice };
-      resourceData[title].revenue   += unitPrice;
-      resourceData[title].purchases += 1;
-    });
+  _barChartData.forEach(p => {
+    const title = p.resourceTitle;
+    if (!title) return;
+    const unitPrice = _resourcePriceMap[title] ?? p.unitPrice ?? 0;
+    if (!resourceData[title]) resourceData[title] = { revenue: 0, purchases: 0, unitPrice };
+    resourceData[title].revenue   += unitPrice;
+    resourceData[title].purchases += 1;
   });
 
   let sorted = Object.entries(resourceData).map(([name, d]) => ({
@@ -290,6 +290,17 @@ function renderResourceChart(limit = 10, sortBy = 'revenue') {
     unitPrice: parseFloat(d.unitPrice.toFixed(2))
   }));
 
+  // Show empty state overlay, keep canvas hidden
+  if (!sorted.length) {
+    canvas.style.display = 'none';
+    if (emptyEl) emptyEl.style.display = 'flex';
+    return;
+  }
+
+  // Hide empty state, show canvas
+  canvas.style.display = '';
+  if (emptyEl) emptyEl.style.display = 'none';
+
   switch (sortBy) {
     case 'purchases': sorted.sort((a, b) => b.purchases - a.purchases); break;
     case 'avgPrice':  sorted.sort((a, b) => b.unitPrice  - a.unitPrice); break;
@@ -297,9 +308,8 @@ function renderResourceChart(limit = 10, sortBy = 'revenue') {
     default:          sorted.sort((a, b) => b.revenue    - a.revenue);   break;
   }
 
-  const limitNum = limit === 'all' ? sorted.length : Math.min(limit, sorted.length);
+  const limitNum = (limit === 'all' || isNaN(Number(limit))) ? sorted.length : Math.min(Number(limit), sorted.length);
   sorted = sorted.slice(0, limitNum);
-  if (!sorted.length) return;
 
   const labels = sorted.map(r => r.name.length > 22 ? r.name.substring(0, 22) + '...' : r.name);
   const values = sorted.map(r => {
@@ -308,7 +318,6 @@ function renderResourceChart(limit = 10, sortBy = 'revenue') {
     return r.revenue;
   });
 
-  // Fixed gradient per resource TYPE so same type always gets same colour
   const TYPE_GRADIENTS = {
     pdf:     ['#EA2F4A', '#D2ECF9'],
     excel:   ['#11998e', '#c8f5e9'],
@@ -317,96 +326,60 @@ function renderResourceChart(limit = 10, sortBy = 'revenue') {
     other:   ['#a18cd1', '#ede0f7']
   };
 
+  const barCtx = canvas.getContext('2d');
   const gradientColors = sorted.map(r => {
     const type = _resourceTypeMap[r.name] || 'other';
     const [c1, c2] = TYPE_GRADIENTS[type] || TYPE_GRADIENTS.other;
     const grad = barCtx.createLinearGradient(0, 0, 0, 320);
-    grad.addColorStop(0, c1);
-    grad.addColorStop(1, c2);
+    grad.addColorStop(0, c1); grad.addColorStop(1, c2);
     return grad;
   });
+  const borderColors = sorted.map(r => (TYPE_GRADIENTS[_resourceTypeMap[r.name] || 'other'] || TYPE_GRADIENTS.other)[0]);
 
-  const borderColors = sorted.map(r => {
-    const type = _resourceTypeMap[r.name] || 'other';
-    return (TYPE_GRADIENTS[type] || TYPE_GRADIENTS.other)[0];
-  });
+  if (wrap) wrap.style.height = '320px';
+  canvas.style.height = '320px';
 
-  const canvas = document.getElementById('barChart');
-  const wrap = document.getElementById('barChartWrap');
-  const h = 320;
-  if (wrap) wrap.style.height = h + 'px';
-  canvas.style.height = h + 'px';
-
-  const isMoney = sortBy !== 'purchases';
+  const isMoney  = sortBy !== 'purchases';
   const axisLabel = sortBy === 'purchases' ? 'Purchases' : sortBy === 'avgPrice' ? 'Unit Price (₹)' : 'Total Revenue (₹)';
 
   _barChart = new Chart(barCtx, {
     type: 'bar',
-    data: {
-      labels,
-      datasets: [{
-        label: axisLabel,
-        data: values,
-        backgroundColor: gradientColors,
-        borderColor: borderColors,
-        borderWidth: 0,
-        borderRadius: 4,
-        borderSkipped: false
-      }]
-    },
+    data: { labels, datasets: [{ label: axisLabel, data: values, backgroundColor: gradientColors, borderColor: borderColors, borderWidth: 0, borderRadius: 4, borderSkipped: false }] },
     options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      indexAxis: 'x',
+      responsive: true, maintainAspectRatio: false, indexAxis: 'x',
       plugins: {
         legend: { display: false },
-        tooltip: {
-          callbacks: {
-            title: ctx => sorted[ctx[0].dataIndex].name,
-            label: ctx => {
-              const r = sorted[ctx[0].dataIndex];
-              if (sortBy === 'purchases') return ` ${r.purchases} sales • Unit price: ${fmt(r.unitPrice)}`;
-              if (sortBy === 'avgPrice')  return ` Unit price: ${fmt(r.unitPrice)} • ${r.purchases} sales`;
-              return ` Total: ${fmt(r.revenue)} • ${r.purchases} sales • ${fmt(r.unitPrice)}/unit`;
-            }
+        tooltip: { callbacks: {
+          title: function(ctx) {
+            if (!ctx || !ctx.length) return '';
+            const item = sorted[ctx[0].dataIndex];
+            return item ? item.name : '';
+          },
+          label: function(ctx) {
+            if (!ctx) return '';
+            const r = sorted[ctx.dataIndex];
+            if (!r) return '';
+            if (sortBy === 'purchases') return ' ' + r.purchases + ' sales • Unit price: ' + fmt(r.unitPrice);
+            if (sortBy === 'avgPrice')  return ' Unit price: ' + fmt(r.unitPrice) + ' • ' + r.purchases + ' sales';
+            return ' Total: ' + fmt(r.revenue) + ' • ' + r.purchases + ' sales • ' + fmt(r.unitPrice) + '/unit';
           }
-        }
+        }}
       },
       scales: {
-        x: {
-          grid: { display: false },
-          ticks: {
-            font: { size: 11, weight: '600' },
-            color: '#64748b',
-            maxRotation: 40,
-            minRotation: 0,
-            callback: function(val) {
-              const label = this.getLabelForValue(val);
-              return label.length > 14 ? label.substring(0, 14) + '...' : label;
-            }
-          }
-        },
-        y: {
-          beginAtZero: true,
-          grid: { color: 'rgba(0,0,0,0.05)' },
-          ticks: {
-            font: { size: 11 },
-            color: '#94a3b8',
-            callback: v => isMoney ? ('₹' + (v >= 1000 ? (v/1000).toFixed(1) + 'k' : v)) : v
-          }
-        }
+        x: { grid: { display: false }, ticks: { font: { size: 11, weight: '600' }, color: '#64748b', maxRotation: 40, minRotation: 0,
+          callback: function(val) { const l = this.getLabelForValue(val); return l.length > 14 ? l.substring(0, 14) + '...' : l; } } },
+        y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.05)' }, ticks: { font: { size: 11 }, color: '#94a3b8',
+          callback: v => isMoney ? ('₹' + (v >= 1000 ? (v/1000).toFixed(1) + 'k' : v)) : v } }
       }
     }
   });
 }
 
 function filterResourceChart() {
-  const limitSelect = document.getElementById('resourceFilter')?.value;
-  const sortSelect = document.getElementById('sortFilter')?.value;
-  
-  let limit = limitSelect === 'all' ? 'all' : parseInt(limitSelect.replace('top', ''));
-  
-  renderResourceChart(limit, sortSelect);
+  const limitVal = document.getElementById('resourceFilter')?.value || 'top10';
+  const sortBy   = document.getElementById('sortFilter')?.value || 'revenue';
+  const limit    = limitVal === 'all' ? 'all' : parseInt(limitVal.replace('top', ''));
+  renderResourceChart(limit, sortBy);
 }
 
 function renderCharts(available, totalGross, totalWithdrawn, platformFees, totalPending, purchases, userEmail) {
@@ -442,10 +415,9 @@ function renderCharts(available, totalGross, totalWithdrawn, platformFees, total
 
   // ── Bar Chart - Revenue per Resources ──
   const barCtx = document.getElementById('barChart')?.getContext('2d');
-  if (barCtx && purchases.length) {
-    _allPurchasesData = purchases;
-    db.from('resources').select('title, price, type').eq('user_email', userEmail)
-      .then(({ data: resources }) => {
+  if (barCtx) {
+    db.from('resources').select('id, title, price, type').eq('user_email', userEmail)
+      .then(async ({ data: resources }) => {
         _resourcePriceMap = {};
         _resourceTypeMap  = {};
         (resources || []).forEach(r => {
@@ -454,6 +426,24 @@ function renderCharts(available, totalGross, totalWithdrawn, platformFees, total
             _resourceTypeMap[r.title]  = (r.type || 'other').toLowerCase();
           }
         });
+
+        // Fetch per-payment records for accurate per-resource counts
+        const resourceIds = (resources || []).map(r => r.id);
+        if (!resourceIds.length) { renderResourceChart(10, 'revenue'); return; }
+
+        const { data: payments } = await db.from('payments')
+          .select('resource_id')
+          .eq('status', 'completed')
+          .in('resource_id', resourceIds);
+
+        const idToResource = {};
+        (resources || []).forEach(r => { idToResource[r.id] = r; });
+
+        _barChartData = (payments || []).map(p => {
+          const r = idToResource[p.resource_id];
+          return { resourceTitle: r?.title || '', unitPrice: parseFloat(r?.price || 0) };
+        }).filter(p => p.resourceTitle);
+
         renderResourceChart(10, 'revenue');
       }).catch(() => renderResourceChart(10, 'revenue'));
   }
@@ -498,6 +488,14 @@ function renderCharts(available, totalGross, totalWithdrawn, platformFees, total
 }
 async function loadDashboard() {
   console.log('[Dashboard] loadDashboard() called');
+
+  // Reset chart data on each load
+  _barChartData = [];
+  _resourcePriceMap = {};
+  _resourceTypeMap  = {};
+  if (_barChart) { _barChart.destroy(); _barChart = null; }
+  if (_donutChart) { _donutChart.destroy(); _donutChart = null; }
+  if (_dayWiseChart) { _dayWiseChart.destroy(); _dayWiseChart = null; }
 
   // Reset cards to shimmer state
   const shimmerCards = [
@@ -699,7 +697,7 @@ async function loadDashboard() {
                 <td style="font-weight:700;color:#1e293b;">${fmt(gross)}</td>
                 <td style="font-weight:700;color:#667eea;">${fmt(net)}</td>
                 <td style="color:#ef4444;">-${fmt(fee)}</td>
-                <td><span class="badge ${badgeClass(w.status)}">${w.status}</span></td>
+                <td><span class="badge ${badgeClass(w.status)}"${w.status === 'pending' ? ' style="cursor:pointer;" onclick="location.href=\'/earnify-admin/payments/\'" title="Click to review"' : ''}>${w.status}</span></td>
                 <td>${reasonCell}</td>
                 <td>${fmtDate(w.created_at)}</td>
               </tr>`;
