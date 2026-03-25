@@ -79,110 +79,81 @@ let _resourcePriceMap = {}; // title -> actual price from DB
 let _resourceTypeMap  = {}; // title -> type (pdf/excel/exam/service/etc)
 
 function renderDayWiseChart(purchases, selectedMonth, selectedYear) {
-  const dayWiseCtx = document.getElementById('dayWiseChart')?.getContext('2d');
+  const canvas = document.getElementById('dayWiseChart');
+  const dayWiseCtx = canvas?.getContext('2d');
   if (!dayWiseCtx) return;
-  
-  if (_dayWiseChart) _dayWiseChart.destroy();
-  
+
+  if (_dayWiseChart) { _dayWiseChart.destroy(); _dayWiseChart = null; }
+
+  const wrap = canvas.parentElement;
+  wrap.querySelectorAll('.dw-empty').forEach(e => e.remove());
+
   const now = new Date();
-  const month = selectedMonth !== undefined ? selectedMonth : now.getMonth();
-  const year = selectedYear !== undefined ? selectedYear : now.getFullYear();
+  let month = selectedMonth !== undefined ? selectedMonth : now.getMonth();
+  let year  = selectedYear  !== undefined ? selectedYear  : now.getFullYear();
+
+  // Auto-find most recent month with data when no month specified
+  if (selectedMonth === undefined && purchases.length) {
+    const latest = purchases.reduce((max, p) => {
+      const d = new Date(p.created_at); return d > max ? d : max;
+    }, new Date(0));
+    month = latest.getMonth();
+    year  = latest.getFullYear();
+    const ms = document.getElementById('monthFilter');
+    const ys = document.getElementById('yearFilter');
+    if (ms) ms.value = month.toString();
+    if (ys) ys.value = year.toString();
+  }
+
   const daysInMonth = new Date(year, month + 1, 0).getDate();
-  
-  const monthLabel = document.getElementById('currentMonth');
-  if (monthLabel) {
-    const date = new Date(year, month);
-    monthLabel.textContent = date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
-  }
-  
+  const monthName   = new Date(year, month).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+  const monthLabel  = document.getElementById('currentMonth');
+  if (monthLabel) monthLabel.textContent = monthName;
+
   const dailyRevenue = new Array(daysInMonth + 1).fill(0);
-  
-  if (purchases.length) {
-    purchases.forEach(p => {
-      const purchaseDate = new Date(p.created_at);
-      if (purchaseDate.getMonth() === month && purchaseDate.getFullYear() === year) {
-        const day = purchaseDate.getDate();
-        const amount = parseFloat(p.totalAmount || 0);
-        dailyRevenue[day] += amount;
-      }
-    });
+  let total = 0;
+  (purchases || []).forEach(p => {
+    const d = new Date(p.created_at);
+    if (d.getMonth() === month && d.getFullYear() === year) {
+      const amt = parseFloat(p.totalAmount || 0);
+      dailyRevenue[d.getDate()] += amt;
+      total += amt;
+    }
+  });
+
+  if (total === 0) {
+    canvas.style.display = 'none';
+    const empty = document.createElement('div');
+    empty.className = 'dw-empty';
+    empty.innerHTML = `
+      <div style="text-align:center;padding:52px 20px;">
+        <div style="font-size:52px;opacity:.3;margin-bottom:14px;">📭</div>
+        <div style="font-size:15px;font-weight:700;color:#1e293b;margin-bottom:6px;">No Revenue for ${monthName}</div>
+        <div style="font-size:13px;color:#94a3b8;">No completed sales recorded for this month.</div>
+        <div style="font-size:12px;color:#b0b8c8;margin-top:4px;">Select a different month from the filter above.</div>
+      </div>`;
+    wrap.appendChild(empty);
+    return;
   }
-  
+
+  canvas.style.display = '';
   const labels = Array.from({ length: daysInMonth }, (_, i) => (i + 1).toString());
   const values = dailyRevenue.slice(1);
-  
+
   _dayWiseChart = new Chart(dayWiseCtx, {
     type: 'bar',
-    data: {
-      labels,
-      datasets: [{
-        label: 'Revenue (₹)',
-        data: values,
-        backgroundColor: (ctx) => {
-          const chart = ctx.chart;
-          const { ctx: c, chartArea } = chart;
-          if (!chartArea) return '#EA2F4A';
-          const grad = c.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
-          grad.addColorStop(0, '#EF5835');
-          grad.addColorStop(1, '#E29F17');
-          return grad;
-        },
-        borderColor: 'transparent',
-        borderWidth: 0,
-        borderRadius: 8,
-        borderSkipped: false
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: true,
-      plugins: {
-        legend: { display: false },
-        tooltip: { 
-          callbacks: { 
-            label: ctx => ` ${fmt(ctx.raw)}`,
-            title: ctx => `Day ${ctx[0].label}`
-          }
-        }
-      },
+    data: { labels, datasets: [{ label: 'Revenue', data: values,
+      backgroundColor: (ctx) => { const { ctx: c, chartArea } = ctx.chart; if (!chartArea) return '#EF5835'; const grad = c.createLinearGradient(0, chartArea.top, 0, chartArea.bottom); grad.addColorStop(0, '#EF5835'); grad.addColorStop(1, '#E29F17'); return grad; },
+      borderColor: 'transparent', borderWidth: 0, borderRadius: 8, borderSkipped: false }] },
+    options: { responsive: true, maintainAspectRatio: true,
+      plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${fmt(ctx.raw)}`, title: ctx => `Day ${ctx[0].label}` } } },
       scales: {
-        x: {
-          grid: { display: false },
-          ticks: { 
-            font: { size: 10 }, 
-            color: '#94a3b8',
-            maxRotation: 0,
-            autoSkip: true,
-            maxTicksLimit: 31
-          },
-          title: {
-            display: true,
-            text: 'Day of Month',
-            color: '#64748b',
-            font: { size: 12, weight: '600' }
-          }
-        },
-        y: {
-          beginAtZero: true,
-          grid: { color: 'rgba(0,0,0,0.05)' },
-          ticks: {
-            font: { size: 11 },
-            color: '#94a3b8',
-            stepSize: 500,
-            callback: v => '\u20b9' + v.toLocaleString('en-IN')
-          },
-          title: {
-            display: true,
-            text: 'Revenue (\u20b9)',
-            color: '#64748b',
-            font: { size: 12, weight: '600' }
-          }
-        }
+        x: { grid: { display: false }, ticks: { font: { size: 10 }, color: '#94a3b8', maxRotation: 0, autoSkip: true, maxTicksLimit: 31 }, title: { display: true, text: 'Day of Month', color: '#64748b', font: { size: 12, weight: '600' } } },
+        y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.05)' }, ticks: { font: { size: 11 }, color: '#94a3b8', stepSize: 500, callback: v => String.fromCharCode(8377) + v.toLocaleString('en-IN') }, title: { display: true, text: 'Revenue', color: '#64748b', font: { size: 12, weight: '600' } } }
       }
     }
   });
 }
-
 function filterDayWiseChart() {
   const monthSelect = document.getElementById('monthFilter')?.value;
   const yearSelect = document.getElementById('yearFilter')?.value;
@@ -515,7 +486,25 @@ function renderCharts(available, totalGross, totalWithdrawn, platformFees, total
   const dayWiseCtx = document.getElementById('dayWiseChart')?.getContext('2d');
   if (dayWiseCtx) {
     initializeDateFilters();
-    renderDayWiseChart(purchases);
+    // Fetch individual payment records from Supabase for accurate daily breakdown
+    db.from('payments')
+      .select('created_at, resource_id')
+      .eq('status', 'completed')
+      .then(async ({ data: payments }) => {
+        if (!payments || !payments.length) { renderDayWiseChart([], undefined, undefined); return; }
+        // Get resource prices
+        const { data: resources } = await db.from('resources').select('id, price, user_email');
+        const priceMap = {};
+        (resources || []).forEach(r => { priceMap[r.id] = parseFloat(r.price || 0); });
+        // Build flat list: { created_at, totalAmount } per payment
+        const flat = payments.map(p => ({
+          created_at: p.created_at,
+          totalAmount: priceMap[p.resource_id] || 0
+        }));
+        _allPurchasesData = flat;
+        renderDayWiseChart(flat);
+      })
+      .catch(() => renderDayWiseChart(purchases));
   }
 }
 async function loadDashboard() {
