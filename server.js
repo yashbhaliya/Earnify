@@ -906,7 +906,7 @@ app.post("/api/contact", async (req, res) => {
 
     await transporter.sendMail({
       from: `"Earnify Contact" <${process.env.GMAIL_USER}>`,
-      to: 'bhaliyayash595@gmail.com',
+      to: 'hardikkotadiya90@gmail.com',
       replyTo: email,
       subject: `[Earnify Contact] ${subject}`,
       html: `
