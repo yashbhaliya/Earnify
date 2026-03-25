@@ -131,22 +131,29 @@
     // Update stat cards to reflect filtered data
     const filteredNet = filteredPayments.reduce((s, p) => s + parseFloat(p.amount || 0) * 0.95, 0);
     const todayStr = toLocalDateStr(new Date());
-    const processedInRange = _allRaw.filter(w => {
-      if (w.status !== 'approved' && w.status !== 'rejected') return false;
+    document.getElementById('statPending').textContent   = filteredPayments.length;
+    document.getElementById('statAmount').textContent    = fmt(filteredNet);
+    const approvedInRange = _allRaw.filter(w => {
+      if (w.status !== 'approved' && w.status !== 'completed') return false;
       const recTs = localMidnight(recordDateStr(w.approved_at || w.created_at));
       if (fromTs !== null && recTs < fromTs) return false;
       if (toTs   !== null && recTs > toTs)   return false;
       return true;
     }).length;
-    document.getElementById('statPending').textContent   = filteredPayments.length;
-    document.getElementById('statAmount').textContent    = fmt(filteredNet);
-    document.getElementById('statProcessed').textContent = processedInRange;
+    const rejectedInRange = _allRaw.filter(w => {
+      if (w.status !== 'rejected') return false;
+      const recTs = localMidnight(recordDateStr(w.created_at));
+      if (fromTs !== null && recTs < fromTs) return false;
+      if (toTs   !== null && recTs > toTs)   return false;
+      return true;
+    }).length;
+    document.getElementById('statApproved').textContent  = approvedInRange;
+    document.getElementById('statRejected').textContent  = rejectedInRange;
 
     // Update sub-labels to reflect filter context
     const isFiltered = !!(from || to);
-    document.querySelector('#statPending + .stat-sub').textContent   = isFiltered ? 'In selected range' : 'Awaiting review';
-    document.querySelector('#statAmount + .stat-sub').textContent    = isFiltered ? 'In selected range' : 'Pending withdrawals';
-    document.querySelector('#statProcessed + .stat-sub').textContent = isFiltered ? 'In selected range' : 'Approved + Rejected';
+    document.querySelector('#statPending + .stat-body .stat-sub') && (document.querySelector('#statPending').closest('.stat-card').querySelector('.stat-sub').textContent = isFiltered ? 'In selected range' : 'Awaiting review');
+    document.querySelector('#statAmount').closest('.stat-card').querySelector('.stat-sub').textContent = isFiltered ? 'In selected range' : 'Pending withdrawals';
 
     const resultEl = document.getElementById('filterResult');
     if (from || to) {
