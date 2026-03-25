@@ -1109,6 +1109,26 @@
 
 </div><!-- /main -->
 
+<!-- Reject Reason Modal -->
+<div class="details-modal" id="rejectReasonModal" onclick="if(event.target===this)closeRejectReasonModal()">
+  <div class="modal-content" style="max-width:420px;">
+    <div class="modal-header">
+      <div class="modal-title" style="background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;display:flex;align-items:center;gap:8px;">
+        <span style="font-size:20px;-webkit-text-fill-color:initial;">&#9888;</span> Rejection Reason
+      </div>
+      <button class="modal-close" onclick="closeRejectReasonModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div style="padding:16px;background:white;border:1.5px solid #e2e8f0;border-radius:12px;">
+        <p id="rejectReasonText" style="font-size:14px;font-weight:600;color:#1e293b;line-height:1.6;margin:0;"></p>
+      </div>
+    </div>
+    <div style="margin-top:20px;">
+      <button onclick="closeRejectReasonModal()" style="width:100%;padding:12px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:white;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;">Close</button>
+    </div>
+  </div>
+</div>
+
 <!-- Details Modal -->
 <div class="details-modal" id="detailsModal">
   <div class="modal-content">
@@ -1127,3 +1147,4 @@
 <script src="dashboard.js"></script>
 </body>
 </html>
+

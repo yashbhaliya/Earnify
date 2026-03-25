@@ -76,6 +76,7 @@ let _dayWiseChart = null;
 let _allResourceData = [];
 let _allPurchasesData = [];
 let _resourcePriceMap = {}; // title -> actual price from DB
+let _resourceTypeMap  = {}; // title -> type (pdf/excel/exam/service/etc)
 
 function renderDayWiseChart(purchases, selectedMonth, selectedYear) {
   const dayWiseCtx = document.getElementById('dayWiseChart')?.getContext('2d');
@@ -351,33 +352,28 @@ function renderResourceChart(limit = 10, sortBy = 'revenue') {
     return r.revenue;
   });
 
-  // Build light linear gradient per bar
-  const gradientPairs = [
-    ['#EA2F4A','#D2ECF9'],
-    ['#667eea','#c9d6ff'],
-    ['#f093fb','#fde8ff'],
-    ['#43e97b','#d4f7e7'],
-    ['#fa709a','#ffd6e7'],
-    ['#4facfe','#d6eeff'],
-    ['#f7971e','#fde8c8'],
-    ['#a18cd1','#ede0f7'],
-    ['#11998e','#c8f0ec'],
-    ['#f5576c','#fde0e3'],
-    ['#764ba2','#e8d5f5'],
-    ['#00b4db','#d0f0fb'],
-    ['#e96c1e','#fde3d0'],
-    ['#38ef7d','#d4fbe6'],
-    ['#6a11cb','#ddd0f7']
-  ];
+  // Fixed gradient per resource TYPE so same type always gets same colour
+  const TYPE_GRADIENTS = {
+    pdf:     ['#EA2F4A', '#D2ECF9'],
+    excel:   ['#11998e', '#c8f5e9'],
+    exam:    ['#f7971e', '#fde8c8'],
+    service: ['#667eea', '#c9d6ff'],
+    other:   ['#a18cd1', '#ede0f7']
+  };
 
-  const gradientColors = gradientPairs.slice(0, values.length).map(([c1, c2]) => {
+  const gradientColors = sorted.map(r => {
+    const type = _resourceTypeMap[r.name] || 'other';
+    const [c1, c2] = TYPE_GRADIENTS[type] || TYPE_GRADIENTS.other;
     const grad = barCtx.createLinearGradient(0, 0, 0, 320);
     grad.addColorStop(0, c1);
     grad.addColorStop(1, c2);
     return grad;
   });
 
-  const borderColors = gradientPairs.slice(0, values.length).map(([c1]) => c1);
+  const borderColors = sorted.map(r => {
+    const type = _resourceTypeMap[r.name] || 'other';
+    return (TYPE_GRADIENTS[type] || TYPE_GRADIENTS.other)[0];
+  });
 
   const canvas = document.getElementById('barChart');
   const wrap = document.getElementById('barChartWrap');
@@ -495,8 +491,12 @@ function renderCharts(available, totalGross, totalWithdrawn, platformFees, total
     // Fetch actual resource prices from API to build title->price map
     apiFetch('/api/resources').then(resources => {
       _resourcePriceMap = {};
+      _resourceTypeMap  = {};
       (resources || []).forEach(r => {
-        if (r.title) _resourcePriceMap[r.title] = parseFloat(r.price || 0);
+        if (r.title) {
+          _resourcePriceMap[r.title] = parseFloat(r.price || 0);
+          _resourceTypeMap[r.title]  = (r.type || 'other').toLowerCase();
+        }
       });
       renderResourceChart(10, 'revenue');
     }).catch(() => {
@@ -659,15 +659,11 @@ async function loadDashboard() {
             const fee   = gross * 0.05;
             const net   = gross - fee;
             const reasonCell = w.reject_reason
-              ? `<div style="display:flex;align-items:flex-start;gap:5px;max-width:160px;">
-                   <span style="color:#dc2626;flex-shrink:0;">⚠</span>
-                   <span style="font-size:12px;font-weight:600;color:#991b1b;line-height:1.4;word-break:break-word;">${w.reject_reason}</span>
-                 </div>`
-              : `<span style="color:#cbd5e1;">—</span>`;
+              ? `<button onclick="showRejectReason('${w.reject_reason.replace(/'/g, "&#39;").replace(/"/g, '&quot;')}')" style="padding:4px 12px;background:white;border:1.5px solid #667eea;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">View</button>`
+              : `<span style="color:#cbd5e1;font-size:13px;">—</span>`;
             const mobileReason = w.reject_reason
-              ? `<div style="margin-top:6px;padding:7px 10px;background:#fef2f2;border:1px solid #fecaca;border-radius:8px;display:flex;align-items:flex-start;gap:6px;">
-                   <span style="font-size:12px;color:#dc2626;flex-shrink:0;">⚠</span>
-                   <span style="font-size:12px;font-weight:600;color:#991b1b;line-height:1.4;">${w.reject_reason}</span>
+              ? `<div style="margin-top:6px;">
+                   <button onclick="showRejectReason('${w.reject_reason.replace(/'/g, "&#39;").replace(/"/g, '&quot;')}')" style="padding:5px 14px;background:white;border:1.5px solid #667eea;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">⚠ View Reason</button>
                  </div>`
               : '';
             return `
@@ -820,6 +816,17 @@ function showWithdrawalDetails(index) {
   `;
   
   document.getElementById('detailsModal').classList.add('active');
+}
+
+function showRejectReason(reason) {
+  document.getElementById('rejectReasonText').textContent = reason;
+  document.getElementById('rejectReasonModal').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeRejectReasonModal() {
+  document.getElementById('rejectReasonModal').classList.remove('active');
+  document.body.style.overflow = '';
 }
 
 function closeDetailsModal() {

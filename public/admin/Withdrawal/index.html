@@ -316,7 +316,53 @@
     }
     .view-btn:hover { transform: scale(1.05); box-shadow: 0 3px 10px rgba(102,126,234,0.2) !important; }
 
-    /* Withdrawal detail bottom sheet */
+    /* Reason popup modal */
+    #reasonPopup {
+      display: none; position: fixed; inset: 0; z-index: 10001;
+      align-items: center; justify-content: center;
+      background: rgba(0,0,0,0.45);
+      padding: 20px;
+    }
+    #reasonPopup.open { display: flex; }
+    .reason-box {
+      background: white; border-radius: 20px;
+      padding: 28px 24px; width: 100%; max-width: 400px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+      animation: toastIn .25s ease;
+    }
+    .reason-box-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 16px; padding-bottom: 14px;
+      border-bottom: 2px solid #f1f5f9;
+    }
+    .reason-box-title {
+      font-size: 16px; font-weight: 800;
+      background: linear-gradient(135deg,#667eea 0%,#764ba2 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .reason-box-close {
+      width: 30px; height: 30px; border-radius: 8px;
+      background: #f8fafc; border: none; font-size: 18px;
+      color: #64748b; cursor: pointer; display: flex;
+      align-items: center; justify-content: center;
+      transition: all .2s;
+    }
+    .reason-box-close:hover { background: #fee2e2; color: #dc2626; }
+    .reason-box-body {
+      padding: 14px 16px; background: #f8fafc;
+      border: 1.5px solid #e2e8f0; border-radius: 12px;
+      font-size: 14px; font-weight: 600; color: #1e293b;
+      line-height: 1.6; margin-bottom: 20px;
+    }
+    .reason-box-btn {
+      width: 100%; padding: 13px;
+      background: linear-gradient(135deg,#667eea 0%,#764ba2 100%);
+      color: white; border: none; border-radius: 12px;
+      font-size: 14px; font-weight: 700; cursor: pointer;
+      font-family: inherit; transition: opacity .2s;
+    }
+    .reason-box-btn:hover { opacity: .9; }
     #withdrawalDetailModal {
       display: none; position: fixed; inset: 0; z-index: 9999;
       align-items: flex-end; justify-content: center;
@@ -636,6 +682,18 @@
 
   </div><!-- /main -->
 
+  <!-- Reason Popup -->
+  <div id="reasonPopup" onclick="if(event.target===this)closeReasonPopup()">
+    <div class="reason-box">
+      <div class="reason-box-header">
+        <span class="reason-box-title">&#9888; Rejection Reason</span>
+        <button class="reason-box-close" onclick="closeReasonPopup()">&times;</button>
+      </div>
+      <div class="reason-box-body" id="reasonPopupText"></div>
+      <button class="reason-box-btn" onclick="closeReasonPopup()">Close</button>
+    </div>
+  </div>
+
   <!-- Confirmation Popup -->
   <div id="confirmOverlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,.45); z-index:10000; align-items:center; justify-content:center;">
     <div style="background:#fff; border-radius:24px; padding:36px 32px; max-width:420px; width:90%; box-shadow:0 20px 60px rgba(0,0,0,.2); animation:toastIn .25s ease;">
@@ -710,6 +768,16 @@
       t.className = `toast ${type}`;
       t.style.display = 'block';
       setTimeout(() => t.style.display = 'none', 3200);
+    }
+
+    function openReasonPopup(reason) {
+      document.getElementById('reasonPopupText').textContent = reason;
+      document.getElementById('reasonPopup').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeReasonPopup() {
+      document.getElementById('reasonPopup').classList.remove('open');
+      document.body.style.overflow = '';
     }
 
     function scrollToForm() {
@@ -878,7 +946,7 @@
                   <td class="col-method"><span class="method-chip">${METHOD_ICONS[w.method]||''} ${w.method.toUpperCase()}</span></td>
                   <td class="col-status"><span class="badge badge-${w.status}">${w.status}</span></td>
                   <td class="col-reason">${w.reject_reason
-                    ? `<div style="display:flex;align-items:flex-start;gap:6px;padding:7px 10px;border-radius:8px;max-width:180px;"><span style="font-size:13px;flex-shrink:0;">&#9888;</span><span style="font-size:12px;font-weight:600;color:#991b1b;line-height:1.4;">${w.reject_reason}</span></div>`
+                    ? `<button onclick="openReasonPopup('${w.reject_reason.replace(/'/g,"&#39;").replace(/"/g,'&quot;')}')" style="padding:4px 12px;background:white;border:1.5px solid #667eea;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">View</button>`
                     : '<span style="color:#cbd5e1;font-size:13px;">—</span>'}
                   </td>
                   <td class="col-view"><button class="view-btn" onclick="openWithdrawalDetail(${i})" title="View Details"><span>View</span></button></td>
