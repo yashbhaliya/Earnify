@@ -128,11 +128,8 @@
       return true;
     });
 
-    // Update stat cards to reflect filtered data
+    // Update stat cards
     const filteredNet = filteredPayments.reduce((s, p) => s + parseFloat(p.amount || 0) * 0.95, 0);
-    const todayStr = toLocalDateStr(new Date());
-    document.getElementById('statPending').textContent   = filteredPayments.length;
-    document.getElementById('statAmount').textContent    = fmt(filteredNet);
     const approvedInRange = _allRaw.filter(w => {
       if (w.status !== 'approved' && w.status !== 'completed') return false;
       const recTs = localMidnight(recordDateStr(w.approved_at || w.created_at));
@@ -147,13 +144,7 @@
       if (toTs   !== null && recTs > toTs)   return false;
       return true;
     }).length;
-    document.getElementById('statApproved').textContent  = approvedInRange;
-    document.getElementById('statRejected').textContent  = rejectedInRange;
-
-    // Update sub-labels to reflect filter context
-    const isFiltered = !!(from || to);
-    document.querySelector('#statPending + .stat-body .stat-sub') && (document.querySelector('#statPending').closest('.stat-card').querySelector('.stat-sub').textContent = isFiltered ? 'In selected range' : 'Awaiting review');
-    document.querySelector('#statAmount').closest('.stat-card').querySelector('.stat-sub').textContent = isFiltered ? 'In selected range' : 'Pending withdrawals';
+    renderStats(filteredPayments.length, filteredNet, approvedInRange, rejectedInRange);
 
     const resultEl = document.getElementById('filterResult');
     if (from || to) {
@@ -174,9 +165,32 @@
   };
 
   /* ── Load from Supabase ── */
+  function showShimmer() {
+    document.getElementById('statsGrid').innerHTML = `
+      <div class="stat-card shimmer-card"><div class="stat-icon"><span>⏳</span></div><div class="stat-body"><span class="sh" style="height:10px;width:70px;margin-bottom:10px;"></span><span class="sh" style="height:26px;width:60px;margin-bottom:8px;"></span><span class="sh" style="height:9px;width:90px;"></span></div></div>
+      <div class="stat-card shimmer-card"><div class="stat-icon"><span>💰</span></div><div class="stat-body"><span class="sh" style="height:10px;width:80px;margin-bottom:10px;"></span><span class="sh" style="height:26px;width:80px;margin-bottom:8px;"></span><span class="sh" style="height:9px;width:100px;"></span></div></div>
+      <div class="stat-card shimmer-card"><div class="stat-icon"><span>✅</span></div><div class="stat-body"><span class="sh" style="height:10px;width:60px;margin-bottom:10px;"></span><span class="sh" style="height:26px;width:50px;margin-bottom:8px;"></span><span class="sh" style="height:9px;width:90px;"></span></div></div>
+      <div class="stat-card shimmer-card"><div class="stat-icon"><span>✕</span></div><div class="stat-body"><span class="sh" style="height:10px;width:60px;margin-bottom:10px;"></span><span class="sh" style="height:26px;width:50px;margin-bottom:8px;"></span><span class="sh" style="height:9px;width:90px;"></span></div></div>`;
+
+    const cardHtml = `
+      <div class="payment-shimmer">
+        <div class="ps-header"><div class="ps-user"><span class="sh" style="width:48px;height:48px;border-radius:50%;flex-shrink:0;"></span><div><span class="sh" style="height:14px;width:160px;margin-bottom:8px;"></span><span class="sh" style="height:11px;width:100px;"></span></div></div><span class="sh" style="height:22px;width:90px;"></span></div>
+        <div class="ps-details"><span class="sh" style="height:44px;"></span><span class="sh" style="height:44px;"></span><span class="sh" style="height:44px;"></span><span class="sh" style="height:44px;"></span></div>
+        <div class="ps-actions"><span class="sh" style="height:44px;flex:1;border-radius:10px;"></span><span class="sh" style="height:44px;flex:1;border-radius:10px;"></span></div>
+      </div>`;
+    document.getElementById('paymentsGrid').innerHTML = cardHtml + cardHtml + cardHtml;
+  }
+
+  function renderStats(pending, amount, approved, rejected) {
+    document.getElementById('statsGrid').innerHTML = `
+      <div class="stat-card"><div class="stat-icon">⏳</div><div class="stat-body"><div class="stat-label">Pending</div><div class="stat-value" id="statPending">${pending}</div><div class="stat-sub">Awaiting review</div></div></div>
+      <div class="stat-card"><div class="stat-icon">💰</div><div class="stat-body"><div class="stat-label">Total Amount</div><div class="stat-value" id="statAmount">${fmt(amount)}</div><div class="stat-sub">Pending withdrawals</div></div></div>
+      <div class="stat-card"><div class="stat-icon">✅</div><div class="stat-body"><div class="stat-label">Approved</div><div class="stat-value" id="statApproved">${approved}</div><div class="stat-sub">In selected range</div></div></div>
+      <div class="stat-card"><div class="stat-icon">✕</div><div class="stat-body"><div class="stat-label">Rejected</div><div class="stat-value" id="statRejected">${rejected}</div><div class="stat-sub">In selected range</div></div></div>`;
+  }
+
   async function loadPayments() {
-    document.getElementById('paymentsGrid').innerHTML = `
-      <div class="empty-state"><div class="empty-icon">⏳</div><h3>Loading...</h3><p>Fetching from Database</p></div>`;
+    showShimmer();
 
     const { data, error } = await db.from('withdrawals').select('*').order('created_at', { ascending: false });
 

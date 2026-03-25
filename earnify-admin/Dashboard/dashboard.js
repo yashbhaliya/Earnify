@@ -3,15 +3,13 @@ const API_BASE = (location.hostname === 'localhost' || location.hostname === '12
   : location.origin;
 
 const SUPA_URL = 'https://emnrgsgerfjvndexomro.supabase.co';
-const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVtbnJnc2dlcmZqdm5kZXhvbXJvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI0MjAyMTAsImV4cCI6MjA4Nzk5NjIxMH0.uXr8lipxLbB4D_5JwQkpLzc-HudQw23tOFBfV4C6hqY';
+const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVtbnJnc2dlcmZqdm5kZXhvbXJvIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3MjQyMDIxMCwiZXhwIjoyMDg3OTk2MjEwfQ.mr4k_GsJ14CC1mqvEZgf9cTaNiLMlnj_sZxFjJud67k';
 const db = window.supabase.createClient(SUPA_URL, SUPA_KEY);
 
 async function getUserEmail() {
-  // 1. Try Supabase session (works across origins)
+  // 1. Try Supabase session
   try {
-    const { createClient } = window.supabase;
-    const _supa = createClient(SUPA_URL, SUPA_KEY);
-    const { data: { user } } = await _supa.auth.getUser();
+    const { data: { user } } = await db.auth.getUser();
     if (user?.email) { console.log('[Dashboard] email from Supabase =>', user.email); return user.email; }
   } catch(e) { console.warn('[Dashboard] Supabase auth failed =>', e.message); }
   // 2. Try adminToken JWT from localStorage
@@ -91,19 +89,6 @@ function renderDayWiseChart(purchases, selectedMonth, selectedYear) {
   const now = new Date();
   let month = selectedMonth !== undefined ? selectedMonth : now.getMonth();
   let year  = selectedYear  !== undefined ? selectedYear  : now.getFullYear();
-
-  // Auto-find most recent month with data when no month specified
-  if (selectedMonth === undefined && purchases.length) {
-    const latest = purchases.reduce((max, p) => {
-      const d = new Date(p.created_at); return d > max ? d : max;
-    }, new Date(0));
-    month = latest.getMonth();
-    year  = latest.getFullYear();
-    const ms = document.getElementById('monthFilter');
-    const ys = document.getElementById('yearFilter');
-    if (ms) ms.value = month.toString();
-    if (ys) ys.value = year.toString();
-  }
 
   const daysInMonth = new Date(year, month + 1, 0).getDate();
   const monthName   = new Date(year, month).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
@@ -424,7 +409,7 @@ function filterResourceChart() {
   renderResourceChart(limit, sortSelect);
 }
 
-function renderCharts(available, totalGross, totalWithdrawn, platformFees, totalPending, purchases) {
+function renderCharts(available, totalGross, totalWithdrawn, platformFees, totalPending, purchases, userEmail) {
   // ── Donut Chart ──
   const donutCtx = document.getElementById('donutChart')?.getContext('2d');
   if (donutCtx) {
@@ -459,21 +444,18 @@ function renderCharts(available, totalGross, totalWithdrawn, platformFees, total
   const barCtx = document.getElementById('barChart')?.getContext('2d');
   if (barCtx && purchases.length) {
     _allPurchasesData = purchases;
-    // Fetch actual resource prices from API to build title->price map
-    apiFetch('/api/resources').then(resources => {
-      _resourcePriceMap = {};
-      _resourceTypeMap  = {};
-      (resources || []).forEach(r => {
-        if (r.title) {
-          _resourcePriceMap[r.title] = parseFloat(r.price || 0);
-          _resourceTypeMap[r.title]  = (r.type || 'other').toLowerCase();
-        }
-      });
-      renderResourceChart(10, 'revenue');
-    }).catch(() => {
-      // Fallback: render without price map (bars will show 0 for unknown resources)
-      renderResourceChart(10, 'revenue');
-    });
+    db.from('resources').select('title, price, type').eq('user_email', userEmail)
+      .then(({ data: resources }) => {
+        _resourcePriceMap = {};
+        _resourceTypeMap  = {};
+        (resources || []).forEach(r => {
+          if (r.title) {
+            _resourcePriceMap[r.title] = parseFloat(r.price || 0);
+            _resourceTypeMap[r.title]  = (r.type || 'other').toLowerCase();
+          }
+        });
+        renderResourceChart(10, 'revenue');
+      }).catch(() => renderResourceChart(10, 'revenue'));
   }
   
   // ── Day-wise Revenue Chart ──
@@ -486,23 +468,30 @@ function renderCharts(available, totalGross, totalWithdrawn, platformFees, total
   const dayWiseCtx = document.getElementById('dayWiseChart')?.getContext('2d');
   if (dayWiseCtx) {
     initializeDateFilters();
-    // Fetch individual payment records from Supabase for accurate daily breakdown
-    db.from('payments')
-      .select('created_at, resource_id')
-      .eq('status', 'completed')
-      .then(async ({ data: payments }) => {
-        if (!payments || !payments.length) { renderDayWiseChart([], undefined, undefined); return; }
-        // Get resource prices
-        const { data: resources } = await db.from('resources').select('id, price, user_email');
+    // Fetch individual payment records filtered by this user's resources
+    db.from('resources')
+      .select('id, price')
+      .eq('user_email', userEmail)
+      .then(async ({ data: resources }) => {
+        if (!resources || !resources.length) { renderDayWiseChart([], undefined, undefined); return; }
         const priceMap = {};
-        (resources || []).forEach(r => { priceMap[r.id] = parseFloat(r.price || 0); });
-        // Build flat list: { created_at, totalAmount } per payment
+        const resourceIds = resources.map(r => { priceMap[r.id] = parseFloat(r.price || 0); return r.id; });
+        const { data: payments } = await db.from('payments')
+          .select('created_at, resource_id')
+          .eq('status', 'completed')
+          .in('resource_id', resourceIds);
+        if (!payments || !payments.length) { renderDayWiseChart([], undefined, undefined); return; }
         const flat = payments.map(p => ({
           created_at: p.created_at,
           totalAmount: priceMap[p.resource_id] || 0
         }));
         _allPurchasesData = flat;
-        renderDayWiseChart(flat);
+        // Sync dropdowns to current selection before rendering
+        const ms = document.getElementById('monthFilter');
+        const ys = document.getElementById('yearFilter');
+        const month = ms ? parseInt(ms.value) : new Date().getMonth();
+        const year  = ys ? parseInt(ys.value)  : new Date().getFullYear();
+        renderDayWiseChart(flat, month, year);
       })
       .catch(() => renderDayWiseChart(purchases));
   }
@@ -535,15 +524,49 @@ async function loadDashboard() {
 
   try {
     console.log('[Dashboard] fetching stats for =>', userEmail);
-    const [statsData, wdResult] = await Promise.all([
-      userEmail ? apiFetch(`/api/statistics/purchases/${encodeURIComponent(userEmail)}`) : Promise.resolve({}),
+
+    // Fetch everything directly from Supabase — no Node server needed
+    const [resourcesResult, wdResult] = await Promise.all([
+      userEmail ? db.from('resources').select('id, title, price').eq('user_email', userEmail) : Promise.resolve({ data: [] }),
       userEmail ? db.from('withdrawals').select('*').eq('user_email', userEmail).order('created_at', { ascending: false }) : Promise.resolve({ data: [] })
     ]);
 
+    const userResources = resourcesResult.data || [];
+    const resourceIds   = userResources.map(r => r.id);
+    const priceMap      = {};
+    const titleMap      = {};
+    userResources.forEach(r => { priceMap[r.id] = parseFloat(r.price || 0); titleMap[r.id] = r.title; });
+
+    // Fetch completed payments for this user's resources
+    let relevantPayments = [];
+    if (resourceIds.length) {
+      const { data: payments } = await db.from('payments')
+        .select('user_id, resource_id, created_at')
+        .eq('status', 'completed')
+        .in('resource_id', resourceIds);
+      relevantPayments = payments || [];
+    }
+
+    // Build userStats grouped by buyer user_id
+    const buyerMap = {};
+    relevantPayments.forEach(p => {
+      const key = p.user_id;
+      if (!buyerMap[key]) buyerMap[key] = { email: p.user_id, totalAmount: 0, resources: [], created_at: p.created_at };
+      buyerMap[key].totalAmount += priceMap[p.resource_id] || 0;
+      if (titleMap[p.resource_id]) buyerMap[key].resources.push(titleMap[p.resource_id]);
+      if (new Date(p.created_at) > new Date(buyerMap[key].created_at)) buyerMap[key].created_at = p.created_at;
+    });
+
+    const totalGross = relevantPayments.reduce((s, p) => s + (priceMap[p.resource_id] || 0), 0);
+    const statsData  = {
+      totalGross,
+      totalPurchases: relevantPayments.length,
+      userStats: Object.values(buyerMap)
+    };
+
     console.log('[Dashboard] statsData =>', statsData);
 
-    const totalGross     = parseFloat(statsData.totalGross || 0);
-    const wdList         = wdResult.data || [];
+    const wdList = wdResult.data || [];
     console.log('[Dashboard] withdrawals from Supabase =>', wdList);
 
     // Net = gross * 0.95 (after 5% fee)
@@ -587,7 +610,7 @@ async function loadDashboard() {
     });
 
     // ── Charts ──
-    renderCharts(available, totalGross, totalWithdrawn, platformFees, totalPending, statsData.userStats || []);
+    renderCharts(available, totalGross, totalWithdrawn, platformFees, totalPending, statsData.userStats || [], userEmail);
     
     // Remove chart loader
     document.querySelectorAll('.chart-card.is-loading').forEach(c => c.classList.remove('is-loading'));
