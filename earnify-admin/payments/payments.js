@@ -55,122 +55,14 @@
   }
 
   /* ── State ── */
-  let allPayments = [];   // pending only
-  let _allRaw = [];       // all records (for processed count)
-  let filteredPayments = [];
+  let allPayments = [];
   let selectedIdx = null;
-
-  /* ── Date filter ── */
-  // Always work in LOCAL date strings to avoid UTC timezone shift
-  function toLocalDateStr(d) {
-    const y = d.getFullYear();
-    const m = String(d.getMonth() + 1).padStart(2, '0');
-    const day = String(d.getDate()).padStart(2, '0');
-    return `${y}-${m}-${day}`;
-  }
-
-  // Parse a YYYY-MM-DD string as local midnight (not UTC)
-  function localMidnight(dateStr) {
-    const [y, m, d] = dateStr.split('-').map(Number);
-    return new Date(y, m - 1, d).getTime();
-  }
-
-  // Get local date string from a UTC timestamp string (e.g. created_at)
-  function recordDateStr(isoStr) {
-    const d = new Date(isoStr);
-    return toLocalDateStr(d);
-  }
-
-  window.setPreset = function (btn, preset) {
-    document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    const now = new Date();
-    if (preset === 'today') {
-      const d = toLocalDateStr(now);
-      applyRange(d, d);
-    } else if (preset === 'yesterday') {
-      const y = new Date(now); y.setDate(now.getDate() - 1);
-      const d = toLocalDateStr(y);
-      applyRange(d, d);
-    } else if (preset === 'week') {
-      const start = new Date(now); start.setDate(now.getDate() - now.getDay());
-      applyRange(toLocalDateStr(start), toLocalDateStr(now));
-    } else if (preset === 'month') {
-      const start = new Date(now.getFullYear(), now.getMonth(), 1);
-      applyRange(toLocalDateStr(start), toLocalDateStr(now));
-    } else if (preset === 'custom') {
-      document.getElementById('customRangeModal').classList.add('show');
-      document.body.style.overflow = 'hidden';
-    } else {
-      applyRange(null, null);
-    }
-  };
-
-  window.applyCustomRange = function () {
-    const from = document.getElementById('filterFrom').value;
-    const to   = document.getElementById('filterTo').value;
-    closeCustomRange();
-    if (from || to) applyRange(from || null, to || null);
-  };
-
-  window.closeCustomRange = function () {
-    document.getElementById('customRangeModal').classList.remove('show');
-    document.body.style.overflow = '';
-  };
-
-  function applyRange(from, to) {
-    const fromTs = from ? localMidnight(from) : null;
-    const toTs   = to   ? localMidnight(to) + 86399999 : null;
-    filteredPayments = allPayments.filter(p => {
-      const recTs = localMidnight(recordDateStr(p.created_at));
-      if (fromTs !== null && recTs < fromTs) return false;
-      if (toTs   !== null && recTs > toTs)   return false;
-      return true;
-    });
-
-    // Update stat cards
-    const filteredNet = filteredPayments.reduce((s, p) => s + parseFloat(p.amount || 0) * 0.95, 0);
-    const approvedInRange = _allRaw.filter(w => {
-      if (w.status !== 'approved' && w.status !== 'completed') return false;
-      const recTs = localMidnight(recordDateStr(w.approved_at || w.created_at));
-      if (fromTs !== null && recTs < fromTs) return false;
-      if (toTs   !== null && recTs > toTs)   return false;
-      return true;
-    }).length;
-    const rejectedInRange = _allRaw.filter(w => {
-      if (w.status !== 'rejected') return false;
-      const recTs = localMidnight(recordDateStr(w.created_at));
-      if (fromTs !== null && recTs < fromTs) return false;
-      if (toTs   !== null && recTs > toTs)   return false;
-      return true;
-    }).length;
-    renderStats(filteredPayments.length, filteredNet, approvedInRange, rejectedInRange);
-
-    const resultEl = document.getElementById('filterResult');
-    if (from || to) {
-      resultEl.textContent = `${filteredPayments.length} of ${allPayments.length} shown`;
-      resultEl.classList.add('visible');
-    } else {
-      resultEl.textContent = '';
-      resultEl.classList.remove('visible');
-    }
-    renderPayments(filteredPayments);
-  }
-
-  window.clearFilter = function () {
-    document.getElementById('filterFrom').value = '';
-    document.getElementById('filterTo').value = '';
-    document.querySelectorAll('.preset-btn').forEach(b => b.classList.toggle('active', b.dataset.preset === 'all'));
-    applyRange(null, null);
-  };
 
   /* ── Load from Supabase ── */
   function showShimmer() {
     document.getElementById('statsGrid').innerHTML = `
       <div class="stat-card shimmer-card"><div class="stat-icon"><span>⏳</span></div><div class="stat-body"><span class="sh" style="height:10px;width:70px;margin-bottom:10px;"></span><span class="sh" style="height:26px;width:60px;margin-bottom:8px;"></span><span class="sh" style="height:9px;width:90px;"></span></div></div>
-      <div class="stat-card shimmer-card"><div class="stat-icon"><span>💰</span></div><div class="stat-body"><span class="sh" style="height:10px;width:80px;margin-bottom:10px;"></span><span class="sh" style="height:26px;width:80px;margin-bottom:8px;"></span><span class="sh" style="height:9px;width:100px;"></span></div></div>
-      <div class="stat-card shimmer-card"><div class="stat-icon"><span>✅</span></div><div class="stat-body"><span class="sh" style="height:10px;width:60px;margin-bottom:10px;"></span><span class="sh" style="height:26px;width:50px;margin-bottom:8px;"></span><span class="sh" style="height:9px;width:90px;"></span></div></div>
-      <div class="stat-card shimmer-card"><div class="stat-icon"><span>✕</span></div><div class="stat-body"><span class="sh" style="height:10px;width:60px;margin-bottom:10px;"></span><span class="sh" style="height:26px;width:50px;margin-bottom:8px;"></span><span class="sh" style="height:9px;width:90px;"></span></div></div>`;
+      <div class="stat-card shimmer-card"><div class="stat-icon"><span>💰</span></div><div class="stat-body"><span class="sh" style="height:10px;width:80px;margin-bottom:10px;"></span><span class="sh" style="height:26px;width:80px;margin-bottom:8px;"></span><span class="sh" style="height:9px;width:100px;"></span></div></div>`;
 
     const cardHtml = `
       <div class="payment-shimmer">
@@ -181,12 +73,10 @@
     document.getElementById('paymentsGrid').innerHTML = cardHtml + cardHtml + cardHtml;
   }
 
-  function renderStats(pending, amount, approved, rejected) {
+  function renderStats(pending, amount) {
     document.getElementById('statsGrid').innerHTML = `
-      <div class="stat-card"><div class="stat-icon">⏳</div><div class="stat-body"><div class="stat-label">Pending</div><div class="stat-value" id="statPending">${pending}</div><div class="stat-sub">Awaiting review</div></div></div>
-      <div class="stat-card"><div class="stat-icon">💰</div><div class="stat-body"><div class="stat-label">Total Amount</div><div class="stat-value" id="statAmount">${fmt(amount)}</div><div class="stat-sub">Pending withdrawals</div></div></div>
-      <div class="stat-card"><div class="stat-icon">✅</div><div class="stat-body"><div class="stat-label">Approved</div><div class="stat-value" id="statApproved">${approved}</div><div class="stat-sub">In selected range</div></div></div>
-      <div class="stat-card"><div class="stat-icon">✕</div><div class="stat-body"><div class="stat-label">Rejected</div><div class="stat-value" id="statRejected">${rejected}</div><div class="stat-sub">In selected range</div></div></div>`;
+      <div class="stat-card"><div class="stat-icon">⏳</div><div class="stat-body"><div class="stat-label">Pending</div><div class="stat-value">${pending}</div><div class="stat-sub">Awaiting review</div></div></div>
+      <div class="stat-card"><div class="stat-icon">💰</div><div class="stat-body"><div class="stat-label">Total Amount</div><div class="stat-value">${fmt(amount)}</div><div class="stat-sub">Pending withdrawals</div></div></div>`;
   }
 
   async function loadPayments() {
@@ -208,19 +98,10 @@
     }
 
     const all = data || [];
-    _allRaw = all;
     allPayments = all.filter(w => w.status === 'pending');
-    filteredPayments = [...allPayments];
-
-    // re-apply active preset after reload (skip custom to avoid reopening modal)
-    const activePreset = document.querySelector('.preset-btn.active')?.dataset.preset || 'all';
-    if (activePreset === 'custom') {
-      applyRange(null, null);
-    } else {
-      const fakeBtn = document.querySelector(`.preset-btn[data-preset="${activePreset}"]`);
-      if (fakeBtn) setPreset(fakeBtn, activePreset);
-      else applyRange(null, null);
-    }
+    const totalNet = allPayments.reduce((s, p) => s + parseFloat(p.amount || 0) * 0.95, 0);
+    renderStats(allPayments.length, totalNet);
+    renderPayments(allPayments);
   }
 
   /* ── Render cards ── */
@@ -269,7 +150,7 @@
   /* ── Confirm modal ── */
   window.openConfirmModal = function (i) {
     selectedIdx = i;
-    const p = filteredPayments[i];
+    const p = allPayments[i];
     if (!p) return;
     const gross = parseFloat(p.amount || 0);
     const fee = gross * 0.05;
@@ -302,7 +183,7 @@
     const btn = document.getElementById('confirmBtn');
     btn.disabled = true;
     btn.textContent = '⏳ Processing...';
-    await handlePayment(selectedIdx, 'approve', '', filteredPayments);
+    await handlePayment(selectedIdx, 'approve', '', allPayments);
     window.closeConfirmModal();
   };
 
@@ -336,12 +217,12 @@
     const btn = document.getElementById('rejectConfirmBtn');
     btn.disabled = true;
     btn.textContent = '⏳ Rejecting...';
-    await handlePayment(rejectIdx, 'reject', reason, filteredPayments);
+    await handlePayment(rejectIdx, 'reject', reason, allPayments);
     window.closeRejectModal();
   };
 
   /* ── Approve / Reject via Supabase ── */
-  window.handlePayment = async function (i, action, rejectReason = '', list = filteredPayments) {
+  window.handlePayment = async function (i, action, rejectReason = '', list = allPayments) {
     const p = list[i];
     if (!p) return;
 
