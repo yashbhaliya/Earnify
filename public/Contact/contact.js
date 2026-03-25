@@ -164,9 +164,44 @@ function loadActualContent() {
   `;
   
   // Re-attach form submit handler
-  document.getElementById('contactForm').addEventListener('submit', function(e) {
+  document.getElementById('contactForm').addEventListener('submit', async function(e) {
     e.preventDefault();
-    alert('Thank you for your message! We will get back to you soon.');
-    this.reset();
+    const btn = this.querySelector('.submit-btn');
+    const name    = document.getElementById('name').value.trim();
+    const email   = document.getElementById('email').value.trim();
+    const subject = document.getElementById('subject').value.trim();
+    const message = document.getElementById('message').value.trim();
+
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, subject, message })
+      });
+      const data = await res.json();
+      if (data.success) {
+        btn.innerHTML = '<i class="fas fa-check"></i> Message Sent!';
+        btn.style.background = 'linear-gradient(135deg,#10b981,#059669)';
+        this.reset();
+        setTimeout(() => {
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fas fa-envelope"></i> Send Message';
+          btn.style.background = '';
+        }, 3000);
+      } else {
+        throw new Error(data.error || 'Failed to send');
+      }
+    } catch (err) {
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fas fa-exclamation-circle"></i> Failed — Try Again';
+      btn.style.background = 'linear-gradient(135deg,#ef4444,#dc2626)';
+      setTimeout(() => {
+        btn.innerHTML = '<i class="fas fa-envelope"></i> Send Message';
+        btn.style.background = '';
+      }, 3000);
+    }
   });
 }

@@ -4,6 +4,7 @@ const path = require("path");
 const multer = require("multer");
 const Razorpay = require("razorpay");
 const crypto = require("crypto");
+const nodemailer = require("nodemailer");
 const { createClient } = require("@supabase/supabase-js");
 require("dotenv").config();
 
@@ -882,24 +883,48 @@ app.post("/api/withdrawals", async (req, res) => {
 app.post("/api/contact", async (req, res) => {
   try {
     const { name, email, subject, message } = req.body;
-    
+
     if (!name || !email || !subject || !message) {
       return res.status(400).json({ success: false, error: "All fields are required" });
     }
-    
-    const { data, error } = await supabase
+
+    // Save to Supabase
+    const { error: dbError } = await supabase
       .from("contact_messages")
-      .insert([{ name, email, subject, message, created_at: new Date().toISOString() }])
-      .select();
-    
-    if (error) {
-      console.error('Contact message error:', error);
-      if (error.message.includes('relation "contact_messages" does not exist')) {
-        return res.status(500).json({ success: false, error: "Contact form is not configured. Please run: node create-contact-table.js" });
+      .insert([{ name, email, subject, message, created_at: new Date().toISOString() }]);
+
+    if (dbError) console.error('Contact DB error:', dbError.message);
+
+    // Send email via Gmail SMTP
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.GMAIL_USER,
+        pass: process.env.GMAIL_PASS
       }
-      return res.status(500).json({ success: false, error: "Failed to send message. Please try again later." });
-    }
-    
+    });
+
+    await transporter.sendMail({
+      from: `"Earnify Contact" <${process.env.GMAIL_USER}>`,
+      to: 'bhaliyayash595@gmail.com',
+      replyTo: email,
+      subject: `[Earnify Contact] ${subject}`,
+      html: `
+        <div style="font-family:Inter,sans-serif;max-width:600px;margin:0 auto;padding:24px;background:#f8fafc;border-radius:12px;">
+          <h2 style="color:#667eea;margin:0 0 20px;">New Contact Form Submission</h2>
+          <table style="width:100%;border-collapse:collapse;">
+            <tr><td style="padding:10px 0;font-weight:700;color:#475569;width:100px;">Name</td><td style="padding:10px 0;color:#1e293b;">${name}</td></tr>
+            <tr><td style="padding:10px 0;font-weight:700;color:#475569;">Email</td><td style="padding:10px 0;color:#1e293b;"><a href="mailto:${email}">${email}</a></td></tr>
+            <tr><td style="padding:10px 0;font-weight:700;color:#475569;">Subject</td><td style="padding:10px 0;color:#1e293b;">${subject}</td></tr>
+          </table>
+          <div style="margin-top:16px;padding:16px;background:white;border-radius:8px;border:1px solid #e2e8f0;">
+            <p style="font-weight:700;color:#475569;margin:0 0 8px;">Message</p>
+            <p style="color:#1e293b;line-height:1.6;margin:0;white-space:pre-wrap;">${message}</p>
+          </div>
+          <p style="margin-top:16px;font-size:12px;color:#94a3b8;">Sent from Earnify Contact Form</p>
+        </div>`
+    });
+
     res.json({ success: true, message: "Message sent successfully!" });
   } catch (error) {
     console.error('Contact submission failed:', error);
