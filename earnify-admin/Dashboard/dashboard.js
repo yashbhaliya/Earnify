@@ -75,6 +75,7 @@ let _dayChart   = null;
 let _dayWiseChart = null;
 let _allResourceData = [];
 let _allPurchasesData = [];
+let _resourcePriceMap = {}; // title -> actual price from DB
 
 function renderDayWiseChart(purchases, selectedMonth, selectedYear) {
   const dayWiseCtx = document.getElementById('dayWiseChart')?.getContext('2d');
@@ -152,16 +153,18 @@ function renderDayWiseChart(purchases, selectedMonth, selectedYear) {
             font: { size: 12, weight: '600' }
           }
         },
-        y: { 
+        y: {
+          beginAtZero: true,
           grid: { color: 'rgba(0,0,0,0.05)' },
-          ticks: { 
+          ticks: {
             font: { size: 11 },
             color: '#94a3b8',
-            callback: v => '₹' + (v >= 1000 ? (v/1000).toFixed(0) + 'k' : v)
+            stepSize: 500,
+            callback: v => '\u20b9' + v.toLocaleString('en-IN')
           },
           title: {
             display: true,
-            text: 'Revenue (₹)',
+            text: 'Revenue (\u20b9)',
             color: '#64748b',
             font: { size: 12, weight: '600' }
           }
@@ -297,120 +300,107 @@ function filterDayChart() {
 function renderResourceChart(limit = 10, sortBy = 'revenue') {
   const barCtx = document.getElementById('barChart')?.getContext('2d');
   if (!barCtx || !_allPurchasesData.length) return;
-  
+
   if (_barChart) _barChart.destroy();
-  
-  // Aggregate data by resource
+
+  // Build per-resource stats using actual unit prices from _resourcePriceMap.
+  // userStats is grouped by buyer: { resources: ['Title A','Title B'], totalAmount: X }
+  // totalAmount = sum of individual resource prices for that buyer.
+  // We look up each resource's real price instead of splitting totalAmount.
   const resourceData = {};
   _allPurchasesData.forEach(p => {
-    const resources = p.resources || [];
-    const amount = parseFloat(p.totalAmount || 0);
-    resources.forEach(resource => {
-      if (resource) {
-        if (!resourceData[resource]) {
-          resourceData[resource] = { revenue: 0, purchases: 0 };
-        }
-        resourceData[resource].revenue += amount;
-        resourceData[resource].purchases += 1;
-      }
+    const titles = (p.resources || []).filter(Boolean);
+    titles.forEach(title => {
+      const unitPrice = _resourcePriceMap[title] ?? 0;
+      if (!resourceData[title]) resourceData[title] = { revenue: 0, purchases: 0, unitPrice };
+      resourceData[title].revenue   += unitPrice;
+      resourceData[title].purchases += 1;
     });
   });
-  
-  // Convert to array and calculate avg price
-  let sortedResources = Object.entries(resourceData).map(([name, data]) => ({
+
+  let sorted = Object.entries(resourceData).map(([name, d]) => ({
     name,
-    revenue: data.revenue,
-    purchases: data.purchases,
-    avgPrice: data.purchases > 0 ? data.revenue / data.purchases : 0
+    revenue:   parseFloat(d.revenue.toFixed(2)),
+    purchases: d.purchases,
+    unitPrice: parseFloat(d.unitPrice.toFixed(2))
   }));
-  
-  // Apply sorting
-  switch(sortBy) {
-    case 'purchases':
-      sortedResources.sort((a, b) => b.purchases - a.purchases);
-      break;
-    case 'avgPrice':
-      sortedResources.sort((a, b) => b.avgPrice - a.avgPrice);
-      break;
-    case 'name':
-      sortedResources.sort((a, b) => a.name.localeCompare(b.name));
-      break;
-    case 'revenue':
-    default:
-      sortedResources.sort((a, b) => b.revenue - a.revenue);
-      break;
+
+  switch (sortBy) {
+    case 'purchases': sorted.sort((a, b) => b.purchases - a.purchases); break;
+    case 'avgPrice':  sorted.sort((a, b) => b.unitPrice  - a.unitPrice); break;
+    case 'name':      sorted.sort((a, b) => a.name.localeCompare(b.name)); break;
+    default:          sorted.sort((a, b) => b.revenue    - a.revenue);   break;
   }
-  
-  // Apply limit
-  const limitNum = limit === 'all' ? sortedResources.length : limit;
-  sortedResources = sortedResources.slice(0, limitNum);
-  
-  if (!sortedResources.length) {
-    if (_barChart) _barChart.destroy();
-    return;
-  }
-  
-  const labels = sortedResources.map(r => r.name.length > 20 ? r.name.substring(0, 20) + '...' : r.name);
-  const values = sortedResources.map(r => {
-    switch(sortBy) {
-      case 'purchases': return r.purchases;
-      case 'avgPrice': return r.avgPrice;
-      default: return r.revenue;
-    }
+
+  const limitNum = limit === 'all' ? sorted.length : Math.min(limit, sorted.length);
+  sorted = sorted.slice(0, limitNum);
+  if (!sorted.length) return;
+
+  const labels = sorted.map(r => r.name.length > 22 ? r.name.substring(0, 22) + '...' : r.name);
+  const values = sorted.map(r => {
+    if (sortBy === 'purchases') return r.purchases;
+    if (sortBy === 'avgPrice')  return r.unitPrice;
+    return r.revenue;
   });
-  
+
   const colors = [
-    'rgba(102,126,234,0.8)', 'rgba(118,75,162,0.8)', 'rgba(240,147,251,0.8)',
-    'rgba(245,87,108,0.8)', 'rgba(255,107,107,0.8)', 'rgba(238,90,36,0.8)',
-    'rgba(17,153,142,0.8)', 'rgba(56,239,125,0.8)', 'rgba(249,202,36,0.8)',
-    'rgba(240,147,43,0.8)', 'rgba(99,102,241,0.8)', 'rgba(236,72,153,0.8)',
-    'rgba(34,197,94,0.8)', 'rgba(251,146,60,0.8)', 'rgba(168,85,247,0.8)'
+    'rgba(102,126,234,0.85)', 'rgba(118,75,162,0.85)', 'rgba(240,147,251,0.85)',
+    'rgba(245,87,108,0.85)',  'rgba(255,107,107,0.85)', 'rgba(238,90,36,0.85)',
+    'rgba(17,153,142,0.85)',  'rgba(56,239,125,0.85)',  'rgba(249,202,36,0.85)',
+    'rgba(240,147,43,0.85)',  'rgba(99,102,241,0.85)',  'rgba(236,72,153,0.85)',
+    'rgba(34,197,94,0.85)',   'rgba(251,146,60,0.85)',  'rgba(168,85,247,0.85)'
   ];
-  
-  const yAxisLabel = sortBy === 'purchases' ? 'Purchases' : sortBy === 'avgPrice' ? 'Avg Price (₹)' : 'Revenue (₹)';
-  
+
+  const canvas = document.getElementById('barChart');
+  canvas.style.height = Math.max(200, sorted.length * 42) + 'px';
+
+  const isMoney = sortBy !== 'purchases';
+  const axisLabel = sortBy === 'purchases' ? 'Purchases' : sortBy === 'avgPrice' ? 'Unit Price (₹)' : 'Total Revenue (₹)';
+
   _barChart = new Chart(barCtx, {
     type: 'bar',
     data: {
       labels,
       datasets: [{
-        label: yAxisLabel,
+        label: axisLabel,
         data: values,
         backgroundColor: colors.slice(0, values.length),
-        borderColor: colors.slice(0, values.length).map(c => c.replace('0.8', '1')),
-        borderWidth: 2,
-        borderRadius: 0,
+        borderColor: colors.slice(0, values.length).map(c => c.replace('0.85', '1')),
+        borderWidth: 1.5,
+        borderRadius: 4,
         borderSkipped: false
       }]
     },
     options: {
       responsive: true,
-      maintainAspectRatio: true,
+      maintainAspectRatio: false,
       indexAxis: 'y',
       plugins: {
         legend: { display: false },
-        tooltip: { 
-          callbacks: { 
-            label: ctx => sortBy === 'purchases' ? ` ${ctx.raw} purchases` : ` ${fmt(ctx.raw)}`,
-            title: ctx => sortedResources[ctx[0].dataIndex].name
+        tooltip: {
+          callbacks: {
+            title: ctx => sorted[ctx[0].dataIndex].name,
+            label: ctx => {
+              const r = sorted[ctx[0].dataIndex];
+              if (sortBy === 'purchases') return ` ${r.purchases} sales • Unit price: ${fmt(r.unitPrice)}`;
+              if (sortBy === 'avgPrice')  return ` Unit price: ${fmt(r.unitPrice)} • ${r.purchases} sales`;
+              return ` Total: ${fmt(r.revenue)} • ${r.purchases} sales • ${fmt(r.unitPrice)}/unit`;
+            }
           }
         }
       },
       scales: {
         x: {
+          beginAtZero: true,
           grid: { color: 'rgba(0,0,0,0.05)' },
-          ticks: { 
-            font: { size: 11 }, 
-            color: '#94a3b8',
-            callback: v => sortBy === 'purchases' ? v : '₹' + (v >= 1000 ? (v/1000).toFixed(0) + 'k' : v)
+          ticks: {
+            font: { size: 11 }, color: '#94a3b8',
+            callback: v => isMoney ? ('₹' + (v >= 1000 ? (v/1000).toFixed(1) + 'k' : v)) : v
           }
         },
-        y: { 
+        y: {
           grid: { display: false },
-          ticks: { 
-            font: { size: 11, weight: '600' },
-            color: '#64748b'
-          }
+          ticks: { font: { size: 11, weight: '600' }, color: '#64748b' }
         }
       }
     }
@@ -460,11 +450,18 @@ function renderCharts(available, totalGross, totalWithdrawn, platformFees, total
   // ── Bar Chart - Revenue per Resources ──
   const barCtx = document.getElementById('barChart')?.getContext('2d');
   if (barCtx && purchases.length) {
-    // Store all purchases data globally for date filtering
     _allPurchasesData = purchases;
-    
-    // Initial render with default filters (revenue)
-    renderResourceChart(10, 'revenue');
+    // Fetch actual resource prices from API to build title->price map
+    apiFetch('/api/resources').then(resources => {
+      _resourcePriceMap = {};
+      (resources || []).forEach(r => {
+        if (r.title) _resourcePriceMap[r.title] = parseFloat(r.price || 0);
+      });
+      renderResourceChart(10, 'revenue');
+    }).catch(() => {
+      // Fallback: render without price map (bars will show 0 for unknown resources)
+      renderResourceChart(10, 'revenue');
+    });
   }
   
   // ── Day-wise Revenue Chart ──
