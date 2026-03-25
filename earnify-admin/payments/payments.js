@@ -55,13 +55,121 @@
   }
 
   /* ── State ── */
-  let allPayments = [];
+  let allPayments = [];   // pending only
+  let _allRaw = [];       // all records (for processed count)
+  let filteredPayments = [];
   let selectedIdx = null;
+
+  /* ── Date filter ── */
+  // Always work in LOCAL date strings to avoid UTC timezone shift
+  function toLocalDateStr(d) {
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${y}-${m}-${day}`;
+  }
+
+  // Parse a YYYY-MM-DD string as local midnight (not UTC)
+  function localMidnight(dateStr) {
+    const [y, m, d] = dateStr.split('-').map(Number);
+    return new Date(y, m - 1, d).getTime();
+  }
+
+  // Get local date string from a UTC timestamp string (e.g. created_at)
+  function recordDateStr(isoStr) {
+    const d = new Date(isoStr);
+    return toLocalDateStr(d);
+  }
+
+  window.setPreset = function (btn, preset) {
+    document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const now = new Date();
+    if (preset === 'today') {
+      const d = toLocalDateStr(now);
+      applyRange(d, d);
+    } else if (preset === 'yesterday') {
+      const y = new Date(now); y.setDate(now.getDate() - 1);
+      const d = toLocalDateStr(y);
+      applyRange(d, d);
+    } else if (preset === 'week') {
+      const start = new Date(now); start.setDate(now.getDate() - now.getDay());
+      applyRange(toLocalDateStr(start), toLocalDateStr(now));
+    } else if (preset === 'month') {
+      const start = new Date(now.getFullYear(), now.getMonth(), 1);
+      applyRange(toLocalDateStr(start), toLocalDateStr(now));
+    } else if (preset === 'custom') {
+      document.getElementById('customRangeModal').classList.add('show');
+      document.body.style.overflow = 'hidden';
+    } else {
+      applyRange(null, null);
+    }
+  };
+
+  window.applyCustomRange = function () {
+    const from = document.getElementById('filterFrom').value;
+    const to   = document.getElementById('filterTo').value;
+    closeCustomRange();
+    if (from || to) applyRange(from || null, to || null);
+  };
+
+  window.closeCustomRange = function () {
+    document.getElementById('customRangeModal').classList.remove('show');
+    document.body.style.overflow = '';
+  };
+
+  function applyRange(from, to) {
+    const fromTs = from ? localMidnight(from) : null;
+    const toTs   = to   ? localMidnight(to) + 86399999 : null;
+    filteredPayments = allPayments.filter(p => {
+      const recTs = localMidnight(recordDateStr(p.created_at));
+      if (fromTs !== null && recTs < fromTs) return false;
+      if (toTs   !== null && recTs > toTs)   return false;
+      return true;
+    });
+
+    // Update stat cards to reflect filtered data
+    const filteredNet = filteredPayments.reduce((s, p) => s + parseFloat(p.amount || 0) * 0.95, 0);
+    const todayStr = toLocalDateStr(new Date());
+    const processedInRange = _allRaw.filter(w => {
+      if (w.status !== 'approved' && w.status !== 'rejected') return false;
+      const recTs = localMidnight(recordDateStr(w.approved_at || w.created_at));
+      if (fromTs !== null && recTs < fromTs) return false;
+      if (toTs   !== null && recTs > toTs)   return false;
+      return true;
+    }).length;
+    document.getElementById('statPending').textContent   = filteredPayments.length;
+    document.getElementById('statAmount').textContent    = fmt(filteredNet);
+    document.getElementById('statProcessed').textContent = processedInRange;
+
+    // Update sub-labels to reflect filter context
+    const isFiltered = !!(from || to);
+    document.querySelector('#statPending + .stat-sub').textContent   = isFiltered ? 'In selected range' : 'Awaiting review';
+    document.querySelector('#statAmount + .stat-sub').textContent    = isFiltered ? 'In selected range' : 'Pending withdrawals';
+    document.querySelector('#statProcessed + .stat-sub').textContent = isFiltered ? 'In selected range' : 'Approved + Rejected';
+
+    const resultEl = document.getElementById('filterResult');
+    if (from || to) {
+      resultEl.textContent = `${filteredPayments.length} of ${allPayments.length} shown`;
+      resultEl.classList.add('visible');
+    } else {
+      resultEl.textContent = '';
+      resultEl.classList.remove('visible');
+    }
+    renderPayments(filteredPayments);
+  }
+
+  window.clearFilter = function () {
+    document.getElementById('filterFrom').value = '';
+    document.getElementById('filterTo').value = '';
+    document.querySelectorAll('.preset-btn').forEach(b => b.classList.toggle('active', b.dataset.preset === 'all'));
+    applyRange(null, null);
+  };
 
   /* ── Load from Supabase ── */
   async function loadPayments() {
     document.getElementById('paymentsGrid').innerHTML = `
-      <div class="empty-state"><div class="empty-icon">⏳</div><h3>Loading...</h3><p>Fetching from Supabase</p></div>`;
+      <div class="empty-state"><div class="empty-icon">⏳</div><h3>Loading...</h3><p>Fetching from Database</p></div>`;
 
     const { data, error } = await db.from('withdrawals').select('*').order('created_at', { ascending: false });
 
@@ -79,20 +187,19 @@
     }
 
     const all = data || [];
+    _allRaw = all;
     allPayments = all.filter(w => w.status === 'pending');
+    filteredPayments = [...allPayments];
 
-    const totalNet = allPayments.reduce((s, p) => s + parseFloat(p.amount || 0) * 0.95, 0);
-    const today = new Date().toDateString();
-    const processedToday = all.filter(w =>
-      new Date(w.updated_at || w.created_at).toDateString() === today &&
-      (w.status === 'approved' || w.status === 'rejected')
-    ).length;
-
-    document.getElementById('statPending').textContent = allPayments.length;
-    document.getElementById('statAmount').textContent = fmt(totalNet);
-    document.getElementById('statProcessed').textContent = processedToday;
-
-    renderPayments(allPayments);
+    // re-apply active preset after reload (skip custom to avoid reopening modal)
+    const activePreset = document.querySelector('.preset-btn.active')?.dataset.preset || 'all';
+    if (activePreset === 'custom') {
+      applyRange(null, null);
+    } else {
+      const fakeBtn = document.querySelector(`.preset-btn[data-preset="${activePreset}"]`);
+      if (fakeBtn) setPreset(fakeBtn, activePreset);
+      else applyRange(null, null);
+    }
   }
 
   /* ── Render cards ── */
@@ -141,7 +248,7 @@
   /* ── Confirm modal ── */
   window.openConfirmModal = function (i) {
     selectedIdx = i;
-    const p = allPayments[i];
+    const p = filteredPayments[i];
     if (!p) return;
     const gross = parseFloat(p.amount || 0);
     const fee = gross * 0.05;
@@ -174,7 +281,7 @@
     const btn = document.getElementById('confirmBtn');
     btn.disabled = true;
     btn.textContent = '⏳ Processing...';
-    await handlePayment(selectedIdx, 'approve');
+    await handlePayment(selectedIdx, 'approve', '', filteredPayments);
     window.closeConfirmModal();
   };
 
@@ -208,13 +315,13 @@
     const btn = document.getElementById('rejectConfirmBtn');
     btn.disabled = true;
     btn.textContent = '⏳ Rejecting...';
-    await handlePayment(rejectIdx, 'reject', reason);
+    await handlePayment(rejectIdx, 'reject', reason, filteredPayments);
     window.closeRejectModal();
   };
 
   /* ── Approve / Reject via Supabase ── */
-  window.handlePayment = async function (i, action, rejectReason = '') {
-    const p = allPayments[i];
+  window.handlePayment = async function (i, action, rejectReason = '', list = filteredPayments) {
+    const p = list[i];
     if (!p) return;
 
     const acceptBtn = document.getElementById(`accept-${i}`);
