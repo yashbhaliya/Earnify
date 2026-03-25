@@ -117,9 +117,17 @@ function renderDayWiseChart(purchases, selectedMonth, selectedYear) {
       datasets: [{
         label: 'Revenue (₹)',
         data: values,
-        backgroundColor: 'rgba(102,126,234,0.7)',
-        borderColor: 'rgba(102,126,234,1)',
-        borderWidth: 2,
+        backgroundColor: (ctx) => {
+          const chart = ctx.chart;
+          const { ctx: c, chartArea } = chart;
+          if (!chartArea) return '#EA2F4A';
+          const grad = c.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+          grad.addColorStop(0, '#EF5835');
+          grad.addColorStop(1, '#E29F17');
+          return grad;
+        },
+        borderColor: 'transparent',
+        borderWidth: 0,
         borderRadius: 8,
         borderSkipped: false
       }]
@@ -343,16 +351,39 @@ function renderResourceChart(limit = 10, sortBy = 'revenue') {
     return r.revenue;
   });
 
-  const colors = [
-    'rgba(102,126,234,0.85)', 'rgba(118,75,162,0.85)', 'rgba(240,147,251,0.85)',
-    'rgba(245,87,108,0.85)',  'rgba(255,107,107,0.85)', 'rgba(238,90,36,0.85)',
-    'rgba(17,153,142,0.85)',  'rgba(56,239,125,0.85)',  'rgba(249,202,36,0.85)',
-    'rgba(240,147,43,0.85)',  'rgba(99,102,241,0.85)',  'rgba(236,72,153,0.85)',
-    'rgba(34,197,94,0.85)',   'rgba(251,146,60,0.85)',  'rgba(168,85,247,0.85)'
+  // Build light linear gradient per bar
+  const gradientPairs = [
+    ['#EA2F4A','#D2ECF9'],
+    ['#667eea','#c9d6ff'],
+    ['#f093fb','#fde8ff'],
+    ['#43e97b','#d4f7e7'],
+    ['#fa709a','#ffd6e7'],
+    ['#4facfe','#d6eeff'],
+    ['#f7971e','#fde8c8'],
+    ['#a18cd1','#ede0f7'],
+    ['#11998e','#c8f0ec'],
+    ['#f5576c','#fde0e3'],
+    ['#764ba2','#e8d5f5'],
+    ['#00b4db','#d0f0fb'],
+    ['#e96c1e','#fde3d0'],
+    ['#38ef7d','#d4fbe6'],
+    ['#6a11cb','#ddd0f7']
   ];
 
+  const gradientColors = gradientPairs.slice(0, values.length).map(([c1, c2]) => {
+    const grad = barCtx.createLinearGradient(0, 0, 0, 320);
+    grad.addColorStop(0, c1);
+    grad.addColorStop(1, c2);
+    return grad;
+  });
+
+  const borderColors = gradientPairs.slice(0, values.length).map(([c1]) => c1);
+
   const canvas = document.getElementById('barChart');
-  canvas.style.height = Math.max(200, sorted.length * 42) + 'px';
+  const wrap = document.getElementById('barChartWrap');
+  const h = 320;
+  if (wrap) wrap.style.height = h + 'px';
+  canvas.style.height = h + 'px';
 
   const isMoney = sortBy !== 'purchases';
   const axisLabel = sortBy === 'purchases' ? 'Purchases' : sortBy === 'avgPrice' ? 'Unit Price (₹)' : 'Total Revenue (₹)';
@@ -364,9 +395,9 @@ function renderResourceChart(limit = 10, sortBy = 'revenue') {
       datasets: [{
         label: axisLabel,
         data: values,
-        backgroundColor: colors.slice(0, values.length),
-        borderColor: colors.slice(0, values.length).map(c => c.replace('0.85', '1')),
-        borderWidth: 1.5,
+        backgroundColor: gradientColors,
+        borderColor: borderColors,
+        borderWidth: 0,
         borderRadius: 4,
         borderSkipped: false
       }]
@@ -374,7 +405,7 @@ function renderResourceChart(limit = 10, sortBy = 'revenue') {
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      indexAxis: 'y',
+      indexAxis: 'x',
       plugins: {
         legend: { display: false },
         tooltip: {
@@ -391,16 +422,26 @@ function renderResourceChart(limit = 10, sortBy = 'revenue') {
       },
       scales: {
         x: {
-          beginAtZero: true,
-          grid: { color: 'rgba(0,0,0,0.05)' },
+          grid: { display: false },
           ticks: {
-            font: { size: 11 }, color: '#94a3b8',
-            callback: v => isMoney ? ('₹' + (v >= 1000 ? (v/1000).toFixed(1) + 'k' : v)) : v
+            font: { size: 11, weight: '600' },
+            color: '#64748b',
+            maxRotation: 40,
+            minRotation: 0,
+            callback: function(val) {
+              const label = this.getLabelForValue(val);
+              return label.length > 14 ? label.substring(0, 14) + '...' : label;
+            }
           }
         },
         y: {
-          grid: { display: false },
-          ticks: { font: { size: 11, weight: '600' }, color: '#64748b' }
+          beginAtZero: true,
+          grid: { color: 'rgba(0,0,0,0.05)' },
+          ticks: {
+            font: { size: 11 },
+            color: '#94a3b8',
+            callback: v => isMoney ? ('₹' + (v >= 1000 ? (v/1000).toFixed(1) + 'k' : v)) : v
+          }
         }
       }
     }

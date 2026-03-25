@@ -840,52 +840,52 @@
         gap: 10px;
       }
       
-      /* Chart filters mobile */
-      .chart-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 12px;
-      }
-      .chart-filters {
-        width: 100%;
-        gap: 8px;
-      }
-      .filter-select {
-        flex: 1;
-        min-width: 100px;
-        font-size: 11px;
-        padding: 8px 10px;
-      }
+      /* Chart filters mobile - handled in charts-grid section below */
       
       /* Charts grid mobile */
       .charts-grid {
         grid-template-columns: 1fr;
-        gap: 16px;
-        margin-bottom: 20px;
+        gap: 14px;
+        margin-bottom: 16px;
       }
       .chart-card {
         padding: 16px;
         border-radius: 14px;
+        overflow: hidden;
       }
-      .chart-title {
-        font-size: 14px;
+      .chart-title { font-size: 13px; }
+      .chart-sub   { font-size: 11px; }
+      .chart-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+        margin-bottom: 14px;
       }
-      .chart-sub {
+      .chart-filters {
+        width: 100%;
+        display: flex;
+        gap: 8px;
+      }
+      .filter-select {
+        flex: 1;
+        min-width: 0;
         font-size: 11px;
+        padding: 7px 8px;
       }
       .donut-wrap {
-        width: 160px;
-        height: 160px;
+        width: 150px;
+        height: 150px;
         margin: 0 auto 12px;
       }
-      .donut-center {
-        font-size: 12px;
-      }
-      .legend-item {
-        font-size: 11px;
-      }
-      .chart-wrap canvas {
-        max-height: 250px;
+      .donut-center { font-size: 11px; }
+      .legend-item  { font-size: 11px; }
+      .chart-wrap canvas { max-height: 220px; }
+      /* bar chart wrapper on mobile — allow scroll if tall */
+      #barChartWrap {
+        overflow-y: auto;
+        overflow-x: hidden;
+        max-height: 320px;
+        -webkit-overflow-scrolling: touch;
       }
     }
   </style>
@@ -1038,7 +1038,7 @@
           </select>
         </div>
       </div>
-      <div class="chart-wrap" style="position:relative;min-height:400px;">
+      <div id="barChartWrap" style="position:relative;width:100%;height: 300px;">
         <canvas id="barChart"></canvas>
       </div>
     </div>
