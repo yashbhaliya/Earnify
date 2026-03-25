@@ -545,21 +545,19 @@ async function loadDashboard() {
       relevantPayments = payments || [];
     }
 
-    // Build userStats grouped by buyer user_id
-    const buyerMap = {};
-    relevantPayments.forEach(p => {
-      const key = p.user_id;
-      if (!buyerMap[key]) buyerMap[key] = { email: p.user_id, totalAmount: 0, resources: [], created_at: p.created_at };
-      buyerMap[key].totalAmount += priceMap[p.resource_id] || 0;
-      if (titleMap[p.resource_id]) buyerMap[key].resources.push(titleMap[p.resource_id]);
-      if (new Date(p.created_at) > new Date(buyerMap[key].created_at)) buyerMap[key].created_at = p.created_at;
-    });
+    // Build one row per payment (each resource purchase = separate row)
+    const purchases = relevantPayments.map(p => ({
+      email:      p.user_id,
+      resource:   titleMap[p.resource_id] || '—',
+      amount:     priceMap[p.resource_id] || 0,
+      created_at: p.created_at
+    }));
 
     const totalGross = relevantPayments.reduce((s, p) => s + (priceMap[p.resource_id] || 0), 0);
     const statsData  = {
       totalGross,
       totalPurchases: relevantPayments.length,
-      userStats: Object.values(buyerMap)
+      userStats: purchases
     };
 
     console.log('[Dashboard] statsData =>', statsData);
@@ -613,26 +611,25 @@ async function loadDashboard() {
     // Remove chart loader
     document.querySelectorAll('.chart-card.is-loading').forEach(c => c.classList.remove('is-loading'));
 
-    const purchases = statsData.userStats || [];
+    const purchaseRows = statsData.userStats || [];
     const tbody = document.getElementById('purchaseTbody');
     const pcEl = document.getElementById('purchaseCount');
     if (pcEl) pcEl.textContent = `${completedCount} records`;
     if (tbody) {
-      // Remove thead shimmer
       const purchaseTable = tbody.closest('table');
       if (purchaseTable) {
         const thead = purchaseTable.querySelector('thead');
         if (thead) thead.classList.remove('is-loading');
       }
       
-      tbody.innerHTML = !purchases.length
+      tbody.innerHTML = !purchaseRows.length
         ? `<tr><td colspan="6"><div class="empty-state"><div class="empty-icon">📭</div><p>No purchases yet</p></div></td></tr>`
-        : purchases.map((p, i) => `
+        : purchaseRows.map((p, i) => `
           <tr class="mobile-table-row" data-index="${i}">
             <td colspan="6">
               <div class="mobile-cell">
                 <span class="mobile-email">${p.email || '—'}</span>
-                <span class="mobile-amount">${fmt(p.totalAmount)}</span>
+                <span class="mobile-amount">${fmt(p.amount)}</span>
                 <button class="view-btn" onclick="showPurchaseDetails(${i})">View</button>
               </div>
             </td>
@@ -640,14 +637,13 @@ async function loadDashboard() {
           <tr data-index="${i}">
             <td>${i + 1}</td>
             <td>${p.email || '—'}</td>
-            <td>${(p.resources || []).join(', ') || '—'}</td>
-            <td style="font-weight:700;color:#1e293b;">${fmt(p.totalAmount)}</td>
+            <td>${p.resource || '—'}</td>
+            <td style="font-weight:700;color:#1e293b;">${fmt(p.amount)}</td>
             <td><span class="badge badge-completed">completed</span></td>
             <td>${fmtDate(p.created_at)}</td>
           </tr>`).join('');
       
-      // Store purchases data globally for modal access
-      window.purchasesData = purchases;
+      window.purchasesData = purchaseRows;
     }
 
     // ── Withdrawals Table ──
@@ -746,10 +742,7 @@ function toggleSidebar() {
 function showPurchaseDetails(index) {
   const purchase = window.purchasesData?.[index];
   if (!purchase) return;
-  
   const modalBody = document.getElementById('modalBody');
-  const resources = (purchase.resources || []).join(', ') || '—';
-  
   modalBody.innerHTML = `
     <div class="detail-row">
       <div class="detail-label"># Order Number</div>
@@ -760,12 +753,12 @@ function showPurchaseDetails(index) {
       <div class="detail-value">${purchase.email || '—'}</div>
     </div>
     <div class="detail-row">
-      <div class="detail-label">📚 Resources Purchased</div>
-      <div class="detail-value">${resources}</div>
+      <div class="detail-label">📚 Resource Purchased</div>
+      <div class="detail-value">${purchase.resource || '—'}</div>
     </div>
     <div class="detail-row">
-      <div class="detail-label">💰 Total Amount</div>
-      <div class="detail-value amount">${fmt(purchase.totalAmount)}</div>
+      <div class="detail-label">💰 Amount</div>
+      <div class="detail-value amount">${fmt(purchase.amount)}</div>
     </div>
     <div class="detail-row">
       <div class="detail-label">✅ Status</div>
@@ -776,7 +769,6 @@ function showPurchaseDetails(index) {
       <div class="detail-value">${fmtDate(purchase.created_at)}</div>
     </div>
   `;
-  
   document.getElementById('detailsModal').classList.add('active');
 }
 
