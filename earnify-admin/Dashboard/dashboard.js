@@ -663,7 +663,7 @@ async function loadDashboard() {
               : `<span style="color:#cbd5e1;font-size:13px;">—</span>`;
             const mobileReason = w.reject_reason
               ? `<div style="margin-top:6px;">
-                   <button onclick="showRejectReason('${w.reject_reason.replace(/'/g, "&#39;").replace(/"/g, '&quot;')}')" style="padding:5px 14px;background:white;border:1.5px solid #667eea;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">⚠ View Reason</button>
+                   <button onclick="showRejectReason('${w.reject_reason.replace(/'/g, "&#39;").replace(/"/g, '&quot;')}')" style="display:none;padding:5px 14px;background:white;border:1.5px solid #667eea;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">⚠ View Reason</button>
                  </div>`
               : '';
             return `
