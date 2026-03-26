@@ -297,7 +297,7 @@
         </p>
         <div class="btn-group" style="display:flex;flex-wrap:wrap;gap:1rem;margin-bottom:15px;">
           <a href="#resources" style="text-decoration:none;display:inline-block;padding:0.9rem 2rem;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border-radius:50px;font-weight:700;font-size:1rem;box-shadow:0 8px 24px rgba(102,126,234,0.35);transition:transform .2s,box-shadow .2s;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 12px 28px rgba(102,126,234,0.45)'" onmouseout="this.style.transform='';this.style.boxShadow='0 8px 24px rgba(102,126,234,0.35)'">Explore Resources</a>
-          <a href="./About/" style="text-decoration:none;display:inline-block;padding:0.9rem 2rem;background:#e8eaf6;color:#667eea;border-radius:50px;font-weight:700;font-size:1rem;transition:background .2s;" onmouseover="this.style.background='#d5d8f0'" onmouseout="this.style.background='#e8eaf6'">Learn More</a>
+          <a href="#categories" style="text-decoration:none;display:inline-block;padding:0.9rem 2rem;background:white;color:#667eea;border-radius:50px;font-weight:700;font-size:1rem;transition:background .2s;" onmouseover="this.style.background='#d5d8f0'" onmouseout="this.style.background='#e8eaf6'">Browse Categories</a>
         </div>
         <div class="skill-tags" style="flex-wrap:wrap;gap:0.75rem;opacity:0.85;">
           <span class="glass-card" style="padding:0.45rem 1.1rem;border-radius:50px;font-size:0.85rem;font-weight:600;display:flex;align-items:center;gap:6px;">
@@ -445,7 +445,7 @@
   </section>
 
   <!-- ── Categories ── -->
-  <section class="categories-section">
+  <section id="categories" class="categories-section">
     <div class="container">
       <div class="section-header">
         <h2>Browse by <span class="grad-text">Category</span></h2>
@@ -453,22 +453,22 @@
       </div>
       <div class="categories-grid">
         <a href="#resources" onclick="filterResources('pdf')" class="cat-card">
-          <div class="cat-icon" style="background:linear-gradient(135deg,#fee2e2,#fecaca);">📄</div>
+          <div class="cat-icon" style="background:linear-gradient(135deg,#fee2e2,#fecaca);"><img src="/file/pdf.jpg" alt="PDF" style="width:38px;height:38px;object-fit:contain;border-radius:8px;"></div>
           <h3>PDF Notes</h3>
           <p>Study materials &amp; lecture notes</p>
         </a>
         <a href="#resources" onclick="filterResources('excel')" class="cat-card">
-          <div class="cat-icon" style="background:linear-gradient(135deg,#dcfce7,#bbf7d0);">📊</div>
+          <div class="cat-icon" style="background:linear-gradient(135deg,#dcfce7,#bbf7d0);"><img src="/file/excel.jpg" alt="Excel" style="width:38px;height:38px;object-fit:contain;border-radius:8px;"></div>
           <h3>Excel Templates</h3>
           <p>Ready-to-use spreadsheets</p>
         </a>
         <a href="#resources" onclick="filterResources('exam')" class="cat-card">
-          <div class="cat-icon" style="background:linear-gradient(135deg,#dbeafe,#bfdbfe);">🎓</div>
+          <div class="cat-icon" style="background:linear-gradient(135deg,#dbeafe,#bfdbfe);"><img src="/file/exam.jpg" alt="Exam" style="width:38px;height:38px;object-fit:contain;border-radius:8px;"></div>
           <h3>Exam Prep</h3>
           <p>Practice papers &amp; guides</p>
         </a>
         <a href="#resources" onclick="filterResources('freelance')" class="cat-card">
-          <div class="cat-icon" style="background:linear-gradient(135deg,#ede9fe,#ddd6fe);">💼</div>
+          <div class="cat-icon" style="background:linear-gradient(135deg,#ede9fe,#ddd6fe);"><img src="/file/service.jpg" alt="Services" style="width:38px;height:38px;object-fit:contain;border-radius:8px;"></div>
           <h3>Freelance Services</h3>
           <p>Expert help &amp; consulting</p>
         </a>
