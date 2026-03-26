@@ -1,5 +1,4 @@
-// Shimmer loading for Privacy page
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   loadPrivacyContent();
 });
 
@@ -10,172 +9,240 @@ function loadPrivacyContent() {
 
 function showShimmer() {
   const container = document.getElementById('privacyContainer');
-  let shimmerHTML = '';
+  let html = '';
   for (let i = 0; i < 13; i++) {
-    shimmerHTML += `
-      <div class="content-box">
-        <div class="shimmer-box">
-          <div class="shimmer-title"></div>
-          <div class="shimmer-text"></div>
-          <div class="shimmer-text"></div>
-          <div class="shimmer-text short"></div>
-          <div class="shimmer-list">
-            <div class="shimmer-list-item"></div>
-            <div class="shimmer-list-item"></div>
-            <div class="shimmer-list-item"></div>
-          </div>
-        </div>
-      </div>`;
+    html += `<div class="content-box"><div class="shimmer-box">
+      <div class="shimmer-title"></div>
+      <div class="shimmer-text"></div><div class="shimmer-text"></div><div class="shimmer-text short"></div>
+      <div class="shimmer-list"><div class="shimmer-list-item"></div><div class="shimmer-list-item"></div><div class="shimmer-list-item"></div></div>
+    </div></div>`;
   }
-  container.innerHTML = shimmerHTML;
+  container.innerHTML = html;
 }
 
 function loadActualContent() {
   const container = document.getElementById('privacyContainer');
   container.innerHTML = `
-    <div class="content-box">
-      <h2>1. Introduction</h2>
-      <p>At Earnify, we are committed to protecting your privacy and ensuring the security of your personal information. This Privacy Policy explains what data we collect, how we use it, who we share it with, and what rights you have over your information.</p>
-      <p>By using Earnify, you agree to the collection and use of information as described in this policy. If you do not agree, please do not use our platform.</p>
-    </div>
+    <div class="privacy-layout">
 
-    <div class="content-box">
-      <h2>2. Information We Collect</h2>
-      <p><strong>2.1 Account Information:</strong></p>
-      <ul class="benefits-list">
-        <li><i class="fas fa-info-circle"></i> Name and email address provided during registration</li>
-        <li><i class="fas fa-info-circle"></i> Password (stored securely in encrypted form via Supabase Auth — never in plain text)</li>
-        <li><i class="fas fa-info-circle"></i> Profile details you choose to add</li>
-      </ul>
-      <p><strong>2.2 Transaction &amp; Financial Information:</strong></p>
-      <ul class="benefits-list">
-        <li><i class="fas fa-info-circle"></i> Purchase history — which resources you bought and when</li>
-        <li><i class="fas fa-info-circle"></i> Payment status (completed, pending, failed) — stored in our database</li>
-        <li><i class="fas fa-info-circle"></i> Withdrawal requests — amount, bank/UPI details you provide, and status</li>
-        <li><i class="fas fa-info-circle"></i> <strong>We do not store your card number, CVV, or full bank account details.</strong> All payment processing is handled by Razorpay, an RBI-regulated payment gateway.</li>
-      </ul>
-      <p><strong>2.3 Usage Information:</strong></p>
-      <ul class="benefits-list">
-        <li><i class="fas fa-info-circle"></i> Pages visited and resources viewed on the platform</li>
-        <li><i class="fas fa-info-circle"></i> Device type, browser, and operating system</li>
-        <li><i class="fas fa-info-circle"></i> IP address and approximate location</li>
-        <li><i class="fas fa-info-circle"></i> Session activity and interaction logs</li>
-      </ul>
-    </div>
+      <!-- TOC Sidebar -->
+      <aside class="toc-sidebar">
+        <div class="toc-inner">
+          <div class="toc-header"><i class="fas fa-shield-alt"></i> Contents</div>
+          <nav class="toc-nav">
+            <a href="#p1"  class="toc-link"><span class="toc-num">01</span> Introduction</a>
+            <a href="#p2"  class="toc-link"><span class="toc-num">02</span> Data We Collect</a>
+            <a href="#p3"  class="toc-link"><span class="toc-num">03</span> How We Use It</a>
+            <a href="#p4"  class="toc-link"><span class="toc-num">04</span> Payment & Razorpay</a>
+            <a href="#p5"  class="toc-link"><span class="toc-num">05</span> Withdrawal Data</a>
+            <a href="#p6"  class="toc-link"><span class="toc-num">06</span> Storage & Security</a>
+            <a href="#p7"  class="toc-link"><span class="toc-num">07</span> Information Sharing</a>
+            <a href="#p8"  class="toc-link"><span class="toc-num">08</span> Cookies</a>
+            <a href="#p9"  class="toc-link"><span class="toc-num">09</span> Your Rights</a>
+            <a href="#p10" class="toc-link"><span class="toc-num">10</span> Data Retention</a>
+            <a href="#p11" class="toc-link"><span class="toc-num">11</span> Children's Privacy</a>
+            <a href="#p12" class="toc-link"><span class="toc-num">12</span> Policy Changes</a>
+            <a href="#p13" class="toc-link"><span class="toc-num">13</span> Contact Us</a>
+          </nav>
+          <a href="mailto:support@earnify.com" class="toc-cta"><i class="fas fa-envelope"></i> Privacy Query?</a>
+        </div>
+      </aside>
 
-    <div class="content-box">
-      <h2>3. How We Use Your Information</h2>
-      <p>We use your information only for the following purposes:</p>
-      <ul class="benefits-list">
-        <li><i class="fas fa-check-circle"></i> <strong>Account management</strong> — to create, maintain, and secure your account</li>
-        <li><i class="fas fa-check-circle"></i> <strong>Payment processing</strong> — to verify and record transactions made through Razorpay</li>
-        <li><i class="fas fa-check-circle"></i> <strong>Withdrawal processing</strong> — to review and approve your withdrawal requests and transfer earnings to your bank or UPI account</li>
-        <li><i class="fas fa-check-circle"></i> <strong>Resource delivery</strong> — to give you access to resources you have purchased</li>
-        <li><i class="fas fa-check-circle"></i> <strong>Platform improvement</strong> — to understand how users interact with Earnify and improve the experience</li>
-        <li><i class="fas fa-check-circle"></i> <strong>Security &amp; fraud prevention</strong> — to detect and prevent fraudulent activity, especially around withdrawals and payments</li>
-        <li><i class="fas fa-check-circle"></i> <strong>Communication</strong> — to send transaction confirmations, withdrawal status updates, and important platform notices</li>
-        <li><i class="fas fa-check-circle"></i> <strong>Legal compliance</strong> — to meet applicable legal and regulatory obligations</li>
-      </ul>
-      <p>We do <strong>not</strong> use your data for advertising, profiling, or selling to third parties.</p>
-    </div>
+      <!-- Main Content -->
+      <main class="privacy-main">
 
-    <div class="content-box">
-      <h2>4. Payment Data &amp; Razorpay</h2>
-      <p>All payments on Earnify are processed through <strong>Razorpay</strong>, an RBI-regulated and PCI-DSS compliant payment gateway.</p>
-      <ul class="benefits-list">
-        <li><i class="fas fa-shield-alt"></i> Your card number, CVV, UPI PIN, and net banking credentials are entered directly on Razorpay's secure interface — never on Earnify's servers</li>
-        <li><i class="fas fa-shield-alt"></i> Earnify only receives a payment confirmation (order ID, payment ID, and status) from Razorpay after a transaction is completed</li>
-        <li><i class="fas fa-shield-alt"></i> We store only the payment reference ID and status in our database — not your financial credentials</li>
-        <li><i class="fas fa-shield-alt"></i> Razorpay's privacy policy governs how they handle your payment data: <a href="https://razorpay.com/privacy/" target="_blank" rel="noopener" style="color:#667eea;">razorpay.com/privacy</a></li>
-      </ul>
-    </div>
+        <div class="content-box" id="p1">
+          <div class="section-icon-wrap"><i class="fas fa-file-shield"></i></div>
+          <h2>1. Introduction</h2>
+          <p>At Earnify, we are committed to protecting your privacy and ensuring the security of your personal information. This Privacy Policy explains what data we collect, how we use it, who we share it with, and what rights you have.</p>
+          <div class="info-box info-blue"><i class="fas fa-info-circle"></i> By using Earnify, you agree to the collection and use of information as described in this policy.</div>
+          <div class="privacy-stats">
+            <div class="pstat-card"><i class="fas fa-ban"></i><span>No data selling</span></div>
+            <div class="pstat-card"><i class="fas fa-lock"></i><span>Encrypted storage</span></div>
+            <div class="pstat-card"><i class="fas fa-user-shield"></i><span>You control your data</span></div>
+          </div>
+        </div>
 
-    <div class="content-box">
-      <h2>5. Withdrawal Data</h2>
-      <p>When you submit a withdrawal request, we collect and store:</p>
-      <ul class="benefits-list">
-        <li><i class="fas fa-info-circle"></i> The withdrawal amount requested</li>
-        <li><i class="fas fa-info-circle"></i> Your bank account number or UPI ID (as provided by you)</li>
-        <li><i class="fas fa-info-circle"></i> The payment method you selected</li>
-        <li><i class="fas fa-info-circle"></i> Any note you include with the request</li>
-        <li><i class="fas fa-info-circle"></i> The status of the request (pending, approved, rejected) and the reason if rejected</li>
-      </ul>
-      <p>This information is used solely to process your withdrawal and is accessible only to the Earnify admin team. We do not share your bank or UPI details with any third party other than the payment processor used to transfer your funds.</p>
-    </div>
+        <div class="content-box" id="p2">
+          <div class="section-icon-wrap"><i class="fas fa-database"></i></div>
+          <h2>2. Information We Collect</h2>
+          <div class="data-grid">
+            <div class="data-card">
+              <div class="data-card-head"><i class="fas fa-user-circle"></i> Account Info</div>
+              <ul>
+                <li>Name &amp; email address</li>
+                <li>Password (encrypted via Supabase Auth)</li>
+                <li>Profile details you add</li>
+              </ul>
+            </div>
+            <div class="data-card">
+              <div class="data-card-head"><i class="fas fa-credit-card"></i> Transaction Info</div>
+              <ul>
+                <li>Purchase history &amp; payment status</li>
+                <li>Withdrawal requests &amp; bank/UPI details</li>
+                <li><strong>Not stored:</strong> card number, CVV, full bank details</li>
+              </ul>
+            </div>
+            <div class="data-card">
+              <div class="data-card-head"><i class="fas fa-chart-bar"></i> Usage Info</div>
+              <ul>
+                <li>Pages visited &amp; resources viewed</li>
+                <li>Device, browser &amp; OS type</li>
+                <li>IP address &amp; approximate location</li>
+              </ul>
+            </div>
+          </div>
+          <div class="info-box info-green" style="margin-top:14px"><i class="fas fa-shield-alt"></i> We never store your card number, CVV, or net banking credentials — all payment data is handled by Razorpay.</div>
+        </div>
 
-    <div class="content-box">
-      <h2>6. Data Storage &amp; Security</h2>
-      <p>Your data is stored securely using <strong>Supabase</strong>, a trusted cloud database platform with enterprise-grade security.</p>
-      <ul class="benefits-list">
-        <li><i class="fas fa-shield-alt"></i> All data is encrypted in transit using HTTPS/TLS</li>
-        <li><i class="fas fa-shield-alt"></i> Passwords are hashed and never stored in plain text</li>
-        <li><i class="fas fa-shield-alt"></i> Database access is restricted using Row Level Security (RLS) — users can only access their own data</li>
-        <li><i class="fas fa-shield-alt"></i> Admin access to sensitive data (withdrawals, payments) is restricted to authorised personnel only</li>
-        <li><i class="fas fa-shield-alt"></i> Regular security reviews are conducted to identify and address vulnerabilities</li>
-      </ul>
-      <p>While we implement strong security measures, no system is 100% immune to breaches. In the event of a data breach affecting your information, we will notify you promptly.</p>
-    </div>
+        <div class="content-box" id="p3">
+          <div class="section-icon-wrap"><i class="fas fa-cogs"></i></div>
+          <h2>3. How We Use Your Information</h2>
+          <div class="use-list">
+            <div class="use-item"><i class="fas fa-user-cog"></i><div><strong>Account management</strong><p>Create, maintain, and secure your account.</p></div></div>
+            <div class="use-item"><i class="fas fa-credit-card"></i><div><strong>Payment processing</strong><p>Verify and record transactions made through Razorpay.</p></div></div>
+            <div class="use-item"><i class="fas fa-wallet"></i><div><strong>Withdrawal processing</strong><p>Review, approve, and transfer your earnings to your bank or UPI.</p></div></div>
+            <div class="use-item"><i class="fas fa-download"></i><div><strong>Resource delivery</strong><p>Give you access to resources you have purchased.</p></div></div>
+            <div class="use-item"><i class="fas fa-chart-line"></i><div><strong>Platform improvement</strong><p>Understand how users interact with Earnify to improve the experience.</p></div></div>
+            <div class="use-item"><i class="fas fa-shield-alt"></i><div><strong>Security &amp; fraud prevention</strong><p>Detect and prevent fraudulent activity around withdrawals and payments.</p></div></div>
+            <div class="use-item"><i class="fas fa-bell"></i><div><strong>Communication</strong><p>Send transaction confirmations, withdrawal updates, and platform notices.</p></div></div>
+            <div class="use-item"><i class="fas fa-balance-scale"></i><div><strong>Legal compliance</strong><p>Meet applicable legal and regulatory obligations.</p></div></div>
+          </div>
+          <div class="info-box info-warn" style="margin-top:14px"><i class="fas fa-ban"></i> We do <strong>not</strong> use your data for advertising, profiling, or selling to third parties.</div>
+        </div>
 
-    <div class="content-box">
-      <h2>7. Information Sharing</h2>
-      <p><strong>We do not sell your personal data.</strong> We only share your information in the following limited circumstances:</p>
-      <ul class="benefits-list">
-        <li><i class="fas fa-check-circle"></i> <strong>Razorpay</strong> — to process payments and verify transactions</li>
-        <li><i class="fas fa-check-circle"></i> <strong>Supabase</strong> — our database and authentication provider that stores your account and transaction data</li>
-        <li><i class="fas fa-check-circle"></i> <strong>Legal requirements</strong> — if required by law, court order, or government authority</li>
-        <li><i class="fas fa-check-circle"></i> <strong>Fraud prevention</strong> — to investigate suspected fraud or abuse of the platform</li>
-      </ul>
-      <p>We do not share your data with advertisers, data brokers, or any unrelated third parties.</p>
-    </div>
+        <div class="content-box" id="p4">
+          <div class="section-icon-wrap"><i class="fas fa-lock"></i></div>
+          <h2>4. Payment Data &amp; Razorpay</h2>
+          <div class="highlight-strip"><i class="fas fa-lock"></i> All payments are processed through <strong>Razorpay</strong> — an RBI-regulated, PCI-DSS compliant payment gateway.</div>
+          <ul class="benefits-list">
+            <li><i class="fas fa-shield-alt"></i><span>Your card, UPI PIN, and net banking credentials are entered directly on Razorpay's secure interface — never on Earnify's servers.</span></li>
+            <li><i class="fas fa-shield-alt"></i><span>Earnify only receives a payment confirmation (order ID, payment ID, status) after a transaction completes.</span></li>
+            <li><i class="fas fa-shield-alt"></i><span>We store only the payment reference ID and status — not your financial credentials.</span></li>
+            <li><i class="fas fa-external-link-alt"></i><span>Razorpay's privacy policy: <a href="https://razorpay.com/privacy/" target="_blank" rel="noopener" style="color:#667eea;font-weight:600;">razorpay.com/privacy</a></span></li>
+          </ul>
+        </div>
 
-    <div class="content-box">
-      <h2>8. Cookies</h2>
-      <p>Earnify uses minimal cookies to keep you logged in and remember your session. We do not use advertising cookies or third-party tracking cookies.</p>
-      <ul class="benefits-list">
-        <li><i class="fas fa-cookie"></i> <strong>Session cookies</strong> — to keep you logged in during your visit</li>
-        <li><i class="fas fa-cookie"></i> <strong>Authentication tokens</strong> — stored in localStorage to maintain your login state across sessions</li>
-      </ul>
-      <p>You can clear cookies and localStorage at any time through your browser settings. This will log you out of the platform.</p>
-    </div>
+        <div class="content-box" id="p5">
+          <div class="section-icon-wrap"><i class="fas fa-wallet"></i></div>
+          <h2>5. Withdrawal Data</h2>
+          <p>When you submit a withdrawal request, we collect and store:</p>
+          <ul class="benefits-list">
+            <li><i class="fas fa-info-circle"></i><span>The withdrawal amount requested.</span></li>
+            <li><i class="fas fa-info-circle"></i><span>Your bank account number or UPI ID (as provided by you).</span></li>
+            <li><i class="fas fa-info-circle"></i><span>The payment method selected and any note you include.</span></li>
+            <li><i class="fas fa-info-circle"></i><span>Request status (pending, approved, rejected) and rejection reason if applicable.</span></li>
+          </ul>
+          <div class="info-box info-blue"><i class="fas fa-user-lock"></i> This data is accessible only to the Earnify admin team and is never shared with any third party other than the payment processor used to transfer your funds.</div>
+        </div>
 
-    <div class="content-box">
-      <h2>9. Your Privacy Rights</h2>
-      <p>You have the following rights over your personal data:</p>
-      <ul class="benefits-list">
-        <li><i class="fas fa-user-check"></i> <strong>Access</strong> — request a copy of the personal data we hold about you</li>
-        <li><i class="fas fa-user-check"></i> <strong>Correction</strong> — ask us to correct inaccurate or incomplete information</li>
-        <li><i class="fas fa-user-check"></i> <strong>Deletion</strong> — request deletion of your account and associated data (subject to legal retention requirements)</li>
-        <li><i class="fas fa-user-check"></i> <strong>Withdrawal history</strong> — view all your withdrawal requests and their statuses from your Dashboard at any time</li>
-        <li><i class="fas fa-user-check"></i> <strong>Opt-out</strong> — unsubscribe from non-essential communications at any time</li>
-      </ul>
-      <p>To exercise any of these rights, email us at <a href="mailto:support@earnify.com" style="color:#667eea;">support@earnify.com</a>. We will respond within 5 business days.</p>
-    </div>
+        <div class="content-box" id="p6">
+          <div class="section-icon-wrap"><i class="fas fa-server"></i></div>
+          <h2>6. Data Storage &amp; Security</h2>
+          <div class="highlight-strip"><i class="fas fa-database"></i> Your data is stored securely using <strong>Supabase</strong> — a trusted cloud database platform with enterprise-grade security.</div>
+          <div class="security-grid">
+            <div class="sec-card"><i class="fas fa-lock"></i><strong>HTTPS / TLS</strong><p>All data encrypted in transit.</p></div>
+            <div class="sec-card"><i class="fas fa-key"></i><strong>Hashed Passwords</strong><p>Never stored in plain text.</p></div>
+            <div class="sec-card"><i class="fas fa-table"></i><strong>Row Level Security</strong><p>Users access only their own data.</p></div>
+            <div class="sec-card"><i class="fas fa-user-shield"></i><strong>Restricted Admin Access</strong><p>Sensitive data limited to authorised personnel.</p></div>
+          </div>
+          <div class="info-box info-warn"><i class="fas fa-exclamation-triangle"></i> No system is 100% immune to breaches. In the event of a data breach, we will notify you promptly.</div>
+        </div>
 
-    <div class="content-box">
-      <h2>10. Data Retention</h2>
-      <p>We retain your data for as long as your account is active or as needed to provide our services:</p>
-      <ul class="benefits-list">
-        <li><i class="fas fa-info-circle"></i> <strong>Account data</strong> — retained while your account is active. Deleted within 30 days of an account deletion request.</li>
-        <li><i class="fas fa-info-circle"></i> <strong>Transaction records</strong> — retained for a minimum of 3 years for financial and legal compliance purposes</li>
-        <li><i class="fas fa-info-circle"></i> <strong>Withdrawal records</strong> — retained for a minimum of 3 years for audit and dispute resolution purposes</li>
-      </ul>
-    </div>
+        <div class="content-box" id="p7">
+          <div class="section-icon-wrap"><i class="fas fa-share-alt"></i></div>
+          <h2>7. Information Sharing</h2>
+          <div class="info-box info-green"><i class="fas fa-ban"></i> <strong>We do not sell your personal data.</strong> We only share it in the following limited circumstances.</div>
+          <div class="share-cards">
+            <div class="share-card"><i class="fas fa-credit-card"></i><div><strong>Razorpay</strong><p>To process payments and verify transactions.</p></div></div>
+            <div class="share-card"><i class="fas fa-database"></i><div><strong>Supabase</strong><p>Our database and authentication provider for account and transaction data.</p></div></div>
+            <div class="share-card share-card--warn"><i class="fas fa-gavel"></i><div><strong>Legal Requirements</strong><p>If required by law, court order, or government authority.</p></div></div>
+            <div class="share-card share-card--warn"><i class="fas fa-search"></i><div><strong>Fraud Prevention</strong><p>To investigate suspected fraud or abuse of the platform.</p></div></div>
+          </div>
+        </div>
 
-    <div class="content-box">
-      <h2>11. Children's Privacy</h2>
-      <p>Earnify is not intended for users under the age of 13. We do not knowingly collect personal information from children under 13. If you believe a child has created an account on our platform, please contact us immediately at <a href="mailto:support@earnify.com" style="color:#667eea;">support@earnify.com</a> and we will delete the account promptly.</p>
-    </div>
+        <div class="content-box" id="p8">
+          <div class="section-icon-wrap"><i class="fas fa-cookie-bite"></i></div>
+          <h2>8. Cookies</h2>
+          <p>Earnify uses minimal cookies to keep you logged in and remember your session. We do <strong>not</strong> use advertising or third-party tracking cookies.</p>
+          <div class="cookie-row">
+            <div class="cookie-card"><i class="fas fa-clock"></i><strong>Session Cookies</strong><p>Keep you logged in during your visit.</p></div>
+            <div class="cookie-card"><i class="fas fa-key"></i><strong>Auth Tokens</strong><p>Stored in localStorage to maintain login state across sessions.</p></div>
+          </div>
+          <div class="info-box info-blue" style="margin-top:14px"><i class="fas fa-info-circle"></i> You can clear cookies and localStorage anytime via browser settings. This will log you out of the platform.</div>
+        </div>
 
-    <div class="content-box">
-      <h2>12. Changes to This Policy</h2>
-      <p>We may update this Privacy Policy from time to time to reflect changes in our practices or legal requirements. When we make significant changes, we will notify you via email or a prominent notice on the platform. The date of the last update is shown at the top of this page. Your continued use of Earnify after changes are posted constitutes your acceptance of the updated policy.</p>
-    </div>
+        <div class="content-box" id="p9">
+          <div class="section-icon-wrap"><i class="fas fa-user-check"></i></div>
+          <h2>9. Your Privacy Rights</h2>
+          <div class="rights-grid">
+            <div class="right-card"><i class="fas fa-eye"></i><strong>Access</strong><p>Request a copy of the personal data we hold about you.</p></div>
+            <div class="right-card"><i class="fas fa-edit"></i><strong>Correction</strong><p>Ask us to correct inaccurate or incomplete information.</p></div>
+            <div class="right-card"><i class="fas fa-trash-alt"></i><strong>Deletion</strong><p>Request deletion of your account and associated data.</p></div>
+            <div class="right-card"><i class="fas fa-history"></i><strong>Withdrawal History</strong><p>View all requests and statuses from your Dashboard anytime.</p></div>
+            <div class="right-card"><i class="fas fa-bell-slash"></i><strong>Opt-out</strong><p>Unsubscribe from non-essential communications at any time.</p></div>
+          </div>
+          <div class="info-box info-blue" style="margin-top:14px"><i class="fas fa-envelope"></i> To exercise any right, email <a href="mailto:support@earnify.com" style="color:#667eea;font-weight:600;">support@earnify.com</a>. We respond within <strong>5 business days</strong>.</div>
+        </div>
 
-    <div class="content-box">
-      <h2>13. Contact Us</h2>
-      <p>If you have any questions, concerns, or requests regarding this Privacy Policy or how we handle your data, please contact us:</p>
-      <p>📧 Email: <a href="mailto:support@earnify.com" style="color:#667eea;">support@earnify.com</a></p>
-      <p>We aim to respond to all privacy-related queries within 2 business days.</p>
+        <div class="content-box" id="p10">
+          <div class="section-icon-wrap"><i class="fas fa-calendar-alt"></i></div>
+          <h2>10. Data Retention</h2>
+          <div class="retention-list">
+            <div class="retention-item">
+              <div class="retention-icon"><i class="fas fa-user"></i></div>
+              <div><strong>Account Data</strong><p>Retained while your account is active. Deleted within 30 days of an account deletion request.</p></div>
+            </div>
+            <div class="retention-item">
+              <div class="retention-icon"><i class="fas fa-receipt"></i></div>
+              <div><strong>Transaction Records</strong><p>Retained for a minimum of <strong>3 years</strong> for financial and legal compliance.</p></div>
+            </div>
+            <div class="retention-item">
+              <div class="retention-icon"><i class="fas fa-wallet"></i></div>
+              <div><strong>Withdrawal Records</strong><p>Retained for a minimum of <strong>3 years</strong> for audit and dispute resolution.</p></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="content-box" id="p11">
+          <div class="section-icon-wrap"><i class="fas fa-child"></i></div>
+          <h2>11. Children's Privacy</h2>
+          <div class="info-box info-warn"><i class="fas fa-exclamation-triangle"></i> Earnify is <strong>not intended for users under 13</strong>. We do not knowingly collect data from children under 13.</div>
+          <p>If you believe a child has created an account on our platform, please contact us immediately at <a href="mailto:support@earnify.com" style="color:#667eea;font-weight:600;">support@earnify.com</a> and we will delete the account promptly.</p>
+        </div>
+
+        <div class="content-box" id="p12">
+          <div class="section-icon-wrap"><i class="fas fa-sync-alt"></i></div>
+          <h2>12. Changes to This Policy</h2>
+          <p>We may update this Privacy Policy to reflect changes in our practices or legal requirements. When we make significant changes, we will notify you via email or a prominent notice on the platform.</p>
+          <div class="info-box info-blue"><i class="fas fa-info-circle"></i> The date of the last update is shown at the top of this page. Continued use of Earnify after changes are posted constitutes acceptance of the updated policy.</div>
+        </div>
+
+        <div class="content-box" id="p13">
+          <div class="section-icon-wrap"><i class="fas fa-envelope-open-text"></i></div>
+          <h2>13. Contact Us</h2>
+          <p>For any questions, concerns, or requests regarding this Privacy Policy or how we handle your data:</p>
+          <div class="contact-card">
+            <a href="mailto:support@earnify.com" class="contact-item"><i class="fas fa-envelope"></i><span>support@earnify.com</span></a>
+            <div class="contact-item"><i class="fas fa-clock"></i><span>Response within 2 business days</span></div>
+          </div>
+        </div>
+
+      </main>
     </div>
   `;
+
+  // Active TOC on scroll
+  const sections = document.querySelectorAll('.content-box[id]');
+  const tocLinks = document.querySelectorAll('.toc-link');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        tocLinks.forEach(l => l.classList.remove('active'));
+        const a = document.querySelector(`.toc-link[href="#${e.target.id}"]`);
+        if (a) a.classList.add('active');
+      }
+    });
+  }, { threshold: 0.35 });
+  sections.forEach(s => observer.observe(s));
 }

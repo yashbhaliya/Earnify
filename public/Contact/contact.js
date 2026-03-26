@@ -1,182 +1,170 @@
-// Shimmer loading for Contact page
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   loadContactContent();
 });
 
 function loadContactContent() {
   showShimmer();
-  setTimeout(() => {
-    loadActualContent();
-  }, 1500);
+  setTimeout(() => { loadActualContent(); }, 1200);
 }
 
 function showShimmer() {
   const container = document.getElementById('contactContainer');
   container.innerHTML = `
-    <div class="contact-wrapper">
-      <div class="contact-info">
+    <div class="contact-page">
+      <div class="contact-left">
         <div class="shimmer-box">
           <div class="shimmer-title"></div>
-          <div class="shimmer-text"></div>
-          <div class="shimmer-text short"></div>
-          <br>
-          <div class="shimmer-contact-item">
-            <div class="shimmer-icon"></div>
-            <div style="flex: 1;">
-              <div class="shimmer-text" style="width: 60%; margin-bottom: 8px;"></div>
-              <div class="shimmer-text" style="width: 80%;"></div>
-            </div>
-          </div>
-          <div class="shimmer-contact-item">
-            <div class="shimmer-icon"></div>
-            <div style="flex: 1;">
-              <div class="shimmer-text" style="width: 60%; margin-bottom: 8px;"></div>
-              <div class="shimmer-text" style="width: 80%;"></div>
-            </div>
-          </div>
-          <div class="shimmer-contact-item">
-            <div class="shimmer-icon"></div>
-            <div style="flex: 1;">
-              <div class="shimmer-text" style="width: 60%; margin-bottom: 8px;"></div>
-              <div class="shimmer-text" style="width: 80%;"></div>
-            </div>
+          <div class="shimmer-text"></div><div class="shimmer-text short"></div>
+          <div style="margin-top:20px;display:flex;flex-direction:column;gap:12px;">
+            <div class="shimmer-card"></div><div class="shimmer-card"></div>
+            <div class="shimmer-card"></div><div class="shimmer-card"></div>
           </div>
         </div>
       </div>
-      
-      <div class="contact-form-wrapper">
+      <div class="contact-right">
         <div class="shimmer-box">
           <div class="shimmer-title"></div>
-          <div class="shimmer-form-field"></div>
-          <div class="shimmer-form-field"></div>
-          <div class="shimmer-form-field"></div>
+          <div class="shimmer-form-field"></div><div class="shimmer-form-field"></div>
+          <div class="shimmer-form-field"></div><div class="shimmer-form-field"></div>
           <div class="shimmer-form-field large"></div>
           <div class="shimmer-button"></div>
         </div>
       </div>
     </div>
-    
-    <div class="content-box">
+    <div class="faq-section">
       <div class="shimmer-box">
-        <div class="shimmer-title"></div>
-        <div class="shimmer-text"></div>
-        <div class="shimmer-text"></div>
-        <div class="shimmer-text short"></div>
+        <div class="shimmer-title" style="width:30%;margin:0 auto 24px;"></div>
+        <div class="shimmer-card"></div><div class="shimmer-card"></div>
+        <div class="shimmer-card"></div><div class="shimmer-card"></div>
       </div>
-    </div>
-  `;
+    </div>`;
 }
 
 function loadActualContent() {
   const container = document.getElementById('contactContainer');
+
+  const faqs = [
+    { q: 'How do I access my purchased resources?', a: 'After a successful payment, go to your Dashboard. All purchased resources appear under "My Purchases" and are available for immediate download.' },
+    { q: 'What payment methods do you accept?', a: 'We accept all major credit/debit cards, UPI, net banking, and digital wallets through Razorpay — an RBI-regulated, PCI-DSS compliant gateway.' },
+    { q: 'Can I get a refund?', a: 'All digital sales are generally final once accessed. Refunds are considered if the resource is corrupted, inaccessible, or significantly misrepresented. Email us within 48 hours of purchase.' },
+    { q: 'How do withdrawals work?', a: 'Submit a withdrawal request from your Dashboard. Our team reviews it and transfers the amount (minus the 5% platform fee) to your bank or UPI account.' },
+    { q: 'How long does a withdrawal take?', a: 'Withdrawals are reviewed within 1–2 business days. Transfer time depends on your bank, typically 1–3 business days after approval.' },
+    { q: 'How do I report an issue with a resource?', a: 'Email support@earnify.com with your order ID and a description of the issue. We investigate and resolve all reports within 2 business days.' },
+  ];
+
   container.innerHTML = `
-    <div class="contact-wrapper">
-      <div class="contact-info">
-        <h2>Get In Touch</h2>
-        <p>Have questions or need assistance? Our team is here to help you. Reach out to us through any of the following channels:</p>
-        
-        <div class="contact-item">
-          <i class="fas fa-envelope"></i>
-          <div>
-            <h3>Email</h3>
-            <p>support@earnify.com</p>
+    <div class="contact-page">
+
+      <div class="contact-left">
+        <div class="info-head">
+          <div class="info-icon-wrap"><i class="fas fa-headset"></i></div>
+          <h2>We're Here to Help</h2>
+          <p>Have a question, issue, or just want to say hello? Reach out through any channel below.</p>
+        </div>
+
+        <div class="response-badge"><i class="fas fa-bolt"></i> Average response: <strong>&nbsp;under 2 hours</strong></div>
+
+        <div class="info-cards">
+          <a href="mailto:support@earnify.com" class="info-card">
+            <div><strong>Email Us</strong><span>support@earnify.com</span></div>
+            <i class="fas fa-arrow-right info-card-arrow"></i>
+          </a>
+          <a href="tel:+116046453263" class="info-card">
+            <div><strong>Call Us</strong><span>+11 60464 53263</span></div>
+            <i class="fas fa-arrow-right info-card-arrow"></i>
+          </a>
+          <div class="info-card">
+            <div><strong>Business Hours</strong><span>Mon–Fri: 9 AM – 6 PM</span><span>Sat: 10 AM – 4 PM &nbsp;|&nbsp; Sun: Closed</span></div>
+          </div>
+          <div class="info-card">
+            <div><strong>Address</strong><span>123 Learning Street, Education District</span><span>City, State 12345</span></div>
           </div>
         </div>
 
-        <div class="contact-item">
-          <i class="fas fa-phone"></i>
-          <div>
-            <h3>Phone</h3>
-            <p>+11 60464 53263</p>
-          </div>
-        </div>
-
-        <div class="contact-item">
-          <i class="fas fa-clock"></i>
-          <div>
-            <h3>Business Hours</h3>
-            <p>Monday - Friday: 9:00 AM - 6:00 PM</p>
-            <p>Saturday: 10:00 AM - 4:00 PM</p>
-            <p>Sunday: Closed</p>
-          </div>
-        </div>
-
-        <div class="contact-item">
-          <i class="fas fa-map-marker-alt"></i>
-          <div>
-            <h3>Address</h3>
-            <p>123 Learning Street</p>
-            <p>Education District</p>
-            <p>City, State 12345</p>
+        <div class="social-section">
+          <p class="social-label">Follow us</p>
+          <div class="social-row">
+            <a class="social-btn fb" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a class="social-btn ig" title="Instagram"><i class="fab fa-instagram"></i></a>
+            <a class="social-btn wa" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+            <a class="social-btn tw" title="Twitter"><i class="fab fa-twitter"></i></a>
           </div>
         </div>
       </div>
 
-      <div class="contact-form-wrapper">
-        <h2>Send Us a Message</h2>
-        <form id="contactForm" class="contact-form">
-          <div class="form-group">
-            <label for="name">Full Name *</label>
-            <input type="text" id="name" name="name" required>
+      <div class="contact-right">
+        <div class="form-head">
+          <h2>Send Us a Message</h2>
+          <p>Fill in the form and we'll get back to you within 2 business days.</p>
+        </div>
+        <form id="contactForm" class="contact-form" novalidate>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="name"><i class="fas fa-user"></i> Full Name</label>
+              <input type="text" id="name" name="name" placeholder="Your full name" required>
+            </div>
+            <div class="form-group">
+              <label for="email"><i class="fas fa-envelope"></i> Email Address</label>
+              <input type="email" id="email" name="email" placeholder="you@example.com" required>
+            </div>
           </div>
-
           <div class="form-group">
-            <label for="email">Email Address *</label>
-            <input type="email" id="email" name="email" required>
+            <label for="subject"><i class="fas fa-tag"></i> Subject</label>
+            <div class="select-wrap">
+              <select id="subject" name="subject" required>
+                <option value="" disabled selected>Select a topic…</option>
+                <option>Payment Issue</option>
+                <option>Withdrawal Problem</option>
+                <option>Refund Request</option>
+                <option>Account / Login Help</option>
+                <option>Resource / Content Issue</option>
+                <option>Seller Enquiry</option>
+                <option>Other</option>
+              </select>
+              <i class="fas fa-chevron-down select-arrow"></i>
+            </div>
           </div>
-
           <div class="form-group">
-            <label for="subject">Subject *</label>
-            <input type="text" id="subject" name="subject" required>
+            <label for="message"><i class="fas fa-comment-alt"></i> Message</label>
+            <textarea id="message" name="message" rows="5" placeholder="Describe your issue or question in detail…" required></textarea>
           </div>
-
-          <div class="form-group">
-            <label for="message">Message *</label>
-            <textarea id="message" name="message" rows="6" required></textarea>
-          </div>
-
           <button type="submit" class="submit-btn">
-            <i class="fas fa-envelope"></i> Send Message
+            <i class="fas fa-paper-plane"></i> Send Message
           </button>
         </form>
       </div>
     </div>
 
-    <div class="content-box">
-      <h2>Frequently Asked Questions</h2>
-      <div class="faq-item">
-        <h3>How do I access my purchased resources?</h3>
-        <p>After purchase, you can access your resources from your Dashboard. All purchased items are available for download immediately.</p>
+    <div class="faq-section">
+      <div class="faq-head">
+        <div class="faq-head-icon"><i class="fas fa-question-circle"></i></div>
+        <h2>Frequently Asked Questions</h2>
+        <p>Quick answers to the most common questions.</p>
       </div>
-      <div class="faq-item">
-        <h3>What payment methods do you accept?</h3>
-        <p>We accept all major credit cards, debit cards, and digital payment methods through our secure payment gateway.</p>
-      </div>
-      <div class="faq-item">
-        <h3>Can I get a refund?</h3>
-        <p>Due to the digital nature of our products, refunds are generally not available once you've accessed the content. However, we review refund requests on a case-by-case basis for defective or misrepresented products.</p>
-      </div>
-      <div class="faq-item">
-        <h3>How do I report an issue with a resource?</h3>
-        <p>Please contact us via email at support@earnify.com with details about the issue, and we'll investigate and resolve it promptly.</p>
+      <div class="faq-grid">
+        ${faqs.map(f => `
+          <div class="faq-item" onclick="toggleFaq(this)">
+            <div class="faq-q"><span>${f.q}</span><i class="fas fa-chevron-down faq-icon"></i></div>
+            <div class="faq-a">${f.a}</div>
+          </div>`).join('')}
       </div>
     </div>
   `;
-  
-  // Re-attach form submit handler
-  document.getElementById('contactForm').addEventListener('submit', async function(e) {
+
+  document.getElementById('contactForm').addEventListener('submit', async function (e) {
     e.preventDefault();
-    const btn = this.querySelector('.submit-btn');
+    const btn     = this.querySelector('.submit-btn');
     const name    = document.getElementById('name').value.trim();
     const email   = document.getElementById('email').value.trim();
-    const subject = document.getElementById('subject').value.trim();
+    const subject = document.getElementById('subject').value;
     const message = document.getElementById('message').value.trim();
+    if (!name || !email || !subject || !message) return;
 
     btn.disabled = true;
-    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending…';
 
     try {
-      const res = await fetch('/api/contact', {
+      const res  = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, email, subject, message })
@@ -186,22 +174,21 @@ function loadActualContent() {
         btn.innerHTML = '<i class="fas fa-check"></i> Message Sent!';
         btn.style.background = 'linear-gradient(135deg,#10b981,#059669)';
         this.reset();
-        setTimeout(() => {
-          btn.disabled = false;
-          btn.innerHTML = '<i class="fas fa-envelope"></i> Send Message';
-          btn.style.background = '';
-        }, 3000);
-      } else {
-        throw new Error(data.error || 'Failed to send');
-      }
-    } catch (err) {
-      btn.disabled = false;
+      } else throw new Error();
+    } catch {
       btn.innerHTML = '<i class="fas fa-exclamation-circle"></i> Failed — Try Again';
       btn.style.background = 'linear-gradient(135deg,#ef4444,#dc2626)';
-      setTimeout(() => {
-        btn.innerHTML = '<i class="fas fa-envelope"></i> Send Message';
-        btn.style.background = '';
-      }, 3000);
     }
+    setTimeout(() => {
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Message';
+      btn.style.background = '';
+    }, 3000);
   });
+}
+
+function toggleFaq(el) {
+  const isOpen = el.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(f => f.classList.remove('open'));
+  if (!isOpen) el.classList.add('open');
 }

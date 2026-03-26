@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FAQ - Earnify</title>
+  <link rel="icon" href="/file/logo1.jpeg" type="image/jpeg">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="../landing.css">
+  <link rel="stylesheet" href="pages.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-header">
+        <a href="../" style="text-decoration: none;"><h1 class="logo">💰 <span class="logo-text">Earnify</span></h1></a>
+        <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+          <span class="hamburger"></span>
+          <span class="hamburger"></span>
+          <span class="hamburger"></span>
+        </button>
+      </div>
+      <div class="nav-links">
+        <a href="../">Home</a>
+        <a href="../About/">About</a>
+        <a href="../Contact/">Contact</a>
+        <a href="../Dashboard/">Dashboard</a>
+      </div>
+    </div>
+    <div class="mobile-sidebar" id="mobileSidebar">
+      <div class="mobile-sidebar-header">
+        <h2>💰 Earnify</h2>
+        <button class="close-sidebar" onclick="toggleMobileMenu()">&times;</button>
+      </div>
+      <div class="mobile-sidebar-content">
+        <a href="../" onclick="toggleMobileMenu()">🏠 Home</a>
+        <a href="../About/" onclick="toggleMobileMenu()">ℹ️ About</a>
+        <a href="../Dashboard/" onclick="toggleMobileMenu()">📊 Dashboard</a>
+        <div class="mobile-sidebar-divider"></div>
+        <button id="mobileLoginBtn" class="mobile-sidebar-btn" onclick="showLoginModal(); toggleMobileMenu();">🔐 Login</button>
+        <button id="mobileSignupBtn" class="mobile-sidebar-btn" onclick="showSignupModal(); toggleMobileMenu();">✨ Sign Up</button>
+        <div id="mobileUserMenu" class="mobile-user-section" style="display:none;">
+          <div class="mobile-user-info">
+            <div class="mobile-user-avatar">👤</div>
+            <div>
+              <div class="mobile-user-name" id="mobileUserName">User</div>
+              <div class="mobile-user-email" id="mobileUserEmail">user@email.com</div>
+            </div>
+          </div>
+          <a href="../admin/Profile/" onclick="toggleMobileMenu()">👤 View Profile</a>
+          <a href="../admin/Resources/" onclick="toggleMobileMenu();">➕ Add Resources</a>
+          <a onclick="logout(); toggleMobileMenu();">🚪 Logout</a>
+        </div>
+      </div>
+    </div>
+    <div class="mobile-sidebar-overlay" id="mobileSidebarOverlay" onclick="toggleMobileMenu()"></div>
+  </nav>
+
+  <div class="hero-wrapper">
+    <section class="hero">
+      <img src="../file/hero.png" alt="">
+      <div class="container">
+        <div class="hero-badge">
+          <span class="hero-badge-dot"></span>
+          <span>Got Questions? We've Got Answers</span>
+        </div>
+        <h1>Frequently Asked <span class="hero-gradient-text">Questions</span></h1>
+        <p>Everything you need to know about buying, selling, payments, and withdrawals on Earnify.</p>
+      </div>
+    </section>
+  </div>
+
+  <section class="page-content" id="faqContainer"></section>
+
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h3 class="footer-logo"><a href="../" class="footer-logo-link">💰 <span class="footer-logo-text">Earnify</span></a></h3>
+          <p class="footer-desc">Your trusted learning marketplace for premium study materials, templates, and professional services.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Quick Links</h4>
+          <ul class="footer-links">
+            <li><a href="../About/">About Us</a></li>
+            <li><a href="../FAQ/">FAQ's</a></li>
+            <li><a href="../Terms/">Terms & Conditions</a></li>
+            <li><a href="../Privacy/">Privacy Policy</a></li>
+            <li><a href="../Contact/">Contact Us</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Contact Info</h4>
+          <p class="footer-contact">📧 support@earnify.com</p>
+          <p class="footer-contact">📞 +11 60464 53263</p>
+          <div class="social-icons">
+            <a title="Facebook"><i class="fab fa-facebook"></i></a>
+            <a title="Instagram"><i class="fab fa-instagram"></i></a>
+            <a title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2024 Earnify. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="faq.js"></script>
+  <script src="landing.js"></script>
+</body>
+</html>
