@@ -224,7 +224,6 @@
         <a href="./">Home</a>
         <a href="./#resources">Resources</a>
         <a href="./About/">About</a>
-        <a href="./Contact/">Contact</a>
         <a href="./Dashboard/">Dashboard</a>
         <button id="loginBtn" class="admin-btn" onclick="showLoginModal()">Login</button>
         <button id="signupBtn" class="admin-btn" onclick="showSignupModal()">Sign Up</button>
@@ -257,7 +256,7 @@
         <a href="./" onclick="toggleMobileMenu()">🏠 Home</a>
         <a href="./#resources" onclick="toggleMobileMenu()">📚 Resources</a>
         <a href="./About/" onclick="toggleMobileMenu()">ℹ️ About</a>
-        <a href="./Contact/" onclick="toggleMobileMenu()">📞 Contact</a>
+
         <a href="./Dashboard/" onclick="toggleMobileMenu()">📊 Dashboard</a>
         <div class="mobile-sidebar-divider"></div>
         <button id="mobileLoginBtn" class="mobile-sidebar-btn" onclick="showLoginModal(); toggleMobileMenu();">🔐
@@ -518,7 +517,10 @@
 
   <section id="resources" class="resources-section">
     <div class="container">
-      <h2>Available Resources</h2>
+      <div class="section-header" style="margin-bottom:28px;">
+        <h2>Available <span class="grad-text">Resources</span></h2>
+        <p>Browse premium study materials, templates, exam prep, and freelance services — all verified and ready to use</p>
+      </div>
       <div class="filter-tabs">
         <button class="filter-btn active" onclick="filterResources('all')">All</button>
         <button class="filter-btn" onclick="filterResources('pdf')"><img src="/file/pdf.jpg" alt="PDF"> PDF Notes</button>
@@ -528,6 +530,78 @@
       </div>
       <div id="resourcesGrid" class="resources-grid"></div>
       <div class="pagination"></div>
+    </div>
+  </section>
+
+  <!-- ── Trust Strip ── -->
+  <section class="trust-section">
+    <div class="container">
+      <div class="trust-grid">
+        <div class="trust-item">
+          <div class="trust-icon">🔒</div>
+          <div>
+            <h4>Secure Payments</h4>
+            <p>All transactions processed via Razorpay — RBI-regulated &amp; PCI-DSS compliant</p>
+          </div>
+        </div>
+        <div class="trust-item">
+          <div class="trust-icon">⚡</div>
+          <div>
+            <h4>Instant Access</h4>
+            <p>Download your resource immediately after payment — no waiting, no delays</p>
+          </div>
+        </div>
+        <div class="trust-item">
+          <div class="trust-icon">✅</div>
+          <div>
+            <h4>Verified Resources</h4>
+            <p>Every resource is reviewed before going live to ensure quality and accuracy</p>
+          </div>
+        </div>
+        <div class="trust-item">
+          <div class="trust-icon">💬</div>
+          <div>
+            <h4>Dedicated Support</h4>
+            <p>Have a question? Our support team responds within 2 business days</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FAQ ── -->
+  <section class="faq-section">
+    <div class="container">
+      <div class="section-header">
+        <h2>Frequently Asked <span class="grad-text">Questions</span></h2>
+        <p>Everything you need to know about buying and selling on Earnify</p>
+      </div>
+      <div class="faq-grid">
+        <div class="faq-item-home">
+          <div class="faq-q">💳 How do I pay for a resource?</div>
+          <div class="faq-a">All payments are processed securely through Razorpay. You can pay via credit/debit card, UPI, net banking, or digital wallets. You get instant access after payment.</div>
+        </div>
+        <div class="faq-item-home">
+          <div class="faq-q">📥 How do I access my purchased resource?</div>
+          <div class="faq-a">After purchase, go to your Dashboard. All purchased resources are listed there and available for download immediately.</div>
+        </div>
+        <div class="faq-item-home">
+          <div class="faq-q">💼 How do I sell my resources?</div>
+          <div class="faq-a">Sign up, go to Add Resources, upload your file, set a price, and publish. Your resource goes live after a quick review. No listing fees — ever.</div>
+        </div>
+        <div class="faq-item-home">
+          <div class="faq-q">💸 How does withdrawal work?</div>
+          <div class="faq-a">Request a withdrawal anytime from your Withdrawal page. A flat 5% platform fee is deducted. For example, withdraw ₹1,000 and receive ₹950 net — no other charges.</div>
+        </div>
+        <div class="faq-item-home">
+          <div class="faq-q">🔄 Can I get a refund?</div>
+          <div class="faq-a">Digital resources are generally non-refundable once accessed. However, we review refund requests for defective or misrepresented products on a case-by-case basis.</div>
+        </div>
+        <div class="faq-item-home">
+          <div class="faq-q">🛡️ Is my data safe?</div>
+          <div class="faq-a">Yes. Your account data is stored securely via Supabase with encryption. Payment data is handled exclusively by Razorpay — we never store your card or bank details.</div>
+        </div>
+      </div>
     </div>
   </section>
 
