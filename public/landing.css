@@ -166,6 +166,226 @@ body {
   }
 }
 
+/* ── Shared section header ── */
+.section-header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+.section-header h2 {
+  font-size: clamp(1.8rem,3.5vw,2.6rem);
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 10px;
+}
+.section-header p {
+  font-size: 1.05rem;
+  color: #64748b;
+  max-width: 520px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+.grad-text {
+  background: linear-gradient(135deg,#667eea,#764ba2);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Stats Bar ── */
+.stats-bar {
+  background: linear-gradient(135deg,#667eea,#764ba2);
+  padding: 28px 0;
+}
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+}
+.stat-item {
+  text-align: center;
+  padding: 8px 16px;
+  border-right: 1px solid rgba(255,255,255,0.2);
+}
+.stat-item:last-child { border-right: none; }
+.stat-num {
+  font-size: 2rem;
+  font-weight: 900;
+  color: #fff;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.stat-item .stat-label {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.8);
+  font-weight: 500;
+}
+@media (max-width: 600px) {
+  .stats-grid { grid-template-columns: repeat(2,1fr); }
+  .stat-item { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.15); padding: 14px; }
+  .stat-item:nth-child(3),.stat-item:nth-child(4) { border-bottom: none; }
+  .stat-num { font-size: 1.6rem; }
+}
+
+/* ── How It Works ── */
+.how-section {
+  padding: 72px 0;
+  background: #f8fafc;
+}
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  gap: 24px;
+}
+.step-card {
+  background: white;
+  border-radius: 18px;
+  padding: 28px 22px;
+  text-align: center;
+  border: 1px solid #e8edf5;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+  position: relative;
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+.step-card:hover { transform: translateY(-4px); box-shadow: 0 10px 28px rgba(102,126,234,0.13); }
+.step-num {
+  position: absolute;
+  top: -14px; left: 50%; transform: translateX(-50%);
+  width: 28px; height: 28px;
+  background: linear-gradient(135deg,#667eea,#764ba2);
+  color: white; border-radius: 50%;
+  font-size: 12px; font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+}
+.step-icon { font-size: 2.4rem; margin: 6px 0 14px; }
+.step-card h3 { font-size: 1.05rem; font-weight: 700; color: #0f172a; margin-bottom: 10px; }
+.step-card p  { font-size: 0.88rem; color: #64748b; line-height: 1.65; }
+@media (max-width: 900px) { .steps-grid { grid-template-columns: repeat(2,1fr); } }
+@media (max-width: 500px) { .steps-grid { grid-template-columns: 1fr; } .how-section { padding: 48px 0; } }
+
+/* ── Categories ── */
+.categories-section { padding: 72px 0; background: white; }
+.categories-grid {
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  gap: 20px;
+}
+.cat-card {
+  background: #f8fafc;
+  border-radius: 16px;
+  padding: 28px 20px;
+  text-align: center;
+  border: 1px solid #e8edf5;
+  text-decoration: none;
+  display: block;
+  transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+}
+.cat-card:hover { transform: translateY(-4px); box-shadow: 0 10px 28px rgba(102,126,234,0.13); border-color: #c7d2fe; background: white; }
+.cat-icon { width: 64px; height: 64px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 2rem; margin: 0 auto 16px; }
+.cat-card h3 { font-size: 1rem; font-weight: 700; color: #0f172a; margin-bottom: 6px; }
+.cat-card p  { font-size: 0.83rem; color: #64748b; line-height: 1.5; }
+@media (max-width: 900px) { .categories-grid { grid-template-columns: repeat(2,1fr); } }
+@media (max-width: 500px) { .categories-grid { gap: 12px; } .categories-section { padding: 48px 0; } .cat-icon { width: 52px; height: 52px; font-size: 1.6rem; } }
+
+/* ── Seller CTA ── */
+.seller-cta { padding: 72px 0; background: linear-gradient(135deg,#f8fafc,#e2e8f0); }
+.cta-box {
+  background: linear-gradient(135deg,#667eea,#764ba2);
+  border-radius: 24px;
+  padding: 52px 48px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 40px;
+  align-items: center;
+  box-shadow: 0 20px 60px rgba(102,126,234,0.35);
+}
+.cta-content h2 { font-size: clamp(1.5rem,3vw,2.2rem); font-weight: 800; color: white; margin-bottom: 14px; line-height: 1.25; }
+.cta-content p  { font-size: 1rem; color: rgba(255,255,255,0.85); line-height: 1.7; margin-bottom: 20px; max-width: 520px; }
+.cta-points { display: flex; flex-wrap: wrap; gap: 10px 20px; margin-bottom: 28px; }
+.cta-points span { font-size: 0.9rem; color: rgba(255,255,255,0.9); font-weight: 600; }
+.cta-btn-main {
+  display: inline-block;
+  padding: 14px 32px;
+  background: white; color: #667eea;
+  border-radius: 50px; font-weight: 800; font-size: 1rem;
+  text-decoration: none;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+}
+.cta-btn-main:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(0,0,0,0.2); }
+.cta-earn-card {
+  background: rgba(255,255,255,0.12);
+  backdrop-filter: blur(12px);
+  border: 1.5px solid rgba(255,255,255,0.25);
+  border-radius: 20px;
+  padding: 24px 28px;
+  min-width: 210px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.cta-earn-icon {
+  font-size: 2rem;
+  margin-bottom: 16px;
+  text-align: center;
+}
+.cta-earn-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+}
+.cta-earn-label {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.75);
+  font-weight: 500;
+}
+.cta-earn-gross {
+  font-size: 1rem;
+  font-weight: 700;
+  color: rgba(255,255,255,0.9);
+}
+.cta-earn-fee {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #fca5a5;
+}
+.cta-earn-divider {
+  height: 1px;
+  background: rgba(255,255,255,0.15);
+  margin: 2px 0;
+}
+.cta-earn-total {
+  margin-top: 4px;
+  padding-top: 10px;
+  border-top: 1.5px solid rgba(255,255,255,0.25);
+}
+.cta-earn-total > span:first-child {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: white;
+}
+.cta-earn-amount {
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: #86efac;
+  line-height: 1;
+}
+.cta-earn-badge {
+  margin-top: 14px;
+  text-align: center;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: rgba(255,255,255,0.8);
+  background: rgba(255,255,255,0.1);
+  border-radius: 20px;
+  padding: 5px 12px;
+}
+@media (max-width: 768px) {
+  .cta-box { grid-template-columns: 1fr; padding: 36px 24px; gap: 28px; }
+  .cta-earn-card { min-width: unset; }
+  .seller-cta { padding: 48px 0; }
+}
+
+/* ── Resources ── */
 .resources-section {
   background: white;
   padding: 30px;
