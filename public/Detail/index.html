@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
- <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap rel=stylesheet>
+ <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Resource Details - Earnify</title>
@@ -78,14 +78,31 @@
   <div class="details-wrapper">
     <div class="container">
       <div class="breadcrumb">
-        <a href="../index.html">Home</a> <span>/</span> <span id="breadcrumbTitle">Resource Details</span>
+        <a href="../"><i class="fas fa-home"></i> Home</a>
+        <span>/</span>
+        <a href="../#resources">Resources</a>
+        <span>/</span>
+        <span id="breadcrumbTitle">Resource Details</span>
       </div>
       <div class="details-grid">
-        <div class="details-main">
-          <div id="resourceDetails"></div>
-        </div>
+        <div class="details-main" id="resourceDetails"></div>
         <div class="details-sidebar">
-          <div class="purchase-card" id="purchaseCard"></div>
+          <div id="purchaseCard"></div>
+          <div id="trustCard"></div>
+        </div>
+      </div>
+
+      <!-- Contact Section -->
+      <div class="detail-contact-section">
+        <div class="detail-contact-inner">
+          <div class="detail-contact-left">
+            <div class="detail-contact-icon"><i class="fas fa-headset"></i></div>
+            <div>
+              <h3>Have a question about this resource?</h3>
+              <p>Our support team is available Mon&ndash;Fri, 9 AM&ndash;6 PM. We respond within 2 hours.</p>
+            </div>
+          </div>
+          <a href="../Contact/" class="detail-contact-btn"><i class="fas fa-envelope"></i> Contact Us</a>
         </div>
       </div>
     </div>
