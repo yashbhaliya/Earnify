@@ -1,75 +1,73 @@
-// Shimmer loading for About page
 document.addEventListener('DOMContentLoaded', function() {
   loadAboutContent();
 });
 
 function loadAboutContent() {
   showShimmer();
-  setTimeout(() => { loadActualContent(); }, 1500);
+  setTimeout(() => { loadActualContent(); }, 1200);
 }
 
 function showShimmer() {
-  const shimmer = `
-    <div class="shimmer-box">
-      <div class="shimmer-title"></div>
-      <div class="shimmer-text"></div>
-      <div class="shimmer-text"></div>
-      <div class="shimmer-text short"></div>
-    </div>`;
-  document.getElementById('contentBox1').innerHTML = shimmer;
-  document.getElementById('contentBox2').innerHTML = shimmer;
-  document.getElementById('contentBox3').innerHTML = `
-    <div class="shimmer-box">
-      <div class="shimmer-title"></div>
-      <div class="shimmer-features-grid">
-        <div class="shimmer-feature"><div class="shimmer-icon"></div><div class="shimmer-feature-title"></div><div class="shimmer-text"></div></div>
-        <div class="shimmer-feature"><div class="shimmer-icon"></div><div class="shimmer-feature-title"></div><div class="shimmer-text"></div></div>
-        <div class="shimmer-feature"><div class="shimmer-icon"></div><div class="shimmer-feature-title"></div><div class="shimmer-text"></div></div>
-        <div class="shimmer-feature"><div class="shimmer-icon"></div><div class="shimmer-feature-title"></div><div class="shimmer-text"></div></div>
-      </div>
-    </div>`;
-  document.getElementById('contentBox4').innerHTML = `
-    <div class="shimmer-box">
-      <div class="shimmer-title"></div>
-      <div class="shimmer-list">
-        <div class="shimmer-list-item"></div><div class="shimmer-list-item"></div>
-        <div class="shimmer-list-item"></div><div class="shimmer-list-item"></div>
-        <div class="shimmer-list-item"></div><div class="shimmer-list-item"></div>
-      </div>
-    </div>`;
-  document.getElementById('contentBox5').innerHTML = shimmer;
+  const shimmer = `<div class="shimmer-box"><div class="shimmer-title"></div><div class="shimmer-text"></div><div class="shimmer-text"></div><div class="shimmer-text short"></div></div>`;
+  ['contentBox1','contentBox2','contentBox5','contentBox6'].forEach(id => {
+    document.getElementById(id).innerHTML = shimmer;
+  });
+  document.getElementById('contentBox3').innerHTML = `<div class="shimmer-box"><div class="shimmer-title"></div><div class="shimmer-features-grid"><div class="shimmer-feature"><div class="shimmer-icon"></div><div class="shimmer-feature-title"></div><div class="shimmer-text"></div></div><div class="shimmer-feature"><div class="shimmer-icon"></div><div class="shimmer-feature-title"></div><div class="shimmer-text"></div></div><div class="shimmer-feature"><div class="shimmer-icon"></div><div class="shimmer-feature-title"></div><div class="shimmer-text"></div></div><div class="shimmer-feature"><div class="shimmer-icon"></div><div class="shimmer-feature-title"></div><div class="shimmer-text"></div></div></div></div>`;
+  document.getElementById('contentBox4').innerHTML = `<div class="shimmer-box"><div class="shimmer-title"></div><div class="shimmer-list"><div class="shimmer-list-item"></div><div class="shimmer-list-item"></div><div class="shimmer-list-item"></div><div class="shimmer-list-item"></div><div class="shimmer-list-item"></div></div></div>`;
 }
 
 function loadActualContent() {
+
+  // ── 1. Who We Are ──
   document.getElementById('contentBox1').innerHTML = `
     <h2>Who We Are</h2>
-    <p>Earnify is a trusted digital marketplace where creators, educators, and professionals sell their knowledge and skills. We connect sellers who create premium study materials, templates, exam resources, and freelance services with buyers who need them — all through a secure, easy-to-use platform.</p>
-    <p>Whether you're a student looking for exam prep notes, a professional needing a ready-made Excel template, or a creator wanting to earn from your expertise — Earnify is built for you.</p>
+    <p>Earnify is an Indian digital marketplace that connects <strong>knowledge creators</strong> with <strong>learners and professionals</strong>. We make it easy for anyone to sell their study notes, Excel templates, exam materials, or freelance services — and for buyers to find exactly what they need, instantly.</p>
+    <p>We are built on three principles: <strong>transparency</strong> in earnings, <strong>security</strong> in payments, and <strong>quality</strong> in every resource listed. Whether you are a student, a working professional, or a content creator — Earnify is your platform.</p>
+    <div class="about-stats-row">
+      <div class="about-stat">
+        <div class="about-stat-num">500+</div>
+        <div class="about-stat-label">Resources Listed</div>
+      </div>
+      <div class="about-stat">
+        <div class="about-stat-num">1,200+</div>
+        <div class="about-stat-label">Happy Buyers</div>
+      </div>
+      <div class="about-stat">
+        <div class="about-stat-num">300+</div>
+        <div class="about-stat-label">Active Sellers</div>
+      </div>
+      <div class="about-stat">
+        <div class="about-stat-num">5%</div>
+        <div class="about-stat-label">Only Platform Fee</div>
+      </div>
+    </div>
   `;
 
+  // ── 2. Our Mission ──
   document.getElementById('contentBox2').innerHTML = `
     <h2>Our Mission</h2>
-    <p>Our mission is to make high-quality learning resources accessible to everyone while giving creators a fair and transparent way to earn from their work. We believe knowledge has value — and the people who create it deserve to be rewarded.</p>
-    <p>At Earnify, every resource is reviewed before going live, every payment is processed securely through Razorpay, and every withdrawal is handled transparently with a clear 5% platform fee — so you always know exactly what you earn.</p>
+    <p>Our mission is to <strong>democratise access to quality learning resources</strong> while giving creators a fair, transparent way to earn from their expertise. We believe that the right resource at the right time can change the direction of someone's career or academic journey.</p>
+    <p>Every resource on Earnify is reviewed before going live. Every payment is processed securely through <strong>Razorpay</strong> — an RBI-regulated, PCI-DSS compliant payment gateway. Every withdrawal is handled with a clear, flat <strong>5% platform fee</strong> — no hidden charges, no surprises.</p>
   `;
 
+  // ── 3. What We Offer ──
   document.getElementById('contentBox3').innerHTML = `
     <h2>What We Offer</h2>
     <div class="features-grid-2">
       <div class="feature-item">
         <i class="fas fa-file-pdf"></i>
         <h3>PDF Notes &amp; Study Materials</h3>
-        <p>Well-structured lecture notes, subject guides, and reference PDFs across a wide range of topics — ready to download and use immediately after purchase.</p>
+        <p>Well-structured lecture notes, subject guides, and reference PDFs — ready to download and use immediately after purchase.</p>
       </div>
       <div class="feature-item">
         <i class="fas fa-file-excel"></i>
         <h3>Excel Templates</h3>
-        <p>Professional, ready-to-use spreadsheet templates for budgeting, project tracking, data analysis, and more — built to save you hours of work.</p>
+        <p>Professional spreadsheet templates for budgeting, project tracking, data analysis, and more — built to save you hours of work.</p>
       </div>
       <div class="feature-item">
         <i class="fas fa-graduation-cap"></i>
         <h3>Exam Preparation</h3>
-        <p>Targeted practice papers, question banks, revision notes, and exam strategies designed to help you walk into your exam with confidence.</p>
+        <p>Practice papers, question banks, revision notes, and exam strategies — designed to help you walk into your exam with confidence.</p>
       </div>
       <div class="feature-item">
         <i class="fas fa-briefcase"></i>
@@ -79,26 +77,86 @@ function loadActualContent() {
     </div>
   `;
 
+  // ── 4. How It Works ──
   document.getElementById('contentBox4').innerHTML = `
-    <h2>How Earnings &amp; Withdrawals Work</h2>
-    <p>Earnify operates on a fully transparent earnings model. Here is exactly how it works:</p>
+    <h2>How Earnify Works</h2>
+    <p>Getting started takes less than 2 minutes — whether you want to buy or sell.</p>
     <ul class="benefits-list">
-      <li><i class="fas fa-check-circle"></i> <strong>Sell your resources</strong> — Set your own price and list your resource. Every completed purchase adds to your available balance instantly.</li>
-      <li><i class="fas fa-check-circle"></i> <strong>Track your earnings</strong> — Your Dashboard shows total revenue, available balance, withdrawn amount, platform fees, and pending requests in real time.</li>
-      <li><i class="fas fa-check-circle"></i> <strong>Request a withdrawal</strong> — Submit a withdrawal request from your Withdrawal page with your bank or UPI details and the amount you want to withdraw.</li>
-      <li><i class="fas fa-check-circle"></i> <strong>Platform fee: 5%</strong> — A flat 5% platform fee is deducted from each withdrawal. For example, if you request ₹1,000 you receive ₹950 net. This covers payment processing, platform maintenance, and support.</li>
-      <li><i class="fas fa-check-circle"></i> <strong>Admin review</strong> — Every withdrawal is reviewed by our admin team. Approved requests are processed promptly. Rejected requests include a clear reason so you can resubmit.</li>
-      <li><i class="fas fa-check-circle"></i> <strong>Secure payments</strong> — All buyer payments are processed through Razorpay, an RBI-regulated payment gateway. Your financial data is never stored on our servers.</li>
-      <li><i class="fas fa-check-circle"></i> <strong>No hidden charges</strong> — The only deduction is the 5% withdrawal fee. No listing fees, no monthly charges, no surprise deductions.</li>
+      <li>
+        <i class="fas fa-user-plus"></i>
+        <div><strong>Sign up free</strong><br><span>Create your account in seconds. No subscription, no upfront cost — ever.</span></div>
+      </li>
+      <li>
+        <i class="fas fa-upload"></i>
+        <div><strong>List your resource</strong><br><span>Upload your file, write a description, set your price, and publish. Goes live after a quick review.</span></div>
+      </li>
+      <li>
+        <i class="fas fa-search"></i>
+        <div><strong>Buyers browse &amp; purchase</strong><br><span>Buyers find your resource, pay securely via Razorpay, and get instant access after payment.</span></div>
+      </li>
+      <li>
+        <i class="fas fa-chart-line"></i>
+        <div><strong>Track earnings in real time</strong><br><span>Your Dashboard shows total revenue, available balance, withdrawn amount, platform fees, and pending requests.</span></div>
+      </li>
+      <li>
+        <i class="fas fa-wallet"></i>
+        <div><strong>Withdraw anytime — only 5% fee</strong><br><span>Request a withdrawal to your bank or UPI. A flat 5% platform fee is deducted. Withdraw ₹1,000 → receive ₹950 net. No other charges.</span></div>
+      </li>
+      <li>
+        <i class="fas fa-shield-alt"></i>
+        <div><strong>Always secure</strong><br><span>Payments via Razorpay (RBI-regulated). Account data via Supabase (encrypted). We never store your card or bank details.</span></div>
+      </li>
     </ul>
   `;
 
+  // ── 5. Our Values ──
   document.getElementById('contentBox5').innerHTML = `
     <h2>Our Values</h2>
-    <p><strong>Transparency:</strong> We show you exactly what you earn, what the fee is, and what you will receive — no surprises, no hidden costs. Your Dashboard reflects every transaction in real time.</p>
-    <p><strong>Security:</strong> All payments are processed through Razorpay, a trusted and RBI-regulated payment gateway. We never store your card or bank details on our servers.</p>
-    <p><strong>Fairness:</strong> A single flat 5% fee applies to all withdrawals regardless of resource type or amount. Every creator is treated equally.</p>
-    <p><strong>Quality:</strong> Every resource listed on Earnify is reviewed before going live. We maintain standards so buyers trust what they purchase and sellers build a credible reputation.</p>
-    <p><strong>Growth:</strong> We are constantly improving — adding new features, refining the platform, and listening to our creator and buyer community to make Earnify better every day.</p>
+    <div class="values-grid">
+      <div class="value-card">
+        <div class="value-icon">🔍</div>
+        <h3>Transparency</h3>
+        <p>You always know exactly what you earn, what the fee is, and what you will receive. No hidden costs, no surprises.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">🔒</div>
+        <h3>Security</h3>
+        <p>Payments via Razorpay (RBI-regulated). Data via Supabase (encrypted). We never store your card or bank details.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">⚖️</div>
+        <h3>Fairness</h3>
+        <p>One flat 5% fee on withdrawals — regardless of resource type or amount. Every creator is treated equally.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">✅</div>
+        <h3>Quality</h3>
+        <p>Every resource is reviewed before going live. We maintain standards so buyers trust what they purchase.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">🚀</div>
+        <h3>Growth</h3>
+        <p>We constantly improve — adding features, refining the platform, and listening to our creator and buyer community.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">🤝</div>
+        <h3>Community</h3>
+        <p>Earnify is built by and for its users. Your feedback shapes every update we make to the platform.</p>
+      </div>
+    </div>
+  `;
+
+  // ── 6. CTA ──
+  document.getElementById('contentBox6').innerHTML = `
+    <div class="about-cta">
+      <div class="about-cta-content">
+        <h2>Ready to Start?</h2>
+        <p>Join thousands of buyers and sellers already using Earnify. Sign up free, list your first resource, and start earning today.</p>
+        <div class="about-cta-btns">
+          <a href="../admin/Resources/" class="about-btn-primary">Start Selling →</a>
+          <a href="../#resources" class="about-btn-secondary">Browse Resources</a>
+        </div>
+      </div>
+    </div>
   `;
 }
