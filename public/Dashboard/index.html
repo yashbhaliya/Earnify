@@ -1,23 +1,23 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
   <title>Dashboard - Earnify</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" href="/file/logo1.jpeg" type="image/jpeg">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="landing.css">
+  <link rel="stylesheet" href="dashboard.css">
 </head>
 <body>
 
   <nav class="navbar">
     <div class="container">
       <div class="nav-header">
-        <a href="../" style="text-decoration: none; color: inherit;"><h1 class="logo">💰 <span class="logo-text">Earnify</span></h1></a>
+        <a href="../" style="text-decoration:none;color:inherit;"><h1 class="logo">💰 <span class="logo-text">Earnify</span></h1></a>
         <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
-          <span class="hamburger"></span>
-          <span class="hamburger"></span>
-          <span class="hamburger"></span>
+          <span class="hamburger"></span><span class="hamburger"></span><span class="hamburger"></span>
         </button>
       </div>
       <div class="search-box">
@@ -25,9 +25,8 @@
       </div>
       <div class="nav-links">
         <a href="../">Resources</a>
-        <a href="../#about">About</a>
-        <a href="../Dashboard/" style="color: #fbbf24;">Dashboard</a>
-        
+        <a href="../About/">About</a>
+        <a href="../Dashboard/" style="color:#fbbf24;">Dashboard</a>
         <div id="userMenu" class="user-menu" style="display:flex;">
           <button class="user-menu-btn" onclick="toggleUserDropdown()">
             <span class="user-avatar">👤</span>
@@ -41,14 +40,11 @@
             </div>
             <a href="../admin/Profile/"><span>👤</span> View Profile</a>
             <a href="../admin/Resources/"><span>➕</span> Add Resources</a>
-
             <a onclick="logout()"><span>🚪</span> Logout</a>
           </div>
         </div>
       </div>
     </div>
-    
-    <!-- Mobile Sidebar -->
     <div class="mobile-sidebar" id="mobileSidebar">
       <div class="mobile-sidebar-header">
         <h2>💰 Earnify</h2>
@@ -69,17 +65,62 @@
           </div>
           <a href="../admin/Profile/" onclick="toggleMobileMenu()">👤 View Profile</a>
           <a href="../admin/Resources/" onclick="toggleMobileMenu()">➕ Add Resources</a>
-          <a onclick="logout(); toggleMobileMenu()">🚪 Logout</a>
+          <a onclick="logout();toggleMobileMenu()">🚪 Logout</a>
         </div>
       </div>
     </div>
     <div class="mobile-sidebar-overlay" id="mobileSidebarOverlay" onclick="toggleMobileMenu()"></div>
   </nav>
 
-  <div class="content-wrapper">
-    <div class="container">
-      <h1>My Purchases</h1>
-      <div id="purchases"></div>
+  <div class="dashboard-wrapper">
+
+    <!-- Banner -->
+    <div class="dash-banner">
+      <div class="dash-banner-inner">
+        <div class="dash-banner-left">
+          <h1>Welcome back, <span id="bannerName">there</span> 👋</h1>
+          <p>All your purchased resources are here — download anytime.</p>
+        </div>
+        <div class="dash-banner-actions">
+          <a href="../" class="dash-action-btn primary"><i class="fas fa-shopping-bag"></i> Browse Resources</a>
+          <a href="../admin/Resources/" class="dash-action-btn secondary"><i class="fas fa-plus"></i> Sell a Resource</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="dash-content">
+
+      <!-- Stats -->
+      <div class="dash-stats" id="dashStats">
+        <div class="stat-card"><div class="shimmer-wrap" style="width:100%"><div class="sh sh-title"></div><div class="sh sh-badge"></div></div></div>
+        <div class="stat-card"><div class="shimmer-wrap" style="width:100%"><div class="sh sh-title"></div><div class="sh sh-badge"></div></div></div>
+        <div class="stat-card"><div class="shimmer-wrap" style="width:100%"><div class="sh sh-title"></div><div class="sh sh-badge"></div></div></div>
+        <div class="stat-card"><div class="shimmer-wrap" style="width:100%"><div class="sh sh-title"></div><div class="sh sh-badge"></div></div></div>
+      </div>
+
+      <!-- Section head + filters -->
+      <div class="dash-section-head">
+        <h2><i class="fas fa-box-open"></i> My Purchases</h2>
+        <div class="dash-filters">
+          <button class="dash-filter-btn active" onclick="filterPurchases('all',this)">All</button>
+          <button class="dash-filter-btn" onclick="filterPurchases('pdf',this)">📄 PDF</button>
+          <button class="dash-filter-btn" onclick="filterPurchases('excel',this)">📊 Excel</button>
+          <button class="dash-filter-btn" onclick="filterPurchases('exam',this)">📝 Exam</button>
+          <button class="dash-filter-btn" onclick="filterPurchases('freelance',this)">💼 Services</button>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div class="purchases-grid" id="purchases"></div>
+
+    </div>
+  </div>
+
+  <!-- Detail Modal -->
+  <div class="detail-modal-overlay" id="detailOverlay" onclick="closeModal()">
+    <div class="detail-modal" onclick="event.stopPropagation()">
+      <button class="detail-modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
+      <div class="detail-modal-body" id="detailModalBody"></div>
     </div>
   </div>
 
@@ -94,6 +135,7 @@
           <h4>Quick Links</h4>
           <ul class="footer-links">
             <li><a href="../About/">About Us</a></li>
+            <li><a href="../FAQ/">FAQ's</a></li>
             <li><a href="../Terms/">Terms & Conditions</a></li>
             <li><a href="../Privacy/">Privacy Policy</a></li>
             <li><a href="../Contact/">Contact Us</a></li>
@@ -110,9 +152,7 @@
           </div>
         </div>
       </div>
-      <div class="footer-bottom">
-        <p>&copy; 2024 Earnify. All rights reserved.</p>
-      </div>
+      <div class="footer-bottom"><p>&copy; 2024 Earnify. All rights reserved.</p></div>
     </div>
   </footer>
 
@@ -127,198 +167,245 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script>
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    
-    if (!currentUser) {
-      alert('Please login first');
-      window.location.href = 'index.html';
-    }
+    if (!currentUser) { alert('Please login first'); window.location.href = '../'; }
 
-    // Update mobile user menu
-    if (currentUser) {
-      const displayName = currentUser.user_metadata?.name || currentUser.email?.split('@')[0] || 'User';
-      const email = currentUser.email || '';
-      
-      const mobileUserName = document.getElementById('mobileUserName');
-      const mobileUserEmail = document.getElementById('mobileUserEmail');
-      const userName = document.getElementById('userName');
-      const userDisplayName = document.getElementById('userDisplayName');
-      const userEmail = document.getElementById('userEmail');
-      
-      if (mobileUserName) mobileUserName.textContent = displayName;
-      if (mobileUserEmail) mobileUserEmail.textContent = email;
-      if (userName) userName.textContent = displayName;
-      if (userDisplayName) userDisplayName.textContent = displayName;
-      if (userEmail) userEmail.textContent = email;
-    }
+    const dName = currentUser?.user_metadata?.name || currentUser?.email?.split('@')[0] || 'there';
+    const dEmail = currentUser?.email || '';
+    document.getElementById('bannerName').textContent      = dName;
+    document.getElementById('userName').textContent        = dName;
+    document.getElementById('userDisplayName').textContent = dName;
+    document.getElementById('userEmail').textContent       = dEmail;
+    document.getElementById('mobileUserName').textContent  = dName;
+    document.getElementById('mobileUserEmail').textContent = dEmail;
 
     let allPurchases = [];
+    const typeIcons = { pdf:'📄', excel:'📊', exam:'📝', freelance:'💼' };
+    const tc = t => ['pdf','excel','exam','freelance'].includes(t) ? t : 'default';
 
+    /* ── Search ── */
     function searchPurchases() {
-      const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-      
-      if (!searchTerm) {
-        displayPurchases(allPurchases);
-        return;
-      }
-      
-      const filtered = allPurchases.filter(purchase => {
-        const resource = purchase.resources;
-        if (!resource) return false;
-        
-        return (
-          resource.title?.toLowerCase().includes(searchTerm) ||
-          resource.type?.toLowerCase().includes(searchTerm) ||
-          purchase.payment_id?.toLowerCase().includes(searchTerm) ||
-          purchase.order_id?.toLowerCase().includes(searchTerm)
-        );
-      });
-      
-      displayPurchases(filtered);
+      const q = document.getElementById('searchInput').value.toLowerCase();
+      renderPurchases(q ? allPurchases.filter(p => {
+        const r = p.resources;
+        return r && (r.title?.toLowerCase().includes(q) || r.type?.toLowerCase().includes(q) ||
+          p.payment_id?.toLowerCase().includes(q) || p.order_id?.toLowerCase().includes(q));
+      }) : allPurchases);
     }
 
+    /* ── Filter ── */
+    function filterPurchases(type, btn) {
+      document.querySelectorAll('.dash-filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderPurchases(type === 'all' ? allPurchases : allPurchases.filter(p => p.resources?.type === type));
+    }
+
+    /* ── Load ── */
     async function loadPurchases() {
-      document.getElementById('purchases').innerHTML = `
-        <div class="shimmer-card"><div class="shimmer-line" style="width:60%"></div><div class="shimmer-line"></div><div class="shimmer-line" style="width:80%"></div><div class="shimmer-line" style="width:70%"></div></div>
-        <div class="shimmer-card"><div class="shimmer-line" style="width:60%"></div><div class="shimmer-line"></div><div class="shimmer-line" style="width:80%"></div><div class="shimmer-line" style="width:70%"></div></div>
-      `;
-      
+      showShimmer();
       try {
-        const response = await fetch(API_CONFIG.getURL(`${API_CONFIG.endpoints.payments}/${currentUser.id}`));
-        
-        if (!response.ok) {
-          document.getElementById('purchases').innerHTML = `
-            <div class="empty-state">
-              <h2>🛒 No Purchases Yet</h2>
-              <p>You haven't made any purchases. <a href="javascript:void(0)" onclick="navigateToResources('all')">Browse our resources</a> to get started!</p>
-            </div>
-          `;
-          return;
-        }
-        
-        const purchases = await response.json();
-        allPurchases = purchases;
-        displayPurchases(purchases);
-      } catch (error) {
-        document.getElementById('purchases').innerHTML = '<div class="empty-state"><h2>🛒 No Purchases Yet</h2><p>You haven\'t made any purchases. <a href="javascript:void(0)" onclick="navigateToResources(\'all\')">Browse our resources</a> to get started!</p></div>';
-      }
+        const res = await fetch(API_CONFIG.getURL(`${API_CONFIG.endpoints.payments}/${currentUser.id}`));
+        allPurchases = res.ok ? await res.json() : [];
+      } catch { allPurchases = []; }
+      renderStats(allPurchases);
+      renderPurchases(allPurchases);
     }
 
-    function displayPurchases(purchases) {
+    /* ── Stats ── */
+    function renderStats(list) {
+      const total  = list.length;
+      const spent  = list.reduce((s,p) => s + parseFloat(p.resources?.price || 0), 0);
+      const types  = [...new Set(list.map(p => p.resources?.type).filter(Boolean))].length;
+      const latest = list.length ? new Date(list[0].created_at).toLocaleDateString('en-IN',{day:'numeric',month:'short'}) : '—';
+      document.getElementById('dashStats').innerHTML = `
+        <div class="stat-card">
+          <div class="stat-icon purple"><i class="fas fa-box-open"></i></div>
+          <div><div class="stat-num">${total}</div><div class="stat-label">Total Purchases</div></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon green"><i class="fas fa-rupee-sign"></i></div>
+          <div><div class="stat-num">₹${spent.toLocaleString('en-IN')}</div><div class="stat-label">Total Spent</div></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon blue"><i class="fas fa-layer-group"></i></div>
+          <div><div class="stat-num">${types}</div><div class="stat-label">Resource Types</div></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon amber"><i class="fas fa-calendar-check"></i></div>
+          <div><div class="stat-num">${latest}</div><div class="stat-label">Last Purchase</div></div>
+        </div>`;
+    }
+
+    /* ── Shimmer ── */
+    function showShimmer() {
+      const row = () => `
+        <tr class="shimmer-row">
+          <td><div class="shimmer-wrap"><div class="sh-row-cell" style="width:70%"></div></div></td>
+          <td><div class="shimmer-wrap"><div class="sh-row-cell" style="width:45%"></div></div></td>
+          <td><div class="shimmer-wrap"><div class="sh-row-cell" style="width:40%"></div></div></td>
+          <td><div class="shimmer-wrap"><div class="sh-row-cell" style="width:55%"></div></div></td>
+          <td><div class="shimmer-wrap"><div class="sh-row-cell" style="width:80%"></div></div></td>
+        </tr>`;
+      document.getElementById('purchases').innerHTML = `
+        <table class="purchases-table">
+          <thead><tr>
+            <th>Resource</th><th>Type</th><th>Price</th><th>Date</th><th>Actions</th>
+          </tr></thead>
+          <tbody>${row()}${row()}${row()}${row()}</tbody>
+        </table>`;
+    }
+
+    /* ── Render Table ── */
+    function renderPurchases(list) {
       const container = document.getElementById('purchases');
-      
-      if (purchases.length === 0) {
+      const valid = list.filter(p => p.resources && !p.resources.hidden_from_users);
+
+      if (!valid.length) {
         container.innerHTML = `
           <div class="empty-state">
-            <h2>🛒 No Purchases Yet</h2>
-            <p>You haven't made any purchases. <a href="javascript:void(0)" onclick="navigateToResources('all')">Browse our resources</a> to get started!</p>
-          </div>
-        `;
+            <div class="empty-icon">🛒</div>
+            <h2>No Purchases Yet</h2>
+            <p>You haven't made any purchases. Browse our resources to get started!</p>
+            <a href="../" class="empty-cta"><i class="fas fa-shopping-bag"></i> Browse Resources</a>
+          </div>`;
         return;
       }
-      
-      container.innerHTML = purchases.map(purchase => {
-        const resource = purchase.resources;
-        if (!resource || resource.hidden_from_users) return '';
-        
+
+      const rows = valid.map((p, i) => {
+        const r    = p.resources;
+        const cls  = tc(r.type);
+        const icon = typeIcons[r.type] || '📦';
+        const date = new Date(p.created_at).toLocaleDateString('en-IN',{year:'numeric',month:'short',day:'numeric'});
         return `
-          <div class="purchase-card">
-            <h3>📦 ${resource.title || 'Resource'}</h3>
-            <p><strong>Type:</strong> ${resource.type || 'N/A'}</p>
-            <p class="price-tag"><strong>Price:</strong> ₹${resource.price || 'N/A'}</p>
-            <p><strong>Payment ID:</strong> ${purchase.payment_id}</p>
-            <p><strong>Order ID:</strong> ${purchase.order_id || 'N/A'}</p>
-            <p><strong>Date:</strong> ${new Date(purchase.created_at).toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
-            <span class="status ${purchase.status.toLowerCase()}">${purchase.status.toUpperCase()}</span>
-            <div class="card-actions">
-              <button onclick="downloadReceipt('${purchase.payment_id}', '${purchase.order_id}', '${resource.title || 'Resource'}', '${resource.price || 0}')" class="ca-btn" style="background:#10b981;">🧾 Download Receipt</button>
-              ${resource.fileurl ? `<a href="${resource.fileurl}" target="_blank" download class="ca-btn" style="background:#3b82f6;">📥 Download Content</a>` : '<button disabled class="ca-btn" style="background:#94a3b8;cursor:not-allowed;">📥 Download Content</button>'}
-              <a href="../Detail/?id=${resource.id}" class="ca-btn" style="background:#8b5cf6;">👁️ View Details</a>
-            </div>
-          </div>
-        `;
-      }).filter(Boolean).join('');
+          <tr>
+            <td>
+              <div class="td-resource">
+                <div class="td-icon ${cls}">${icon}</div>
+                <span class="td-title">${r.title || 'Resource'}</span>
+              </div>
+            </td>
+            <td><span class="td-badge ${cls}">${r.type || '—'}</span></td>
+            <td><span class="td-price">₹${r.price || '—'}</span></td>
+            <td><span class="td-date">${date}</span></td>
+            <td>
+              <div class="td-actions">
+                ${r.fileurl
+                  ? `<a href="${r.fileurl}" target="_blank" download class="pc-btn download"><i class="fas fa-download"></i> Download</a>`
+                  : `<button disabled class="pc-btn download"><i class="fas fa-download"></i> Download</button>`}
+                <button onclick="openModal(${i})" class="pc-btn view"><i class="fas fa-eye"></i> View</button>
+              </div>
+            </td>
+          </tr>`;
+      }).join('');
+
+      container.innerHTML = `
+        <table class="purchases-table">
+          <thead><tr>
+            <th><i class="fas fa-box"></i> Resource</th>
+            <th><i class="fas fa-tag"></i> Type</th>
+            <th><i class="fas fa-rupee-sign"></i> Price</th>
+            <th><i class="fas fa-calendar"></i> Date</th>
+            <th><i class="fas fa-bolt"></i> Actions</th>
+          </tr></thead>
+          <tbody>${rows}</tbody>
+        </table>`;
+
+      window._purchaseList = valid;
     }
 
+    /* ── Modal ── */
+    function openModal(index) {
+      const p    = window._purchaseList[index];
+      const r    = p.resources;
+      const cls  = tc(r.type);
+      const icon = typeIcons[r.type] || '📦';
+      const date = new Date(p.created_at).toLocaleDateString('en-IN',{year:'numeric',month:'long',day:'numeric'});
+      const status = (p.status || 'completed').toLowerCase();
+      const safeTitle = (r.title||'Resource').replace(/'/g,"\\'").replace(/"/g,'&quot;');
+
+      document.getElementById('detailModalBody').innerHTML = `
+        <div class="dm-header">
+          <div class="dm-icon ${cls}">${icon}</div>
+          <div class="dm-title-wrap">
+            <h2 class="dm-title">${r.title || 'Resource'}</h2>
+            <div class="dm-badges">
+              <span class="td-badge ${cls}">${r.type || 'resource'}</span>
+              <span class="td-status ${status}">${status}</span>
+            </div>
+          </div>
+        </div>
+
+        ${r.description ? `<p class="dm-desc">${r.description}</p>` : ''}
+
+        <div class="dm-grid">
+          <div class="dm-field">
+            <div class="dm-field-label"><i class="fas fa-rupee-sign"></i> Price</div>
+            <div class="dm-field-val price">₹${r.price || '—'}</div>
+          </div>
+          <div class="dm-field">
+            <div class="dm-field-label"><i class="fas fa-calendar-alt"></i> Purchase Date</div>
+            <div class="dm-field-val">${date}</div>
+          </div>
+          <div class="dm-field">
+            <div class="dm-field-label"><i class="fas fa-receipt"></i> Payment ID</div>
+            <div class="dm-field-val mono">${p.payment_id}</div>
+          </div>
+          <div class="dm-field">
+            <div class="dm-field-label"><i class="fas fa-hashtag"></i> Order ID</div>
+            <div class="dm-field-val mono">${p.order_id || '—'}</div>
+          </div>
+        </div>
+
+        <div class="dm-actions">
+          <button onclick="downloadReceipt('${p.payment_id}','${p.order_id}','${safeTitle}','${r.price||0}')" class="pc-btn receipt">
+            <i class="fas fa-file-invoice"></i> Download Receipt
+          </button>
+          ${r.fileurl
+            ? `<a href="${r.fileurl}" target="_blank" download class="pc-btn download"><i class="fas fa-download"></i> Download File</a>`
+            : `<button disabled class="pc-btn download"><i class="fas fa-download"></i> No File</button>`}
+          <a href="../Detail/?id=${r.id}" class="pc-btn view"><i class="fas fa-external-link-alt"></i> Full Details Page</a>
+        </div>
+      `;
+      document.getElementById('detailOverlay').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      document.getElementById('detailOverlay').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+    /* ── Logout ── */
     function logout() {
-      localStorage.removeItem('currentUser');
-      localStorage.removeItem('userLoggedIn');
-      window.location.href = 'index.html';
+      ['currentUser','userLoggedIn','adminToken'].forEach(k => localStorage.removeItem(k));
+      window.location.href = '../';
     }
-    
-    function navigateToResources(type = 'all') {
-      // Navigate to main index page with resources section
-      if (type === 'all') {
-        window.location.href = '../index.html#resources';
-      } else {
-        // Store the filter type in sessionStorage to apply after page load
-        sessionStorage.setItem('resourceFilter', type);
-        window.location.href = '../index.html#resources';
-      }
-    }
-    
+
+    /* ── Receipt PDF ── */
     function downloadReceipt(paymentId, orderId, title, price) {
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF();
-      
-      doc.setFontSize(20);
-      doc.setTextColor(139, 92, 246);
-      doc.text('EARNIFY', 105, 20, { align: 'center' });
-      
-      doc.setFontSize(16);
-      doc.setTextColor(0, 0, 0);
-      doc.text('PAYMENT RECEIPT', 105, 30, { align: 'center' });
-      
-      doc.setDrawColor(139, 92, 246);
-      doc.setLineWidth(0.5);
-      doc.line(20, 35, 190, 35);
-      
-      doc.setFontSize(12);
-      doc.setTextColor(60, 60, 60);
-      
-      let y = 50;
-      doc.text('Resource:', 20, y);
-      doc.setFont(undefined, 'bold');
-      doc.text(title, 70, y);
-      
-      y += 10;
-      doc.setFont(undefined, 'normal');
-      doc.text('Price:', 20, y);
-      doc.setFont(undefined, 'bold');
-      doc.setTextColor(16, 185, 129);
-      doc.text('₹' + price, 70, y);
-      
-      y += 10;
-      doc.setFont(undefined, 'normal');
-      doc.setTextColor(60, 60, 60);
-      doc.text('Payment ID:', 20, y);
-      doc.setFont(undefined, 'bold');
-      doc.text(paymentId, 70, y);
-      
-      y += 10;
-      doc.setFont(undefined, 'normal');
-      doc.text('Order ID:', 20, y);
-      doc.setFont(undefined, 'bold');
-      doc.text(orderId, 70, y);
-      
-      y += 10;
-      doc.setFont(undefined, 'normal');
-      doc.text('Date:', 20, y);
-      doc.setFont(undefined, 'bold');
-      doc.text(new Date().toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' }), 70, y);
-      
-      y += 10;
-      doc.setFont(undefined, 'normal');
-      doc.text('Status:', 20, y);
-      doc.setFont(undefined, 'bold');
-      doc.setTextColor(16, 185, 129);
-      doc.text('COMPLETED', 70, y);
-      
-      doc.setFontSize(10);
-      doc.setTextColor(100, 100, 100);
-      doc.text('Thank you for your purchase!', 105, 280, { align: 'center' });
-      doc.text('www.earnify.com', 105, 285, { align: 'center' });
-      
-      doc.save(`Receipt_${paymentId}.pdf`);
+      doc.setFontSize(22); doc.setTextColor(102,126,234);
+      doc.text('EARNIFY', 105, 22, { align:'center' });
+      doc.setFontSize(13); doc.setTextColor(80,80,80);
+      doc.text('Payment Receipt', 105, 31, { align:'center' });
+      doc.setDrawColor(102,126,234); doc.setLineWidth(0.6); doc.line(20,36,190,36);
+      const row = (label, val, y, color) => {
+        doc.setFontSize(11); doc.setFont(undefined,'normal'); doc.setTextColor(120,120,120);
+        doc.text(label, 22, y);
+        doc.setFont(undefined,'bold');
+        if (color) doc.setTextColor(...color); else doc.setTextColor(40,40,40);
+        doc.text(String(val), 75, y);
+      };
+      row('Resource',    title,          52);
+      row('Price',       '₹'+price,      63,  [16,185,129]);
+      row('Payment ID',  paymentId,      74);
+      row('Order ID',    orderId,        85);
+      row('Date',        new Date().toLocaleDateString('en-IN',{year:'numeric',month:'long',day:'numeric'}), 96);
+      row('Status',      'COMPLETED',    107, [16,185,129]);
+      doc.setFontSize(9); doc.setTextColor(160,160,160); doc.setFont(undefined,'normal');
+      doc.text('Thank you for your purchase! — www.earnify.com', 105, 280, { align:'center' });
+      doc.save(`Earnify_Receipt_${paymentId}.pdf`);
     }
 
     loadPurchases();
