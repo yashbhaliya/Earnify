@@ -179,7 +179,7 @@
 
     .add-btn {
         display: flex !important;
-        flex-direction: column !important;
+        /* flex-direction: column !important */
         align-items: center !important;
         justify-content: center !important;
         gap: 6px !important;

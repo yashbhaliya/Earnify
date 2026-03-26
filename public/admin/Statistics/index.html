@@ -203,7 +203,7 @@
       }
       .filter-btn {
         display: flex !important;
-        flex-direction: column !important;
+        /* flex-direction: column !important; */
         align-items: center !important;
         justify-content: center !important;
         gap: 4px !important;
@@ -803,7 +803,37 @@
       .stat-number { font-size: 20px !important; }
     }
 
-    /* ── Mobile Table: show only Email, Amount, Eye ── */
+    /* ── Analytics table: no horizontal scroll ── */
+    #analyticsContent .table-wrapper {
+      overflow-x: visible !important;
+    }
+    #analyticsContent .modern-table {
+      width: 100% !important;
+      min-width: unset !important;
+      table-layout: fixed;
+    }
+    #analyticsContent .modern-table th,
+    #analyticsContent .modern-table td {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    /* Customer email column — allow wrap on small screens */
+    #analyticsContent .customer-email {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 180px;
+    }
+    @media (max-width: 768px) {
+      #analyticsContent .modern-table {
+        table-layout: auto;
+      }
+      #analyticsContent .customer-email {
+        max-width: 120px;
+        font-size: 12px !important;
+      }
+    }
     @media (max-width: 768px) {
       .col-quantity, .col-resources { display: none !important; }
       .col-eye { display: table-cell !important; }

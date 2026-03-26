@@ -251,7 +251,7 @@
 
     /* Table Mobile */
     .table-wrapper {
-        overflow-x: auto !important;
+        overflow-x: hidden !important;
         -webkit-overflow-scrolling: touch !important;
         border-radius: 12px !important;
         margin: 0 !important;
