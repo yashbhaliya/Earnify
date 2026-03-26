@@ -228,6 +228,19 @@ function loadActualContent() {
           </div>
         </div>
 
+        <div class="contact-us-strip">
+          <div class="contact-us-strip-inner">
+            <div class="contact-us-left">
+              <div class="contact-us-icon"><i class="fas fa-headset"></i></div>
+              <div>
+                <h3>Still have questions?</h3>
+                <p>Our support team is available Mon–Fri, 9 AM–6 PM. We respond within 2 hours.</p>
+              </div>
+            </div>
+            <a href="../Contact/" class="contact-us-btn"><i class="fas fa-envelope"></i> Contact Us</a>
+          </div>
+        </div>
+
       </main>
     </div>
   `;

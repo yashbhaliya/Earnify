@@ -363,3 +363,41 @@
 .shimmer-form-field { width: 100%; height: 45px; background: #e2e8f0; border-radius: 8px; margin-bottom: 20px; }
 .shimmer-form-field.large { height: 120px; }
 .shimmer-button { width: 100%; height: 50px; background: #e2e8f0; border-radius: 8px; margin-top: 10px; }
+
+/* ── Contact Us Strip ── */
+.contact-us-strip {
+  background:white;
+  /* text-color: #0f172a; */
+  padding: 28px max(24px, calc((100% - 960px) / 2));
+}
+.contact-us-strip-inner {
+  
+  display: flex; align-items: center;
+  justify-content: space-between; gap: 20px; flex-wrap: wrap;
+}
+.contact-us-left {
+  display: flex; align-items: center; gap: 16px;
+}
+.contact-us-icon {
+  width: 48px; height: 48px; flex-shrink: 0;
+  background: black;
+  border-radius: 13px;
+  display: flex; align-items: center; justify-content: center;
+}
+.contact-us-icon i { color: white; font-size: 1.3rem; }
+.contact-us-left h3 { font-size: 1rem; font-weight: 800; color: black; margin: 0 0 4px; }
+.contact-us-left p  { font-size: 0.85rem; color: black; margin: 0; }
+.contact-us-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 12px 28px; border-radius: 50px;
+  background: white; color: #667eea;
+  font-weight: 800; font-size: 0.9rem; text-decoration: none;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  transition: transform 0.2s, box-shadow 0.2s;
+  white-space: nowrap;
+}
+.contact-us-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(0,0,0,0.2); }
+@media (max-width: 640px) {
+  .contact-us-strip-inner { flex-direction: column; align-items: flex-start; }
+  .contact-us-btn { width: 100%; justify-content: center; }
+}

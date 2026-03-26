@@ -148,6 +148,24 @@
   50% { transform: translateY(-12px); }
 }
 
+@keyframes btnFloat1 {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes btnFloat2 {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.btn-group a:first-child {
+  animation: btnFloat1 3s ease-in-out infinite;
+}
+
+.btn-group a:last-child {
+  animation: btnFloat2 3.5s ease-in-out infinite 0.4s;
+}
+
 .skill-tags {
   display: flex;
   flex-wrap: wrap;
@@ -296,8 +314,8 @@
           Access premium study materials, templates, and freelance opportunities — all in one platform.
         </p>
         <div class="btn-group" style="display:flex;flex-wrap:wrap;gap:1rem;margin-bottom:15px;">
-          <a href="#resources" style="text-decoration:none;display:inline-block;padding:0.9rem 2rem;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border-radius:50px;font-weight:700;font-size:1rem;box-shadow:0 8px 24px rgba(102,126,234,0.35);transition:transform .2s,box-shadow .2s;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 12px 28px rgba(102,126,234,0.45)'" onmouseout="this.style.transform='';this.style.boxShadow='0 8px 24px rgba(102,126,234,0.35)'">Explore Resources</a>
-          <a href="#categories" style="text-decoration:none;display:inline-block;padding:0.9rem 2rem;background:white;color:#667eea;border-radius:50px;font-weight:700;font-size:1rem;transition:background .2s;" onmouseover="this.style.background='white'" onmouseout="this.style.background='white'">Browse Categories</a>
+          <a href="#resources" style="text-decoration:none;display:inline-block;padding:0.9rem 2rem;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border-radius:50px;font-weight:700;font-size:1rem;box-shadow:0 8px 24px rgba(102,126,234,0.35);">Explore Resources</a>
+          <a href="#categories" style="text-decoration:none;display:inline-block;padding:0.9rem 2rem;background:white;color:#667eea;border-radius:50px;font-weight:700;font-size:1rem;box-shadow:0 4px 14px rgba(102,126,234,0.15);">Browse Categories</a>
         </div>
         <div class="skill-tags" style="flex-wrap:wrap;gap:0.75rem;opacity:0.85;">
           <span class="glass-card" style="padding:0.45rem 1.1rem;border-radius:50px;font-size:0.85rem;font-weight:600;display:flex;align-items:center;gap:6px;">
