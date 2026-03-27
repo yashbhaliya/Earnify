@@ -2258,3 +2258,25 @@ body.sidebar-open {
     flex-wrap: nowrap;
   }
 }
+
+/* ── Resources Lottie Loader ── */
+.resources-loader {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  gap: 14px;
+}
+#lottieContainer {
+  width: 160px;
+  height: 160px;
+}
+.resources-loader-text {
+  font-size: 0.95rem;
+  color: #94a3b8;
+  font-weight: 500;
+  margin: 0;
+  letter-spacing: 0.02em;
+}

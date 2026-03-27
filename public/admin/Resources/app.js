@@ -677,6 +677,24 @@ if (document.getElementById('resourceForm')) {
       return;
     }
 
+    const submitBtn = e.target.querySelector('button[type="submit"]');
+    const originalText = submitBtn ? submitBtn.innerHTML : '';
+
+    // Show loading state
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `
+        <span style="display:inline-flex;align-items:center;gap:8px;">
+          <svg style="animation:spin 0.8s linear infinite;width:18px;height:18px;flex-shrink:0;" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="10" stroke="rgba(255,255,255,0.3)" stroke-width="3"/>
+            <path d="M12 2a10 10 0 0 1 10 10" stroke="white" stroke-width="3" stroke-linecap="round"/>
+          </svg>
+          Uploading...
+        </span>`;
+    }
+
+    document.getElementById('uploadProgress').style.display = 'block';
+
     const formData = new FormData();
     formData.append('type', currentType);
     formData.append('title', document.getElementById('title').value);
@@ -684,8 +702,6 @@ if (document.getElementById('resourceForm')) {
     formData.append('price', document.getElementById('price').value);
     formData.append('file', document.getElementById('fileUpload').files[0]);
     formData.append('user_email', userEmail);
-
-    document.getElementById('uploadProgress').style.display = 'block';
 
     try {
       const response = await fetch(API_CONFIG.getURL(API_CONFIG.endpoints.resources), {
@@ -698,13 +714,38 @@ if (document.getElementById('resourceForm')) {
         throw new Error(error.error || 'Upload failed');
       }
 
+      // Success state
+      if (submitBtn) {
+        submitBtn.innerHTML = `
+          <span style="display:inline-flex;align-items:center;gap:8px;">
+            <svg style="width:18px;height:18px;flex-shrink:0;" viewBox="0 0 24 24" fill="none">
+              <path d="M20 6L9 17l-5-5" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Added!
+          </span>`;
+        submitBtn.style.background = 'linear-gradient(135deg,#10b981,#059669)';
+      }
+
       document.getElementById('uploadProgress').style.display = 'none';
-      loadResources(currentType);
-      closeModal();
-      e.target.reset();
-      alert('Resource added successfully!');
+
+      setTimeout(() => {
+        loadResources(currentType);
+        closeModal();
+        e.target.reset();
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = originalText;
+          submitBtn.style.background = '';
+        }
+      }, 800);
+
     } catch (error) {
       document.getElementById('uploadProgress').style.display = 'none';
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalText;
+        submitBtn.style.background = '';
+      }
       alert('Error: ' + error.message);
       console.error('Upload error:', error);
     }

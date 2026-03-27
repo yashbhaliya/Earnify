@@ -5,16 +5,13 @@ let isLoggedIn = false;
 let currentPage = 1;
 const itemsPerPage = 12;
 
-// Initialize the application when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
-  console.log('DOM loaded, API_CONFIG available:', typeof API_CONFIG !== 'undefined');
   checkLoginStatus();
   loadResources();
   loadSiteSettings();
   initializeSmoothScrolling();
 });
 
-// Initialize smooth scrolling for CTA button
 function initializeSmoothScrolling() {
   const ctaBtn = document.querySelector('.cta-btn');
   if (ctaBtn) {
@@ -22,31 +19,18 @@ function initializeSmoothScrolling() {
       e.preventDefault();
       const targetId = this.getAttribute('href');
       if (targetId && targetId.startsWith('#')) {
-        const targetElement = document.querySelector(targetId);
-        if (targetElement) {
-          targetElement.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-          });
-        }
+        const el = document.querySelector(targetId);
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     });
   }
 }
 
 function loadSiteSettings() {
-  const siteSettings = JSON.parse(localStorage.getItem('siteSettings') || '{}');
-  
-  // Update site name in navbar
-  const logoElement = document.querySelector('.logo');
-  if (logoElement && siteSettings.siteName) {
-    logoElement.textContent = siteSettings.siteLogo || siteSettings.siteName;
-  }
-  
-  // Update page title
-  if (siteSettings.siteName) {
-    document.title = siteSettings.siteName + ' - Your Learning Marketplace';
-  }
+  const s = JSON.parse(localStorage.getItem('siteSettings') || '{}');
+  const logo = document.querySelector('.logo');
+  if (logo && s.siteName) logo.textContent = s.siteLogo || s.siteName;
+  if (s.siteName) document.title = s.siteName + ' - Your Learning Marketplace';
 }
 
 function checkLoginStatus() {
@@ -55,467 +39,307 @@ function checkLoginStatus() {
 }
 
 function updateUI() {
-  const loginBtn = document.getElementById('loginBtn');
-  const signupBtn = document.getElementById('signupBtn');
-  const userMenu = document.getElementById('userMenu');
-  const userName = document.getElementById('userName');
-  const userDisplayName = document.getElementById('userDisplayName');
-  const userEmail = document.getElementById('userEmail');
-  
+  const loginBtn       = document.getElementById('loginBtn');
+  const signupBtn      = document.getElementById('signupBtn');
+  const userMenu       = document.getElementById('userMenu');
+  const userName       = document.getElementById('userName');
+  const userDisplayName= document.getElementById('userDisplayName');
+  const userEmail      = document.getElementById('userEmail');
+
   if (isLoggedIn) {
-    if (loginBtn) loginBtn.style.display = 'none';
+    if (loginBtn)  loginBtn.style.display  = 'none';
     if (signupBtn) signupBtn.style.display = 'none';
-    if (userMenu) userMenu.style.display = 'flex';
-    
-    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
-    const displayName = currentUser.user_metadata?.name || currentUser.email?.split('@')[0] || 'User';
-    const email = currentUser.email || '';
-    if (userName) userName.textContent = displayName;
-    if (userDisplayName) userDisplayName.textContent = displayName;
-    if (userEmail) userEmail.textContent = email;
+    if (userMenu)  userMenu.style.display  = 'flex';
+    const cu = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    const name  = cu.user_metadata?.name || cu.email?.split('@')[0] || 'User';
+    const email = cu.email || '';
+    if (userName)        userName.textContent        = name;
+    if (userDisplayName) userDisplayName.textContent = name;
+    if (userEmail)       userEmail.textContent       = email;
   } else {
-    if (loginBtn) loginBtn.style.display = 'inline-block';
+    if (loginBtn)  loginBtn.style.display  = 'inline-block';
     if (signupBtn) signupBtn.style.display = 'inline-block';
-    if (userMenu) userMenu.style.display = 'none';
+    if (userMenu)  userMenu.style.display  = 'none';
   }
 }
 
 function toggleUserDropdown() {
-  const dropdown = document.getElementById('userDropdown');
-  dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+  const d = document.getElementById('userDropdown');
+  d.style.display = d.style.display === 'block' ? 'none' : 'block';
 }
 
-// Close dropdown when clicking outside
 document.addEventListener('click', (e) => {
-  const userMenu = document.getElementById('userMenu');
-  const dropdown = document.getElementById('userDropdown');
-  if (userMenu && dropdown && !userMenu.contains(e.target)) {
-    dropdown.style.display = 'none';
-  }
+  const um = document.getElementById('userMenu');
+  const d  = document.getElementById('userDropdown');
+  if (um && d && !um.contains(e.target)) d.style.display = 'none';
 });
 
-function showLoginModal() {
-  document.getElementById('loginModal').style.display = 'flex';
-}
-
-function closeLoginModal() {
-  document.getElementById('loginModal').style.display = 'none';
-}
-
-function showSignupModal() {
-  document.getElementById('signupModal').style.display = 'flex';
-}
-
-function closeSignupModal() {
-  document.getElementById('signupModal').style.display = 'none';
-}
-
-function switchToSignup() {
-  closeLoginModal();
-  showSignupModal();
-}
-
-function switchToLogin() {
-  closeSignupModal();
-  showLoginModal();
-}
+function showLoginModal()  { document.getElementById('loginModal').style.display  = 'flex'; }
+function closeLoginModal() { document.getElementById('loginModal').style.display  = 'none'; }
+function showSignupModal() { document.getElementById('signupModal').style.display = 'flex'; }
+function closeSignupModal(){ document.getElementById('signupModal').style.display = 'none'; }
+function switchToSignup()  { closeLoginModal();  showSignupModal(); }
+function switchToLogin()   { closeSignupModal(); showLoginModal();  }
 
 async function handleLogin(e) {
   e.preventDefault();
-  const email = document.getElementById('loginEmail').value;
+  const email    = document.getElementById('loginEmail').value;
   const password = document.getElementById('loginPassword').value;
-  
   try {
-    const { data, error } = await supabaseClient.auth.signInWithPassword({
-      email,
-      password
-    });
-    
-    if (error) {
-      alert(error.message);
-      return;
-    }
-    
+    const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+    if (error) { alert(error.message); return; }
     if (!data.user.email_confirmed_at) {
       alert('Please verify your email before logging in!');
-      await supabaseClient.auth.signOut();
-      return;
+      await supabaseClient.auth.signOut(); return;
     }
-    
     localStorage.setItem('userLoggedIn', 'true');
     localStorage.setItem('currentUser', JSON.stringify(data.user));
     localStorage.setItem('adminToken', data.session.access_token);
     isLoggedIn = true;
-    closeLoginModal();
-    updateUI();
+    closeLoginModal(); updateUI();
     alert('Login successful!');
-  } catch (error) {
-    console.error('Login error:', error);
-    alert('Login failed: ' + error.message);
-  }
+  } catch (err) { alert('Login failed: ' + err.message); }
 }
 
 async function handleSignup(e) {
   e.preventDefault();
-  const name = document.getElementById('signupName').value;
-  const email = document.getElementById('signupEmail').value;
+  const name     = document.getElementById('signupName').value;
+  const email    = document.getElementById('signupEmail').value;
   const password = document.getElementById('signupPassword').value;
-  const confirmPassword = document.getElementById('signupConfirmPassword').value;
-  
-  if (password !== confirmPassword) {
-    alert('Passwords do not match!');
-    return;
-  }
-  
-  if (password.length < 6) {
-    alert('Password must be at least 6 characters long!');
-    return;
-  }
-  
+  const confirm  = document.getElementById('signupConfirmPassword').value;
+  if (password !== confirm) { alert('Passwords do not match!'); return; }
+  if (password.length < 6)  { alert('Password must be at least 6 characters long!'); return; }
   try {
-    const { data, error } = await supabaseClient.auth.signUp({
-      email,
-      password,
-      options: {
-        data: { name }
-      }
-    });
-    
+    const { error } = await supabaseClient.auth.signUp({ email, password, options: { data: { name } } });
     if (error) {
-      console.error('Signup error:', error);
       if (error.message.includes('Database error')) {
-        alert('Account created successfully! You can now login.');
-        closeSignupModal();
-        showLoginModal();
-        return;
+        alert('Account created! You can now login.'); closeSignupModal(); showLoginModal(); return;
       }
-      if (error.message.includes('confirmation email')) {
-        alert('SMTP not configured. Please contact admin or disable email verification in Supabase settings.');
-      } else {
-        alert(error.message);
-      }
-      return;
+      alert(error.message); return;
     }
-    
-    closeSignupModal();
-    alert('Account created successfully! Please login to continue.');
-    showLoginModal();
-  } catch (error) {
-    console.error('Signup error:', error);
-    alert('Account created successfully! You can now login.');
-    closeSignupModal();
-    showLoginModal();
+    closeSignupModal(); alert('Account created! Please login to continue.'); showLoginModal();
+  } catch (err) {
+    alert('Account created! You can now login.'); closeSignupModal(); showLoginModal();
   }
 }
 
 async function logout() {
   await supabaseClient.auth.signOut();
-  localStorage.removeItem('userLoggedIn');
-  localStorage.removeItem('currentUser');
-  localStorage.removeItem('adminToken');
-  isLoggedIn = false;
-  updateUI();
+  ['userLoggedIn','currentUser','adminToken'].forEach(k => localStorage.removeItem(k));
+  isLoggedIn = false; updateUI();
   window.location.href = 'index.html';
 }
 
-function viewProfile() {
-  // Close dropdown first
-  const dropdown = document.getElementById('userDropdown');
-  if (dropdown) dropdown.style.display = 'none';
-  
-  // Redirect to admin resources page
-  window.location.href = 'admin/resources.html';
+/* ── Lottie Loader ── */
+function showLoader() {
+  const grid = document.getElementById('resourcesGrid');
+  if (!grid) return;
+  grid.innerHTML = `
+    <div class="resources-loader">
+      <div id="lottieContainer"></div>
+      <p class="resources-loader-text">Loading resources...</p>
+    </div>`;
+  const pag = document.querySelector('.pagination');
+  if (pag) pag.innerHTML = '';
+  if (typeof lottie !== 'undefined') {
+    lottie.loadAnimation({
+      container: document.getElementById('lottieContainer'),
+      renderer: 'svg',
+      loop: true,
+      autoplay: true,
+      path: '/file/loader.json'
+    });
+  }
 }
 
+/* ── Load Resources ── */
 async function loadResources() {
-  const grid = document.getElementById('resourcesGrid');
-  
-  console.log('loadResources called, API_CONFIG available:', typeof API_CONFIG !== 'undefined');
-  
-  // Show shimmer loading cards
-  if (grid) {
-    grid.innerHTML = Array(6).fill(0).map(() => `
-      <div class="shimmer-card">
-        <div class="shimmer-card-header">
-          <div class="shimmer shimmer-icon"></div>
-          <div class="shimmer shimmer-title"></div>
-        </div>
-        <div class="shimmer shimmer-desc"></div>
-        <div class="shimmer shimmer-desc shimmer-desc-short"></div>
-        <div class="shimmer shimmer-price"></div>
-        <div class="shimmer shimmer-type"></div>
-        <div class="shimmer shimmer-button"></div>
-      </div>
-    `).join('');
-  }
-  
+  showLoader();
   try {
-    const resourceUrl = API_CONFIG.getURL(API_CONFIG.endpoints.resources);
-    console.log('Fetching resources from:', resourceUrl);
-    
-    const res = await fetch(resourceUrl);
-    if (!res.ok) {
-      throw new Error(`HTTP ${res.status}: ${res.statusText}`);
-    }
-    
+    const res = await fetch(API_CONFIG.getURL(API_CONFIG.endpoints.resources));
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
     allResources = await res.json();
-    console.log('Resources loaded:', allResources.length);
-    
-    // Get user's purchases if logged in
+
     let userPurchases = [];
     if (isLoggedIn) {
-      const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-      if (currentUser) {
+      const cu = JSON.parse(localStorage.getItem('currentUser'));
+      if (cu) {
         try {
-          const purchaseRes = await fetch(API_CONFIG.getURL(`${API_CONFIG.endpoints.payments}/${currentUser.id}`));
-          if (purchaseRes.ok) {
-            userPurchases = await purchaseRes.json();
-          }
-        } catch (err) {
-          console.log('Could not fetch purchases:', err);
-        }
+          const pr = await fetch(API_CONFIG.getURL(`${API_CONFIG.endpoints.payments}/${cu.id}`));
+          if (pr.ok) userPurchases = await pr.json();
+        } catch {}
       }
     }
-    
     displayResources(allResources, userPurchases);
-  } catch (error) {
-    console.error('Error loading resources:', error);
+  } catch (err) {
     const grid = document.getElementById('resourcesGrid');
-    if (grid) {
-      grid.innerHTML = `<p style="text-align: center; color: #666;">Unable to load resources: ${error.message}<br>Please try refreshing the page.</p>`;
-    }
+    if (grid) grid.innerHTML = `<p style="text-align:center;color:#666;">Unable to load resources: ${err.message}<br>Please try refreshing.</p>`;
   }
 }
 
+/* ── Search ── */
 function searchResources() {
-  const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-  const filtered = allResources.filter(resource => {
-    const title = (resource.title || '').toLowerCase();
-    const type = (resource.type || '').toLowerCase();
-    const description = (resource.description || '').toLowerCase();
-    const price = (resource.price || '').toString();
-    
-    return title.includes(searchTerm) || 
-           type.includes(searchTerm) || 
-           description.includes(searchTerm) ||
-           price.includes(searchTerm);
-  });
-  
-  // Get user purchases if logged in
-  let userPurchases = [];
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  const filtered = allResources.filter(r =>
+    (r.title||'').toLowerCase().includes(q) ||
+    (r.type||'').toLowerCase().includes(q)  ||
+    (r.description||'').toLowerCase().includes(q) ||
+    String(r.price||'').includes(q)
+  );
+  showLoader();
   if (isLoggedIn) {
-    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    if (currentUser) {
-      fetch(API_CONFIG.getURL(`${API_CONFIG.endpoints.payments}/${currentUser.id}`))
-        .then(res => res.ok ? res.json() : [])
-        .then(purchases => displayResources(filtered, purchases))
+    const cu = JSON.parse(localStorage.getItem('currentUser'));
+    if (cu) {
+      fetch(API_CONFIG.getURL(`${API_CONFIG.endpoints.payments}/${cu.id}`))
+        .then(r => r.ok ? r.json() : [])
+        .then(p => displayResources(filtered, p))
         .catch(() => displayResources(filtered, []));
       return;
     }
   }
-  
-  displayResources(filtered, userPurchases);
+  displayResources(filtered, []);
 }
 
+/* ── Display ── */
 function displayResources(resources, userPurchases = []) {
   const grid = document.getElementById('resourcesGrid');
-  
   if (!grid) return;
-  
+
   if (!resources || resources.length === 0) {
-    grid.innerHTML = '<p style="text-align: center; color: #666;">No resources available yet.</p>';
-    const paginationDiv = document.querySelector('.pagination');
-    if (paginationDiv) paginationDiv.innerHTML = '';
+    grid.innerHTML = '<p style="text-align:center;color:#666;grid-column:1/-1;">No resources available yet.</p>';
+    const pag = document.querySelector('.pagination');
+    if (pag) pag.innerHTML = '';
     return;
   }
-  
+
   const purchasedIds = userPurchases.map(p => p.resource_id);
-  const totalPages = Math.ceil(resources.length / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const paginatedResources = resources.slice(startIndex, startIndex + itemsPerPage);
-  
-  grid.innerHTML = paginatedResources.map(resource => {
-    const isPurchased = purchasedIds.includes(resource.id);
-    const imgMap = { pdf: '/file/pdf.jpg', excel: '/file/excel.jpg', exam: '/file/exam.jpg', freelance: '/file/service.jpg' };
-    const imgSrc = imgMap[resource.type] || '/file/all.jpg';
-    
+  const totalPages   = Math.ceil(resources.length / itemsPerPage);
+  const start        = (currentPage - 1) * itemsPerPage;
+  const paged        = resources.slice(start, start + itemsPerPage);
+  const imgMap       = { pdf:'/file/pdf.jpg', excel:'/file/excel.jpg', exam:'/file/exam.jpg', freelance:'/file/service.jpg' };
+
+  grid.innerHTML = paged.map(r => {
+    const bought = purchasedIds.includes(r.id);
+    const img    = imgMap[r.type] || '/file/all.jpg';
     return `
-      <div class="resource-card" onclick="viewDetails(${resource.id})" style="cursor: pointer;">
+      <div class="resource-card" onclick="viewDetails(${r.id})" style="cursor:pointer;">
         <div class="card-header">
-          <div class="resource-icon"><img src="${imgSrc}" alt="${resource.type}" style="width:48px;height:48px;object-fit:contain;border-radius:10px;"></div>
-          <div class="resource-type">${resource.type.toUpperCase()}</div>
+          <div class="resource-icon"><img src="${img}" alt="${r.type}" style="width:48px;height:48px;object-fit:contain;border-radius:10px;"></div>
+          <div class="resource-type">${r.type.toUpperCase()}</div>
         </div>
-        <h3>${resource.title}</h3>
-        <p>${resource.description}</p>
-        <div class="resource-price">₹${resource.price}</div>
-        ${isPurchased ? 
-          '<button class="btn-purchased" disabled onclick="event.stopPropagation()">✓ Purchased</button>' :
-          `<button class="btn-buy" onclick="event.stopPropagation(); buyResource(${resource.id})">Buy Now</button>`
-        }
-      </div>
-    `;
+        <h3>${r.title}</h3>
+        <p>${r.description}</p>
+        <div class="resource-price">₹${r.price}</div>
+        ${bought
+          ? '<button class="btn-purchased" disabled onclick="event.stopPropagation()">✓ Purchased</button>'
+          : `<button class="btn-buy" onclick="event.stopPropagation();buyResource(${r.id})">Buy Now</button>`}
+      </div>`;
   }).join('');
-  
+
   renderPagination(totalPages);
 }
 
+/* ── Pagination ── */
 function renderPagination(totalPages) {
-  let paginationDiv = document.querySelector('.pagination');
-  if (!paginationDiv) {
-    paginationDiv = document.createElement('div');
-    paginationDiv.className = 'pagination';
-    document.querySelector('.resources-section .container').appendChild(paginationDiv);
+  let pag = document.querySelector('.pagination');
+  if (!pag) {
+    pag = document.createElement('div');
+    pag.className = 'pagination';
+    document.querySelector('.resources-section .container').appendChild(pag);
   }
-  
-  // Only show pagination if there are more than 12 resources (more than 1 page)
-  if (totalPages <= 1) {
-    paginationDiv.style.display = 'none';
-    return;
-  }
-  
-  paginationDiv.style.display = 'flex';
+  if (totalPages <= 1) { pag.style.display = 'none'; return; }
+  pag.style.display = 'flex';
   let html = '<div class="pagination-buttons">';
-  html += `<button onclick="changePage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}>← Prev</button>`;
-  
-  for (let i = 1; i <= totalPages; i++) {
-    html += `<button onclick="changePage(${i})" class="${i === currentPage ? 'active' : ''}">${i}</button>`;
-  }
-  
-  html += `<button onclick="changePage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''}>Next →</button>`;
+  html += `<button onclick="changePage(${currentPage-1})" ${currentPage===1?'disabled':''}>← Prev</button>`;
+  for (let i = 1; i <= totalPages; i++)
+    html += `<button onclick="changePage(${i})" class="${i===currentPage?'active':''}">${i}</button>`;
+  html += `<button onclick="changePage(${currentPage+1})" ${currentPage===totalPages?'disabled':''}>Next →</button>`;
   html += '</div>';
-  paginationDiv.innerHTML = html;
+  pag.innerHTML = html;
 }
 
 function changePage(page) {
   currentPage = page;
+  showLoader();
   const filtered = currentFilter === 'all' ? allResources : allResources.filter(r => r.type === currentFilter);
-  
-  let userPurchases = [];
   if (isLoggedIn) {
-    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    if (currentUser) {
-      fetch(API_CONFIG.getURL(`${API_CONFIG.endpoints.payments}/${currentUser.id}`))
-        .then(res => res.ok ? res.json() : [])
-        .then(purchases => displayResources(filtered, purchases))
+    const cu = JSON.parse(localStorage.getItem('currentUser'));
+    if (cu) {
+      fetch(API_CONFIG.getURL(`${API_CONFIG.endpoints.payments}/${cu.id}`))
+        .then(r => r.ok ? r.json() : [])
+        .then(p => displayResources(filtered, p))
         .catch(() => displayResources(filtered, []));
       return;
     }
   }
-  displayResources(filtered, userPurchases);
+  displayResources(filtered, []);
 }
 
+/* ── Filter ── */
 function filterResources(type) {
   currentFilter = type;
-  currentPage = 1;
-  
-  // Update active button
-  document.querySelectorAll('.filter-btn').forEach(btn => {
-    btn.classList.remove('active');
-  });
+  currentPage   = 1;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
   event.target.classList.add('active');
-  
-  // Filter resources
-  const filtered = type === 'all' 
-    ? allResources 
-    : allResources.filter(r => r.type === type);
-  
-  // Get user purchases if logged in
-  let userPurchases = [];
+  showLoader();
+  const filtered = type === 'all' ? allResources : allResources.filter(r => r.type === type);
   if (isLoggedIn) {
-    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    if (currentUser) {
-      fetch(API_CONFIG.getURL(`${API_CONFIG.endpoints.payments}/${currentUser.id}`))
-        .then(res => res.ok ? res.json() : [])
-        .then(purchases => displayResources(filtered, purchases))
+    const cu = JSON.parse(localStorage.getItem('currentUser'));
+    if (cu) {
+      fetch(API_CONFIG.getURL(`${API_CONFIG.endpoints.payments}/${cu.id}`))
+        .then(r => r.ok ? r.json() : [])
+        .then(p => displayResources(filtered, p))
         .catch(() => displayResources(filtered, []));
       return;
     }
   }
-  
-  displayResources(filtered, userPurchases);
+  displayResources(filtered, []);
 }
 
-function viewDetails(id) {
-  console.log('Navigating to details page for resource:', id);
-  window.location.href = `Detail/?id=${id}`;
-}
+function viewDetails(id) { window.location.href = `Detail/?id=${id}`; }
+function buyResource(id)  { window.location.href = `Detail/?id=${id}`; }
 
-function buyResource(id) {
-  window.location.href = `Detail/?id=${id}`;
-}
-
-// Handle email verification callback
 async function handleEmailVerification() {
-  const hashParams = new URLSearchParams(window.location.hash.substring(1));
-  const type = hashParams.get('type');
-  const accessToken = hashParams.get('access_token');
-  
-  // If we have an access_token, it means email was verified
-  if (accessToken) {
-    alert('Email verified successfully!');
-    // Clean the URL hash
-    window.history.replaceState({}, document.title, window.location.pathname);
-    return;
-  }
-  
+  const hash = new URLSearchParams(window.location.hash.substring(1));
+  const type  = hash.get('type');
+  const token = hash.get('access_token');
+  if (token) { alert('Email verified successfully!'); window.history.replaceState({}, document.title, window.location.pathname); return; }
   if (type === 'signup' || type === 'email') {
     const { data } = await supabaseClient.auth.getSession();
-    if (data.session) {
-      await supabaseClient.auth.signOut();
-    }
-    alert('Email verified successfully! Please login to continue.');
+    if (data.session) await supabaseClient.auth.signOut();
+    alert('Email verified! Please login to continue.');
     window.location.hash = '';
   }
 }
-
-// Handle email verification from URL
 handleEmailVerification();
 
-
-// Mobile Menu Toggle Function
 function toggleMobileMenu() {
-  const sidebar = document.getElementById('mobileSidebar');
-  const overlay = document.getElementById('mobileSidebarOverlay');
-  const menuBtn = document.querySelector('.mobile-menu-btn');
-  const body = document.body;
-  
-  sidebar.classList.toggle('active');
-  overlay.classList.toggle('active');
-  menuBtn.classList.toggle('active');
-  body.classList.toggle('sidebar-open');
-  
-  // Update mobile user menu visibility
+  document.getElementById('mobileSidebar')?.classList.toggle('active');
+  document.getElementById('mobileSidebarOverlay')?.classList.toggle('active');
+  document.querySelector('.mobile-menu-btn')?.classList.toggle('active');
+  document.body.classList.toggle('sidebar-open');
   updateMobileUserMenu();
 }
 
 function updateMobileUserMenu() {
-  const mobileLoginBtn = document.getElementById('mobileLoginBtn');
+  const mobileLoginBtn  = document.getElementById('mobileLoginBtn');
   const mobileSignupBtn = document.getElementById('mobileSignupBtn');
-  const mobileUserMenu = document.getElementById('mobileUserMenu');
-  const mobileUserName = document.getElementById('mobileUserName');
+  const mobileUserMenu  = document.getElementById('mobileUserMenu');
+  const mobileUserName  = document.getElementById('mobileUserName');
   const mobileUserEmail = document.getElementById('mobileUserEmail');
-  
   if (isLoggedIn) {
-    if (mobileLoginBtn) mobileLoginBtn.style.display = 'none';
+    if (mobileLoginBtn)  mobileLoginBtn.style.display  = 'none';
     if (mobileSignupBtn) mobileSignupBtn.style.display = 'none';
-    if (mobileUserMenu) mobileUserMenu.style.display = 'block';
-    
-    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
-    const displayName = currentUser.user_metadata?.name || currentUser.email?.split('@')[0] || 'User';
-    const email = currentUser.email || '';
-    
-    if (mobileUserName) mobileUserName.textContent = displayName;
-    if (mobileUserEmail) mobileUserEmail.textContent = email;
+    if (mobileUserMenu)  mobileUserMenu.style.display  = 'block';
+    const cu = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    if (mobileUserName)  mobileUserName.textContent  = cu.user_metadata?.name || cu.email?.split('@')[0] || 'User';
+    if (mobileUserEmail) mobileUserEmail.textContent = cu.email || '';
   } else {
-    if (mobileLoginBtn) mobileLoginBtn.style.display = 'block';
+    if (mobileLoginBtn)  mobileLoginBtn.style.display  = 'block';
     if (mobileSignupBtn) mobileSignupBtn.style.display = 'block';
-    if (mobileUserMenu) mobileUserMenu.style.display = 'none';
+    if (mobileUserMenu)  mobileUserMenu.style.display  = 'none';
   }
 }
 
-// Update mobile menu on login/logout
 const originalUpdateUI = updateUI;
-updateUI = function() {
-  originalUpdateUI();
-  updateMobileUserMenu();
-};
+updateUI = function() { originalUpdateUI(); updateMobileUserMenu(); };
