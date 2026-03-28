@@ -1265,115 +1265,151 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="../api-config.js"></script>
-<script src="../app.js"></script>
 <script src="../auth-modal.js"></script>
 <script>
-  // Initialize variables first
+  const SUPA_URL = 'https://emnrgsgerfjvndexomro.supabase.co';
+  const SUPA_SVC = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVtbnJnc2dlcmZqdm5kZXhvbXJvIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3MjQyMDIxMCwiZXhwIjoyMDg3OTk2MjEwfQ.mr4k_GsJ14CC1mqvEZgf9cTaNiLMlnj_sZxFjJud67k';
+  const SUPA_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVtbnJnc2dlcmZqdm5kZXhvbXJvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI0MjAyMTAsImV4cCI6MjA4Nzk5NjIxMH0.uXr8lipxLbB4D_5JwQkpLzc-HudQw23tOFBfV4C6hqY';
+
+  // Single shared Supabase clients — never create more than one of each
+  const _db   = window.supabase.createClient(SUPA_URL, SUPA_SVC);
+  const _dbAnon = window.supabase.createClient(SUPA_URL, SUPA_ANON);
+
   let currentDateFilter = 'alltime';
   let originalStatsData = {};
-  
-  // Check login status, update sidebar, show Super Admin button if applicable
-  (async function() {
-    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
-    const sidebarUser = document.getElementById('sidebarUser');
 
-    if (currentUser.email) {
+  function esc(s) {
+    if (s == null) return '—';
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+  }
+
+  function _decodeJwt(token) {
+    try {
+      const seg = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+      return JSON.parse(atob(seg));
+    } catch(e) { return null; }
+  }
+
+  async function _getUserEmail() {
+    const token = localStorage.getItem('adminToken');
+    if (token) {
+      // Try JWT decode first (no network, no new client)
+      const p = _decodeJwt(token);
+      if (p?.email) return p.email;
+      // Fallback: validate via shared client
+      try {
+        const { data: { user } } = await _db.auth.getUser(token);
+        if (user?.email) return user.email;
+      } catch(e) {}
+    }
+    try {
+      const cu = JSON.parse(localStorage.getItem('currentUser') || '{}');
+      if (cu.email) return cu.email;
+    } catch(e) {}
+    return null;
+  }
+
+  (async function() {
+    const userEmail = await _getUserEmail();
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+
+    const sidebarUser = document.getElementById('sidebarUser');
+    if (userEmail) {
       if (sidebarUser) sidebarUser.style.display = 'block';
-      const userName = currentUser.user_metadata?.name || currentUser.email.split('@')[0] || 'User';
+      const userName = currentUser.user_metadata?.name || userEmail.split('@')[0] || 'User';
       document.getElementById('sidebarUserName').textContent  = userName;
-      document.getElementById('sidebarUserEmail').textContent = currentUser.email;
+      document.getElementById('sidebarUserEmail').textContent = userEmail;
       document.getElementById('sidebarAvatar').textContent    = userName.charAt(0).toUpperCase();
 
       try {
-        const SUPA_URL = 'https://emnrgsgerfjvndexomro.supabase.co';
-        const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVtbnJnc2dlcmZqdm5kZXhvbXJvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI0MjAyMTAsImV4cCI6MjA4Nzk5NjIxMH0.uXr8lipxLbB4D_5JwQkpLzc-HudQw23tOFBfV4C6hqY';
-        const _sc = window.supabase.createClient(SUPA_URL, SUPA_KEY);
-        const { data } = await _sc.from('profiles').select('role').eq('id', currentUser.id).single();
-        if (data?.role === 'super_admin') {
-          const logoutLink = sidebarUser.querySelector('.logout-link');
-          if (logoutLink) {
-            const adminBtn = document.createElement('a');
-            adminBtn.textContent = '🛡️ Super Admin Panel';
-            adminBtn.className = 'logout-link';
-            adminBtn.style.cssText = 'background:#667eea!important;color:#fff!important;border-color:#667eea!important;margin-bottom:8px;display:block;text-align:center;cursor:pointer;';
-            adminBtn.onclick = () => { window.location.href = '/earnify-admin/Dashboard/'; };
-            sidebarUser.insertBefore(adminBtn, logoutLink);
+        const userId = currentUser.id;
+        if (userId) {
+          const { data } = await _dbAnon.from('profiles').select('role').eq('id', userId).single();
+          if (data?.role === 'super_admin') {
+            const logoutLink = sidebarUser.querySelector('.logout-link');
+            if (logoutLink) {
+              const adminBtn = document.createElement('a');
+              adminBtn.textContent = '🛡️ Super Admin Panel';
+              adminBtn.className = 'logout-link';
+              adminBtn.style.cssText = 'background:#667eea!important;color:#fff!important;border-color:#667eea!important;margin-bottom:8px;display:block;text-align:center;cursor:pointer;';
+              adminBtn.onclick = () => { window.location.href = '/earnify-admin/Dashboard/'; };
+              sidebarUser.insertBefore(adminBtn, logoutLink);
+            }
           }
         }
       } catch(e) { console.warn('Role check failed', e); }
     }
-    
-    // Load statistics data
     loadStatistics();
   })();
-  
+
   async function loadStatistics() {
-    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
-    const userEmail = currentUser.email;
+    const userEmail = await _getUserEmail();
     if (!userEmail) { showNoDataMessage(); return; }
 
     try {
-      const SUPA_URL = 'https://emnrgsgerfjvndexomro.supabase.co';
-      const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVtbnJnc2dlcmZqdm5kZXhvbXJvIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3MjQyMDIxMCwiZXhwIjoyMDg3OTk2MjEwfQ.mr4k_GsJ14CC1mqvEZgf9cTaNiLMlnj_sZxFjJud67k';
-      const db = window.supabase.createClient(SUPA_URL, SUPA_KEY);
-
       // 1. Get this user's resources
-      const { data: resources } = await db.from('resources').select('id, title, price').eq('user_email', userEmail);
+      const { data: resources, error: resErr } = await _db.from('resources')
+        .select('id, title, price')
+        .eq('user_email', userEmail);
+
+      if (resErr) { console.error('[Stats] resources error:', resErr.message); showErrorMessage(); return; }
       if (!resources || !resources.length) { displayStatsData({ userStats: [], totalRevenue: 0, totalPurchases: 0, totalCustomers: 0 }); return; }
 
       const priceMap = {}, titleMap = {};
       const resourceIds = resources.map(r => { priceMap[r.id] = parseFloat(r.price || 0); titleMap[r.id] = r.title; return r.id; });
 
       // 2. Get all completed payments for those resources
-      const { data: payments } = await db.from('payments')
+      const { data: payments, error: payErr } = await _db.from('payments')
         .select('user_id, resource_id, created_at')
         .eq('status', 'completed')
         .in('resource_id', resourceIds)
         .order('created_at', { ascending: false });
 
+      if (payErr) { console.error('[Stats] payments error:', payErr.message); showErrorMessage(); return; }
       if (!payments || !payments.length) { displayStatsData({ userStats: [], totalRevenue: 0, totalPurchases: 0, totalCustomers: 0 }); return; }
 
-      // 3. Resolve buyer emails from auth.users via Supabase
-      const uniqueUserIds = [...new Set(payments.map(p => p.user_id))];
+      // 3. Resolve buyer emails via Supabase Auth Admin REST API
       const emailMap = {};
-      await Promise.all(uniqueUserIds.map(async uid => {
-        try {
-          const { data: profile } = await db.from('profiles').select('email').eq('id', uid).single();
-          emailMap[uid] = profile?.email || uid;
-        } catch { emailMap[uid] = uid; }
-      }));
+      try {
+        const res = await fetch(`${SUPA_URL}/auth/v1/admin/users?per_page=1000`, {
+          headers: { apikey: SUPA_SVC, Authorization: `Bearer ${SUPA_SVC}` }
+        });
+        if (res.ok) {
+          const json = await res.json();
+          (json.users || []).forEach(u => { if (u.id && u.email) emailMap[u.id] = u.email; });
+        }
+      } catch(e) { console.warn('[Stats] email lookup failed:', e.message); }
 
-      // 4. Build one row per payment record
-      const userStats = payments.map(p => ({
-        email: emailMap[p.user_id] || p.user_id,
-        totalPurchases: 1,
-        totalAmount: priceMap[p.resource_id] || 0,
-        resources: [titleMap[p.resource_id] || 'Unknown'],
-        created_at: p.created_at
-      }));
+      // 4. Build one row per payment, exclude self-purchases
+      const sellerUserId = Object.keys(emailMap).find(id => emailMap[id] === userEmail);
+      const userStats = payments
+        .filter(p => p.user_id !== sellerUserId)
+        .map(p => ({
+          email:          emailMap[p.user_id] || p.user_id,
+          totalPurchases: 1,
+          totalAmount:    priceMap[p.resource_id] || 0,
+          resources:      [titleMap[p.resource_id] || 'Unknown'],
+          created_at:     p.created_at
+        }));
 
-      const uniqueEmails = new Set(userStats.map(u => u.email));
       const statsData = {
         userStats,
         totalRevenue:   userStats.reduce((s, u) => s + u.totalAmount, 0),
         totalPurchases: userStats.length,
-        totalCustomers: uniqueEmails.size
+        totalCustomers: new Set(userStats.map(u => u.email)).size
       };
 
       window.originalStatsData = statsData;
 
-      let displayData = statsData;
-      if (currentDateFilter !== 'alltime') {
-        displayData = currentDateFilter === 'custom' && window.customStartDate && window.customEndDate
-          ? filterDataByDate(statsData, 'custom', window.customStartDate, window.customEndDate)
-          : filterDataByDate(statsData, currentDateFilter);
-      }
+      const displayData = (currentDateFilter !== 'alltime')
+        ? filterDataByDate(statsData, currentDateFilter, window.customStartDate, window.customEndDate)
+        : statsData;
 
       displayStatsData(displayData);
       updateSectionHeader();
 
     } catch (error) {
-      console.error('Error loading statistics:', error);
+      console.error('[Stats] loadStatistics error:', error);
       showErrorMessage();
     }
   }
@@ -1470,10 +1506,10 @@
               const resource = stats.resources[0] || '—';
               return `
               <tr>
-                <td><div class="customer-info"><div class="customer-details"><div class="customer-email">${stats.email}</div></div></div></td>
+                <td><div class="customer-info"><div class="customer-details"><div class="customer-email">${esc(stats.email)}</div></div></div></td>
                 <td class="col-quantity"><span style="font-size:13px;color:#475569;font-weight:500;">${date}</span></td>
                 <td><span class="amount-value">₹${parseFloat(stats.totalAmount).toFixed(0)}</span></td>
-                <td class="col-resources"><div class="resources-list"><span class="resource-tag">${resource}</span></div></td>
+                <td class="col-resources"><div class="resources-list"><span class="resource-tag">${esc(resource)}</span></div></td>
                 <td class="col-eye"><button class="eye-btn" onclick="openCustomerDetail('${userId}')" title="View Details"><span>View</span></button></td>
               </tr>`;
             }).join('')}
@@ -1491,7 +1527,7 @@
     body.innerHTML = `
       <div class="detail-row">
         <span class="detail-label">Email</span>
-        <span class="detail-value">${stats.email}</span>
+        <span class="detail-value">${esc(stats.email)}</span>
       </div>
       <div class="detail-row">
         <span class="detail-label">Total Amount</span>
@@ -1499,7 +1535,7 @@
       </div>
       <div class="detail-row">
         <span class="detail-label">Quantity</span>
-        <span class="detail-value">${stats.quantity}</span>
+        <span class="detail-value">${esc(stats.quantity)}</span>
       </div>
       <div class="detail-row">
         <span class="detail-label">Purchase Date</span>
@@ -1507,7 +1543,7 @@
       </div>
       <div class="detail-row">
         <span class="detail-label">Resources</span>
-        <div class="detail-value detail-resources">${stats.resources.length ? stats.resources.map(r => `<span class="resource-tag">${r}</span>`).join('') : '<span style="color:#94a3b8;">—</span>'}</div>
+        <div class="detail-value detail-resources">${stats.resources.length ? stats.resources.map(r => `<span class="resource-tag">${esc(r)}</span>`).join('') : '<span style="color:#94a3b8;">—</span>'}</div>
       </div>`;
     modal.classList.add('open');
     document.body.style.overflow = 'hidden';
