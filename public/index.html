@@ -219,6 +219,7 @@
   }
 }
   </style>
+  <link rel="stylesheet" href="auth-modal.css">
 </head>
 
 <body>
@@ -667,35 +668,102 @@
     </div>
   </footer>
 
-  <div id="loginModal" class="modal">
-    <div class="modal-content">
-      <span class="close" onclick="closeLoginModal()">&times;</span>
-      <h2>Login</h2>
-      <form id="loginForm" onsubmit="handleLogin(event)">
-        <input type="email" id="loginEmail" placeholder="Email" required>
-        <input type="password" id="loginPassword" placeholder="Password" required>
-        <button type="submit">Login</button>
-      </form>
-      <p style="text-align:center; margin-top:1rem; color:#666;">Don't have an account? <a href="#"
-          onclick="switchToSignup()" style="color:#1e3c72;">Sign Up</a></p>
+  <!-- ── Auth Modal (Login + Signup) ── -->
+  <div id="loginModal" class="auth-modal-overlay" onclick="if(event.target===this)closeLoginModal()">
+    <div class="auth-modal-box" style="position:relative;">
+      <button class="am-close" onclick="closeLoginModal()">&times;</button>
+      <!-- Left -->
+      <div class="am-left">
+        <div class="am-brand">
+          <div class="am-logo-box">💰</div>
+          <span class="am-brand-name">Earnify</span>
+        </div>
+        <div class="am-marketing">
+          <h2>🚀 Turn Skills into Income</h2>
+          <p>Join the marketplace where students and freelancers thrive. Sell your notes, templates, and services.</p>
+          <div class="am-testimonial">
+            <p class="quote">&ldquo;I earned my first ₹5,000 selling my exam notes here!&rdquo;</p>
+            <p class="author">&mdash; Bhaliya Yash, Student</p>
+          </div>
+        </div>
+        <div class="am-trust">
+          <p>Join 1,200+ happy buyers.</p>
+          <p class="sub">Securely handled by Supabase &amp; Razorpay.</p>
+        </div>
+      </div>
+      <!-- Right -->
+      <div class="am-right">
+        <div class="am-tabs">
+          <button class="am-tab active" id="amTabLogin" onclick="_amTab('login')">Login</button>
+          <button class="am-tab" id="amTabSignup" onclick="_amTab('signup')">Sign Up</button>
+        </div>
+
+        <div id="amErr" class="am-msg error"></div>
+        <div id="amOk"  class="am-msg success"></div>
+
+        <!-- Login form -->
+        <div id="amLoginForm">
+          <div class="am-header">
+            <h2>Welcome Back</h2>
+            <p>Login to manage your resources and earnings.</p>
+          </div>
+          <form onsubmit="handleLogin(event)">
+            <div class="am-input-group">
+              <label>Email Address</label>
+              <input class="am-input" type="email" id="loginEmail" placeholder="name@email.com" required autocomplete="email">
+            </div>
+            <div class="am-input-group">
+              <div class="am-label-row">
+                <label>Password</label>
+                <a href="#" class="am-forgot">Forgot?</a>
+              </div>
+              <div class="am-pw-wrap">
+                <input class="am-input" type="password" id="loginPassword" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" required autocomplete="current-password">
+                <button type="button" class="am-toggle-pass" onclick="_amTogglePw('loginPassword',this)">👁️</button>
+              </div>
+            </div>
+            <button type="submit" class="am-submit-btn">Log In</button>
+          </form>
+          <p class="am-switch">New to Earnify? <a onclick="_amTab('signup')">Create an account</a></p>
+        </div>
+
+        <!-- Signup form -->
+        <div id="amSignupForm" style="display:none;">
+          <div class="am-header">
+            <h2>Create Account</h2>
+            <p>Start selling or buying resources in minutes.</p>
+          </div>
+          <form onsubmit="handleSignup(event)">
+            <div class="am-input-group">
+              <label>Full Name</label>
+              <input class="am-input" type="text" id="signupName" placeholder="Your full name" required autocomplete="name">
+            </div>
+            <div class="am-input-group">
+              <label>Email Address</label>
+              <input class="am-input" type="email" id="signupEmail" placeholder="name@email.com" required autocomplete="email">
+            </div>
+            <div class="am-input-group">
+              <label>Password</label>
+              <div class="am-pw-wrap">
+                <input class="am-input" type="password" id="signupPassword" placeholder="Min 6 characters" required autocomplete="new-password">
+                <button type="button" class="am-toggle-pass" onclick="_amTogglePw('signupPassword',this)">👁️</button>
+              </div>
+            </div>
+            <div class="am-input-group">
+              <label>Confirm Password</label>
+              <input class="am-input" type="password" id="signupConfirmPassword" placeholder="Re-enter password" required autocomplete="new-password">
+            </div>
+            <button type="submit" class="am-submit-btn">Create Account</button>
+          </form>
+          <p class="am-switch">Already have an account? <a onclick="_amTab('login')">Login</a></p>
+        </div>
+
+        <div class="am-security">Your data is secured with AES-256 encryption</div>
+      </div>
     </div>
   </div>
 
-  <div id="signupModal" class="modal">
-    <div class="modal-content">
-      <span class="close" onclick="closeSignupModal()">&times;</span>
-      <h2>Sign Up</h2>
-      <form id="signupForm" onsubmit="handleSignup(event)">
-        <input type="text" id="signupName" placeholder="Full Name" required>
-        <input type="email" id="signupEmail" placeholder="Email" required>
-        <input type="password" id="signupPassword" placeholder="Password" required>
-        <input type="password" id="signupConfirmPassword" placeholder="Confirm Password" required>
-        <button type="submit">Sign Up</button>
-      </form>
-      <p style="text-align:center; margin-top:1rem; color:#666;">Already have an account? <a href="#"
-          onclick="switchToLogin()" style="color:#1e3c72;">Login</a></p>
-    </div>
-  </div>
+  <div id="signupModal" style="display:none;"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>

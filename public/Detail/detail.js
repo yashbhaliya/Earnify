@@ -50,31 +50,64 @@ document.addEventListener('click', e => {
   if (um && d && !um.contains(e.target)) d.style.display = 'none';
 });
 
-function showLoginModal()  { document.getElementById('loginModal').style.display  = 'flex'; }
-function closeLoginModal() { document.getElementById('loginModal').style.display  = 'none'; }
-function showSignupModal() { document.getElementById('signupModal').style.display = 'flex'; }
-function closeSignupModal(){ document.getElementById('signupModal').style.display = 'none'; }
-function switchToSignup()  { closeLoginModal();  showSignupModal(); }
-function switchToLogin()   { closeSignupModal(); showLoginModal();  }
+function showLoginModal()  { document.getElementById('loginModal').classList.add('open'); }
+function closeLoginModal() { document.getElementById('loginModal').classList.remove('open'); }
+function showSignupModal() { showLoginModal(); _amTab('signup'); }
+function closeSignupModal(){ closeLoginModal(); }
+function switchToSignup()  { showSignupModal(); }
+function switchToLogin()   { showLoginModal(); _amTab('login'); }
+
+function _amTab(tab) {
+  const lf = document.getElementById('amLoginForm');
+  const sf = document.getElementById('amSignupForm');
+  const tl = document.getElementById('amTabLogin');
+  const ts = document.getElementById('amTabSignup');
+  if (lf) lf.style.display = tab === 'login'  ? '' : 'none';
+  if (sf) sf.style.display = tab === 'signup' ? '' : 'none';
+  if (tl) tl.classList.toggle('active', tab === 'login');
+  if (ts) ts.classList.toggle('active', tab === 'signup');
+  const err = document.getElementById('amErr'); if (err) err.textContent = '';
+  const ok  = document.getElementById('amOk');  if (ok)  ok.textContent  = '';
+}
+
+function _amTogglePw(id, btn) {
+  const inp = document.getElementById(id);
+  if (!inp) return;
+  inp.type = inp.type === 'password' ? 'text' : 'password';
+  btn.textContent = inp.type === 'password' ? '👁️' : '🙈';
+}
+
+function _amSetErr(msg) {
+  const e = document.getElementById('amErr'); if (e) { e.textContent = msg; e.className = 'am-msg error'; }
+  const o = document.getElementById('amOk');  if (o) o.textContent = '';
+}
+function _amSetOk(msg) {
+  const o = document.getElementById('amOk');  if (o) { o.textContent = msg; o.className = 'am-msg success'; }
+  const e = document.getElementById('amErr'); if (e) e.textContent = '';
+}
 
 async function handleLogin(e) {
   e.preventDefault();
   const email    = document.getElementById('loginEmail').value;
   const password = document.getElementById('loginPassword').value;
+  const btn = e.target.querySelector('button[type="submit"]');
+  if (btn) { btn.disabled = true; btn.textContent = 'Logging in…'; }
   try {
     const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
-    if (error) { showToast(error.message, 'error'); return; }
+    if (error) { _amSetErr(error.message); if (btn) { btn.disabled=false; btn.textContent='Log In'; } return; }
     if (!data.user.email_confirmed_at) {
-      showToast('Please verify your email before logging in!', 'warning');
-      await supabaseClient.auth.signOut(); return;
+      _amSetErr('Please verify your email before logging in!');
+      await supabaseClient.auth.signOut();
+      if (btn) { btn.disabled=false; btn.textContent='Log In'; } return;
     }
     localStorage.setItem('userLoggedIn', 'true');
     localStorage.setItem('currentUser', JSON.stringify(data.user));
     localStorage.setItem('adminToken', data.session.access_token);
     isLoggedIn = true; currentUser = data.user;
-    closeLoginModal(); updateUI();
-    loadResourceDetails();
-  } catch (err) { showToast('Login failed: ' + err.message, 'error'); }
+    _amSetOk('Login successful!');
+    setTimeout(() => { closeLoginModal(); updateUI(); loadResourceDetails(); }, 700);
+  } catch (err) { _amSetErr('Login failed: ' + err.message); if (btn) { btn.disabled=false; btn.textContent='Log In'; } }
+}
 }
 
 async function handleSignup(e) {
@@ -83,15 +116,17 @@ async function handleSignup(e) {
   const email    = document.getElementById('signupEmail').value;
   const password = document.getElementById('signupPassword').value;
   const confirm  = document.getElementById('signupConfirmPassword').value;
-  if (password !== confirm) { showToast('Passwords do not match!', 'warning'); return; }
-  if (password.length < 6)  { showToast('Password must be at least 6 characters!', 'warning'); return; }
+  if (password !== confirm) { _amSetErr('Passwords do not match!'); return; }
+  if (password.length < 6)  { _amSetErr('Password must be at least 6 characters!'); return; }
+  const btn = e.target.querySelector('button[type="submit"]');
+  if (btn) { btn.disabled = true; btn.textContent = 'Creating account…'; }
   try {
     const { error } = await supabaseClient.auth.signUp({
       email, password, options: { data: { name }, emailRedirectTo: window.location.origin + '/' }
     });
-    if (error) { showToast(error.message, 'error'); return; }
-    closeSignupModal();
-    showToast('Verification email sent! Please verify before logging in.', 'success');
+    if (error) { _amSetErr(error.message); if (btn) { btn.disabled=false; btn.textContent='Create Account'; } return; }
+    _amSetOk('Verification email sent! Please verify before logging in.');
+    setTimeout(() => _amTab('login'), 1500);
   } catch (err) { console.error(err); }
 }
 

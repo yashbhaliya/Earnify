@@ -76,46 +76,60 @@ document.addEventListener('click', (e) => {
   if (um && d && !um.contains(e.target)) d.style.display = 'none';
 });
 
-function showLoginModal()  { document.getElementById('loginModal').style.display  = 'flex'; }
-function closeLoginModal() { document.getElementById('loginModal').style.display  = 'none'; }
-function showSignupModal() { document.getElementById('signupModal').style.display = 'flex'; }
-function closeSignupModal(){ document.getElementById('signupModal').style.display = 'none'; }
-function switchToSignup()  { closeLoginModal();  showSignupModal(); }
-function switchToLogin()   { closeSignupModal(); showLoginModal();  }
+function showLoginModal()  { document.getElementById('loginModal').classList.add('open'); }
+function closeLoginModal() { document.getElementById('loginModal').classList.remove('open'); }
+function showSignupModal() { document.getElementById('loginModal').classList.add('open'); _amTab('signup'); }
+function closeSignupModal(){ closeLoginModal(); }
+function switchToSignup()  { showSignupModal(); }
+function switchToLogin()   { showLoginModal(); _amTab('login'); }
+
+function _amTab(tab) {
+  document.getElementById('amLoginForm').style.display  = tab === 'login'  ? '' : 'none';
+  document.getElementById('amSignupForm').style.display = tab === 'signup' ? '' : 'none';
+  document.getElementById('amTabLogin').classList.toggle('active', tab === 'login');
+  document.getElementById('amTabSignup').classList.toggle('active', tab === 'signup');
+  const err = document.getElementById('amErr'); if (err) err.textContent = '';
+  const ok  = document.getElementById('amOk');  if (ok)  ok.textContent  = '';
+}
+
+function _amTogglePw(id, btn) {
+  const inp = document.getElementById(id);
+  if (!inp) return;
+  inp.type = inp.type === 'password' ? 'text' : 'password';
+  btn.textContent = inp.type === 'password' ? '👁️' : '🙈';
+}
 
 // Intercept Dashboard links — show login modal if not logged in
 function goToDashboard(e) {
   if (e) e.preventDefault();
-  if (isLoggedIn) {
-    window.location.href = './Dashboard/';
-  } else {
-    // Store intent so after login we redirect to Dashboard
-    window._loginRedirect = './Dashboard/';
-    showLoginModal();
-  }
+  if (isLoggedIn) { window.location.href = './Dashboard/'; }
+  else { window._loginRedirect = './Dashboard/'; showLoginModal(); }
 }
 
 async function handleLogin(e) {
   e.preventDefault();
   const email    = document.getElementById('loginEmail').value;
   const password = document.getElementById('loginPassword').value;
+  const btn = e.target.querySelector('button[type="submit"]');
+  if (btn) { btn.disabled = true; btn.textContent = 'Logging in…'; }
   try {
     const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
-    if (error) { alert(error.message); return; }
+    if (error) { _amSetErr(error.message); if (btn) { btn.disabled=false; btn.textContent='Log In'; } return; }
     if (!data.user.email_confirmed_at) {
-      alert('Please verify your email before logging in!');
-      await supabaseClient.auth.signOut(); return;
+      _amSetErr('Please verify your email before logging in!');
+      await supabaseClient.auth.signOut();
+      if (btn) { btn.disabled=false; btn.textContent='Log In'; } return;
     }
     localStorage.setItem('userLoggedIn', 'true');
     localStorage.setItem('currentUser', JSON.stringify(data.user));
     localStorage.setItem('adminToken', data.session.access_token);
     isLoggedIn = true;
-    closeLoginModal(); updateUI();
-    // Redirect to Dashboard if that was the intent, otherwise stay
-    if (window._loginRedirect) {
-      window.location.href = window._loginRedirect;
-    }
-  } catch (err) { alert('Login failed: ' + err.message); }
+    _amSetOk('Login successful! Redirecting…');
+    setTimeout(() => {
+      closeLoginModal(); updateUI();
+      if (window._loginRedirect) { window.location.href = window._loginRedirect; }
+    }, 700);
+  } catch (err) { _amSetErr('Login failed: ' + err.message); if (btn) { btn.disabled=false; btn.textContent='Log In'; } }
 }
 
 async function handleSignup(e) {
@@ -124,19 +138,25 @@ async function handleSignup(e) {
   const email    = document.getElementById('signupEmail').value;
   const password = document.getElementById('signupPassword').value;
   const confirm  = document.getElementById('signupConfirmPassword').value;
-  if (password !== confirm) { alert('Passwords do not match!'); return; }
-  if (password.length < 6)  { alert('Password must be at least 6 characters long!'); return; }
+  if (password !== confirm) { _amSetErr('Passwords do not match!'); return; }
+  if (password.length < 6)  { _amSetErr('Password must be at least 6 characters!'); return; }
+  const btn = e.target.querySelector('button[type="submit"]');
+  if (btn) { btn.disabled = true; btn.textContent = 'Creating account…'; }
   try {
     const { error } = await supabaseClient.auth.signUp({ email, password, options: { data: { name } } });
     if (error) {
       if (error.message.includes('Database error')) {
-        alert('Account created! You can now login.'); closeSignupModal(); showLoginModal(); return;
+        _amSetOk('Account created! You can now login.');
+        setTimeout(() => _amTab('login'), 1200); return;
       }
-      alert(error.message); return;
+      _amSetErr(error.message);
+      if (btn) { btn.disabled=false; btn.textContent='Create Account'; } return;
     }
-    closeSignupModal(); alert('Account created! Please login to continue.'); showLoginModal();
+    _amSetOk('Account created! Please login to continue.');
+    setTimeout(() => _amTab('login'), 1200);
   } catch (err) {
-    alert('Account created! You can now login.'); closeSignupModal(); showLoginModal();
+    _amSetOk('Account created! You can now login.');
+    setTimeout(() => _amTab('login'), 1200);
   }
 }
 
