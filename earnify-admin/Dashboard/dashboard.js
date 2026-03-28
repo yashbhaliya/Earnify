@@ -4,45 +4,37 @@ const API_BASE = (location.hostname === 'localhost' || location.hostname === '12
 
 const SUPA_URL = 'https://emnrgsgerfjvndexomro.supabase.co';
 const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVtbnJnc2dlcmZqdm5kZXhvbXJvIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3MjQyMDIxMCwiZXhwIjoyMDg3OTk2MjEwfQ.mr4k_GsJ14CC1mqvEZgf9cTaNiLMlnj_sZxFjJud67k';
-const db = window.supabase.createClient(SUPA_URL, SUPA_KEY);
 
-// XSS sanitizer — escapes HTML special chars before inserting into innerHTML
+// Single isolated client — storageKey prevents GoTrueClient conflicts with other scripts
+const db = window.supabase.createClient(SUPA_URL, SUPA_KEY, {
+  auth: { storageKey: 'earnify-dashboard', persistSession: false, autoRefreshToken: false }
+});
+
+// XSS sanitizer
 function esc(str) {
   if (str == null) return '—';
   return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
 }
 
-// Decode a base64url-encoded JWT segment safely
+// Decode base64url JWT — synchronous, no network needed
 function decodeJwtPayload(token) {
   try {
-    const seg = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
-    return JSON.parse(atob(seg));
+    return JSON.parse(atob(token.split('.')[1].replace(/-/g,'+').replace(/_/g,'/')));
   } catch(e) { return null; }
 }
 
-async function getUserEmail() {
-  // 1. Try adminToken JWT from localStorage (most reliable on Vercel)
+// Get email synchronously — works on both local and Vercel
+function getUserEmail() {
+  // 1. adminToken JWT (Vercel: login.html stores only this)
   const token = localStorage.getItem('adminToken');
   if (token) {
-    try {
-      const payload = JSON.parse(atob(token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')));
-      if (payload.email) { console.log('[Dashboard] email from adminToken =>', payload.email); return payload.email; }
-    } catch(e) { console.warn('[Dashboard] adminToken decode failed =>', e.message); }
-    // Also try resolving via Supabase using the token
-    try {
-      const { data: { user } } = await db.auth.getUser(token);
-      if (user?.email) { console.log('[Dashboard] email from Supabase(token) =>', user.email); return user.email; }
-    } catch(e) { console.warn('[Dashboard] Supabase auth(token) failed =>', e.message); }
+    const p = decodeJwtPayload(token);
+    if (p?.email) { console.log('[Dashboard] email from adminToken =>', p.email); return p.email; }
   }
-  // 2. Try Supabase session (works locally)
-  try {
-    const { data: { user } } = await db.auth.getUser();
-    if (user?.email) { console.log('[Dashboard] email from Supabase session =>', user.email); return user.email; }
-  } catch(e) { console.warn('[Dashboard] Supabase session failed =>', e.message); }
-  // 3. Try currentUser
+  // 2. currentUser (local dev: auth-modal stores this)
   try {
     const cu = JSON.parse(localStorage.getItem('currentUser') || '{}');
-    if (cu.email) { console.log('[Dashboard] email from currentUser =>', cu.email); return cu.email; }
+    if (cu?.email) { console.log('[Dashboard] email from currentUser =>', cu.email); return cu.email; }
   } catch(e) {}
   console.warn('[Dashboard] No email found in any source');
   return null;
@@ -504,7 +496,7 @@ async function loadDashboard() {
 
   // Get logged-in user email
   const token = localStorage.getItem('adminToken');
-  const userEmail = await getUserEmail();
+  const userEmail = getUserEmail();
   console.log('[Dashboard] userEmail =>', userEmail);
 
   try {
