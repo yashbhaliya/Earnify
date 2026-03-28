@@ -382,7 +382,8 @@ function renderCharts(available, totalGross, totalWithdrawn, platformFees, total
   }
 
   // ── Resource Donut Chart ──
-  if (userEmail) {
+  const resCtx = document.getElementById('resourceDonutChart')?.getContext('2d');
+  if (resCtx) {
     db.from('resources').select('id, title, price, type').eq('user_email', userEmail)
       .then(async ({ data: resources }) => {
         _resourcePriceMap = {};
@@ -393,18 +394,26 @@ function renderCharts(available, totalGross, totalWithdrawn, platformFees, total
             _resourceTypeMap[r.title]  = (r.type || 'other').toLowerCase();
           }
         });
+
+        // Fetch per-payment records for accurate per-resource counts
         const resourceIds = (resources || []).map(r => r.id);
-        if (!resourceIds.length) { renderResourceChart(10); return; }
+        if (!resourceIds.length) { renderResourceChart(10, 'revenue'); return; }
+
         const { data: payments } = await db.from('payments')
-          .select('resource_id').eq('status', 'completed').in('resource_id', resourceIds);
+          .select('resource_id')
+          .eq('status', 'completed')
+          .in('resource_id', resourceIds);
+
         const idToResource = {};
         (resources || []).forEach(r => { idToResource[r.id] = r; });
+
         _barChartData = (payments || []).map(p => {
           const r = idToResource[p.resource_id];
           return { resourceTitle: r?.title || '', unitPrice: parseFloat(r?.price || 0) };
         }).filter(p => p.resourceTitle);
-        renderResourceChart(10);
-      }).catch(() => renderResourceChart(10));
+
+        renderResourceChart(10, 'revenue');
+      }).catch(() => renderResourceChart(10, 'revenue'));
   }
   
   // ── Day-wise Revenue Chart ──
@@ -498,16 +507,15 @@ async function loadDashboard() {
     let relevantPayments = [];
     if (resourceIds.length) {
       const { data: payments } = await db.from('payments')
-        .select('user_email, resource_id, created_at')
+        .select('user_id, resource_id, created_at')
         .eq('status', 'completed')
-        .in('resource_id', resourceIds)
-        .order('created_at', { ascending: false });
+        .in('resource_id', resourceIds);
       relevantPayments = payments || [];
     }
 
-    // Build one row per payment
+    // Build one row per payment (each resource purchase = separate row)
     const purchases = relevantPayments.map(p => ({
-      email:      p.user_email || '—',
+      email:      p.user_id,
       resource:   titleMap[p.resource_id] || '—',
       amount:     priceMap[p.resource_id] || 0,
       created_at: p.created_at
@@ -525,19 +533,17 @@ async function loadDashboard() {
     const wdList = wdResult.data || [];
     console.log('[Dashboard] withdrawals from Supabase =>', wdList);
 
-    // Gross withdrawal amounts
-    const grossWithdrawn = wdList
+    // Net = gross * 0.95 (after 5% fee)
+    const totalWithdrawn = wdList
       .filter(w => w.status === 'approved' || w.status === 'completed')
-      .reduce((s, w) => s + parseFloat(w.amount || 0), 0);
-    const grossPending = wdList
+      .reduce((s, w) => s + parseFloat(w.amount || 0) * 0.95, 0);
+    const totalPending   = wdList
       .filter(w => w.status === 'pending')
-      .reduce((s, w) => s + parseFloat(w.amount || 0), 0);
-    // Net = gross * 0.95, fees = gross * 0.05
-    const totalWithdrawn = grossWithdrawn * 0.95;
-    const totalPending   = grossPending   * 0.95;
-    const platformFees   = (grossWithdrawn + grossPending) * 0.05;
-    // Available = total earned minus all gross withdrawals requested
-    const available      = Math.max(0, totalGross - grossWithdrawn - grossPending);
+      .reduce((s, w) => s + parseFloat(w.amount || 0) * 0.95, 0);
+    const platformFees   = wdList
+      .filter(w => ['approved','completed','pending'].includes(w.status))
+      .reduce((s, w) => s + parseFloat(w.amount || 0) * 0.05, 0);
+    const available      = Math.max(0, totalGross - totalWithdrawn - totalPending - platformFees);
     const completedCount = statsData.totalPurchases || 0;
     const approvedCount  = wdList.filter(w => w.status === 'approved' || w.status === 'completed').length;
     const pendingCount   = wdList.filter(w => w.status === 'pending').length;
@@ -631,7 +637,7 @@ async function loadDashboard() {
               : `<span style="color:#cbd5e1;font-size:13px;">—</span>`;
             const mobileReason = w.reject_reason
               ? `<div style="margin-top:6px;">
-                   <button onclick="showRejectReason('${w.reject_reason.replace(/'/g, "&#39;").replace(/"/g, '&quot;')}')" style="padding:5px 14px;border:1.5px solid #667eea;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;background:linear-gradient(135deg,#667eea,#764ba2);color:white;">⚠ View Reason</button>
+                   <button onclick="showRejectReason('${w.reject_reason.replace(/'/g, "&#39;").replace(/"/g, '&quot;')}')" style="display:none;padding:5px 14px;background:white;border:1.5px solid #667eea;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">⚠ View Reason</button>
                  </div>`
               : '';
             return `
@@ -693,7 +699,7 @@ async function loadDashboard() {
 function logout() {
   localStorage.clear();
   sessionStorage.clear();
-  location.href = 'https://earnify-gamma.vercel.app/admin/login.html';
+  location.href = '/admin/login.html';
 }
 
 function toggleSidebar() {
