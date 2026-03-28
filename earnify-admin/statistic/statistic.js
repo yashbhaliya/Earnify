@@ -66,7 +66,7 @@ async function apiFetch(path) {
 
 function logout() {
   localStorage.clear(); sessionStorage.clear();
-  location.href = '/admin/login.html';
+  location.href = 'https://earnify-gamma.vercel.app/admin/login.html';
 }
 
 function toggleSidebar() {
@@ -85,7 +85,9 @@ function fmtDate(d) {
   return d ? new Date(d).toLocaleDateString('en-IN', {day:'2-digit', month:'short', year:'numeric'}) : '—';
 }
 
-let allPurchases = [];
+const SUPA_URL_STAT = 'https://emnrgsgerfjvndexomro.supabase.co';
+const SUPA_KEY_STAT = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVtbnJnc2dlcmZqdm5kZXhvbXJvIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3MjQyMDIxMCwiZXhwIjoyMDg3OTk2MjEwfQ.mr4k_GsJ14CC1mqvEZgf9cTaNiLMlnj_sZxFjJud67k';
+const dbStat = window.supabase.createClient(SUPA_URL_STAT, SUPA_KEY_STAT);
 
 async function loadStats() {
   console.log('[Statistics] loadStats() called');
@@ -95,20 +97,64 @@ async function loadStats() {
     document.getElementById(id).innerHTML = '<div class="shimmer shimmer-sub"></div>');
 
   try {
-    allPurchases = await apiFetch('/api/admin/purchases');
-    console.log('[Statistics] allPurchases =>', allPurchases.length, allPurchases);
+    // Get current user email
+    let userEmail = null;
+    try {
+      const { data: { user } } = await dbStat.auth.getUser();
+      if (user?.email) userEmail = user.email;
+    } catch(_) {}
+    if (!userEmail) {
+      try {
+        const token = localStorage.getItem('adminToken');
+        if (token) userEmail = JSON.parse(atob(token.split('.')[1])).email;
+      } catch(_) {}
+    }
+    if (!userEmail) {
+      try { userEmail = JSON.parse(localStorage.getItem('currentUser') || '{}').email; } catch(_) {}
+    }
+
+    if (!userEmail) throw new Error('Not logged in — no user email found');
+
+    // Fetch this seller's resources
+    const { data: resources, error: rErr } = await dbStat.from('resources')
+      .select('id, title, price').eq('user_email', userEmail);
+    if (rErr) throw rErr;
+
+    const resourceIds = (resources || []).map(r => r.id);
+    const priceMap = {};
+    const titleMap = {};
+    (resources || []).forEach(r => { priceMap[r.id] = parseFloat(r.price || 0); titleMap[r.id] = r.title; });
+
+    // Fetch completed payments for those resources
+    let payments = [];
+    if (resourceIds.length) {
+      const { data: pData, error: pErr } = await dbStat.from('payments')
+        .select('id, user_email, resource_id, created_at, status')
+        .in('resource_id', resourceIds)
+        .order('created_at', { ascending: false });
+      if (pErr) throw pErr;
+      payments = pData || [];
+    }
+
+    // Map to display format
+    allPurchases = payments.map(p => ({
+      id:             p.id,
+      buyer_email:    p.user_email || '—',
+      resource_title: titleMap[p.resource_id] || '—',
+      amount:         priceMap[p.resource_id] || 0,
+      status:         p.status || 'completed',
+      created_at:     p.created_at
+    }));
 
     const completed    = allPurchases.filter(p => p.status === 'completed');
-    const totalRevenue = completed.reduce((s, p) => s + parseFloat(p.amount || p.resource_price || 0), 0);
-    const uniqueBuyers = new Set(allPurchases.map(p => p.buyer_email)).size;
+    const totalRevenue = completed.reduce((s, p) => s + p.amount, 0);
+    const uniqueBuyers = new Set(allPurchases.map(p => p.buyer_email).filter(e => e && e !== '—')).size;
     const avgOrder     = completed.length ? totalRevenue / completed.length : 0;
 
-    console.log('[Statistics] computed =>', { totalRevenue, uniqueBuyers, avgOrder, completed: completed.length });
-
-    setCard('valRevenue',   'subRevenue',   fmt(totalRevenue),      `From ${completed.length} sales`);
-    setCard('valPurchases', 'subPurchases', allPurchases.length,    `${completed.length} completed`);
-    setCard('valAvgOrder',  'subAvgOrder',  fmt(avgOrder),          'Per transaction');
-    setCard('valBuyers',    'subBuyers',    uniqueBuyers,           'Unique customers');
+    setCard('valRevenue',   'subRevenue',   fmt(totalRevenue),   `From ${completed.length} sales`);
+    setCard('valPurchases', 'subPurchases', allPurchases.length, `${completed.length} completed`);
+    setCard('valAvgOrder',  'subAvgOrder',  fmt(avgOrder),       'Per transaction');
+    setCard('valBuyers',    'subBuyers',    uniqueBuyers,        'Unique customers');
 
     renderTable(allPurchases);
 
@@ -118,7 +164,7 @@ async function loadStats() {
     ['valRevenue','valPurchases','valAvgOrder','valBuyers'].forEach((id, i) =>
       setCard(id, subIds[i], '—', 'Error loading'));
     document.getElementById('purchaseTbody').innerHTML =
-      `<tr><td colspan="6"><div class="empty-state"><div class="empty-icon">⚠️</div><p>${err.message}<br><small>Is the server running at ${API_BASE}?</small></p></div></td></tr>`;
+      `<tr><td colspan="6"><div class="empty-state"><div class="empty-icon">⚠️</div><p>${err.message}</p></div></td></tr>`;
     document.getElementById('recordCount').textContent = 'Error';
   }
 }
