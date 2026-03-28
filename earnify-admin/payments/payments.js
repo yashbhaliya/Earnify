@@ -10,12 +10,11 @@
   /* ── Auth sidebar ── */
   (async function () {
     let email = 'Admin';
-    // 1. currentUser is always set at login
     try {
-      const cu = JSON.parse(localStorage.getItem('currentUser') || '{}');
-      if (cu.email) email = cu.email;
+      const { data: { user } } = await db.auth.getUser();
+      if (user?.email) email = user.email;
     } catch (_) {}
-    // 2. Decode JWT directly
+
     if (email === 'Admin') {
       try {
         const token = localStorage.getItem('adminToken');
@@ -25,19 +24,20 @@
         }
       } catch (_) {}
     }
-    // 3. Supabase session
+
     if (email === 'Admin') {
       try {
-        const { data: { session } } = await db.auth.getSession();
-        if (session?.user?.email) email = session.user.email;
+        const u = JSON.parse(localStorage.getItem('currentUser') || '{}');
+        if (u.email) email = u.email;
       } catch (_) {}
     }
+
     document.getElementById('adminEmail').textContent = email;
     document.getElementById('adminAvatar').textContent = email.charAt(0).toUpperCase();
   })();
 
   /* ── Helpers ── */
-  window.logout = () => { localStorage.clear(); sessionStorage.clear(); location.href = 'https://earnify-gamma.vercel.app/admin/login.html'; };
+  window.logout = () => { localStorage.clear(); sessionStorage.clear(); location.href = '/admin/login.html'; };
   window.toggleSidebar = () => {
     document.getElementById('sidebar').classList.toggle('active');
     document.getElementById('overlay').classList.toggle('active');

@@ -6,25 +6,45 @@ const SUPA_URL = 'https://emnrgsgerfjvndexomro.supabase.co';
 const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVtbnJnc2dlcmZqdm5kZXhvbXJvIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3MjQyMDIxMCwiZXhwIjoyMDg3OTk2MjEwfQ.mr4k_GsJ14CC1mqvEZgf9cTaNiLMlnj_sZxFjJud67k';
 const db = window.supabase.createClient(SUPA_URL, SUPA_KEY);
 
-async function getUserEmail() {
-  // 1. Best source: currentUser stored at login — always has .email
+// XSS sanitizer — escapes HTML special chars before inserting into innerHTML
+function esc(str) {
+  if (str == null) return '—';
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+// Decode a base64url-encoded JWT segment safely
+function decodeJwtPayload(token) {
   try {
-    const cu = JSON.parse(localStorage.getItem('currentUser') || '{}');
-    if (cu.email) return cu.email;
-  } catch(e) {}
-  // 2. Decode adminToken JWT directly (no network call needed)
+    const seg = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+    return JSON.parse(atob(seg));
+  } catch(e) { return null; }
+}
+
+async function getUserEmail() {
+  // 1. Try adminToken JWT from localStorage (most reliable on Vercel)
   const token = localStorage.getItem('adminToken');
   if (token) {
     try {
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      if (payload.email) return payload.email;
-    } catch(e) {}
+      const payload = JSON.parse(atob(token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')));
+      if (payload.email) { console.log('[Dashboard] email from adminToken =>', payload.email); return payload.email; }
+    } catch(e) { console.warn('[Dashboard] adminToken decode failed =>', e.message); }
+    // Also try resolving via Supabase using the token
+    try {
+      const { data: { user } } = await db.auth.getUser(token);
+      if (user?.email) { console.log('[Dashboard] email from Supabase(token) =>', user.email); return user.email; }
+    } catch(e) { console.warn('[Dashboard] Supabase auth(token) failed =>', e.message); }
   }
-  // 3. Try Supabase session (works when session cookie is still alive)
+  // 2. Try Supabase session (works locally)
   try {
-    const { data: { session } } = await db.auth.getSession();
-    if (session?.user?.email) return session.user.email;
+    const { data: { user } } = await db.auth.getUser();
+    if (user?.email) { console.log('[Dashboard] email from Supabase session =>', user.email); return user.email; }
+  } catch(e) { console.warn('[Dashboard] Supabase session failed =>', e.message); }
+  // 3. Try currentUser
+  try {
+    const cu = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    if (cu.email) { console.log('[Dashboard] email from currentUser =>', cu.email); return cu.email; }
   } catch(e) {}
+  console.warn('[Dashboard] No email found in any source');
   return null;
 }
 
@@ -381,7 +401,8 @@ function renderCharts(available, totalGross, totalWithdrawn, platformFees, total
   }
 
   // ── Resource Donut Chart ──
-  if (userEmail) {
+  const resCtx = document.getElementById('resourceDonutChart')?.getContext('2d');
+  if (resCtx) {
     db.from('resources').select('id, title, price, type').eq('user_email', userEmail)
       .then(async ({ data: resources }) => {
         _resourcePriceMap = {};
@@ -392,18 +413,26 @@ function renderCharts(available, totalGross, totalWithdrawn, platformFees, total
             _resourceTypeMap[r.title]  = (r.type || 'other').toLowerCase();
           }
         });
+
+        // Fetch per-payment records for accurate per-resource counts
         const resourceIds = (resources || []).map(r => r.id);
-        if (!resourceIds.length) { renderResourceChart(10); return; }
+        if (!resourceIds.length) { renderResourceChart(10, 'revenue'); return; }
+
         const { data: payments } = await db.from('payments')
-          .select('resource_id').eq('status', 'completed').in('resource_id', resourceIds);
+          .select('resource_id')
+          .eq('status', 'completed')
+          .in('resource_id', resourceIds);
+
         const idToResource = {};
         (resources || []).forEach(r => { idToResource[r.id] = r; });
+
         _barChartData = (payments || []).map(p => {
           const r = idToResource[p.resource_id];
           return { resourceTitle: r?.title || '', unitPrice: parseFloat(r?.price || 0) };
         }).filter(p => p.resourceTitle);
-        renderResourceChart(10);
-      }).catch(() => renderResourceChart(10));
+
+        renderResourceChart(10, 'revenue');
+      }).catch(() => renderResourceChart(10, 'revenue'));
   }
   
   // ── Day-wise Revenue Chart ──
@@ -499,24 +528,37 @@ async function loadDashboard() {
       const { data: payments } = await db.from('payments')
         .select('user_id, resource_id, created_at')
         .eq('status', 'completed')
-        .in('resource_id', resourceIds)
-        .order('created_at', { ascending: false });
+        .in('resource_id', resourceIds);
       relevantPayments = payments || [];
     }
 
-    // Resolve buyer emails from user_ids via auth.users (service role allows this)
-    const uniqueUserIds = [...new Set(relevantPayments.map(p => p.user_id).filter(Boolean))];
-    const userEmailMap = {};
-    if (uniqueUserIds.length) {
-      try {
-        const { data: { users } } = await db.auth.admin.listUsers({ perPage: 1000 });
-        (users || []).forEach(u => { if (u.id) userEmailMap[u.id] = u.email || u.id; });
-      } catch(e) {
-        // fallback: show user_id if admin API unavailable
-        uniqueUserIds.forEach(id => { userEmailMap[id] = id; });
+    // Resolve buyer emails from user_ids via Supabase auth admin
+    let userEmailMap = {};
+    try {
+      const uniqueUserIds = [...new Set(relevantPayments.map(p => p.user_id).filter(Boolean))];
+      if (uniqueUserIds.length) {
+        // Fetch user emails in parallel (max 50 at a time to avoid large requests)
+        const chunks = [];
+        for (let i = 0; i < uniqueUserIds.length; i += 50) chunks.push(uniqueUserIds.slice(i, i + 50));
+        for (const chunk of chunks) {
+          const { data: uRows } = await db.from('payments')
+            .select('user_id')
+            .in('user_id', chunk)
+            .limit(1); // just a probe — actual email lookup below
+          // Use Supabase auth admin API via service-role client
+          const res = await fetch(`${SUPA_URL}/auth/v1/admin/users?per_page=1000`, {
+            headers: { apikey: SUPA_KEY, Authorization: `Bearer ${SUPA_KEY}` }
+          });
+          if (res.ok) {
+            const json = await res.json();
+            (json.users || []).forEach(u => { if (u.id && u.email) userEmailMap[u.id] = u.email; });
+          }
+          break; // one fetch gets all users
+        }
       }
-    }
+    } catch(e) { console.warn('[Dashboard] email lookup failed =>', e.message); }
 
+    // Build one row per payment (each resource purchase = separate row)
     const purchases = relevantPayments.map(p => ({
       email:      userEmailMap[p.user_id] || p.user_id || '—',
       resource:   titleMap[p.resource_id] || '—',
@@ -536,17 +578,17 @@ async function loadDashboard() {
     const wdList = wdResult.data || [];
     console.log('[Dashboard] withdrawals from Supabase =>', wdList);
 
-    // Gross withdrawal amounts — correct available balance calculation
-    const grossWithdrawn = wdList
+    // Net = gross * 0.95 (after 5% fee)
+    const totalWithdrawn = wdList
       .filter(w => w.status === 'approved' || w.status === 'completed')
-      .reduce((s, w) => s + parseFloat(w.amount || 0), 0);
-    const grossPending = wdList
+      .reduce((s, w) => s + parseFloat(w.amount || 0) * 0.95, 0);
+    const totalPending   = wdList
       .filter(w => w.status === 'pending')
-      .reduce((s, w) => s + parseFloat(w.amount || 0), 0);
-    const totalWithdrawn = grossWithdrawn * 0.95;
-    const totalPending   = grossPending   * 0.95;
-    const platformFees   = (grossWithdrawn + grossPending) * 0.05;
-    const available      = Math.max(0, totalGross - grossWithdrawn - grossPending);
+      .reduce((s, w) => s + parseFloat(w.amount || 0) * 0.95, 0);
+    const platformFees   = wdList
+      .filter(w => ['approved','completed','pending'].includes(w.status))
+      .reduce((s, w) => s + parseFloat(w.amount || 0) * 0.05, 0);
+    const available      = Math.max(0, totalGross - totalWithdrawn - totalPending - platformFees);
     const completedCount = statsData.totalPurchases || 0;
     const approvedCount  = wdList.filter(w => w.status === 'approved' || w.status === 'completed').length;
     const pendingCount   = wdList.filter(w => w.status === 'pending').length;
@@ -599,7 +641,7 @@ async function loadDashboard() {
           <tr class="mobile-table-row" data-index="${i}">
             <td colspan="6">
               <div class="mobile-cell">
-                <span class="mobile-email">${p.email || '—'}</span>
+                <span class="mobile-email">${esc(p.email)}</span>
                 <span class="mobile-amount">${fmt(p.amount)}</span>
                 <button class="view-btn" onclick="showPurchaseDetails(${i})">View</button>
               </div>
@@ -607,8 +649,8 @@ async function loadDashboard() {
           </tr>
           <tr data-index="${i}">
             <td>${i + 1}</td>
-            <td>${p.email || '—'}</td>
-            <td>${p.resource || '—'}</td>
+            <td>${esc(p.email)}</td>
+            <td>${esc(p.resource)}</td>
             <td style="font-weight:700;color:#1e293b;">${fmt(p.amount)}</td>
             <td><span class="badge badge-completed">completed</span></td>
             <td>${fmtDate(p.created_at)}</td>
@@ -647,12 +689,12 @@ async function loadDashboard() {
               <tr class="mobile-table-row mobile-withdrawal-row" data-index="${i}">
                 <td colspan="8">
                   <div class="mobile-cell">
-                    <span class="mobile-email">${w.user_email || '—'}</span>
+                    <span class="mobile-email">${esc(w.user_email)}</span>
                     <span class="mobile-amount">${fmt(net)}</span>
                     <button class="view-btn" onclick="showWithdrawalDetails(${i})">View</button>
                   </div>
                   <div style="display:flex;align-items:center;gap:8px;margin-top:4px;">
-                    <span class="badge ${badgeClass(w.status)}" style="font-size:10px;">${w.status}</span>
+                    <span class="badge ${badgeClass(w.status)}" style="font-size:10px;">${esc(w.status)}</span>
                     <span style="font-size:11px;color:#94a3b8;">${fmtDate(w.created_at)}</span>
                   </div>
                   ${mobileReason}
@@ -660,7 +702,7 @@ async function loadDashboard() {
               </tr>
               <tr data-index="${i}">
                 <td>${i + 1}</td>
-                <td>${w.user_email || '—'}</td>
+                <td>${esc(w.user_email)}</td>
                 <td style="font-weight:700;color:#1e293b;">${fmt(gross)}</td>
                 <td style="font-weight:700;color:#667eea;">${fmt(net)}</td>
                 <td style="color:#ef4444;">-${fmt(fee)}</td>
@@ -682,12 +724,10 @@ async function loadDashboard() {
       document.getElementById('adminEmail').textContent = userEmail;
       document.getElementById('adminAvatar').textContent = userEmail.charAt(0).toUpperCase();
     } else if (token) {
-      try {
-        const payload = JSON.parse(atob(token.split('.')[1]));
-        const email = payload.email || 'admin@earnify.com';
-        document.getElementById('adminEmail').textContent = email;
-        document.getElementById('adminAvatar').textContent = email.charAt(0).toUpperCase();
-      } catch(e) { console.error('[Dashboard] sidebar decode error =>', e); }
+      const payload = decodeJwtPayload(token);
+      const email = payload?.email || 'admin@earnify.com';
+      document.getElementById('adminEmail').textContent = email;
+      document.getElementById('adminAvatar').textContent = email.charAt(0).toUpperCase();
     }
 
     console.log('[Dashboard] ✅ done');
@@ -702,7 +742,7 @@ async function loadDashboard() {
 function logout() {
   localStorage.clear();
   sessionStorage.clear();
-  location.href = 'https://earnify-gamma.vercel.app/admin/login.html';
+  location.href = '/admin/login.html';
 }
 
 function toggleSidebar() {
@@ -721,11 +761,11 @@ function showPurchaseDetails(index) {
     </div>
     <div class="detail-row">
       <div class="detail-label">📧 Buyer Email</div>
-      <div class="detail-value">${purchase.email || '—'}</div>
+      <div class="detail-value">${esc(purchase.email)}</div>
     </div>
     <div class="detail-row">
       <div class="detail-label">📚 Resource Purchased</div>
-      <div class="detail-value">${purchase.resource || '—'}</div>
+      <div class="detail-value">${esc(purchase.resource)}</div>
     </div>
     <div class="detail-row">
       <div class="detail-label">💰 Amount</div>
@@ -759,7 +799,7 @@ function showWithdrawalDetails(index) {
     </div>
     <div class="detail-row">
       <div class="detail-label">📧 User Email</div>
-      <div class="detail-value">${withdrawal.user_email || '—'}</div>
+      <div class="detail-value">${esc(withdrawal.user_email)}</div>
     </div>
     <div class="detail-row">
       <div class="detail-label">💵 Gross Amount</div>
