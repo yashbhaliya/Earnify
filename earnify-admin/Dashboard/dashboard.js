@@ -265,11 +265,9 @@ function filterDayChart() {
 
 function renderResourceChart(limit = 10, sortBy = 'revenue') {
   const canvas  = document.getElementById('barChart');
-  const wrap    = document.getElementById('barChartWrap');
   const emptyEl = document.getElementById('barChartEmpty');
   if (!canvas) return;
 
-  // Always destroy previous chart instance cleanly
   if (_barChart) { _barChart.destroy(); _barChart = null; }
 
   // Build per-resource stats
@@ -290,14 +288,12 @@ function renderResourceChart(limit = 10, sortBy = 'revenue') {
     unitPrice: parseFloat(d.unitPrice.toFixed(2))
   }));
 
-  // Show empty state overlay, keep canvas hidden
   if (!sorted.length) {
     canvas.style.display = 'none';
-    if (emptyEl) emptyEl.style.display = 'flex';
+    if (emptyEl) emptyEl.style.display = 'block';
     return;
   }
 
-  // Hide empty state, show canvas
   canvas.style.display = '';
   if (emptyEl) emptyEl.style.display = 'none';
 
@@ -311,65 +307,92 @@ function renderResourceChart(limit = 10, sortBy = 'revenue') {
   const limitNum = (limit === 'all' || isNaN(Number(limit))) ? sorted.length : Math.min(Number(limit), sorted.length);
   sorted = sorted.slice(0, limitNum);
 
-  const labels = sorted.map(r => r.name.length > 22 ? r.name.substring(0, 22) + '...' : r.name);
+  // Reverse so highest value is at top
+  sorted.reverse();
+
+  const labels = sorted.map(r => r.name.length > 28 ? r.name.substring(0, 28) + '...' : r.name);
   const values = sorted.map(r => {
     if (sortBy === 'purchases') return r.purchases;
     if (sortBy === 'avgPrice')  return r.unitPrice;
     return r.revenue;
   });
 
-  const TYPE_GRADIENTS = {
-    pdf:     ['#EA2F4A', '#D2ECF9'],
-    excel:   ['#11998e', '#c8f5e9'],
-    exam:    ['#f7971e', '#fde8c8'],
-    service: ['#667eea', '#c9d6ff'],
-    other:   ['#a18cd1', '#ede0f7']
+  const TYPE_COLORS = {
+    pdf:       '#667eea',
+    excel:     '#10b981',
+    exam:      '#f59e0b',
+    freelance: '#f5576c',
+    other:     '#a78bfa'
   };
 
   const barCtx = canvas.getContext('2d');
-  const gradientColors = sorted.map(r => {
+  const bgColors = sorted.map(r => {
     const type = _resourceTypeMap[r.name] || 'other';
-    const [c1, c2] = TYPE_GRADIENTS[type] || TYPE_GRADIENTS.other;
-    const grad = barCtx.createLinearGradient(0, 0, 0, 320);
-    grad.addColorStop(0, c1); grad.addColorStop(1, c2);
+    const color = TYPE_COLORS[type] || TYPE_COLORS.other;
+    const grad = barCtx.createLinearGradient(0, 0, 400, 0);
+    grad.addColorStop(0, color);
+    grad.addColorStop(1, color + '55');
     return grad;
   });
-  const borderColors = sorted.map(r => (TYPE_GRADIENTS[_resourceTypeMap[r.name] || 'other'] || TYPE_GRADIENTS.other)[0]);
+  const borderColors = sorted.map(r => TYPE_COLORS[_resourceTypeMap[r.name] || 'other'] || TYPE_COLORS.other);
 
-  if (wrap) wrap.style.height = '320px';
-  canvas.style.height = '320px';
+  const barHeight = 36;
+  const chartHeight = Math.max(200, sorted.length * barHeight + 60);
+  canvas.style.height = chartHeight + 'px';
 
   const isMoney  = sortBy !== 'purchases';
   const axisLabel = sortBy === 'purchases' ? 'Purchases' : sortBy === 'avgPrice' ? 'Unit Price (₹)' : 'Total Revenue (₹)';
 
   _barChart = new Chart(barCtx, {
     type: 'bar',
-    data: { labels, datasets: [{ label: axisLabel, data: values, backgroundColor: gradientColors, borderColor: borderColors, borderWidth: 0, borderRadius: 4, borderSkipped: false }] },
+    data: {
+      labels,
+      datasets: [{
+        label: axisLabel,
+        data: values,
+        backgroundColor: bgColors,
+        borderColor: borderColors,
+        borderWidth: 0,
+        borderRadius: 6,
+        borderSkipped: false
+      }]
+    },
     options: {
-      responsive: true, maintainAspectRatio: false, indexAxis: 'x',
+      indexAxis: 'y',
+      responsive: true,
+      maintainAspectRatio: false,
       plugins: {
         legend: { display: false },
-        tooltip: { callbacks: {
-          title: function(ctx) {
-            if (!ctx || !ctx.length) return '';
-            const item = sorted[ctx[0].dataIndex];
-            return item ? item.name : '';
-          },
-          label: function(ctx) {
-            if (!ctx) return '';
-            const r = sorted[ctx.dataIndex];
-            if (!r) return '';
-            if (sortBy === 'purchases') return ' ' + r.purchases + ' sales • Unit price: ' + fmt(r.unitPrice);
-            if (sortBy === 'avgPrice')  return ' Unit price: ' + fmt(r.unitPrice) + ' • ' + r.purchases + ' sales';
-            return ' Total: ' + fmt(r.revenue) + ' • ' + r.purchases + ' sales • ' + fmt(r.unitPrice) + '/unit';
+        tooltip: {
+          callbacks: {
+            title: ctx => sorted[ctx[0].dataIndex]?.name || '',
+            label: ctx => {
+              const r = sorted[ctx.dataIndex];
+              if (!r) return '';
+              if (sortBy === 'purchases') return ` ${r.purchases} sales  •  unit: ${fmt(r.unitPrice)}`;
+              if (sortBy === 'avgPrice')  return ` unit: ${fmt(r.unitPrice)}  •  ${r.purchases} sales`;
+              return ` ${fmt(r.revenue)}  •  ${r.purchases} sales  •  ${fmt(r.unitPrice)}/unit`;
+            }
           }
-        }}
+        }
       },
       scales: {
-        x: { grid: { display: false }, ticks: { font: { size: 11, weight: '600' }, color: '#64748b', maxRotation: 40, minRotation: 0,
-          callback: function(val) { const l = this.getLabelForValue(val); return l.length > 14 ? l.substring(0, 14) + '...' : l; } } },
-        y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.05)' }, ticks: { font: { size: 11 }, color: '#94a3b8',
-          callback: v => isMoney ? ('₹' + (v >= 1000 ? (v/1000).toFixed(1) + 'k' : v)) : v } }
+        x: {
+          beginAtZero: true,
+          grid: { color: 'rgba(0,0,0,0.05)' },
+          ticks: {
+            font: { size: 11 },
+            color: '#94a3b8',
+            callback: v => isMoney ? ('₹' + (v >= 1000 ? (v/1000).toFixed(1) + 'k' : v)) : v
+          }
+        },
+        y: {
+          grid: { display: false },
+          ticks: {
+            font: { size: 12, weight: '600' },
+            color: '#334155'
+          }
+        }
       }
     }
   });
