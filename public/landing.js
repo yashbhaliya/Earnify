@@ -56,6 +56,8 @@ function updateUI() {
     if (userName)        userName.textContent        = name;
     if (userDisplayName) userDisplayName.textContent = name;
     if (userEmail)       userEmail.textContent       = email;
+    const avatarEl = document.getElementById('userAvatarInitial');
+    if (avatarEl) avatarEl.textContent = name.charAt(0).toUpperCase();
   } else {
     if (loginBtn)  loginBtn.style.display  = 'inline-block';
     if (signupBtn) signupBtn.style.display = 'inline-block';

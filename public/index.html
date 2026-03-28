@@ -253,12 +253,18 @@
           </button>
           <div id="userDropdown" class="user-dropdown">
             <div class="user-dropdown-header">
-              <div class="name" id="userDisplayName">User</div>
-              <div class="email" id="userEmail">user@email.com</div>
+              <div class="udh-avatar" id="userAvatarInitial">U</div>
+              <div class="udh-info">
+                <div class="udh-name" id="userDisplayName">User</div>
+                <div class="udh-badge">Member</div>
+                <div class="udh-email" id="userEmail">user@email.com</div>
+              </div>
             </div>
-            <a href="./admin/Profile/"><span>👤</span> View Profile</a>
-            <a href="./admin/Resources/"><span>➕</span> Add Resources</a>
-            <a onclick="logout()"><span>🚪</span> Logout</a>
+            <a href="./admin/Statistics/"><i class="fas fa-chart-bar"></i>View Statistics</a>
+            <a href="./admin/Resources/"><i class="fas fa-plus"></i> Add Resources</a>
+            <a href="./admin/Profile/"><i class="fas fa-user"></i> View Profile</a>
+            <div class="udh-divider"></div>
+            <a onclick="logout()" class="udh-logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
           </div>
         </div>
       </div>
