@@ -63,9 +63,9 @@ async function handleLogin(e) {
   const password = document.getElementById('loginPassword').value;
   try {
     const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
-    if (error) { alert(error.message); return; }
+    if (error) { showToast(error.message, 'error'); return; }
     if (!data.user.email_confirmed_at) {
-      alert('Please verify your email before logging in!');
+      showToast('Please verify your email before logging in!', 'warning');
       await supabaseClient.auth.signOut(); return;
     }
     localStorage.setItem('userLoggedIn', 'true');
@@ -74,7 +74,7 @@ async function handleLogin(e) {
     isLoggedIn = true; currentUser = data.user;
     closeLoginModal(); updateUI();
     loadResourceDetails();
-  } catch (err) { alert('Login failed: ' + err.message); }
+  } catch (err) { showToast('Login failed: ' + err.message, 'error'); }
 }
 
 async function handleSignup(e) {
@@ -83,15 +83,15 @@ async function handleSignup(e) {
   const email    = document.getElementById('signupEmail').value;
   const password = document.getElementById('signupPassword').value;
   const confirm  = document.getElementById('signupConfirmPassword').value;
-  if (password !== confirm) { alert('Passwords do not match!'); return; }
-  if (password.length < 6)  { alert('Password must be at least 6 characters!'); return; }
+  if (password !== confirm) { showToast('Passwords do not match!', 'warning'); return; }
+  if (password.length < 6)  { showToast('Password must be at least 6 characters!', 'warning'); return; }
   try {
     const { error } = await supabaseClient.auth.signUp({
       email, password, options: { data: { name }, emailRedirectTo: window.location.origin + '/' }
     });
-    if (error) { alert(error.message); return; }
+    if (error) { showToast(error.message, 'error'); return; }
     closeSignupModal();
-    alert('Verification email sent! Please verify before logging in.');
+    showToast('Verification email sent! Please verify before logging in.', 'success');
   } catch (err) { console.error(err); }
 }
 
@@ -273,7 +273,7 @@ function displayResourceDetails(isPurchased = false) {
 }
 
 async function handlePurchase() {
-  if (!isLoggedIn) { alert('Please login to purchase'); showLoginModal(); return; }
+  if (!isLoggedIn) { showToast('Please login to purchase', 'warning'); showLoginModal(); return; }
   try {
     const btn = document.querySelector('.buy-button');
     btn.disabled = true;
@@ -299,7 +299,7 @@ async function handlePurchase() {
     };
     new Razorpay(options).open();
   } catch (err) {
-    alert('Payment failed. Please try again.');
+    showToast('Payment failed. Please try again.', 'error');
     const btn = document.querySelector('.buy-button');
     if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-shopping-cart"></i> Buy Now'; }
   }
@@ -320,12 +320,12 @@ async function verifyPayment(response) {
     });
     const result = await res.json();
     if (res.ok && result.success) {
-      alert('Payment successful! You can now download your content.');
+      showToast('Payment successful! You can now download your content.', 'success');
       loadResourceDetails();
     } else {
-      alert('Payment verification failed: ' + (result.error || 'Unknown error'));
+      showToast('Payment verification failed: ' + (result.error || 'Unknown error'), 'error');
     }
-  } catch (err) { alert('Verification failed: ' + err.message); }
+  } catch (err) { showToast('Verification failed: ' + err.message, 'error'); }
 }
 
 function toggleMobileMenu() {

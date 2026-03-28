@@ -180,8 +180,14 @@
   <script src="landing.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script>
-    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    if (!currentUser) { alert('Please login first'); window.location.href = '../'; }
+    // Resolve user from currentUser or adminToken JWT (Vercel)
+    function _jwtPay(t) { try { return JSON.parse(atob(t.split('.')[1].replace(/-/g,'+').replace(/_/g,'/'))); } catch(e){return null;} }
+    let currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+    if (!currentUser) {
+      const tok = localStorage.getItem('adminToken');
+      if (tok) { const p = _jwtPay(tok); if (p?.email) currentUser = { email: p.email, id: p.sub, user_metadata: {} }; }
+    }
+    if (!currentUser) { throw new Error('not logged in'); }
 
     const dName = currentUser?.user_metadata?.name || currentUser?.email?.split('@')[0] || 'there';
     const dEmail = currentUser?.email || '';
