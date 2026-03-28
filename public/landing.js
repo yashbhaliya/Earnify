@@ -130,26 +130,25 @@ async function logout() {
   window.location.href = 'index.html';
 }
 
-/* ── Lottie Loader ── */
+/* ── Skeleton Loader ── */
 function showLoader() {
   const grid = document.getElementById('resourcesGrid');
   if (!grid) return;
-  grid.innerHTML = `
-    <div class="resources-loader">
-      <div id="lottieContainer"></div>
-      <p class="resources-loader-text">Loading resources...</p>
+  const card = () => `
+    <div class="skeleton-card">
+      <div class="sk-header">
+        <div class="sk sk-icon"></div>
+        <div class="sk sk-badge"></div>
+      </div>
+      <div class="sk sk-title"></div>
+      <div class="sk sk-desc1"></div>
+      <div class="sk sk-desc2"></div>
+      <div class="sk sk-price"></div>
+      <div class="sk sk-btn"></div>
     </div>`;
+  grid.innerHTML = card().repeat(12);
   const pag = document.querySelector('.pagination');
   if (pag) pag.innerHTML = '';
-  if (typeof lottie !== 'undefined') {
-    lottie.loadAnimation({
-      container: document.getElementById('lottieContainer'),
-      renderer: 'svg',
-      loop: true,
-      autoplay: true,
-      path: '/file/loader.json'
-    });
-  }
 }
 
 /* ── Load Resources ── */
@@ -249,18 +248,44 @@ function renderPagination(totalPages) {
   }
   if (totalPages <= 1) { pag.style.display = 'none'; return; }
   pag.style.display = 'flex';
-  let html = '<div class="pagination-buttons">';
-  html += `<button onclick="changePage(${currentPage-1})" ${currentPage===1?'disabled':''}>← Prev</button>`;
-  for (let i = 1; i <= totalPages; i++)
-    html += `<button onclick="changePage(${i})" class="${i===currentPage?'active':''}">${i}</button>`;
-  html += `<button onclick="changePage(${currentPage+1})" ${currentPage===totalPages?'disabled':''}>Next →</button>`;
+
+  // build page numbers: always show first, last, current ±1, with ellipsis
+  const pages = [];
+  for (let i = 1; i <= totalPages; i++) {
+    if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
+      pages.push(i);
+    }
+  }
+  // insert ellipsis markers
+  const withEllipsis = [];
+  pages.forEach((p, idx) => {
+    if (idx > 0 && p - pages[idx - 1] > 1) withEllipsis.push('...');
+    withEllipsis.push(p);
+  });
+
+  let html = `<div class="pag-info">Page ${currentPage} of ${totalPages}</div><div class="pag-btns">`;
+  html += `<button class="pag-arrow" onclick="changePage(${currentPage-1})" ${currentPage===1?'disabled':''}><i class="fas fa-chevron-left"></i></button>`;
+  withEllipsis.forEach(p => {
+    if (p === '...') {
+      html += `<span class="pag-ellipsis">…</span>`;
+    } else {
+      html += `<button class="pag-num ${p===currentPage?'active':''}" onclick="changePage(${p})">${p}</button>`;
+    }
+  });
+  html += `<button class="pag-arrow" onclick="changePage(${currentPage+1})" ${currentPage===totalPages?'disabled':''}><i class="fas fa-chevron-right"></i></button>`;
   html += '</div>';
   pag.innerHTML = html;
+}
+
+function scrollToResources() {
+  const section = document.getElementById('resources');
+  if (section) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 function changePage(page) {
   currentPage = page;
   showLoader();
+  scrollToResources();
   const filtered = currentFilter === 'all' ? allResources : allResources.filter(r => r.type === currentFilter);
   if (isLoggedIn) {
     const cu = JSON.parse(localStorage.getItem('currentUser'));
@@ -282,6 +307,7 @@ function filterResources(type) {
   document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
   event.target.classList.add('active');
   showLoader();
+  scrollToResources();
   const filtered = type === 'all' ? allResources : allResources.filter(r => r.type === type);
   if (isLoggedIn) {
     const cu = JSON.parse(localStorage.getItem('currentUser'));

@@ -2280,3 +2280,209 @@ body.sidebar-open {
   margin: 0;
   letter-spacing: 0.02em;
 }
+
+/* ── Resource Skeleton Cards ── */
+.skeleton-card {
+  background: white;
+  border-radius: 16px;
+  padding: 18px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.sk {
+  background: #e8edf5;
+  border-radius: 6px;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.sk::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.75) 50%, transparent 100%);
+  animation: skMove 1.6s ease-in-out infinite;
+}
+@keyframes skMove {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+.sk-header { display: flex; align-items: center; justify-content: space-between; }
+.sk-icon   { width: 52px; height: 52px; border-radius: 12px; }
+.sk-badge  { width: 68px; height: 22px; border-radius: 999px; }
+.sk-title  { height: 20px; width: 80%; border-radius: 6px; }
+.sk-desc1  { height: 13px; width: 100%; border-radius: 4px; }
+.sk-desc2  { height: 13px; width: 60%; border-radius: 4px; }
+.sk-price  { height: 30px; width: 90px; border-radius: 8px; }
+.sk-btn    { height: 40px; width: 100%; border-radius: 12px; margin-top: 4px; }
+
+/* ── Filter Tabs Redesign ── */
+.filter-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 0;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+  background: #f1f5f9;
+  border-radius: 50px;
+  padding: 5px;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: 0 2px 8px rgba(102,126,234,0.10);
+  border: 1px solid #e2e8f0;
+}
+
+.filter-btn {
+  padding: 9px 20px;
+  border: none;
+  box-shadow: none;
+  background: transparent;
+  color: #64748b;
+  border-radius: 50px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.85rem;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  font-family: inherit;
+}
+
+.filter-btn img {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.filter-btn:hover {
+  color: #667eea;
+  background: rgba(102,126,234,0.08);
+  transform: none;
+  box-shadow: none;
+}
+
+.filter-btn.active {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  box-shadow: 0 4px 12px rgba(102,126,234,0.30);
+  transform: none;
+}
+
+@media (max-width: 640px) {
+  .filter-tabs {
+    width: 100%;
+    border-radius: 16px;
+    padding: 4px;
+    gap: 2px;
+    justify-content: stretch;
+  }
+  .filter-btn {
+    flex: 1;
+    justify-content: center;
+    padding: 8px 6px;
+    font-size: 0.75rem;
+    border-radius: 12px;
+  }
+  .filter-btn img { width: 15px; height: 15px; }
+}
+
+/* ── Pagination Redesign ── */
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 36px;
+  padding: 14px 20px;
+  background: white;
+  border-radius: 16px;
+  border: 1px solid #e8edf5;
+  box-shadow: 0 2px 12px rgba(102,126,234,0.08);
+  flex-wrap: wrap;
+}
+
+.pag-info {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #94a3b8;
+  white-space: nowrap;
+}
+
+.pag-btns {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.pag-arrow {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  border: 1.5px solid #e2e8f0;
+  background: white;
+  color: #667eea;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  transition: all 0.18s;
+  font-family: inherit;
+}
+.pag-arrow:hover:not(:disabled) {
+  background: linear-gradient(135deg,#667eea,#764ba2);
+  color: white;
+  border-color: transparent;
+  box-shadow: 0 4px 10px rgba(102,126,234,0.25);
+}
+.pag-arrow:disabled { opacity: 0.35; cursor: not-allowed; }
+
+.pag-num {
+  min-width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  border: 1.5px solid #e2e8f0;
+  background: white;
+  color: #475569;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: all 0.18s;
+  font-family: inherit;
+  padding: 0 6px;
+}
+.pag-num:hover {
+  border-color: #667eea;
+  color: #667eea;
+}
+.pag-num.active {
+  background: linear-gradient(135deg,#667eea,#764ba2);
+  color: white;
+  border-color: transparent;
+  box-shadow: 0 4px 10px rgba(102,126,234,0.25);
+}
+
+.pag-ellipsis {
+  color: #94a3b8;
+  font-size: 0.9rem;
+  padding: 0 4px;
+  line-height: 36px;
+}
+
+@media (max-width: 640px) {
+  .pagination {
+    justify-content: center;
+    padding: 12px 14px;
+    gap: 10px;
+  }
+  .pag-info { width: 100%; text-align: center; }
+  .pag-arrow, .pag-num { width: 32px; height: 32px; font-size: 0.78rem; border-radius: 8px; }
+}
