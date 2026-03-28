@@ -108,6 +108,17 @@
           <button class="dash-filter-btn" onclick="filterPurchases('exam',this)">📝 Exam</button>
           <button class="dash-filter-btn" onclick="filterPurchases('freelance',this)">💼 Services</button>
         </div>
+        <div class="dash-filter-select-wrap">
+          <i class="fas fa-filter"></i>
+          <select class="dash-filter-select" onchange="filterBySelect(this.value)">
+            <option value="all">All Types</option>
+            <option value="pdf">📄 PDF</option>
+            <option value="excel">📊 Excel</option>
+            <option value="exam">📝 Exam</option>
+            <option value="freelance">💼 Services</option>
+          </select>
+          <i class="fas fa-chevron-down"></i>
+        </div>
       </div>
 
       <!-- Table -->
@@ -196,6 +207,15 @@
     function filterPurchases(type, btn) {
       document.querySelectorAll('.dash-filter-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
+      document.querySelector('.dash-filter-select').value = type;
+      renderPurchases(type === 'all' ? allPurchases : allPurchases.filter(p => p.resources?.type === type));
+    }
+
+    function filterBySelect(type) {
+      const btn = [...document.querySelectorAll('.dash-filter-btn')].find(b =>
+        b.getAttribute('onclick').includes(`'${type}'`));
+      document.querySelectorAll('.dash-filter-btn').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
       renderPurchases(type === 'all' ? allPurchases : allPurchases.filter(p => p.resources?.type === type));
     }
 
@@ -222,7 +242,7 @@
           <div><div class="stat-num">${total}</div><div class="stat-label">Total Purchases</div></div>
         </div>
         <div class="stat-card">
-          <div class="stat-icon green"><i class="fas fa-rupee-sign"></i></div>
+          <div class="stat-icon green"><i class="fas fa-coins"></i></div>
           <div><div class="stat-num">₹${spent.toLocaleString('en-IN')}</div><div class="stat-label">Total Spent</div></div>
         </div>
         <div class="stat-card">
@@ -280,10 +300,12 @@
             <td>
               <div class="td-resource">
                 <div class="td-icon ${cls}">${icon}</div>
-                <span class="td-title">${r.title || 'Resource'}</span>
+                <div class="td-resource-top">
+                  <span class="td-title">${r.title || 'Resource'}</span>
+                  <span class="td-badge ${cls}">${r.type || '—'}</span>
+                </div>
               </div>
             </td>
-            <td><span class="td-badge ${cls}">${r.type || '—'}</span></td>
             <td><span class="td-price">₹${r.price || '—'}</span></td>
             <td><span class="td-date">${date}</span></td>
             <td>
@@ -301,9 +323,8 @@
         <table class="purchases-table">
           <thead><tr>
             <th><i class="fas fa-box"></i> Resource</th>
-            <th><i class="fas fa-tag"></i> Type</th>
-            <th>(₹) Price</th>
-            <th><i class="fas fa-calendar"></i> Date</th>
+            <th><i class="fas fa-rupee-sign"></i> Price</th>
+            <th class="col-date"><i class="fas fa-calendar"></i> Date</th>
             <th><i class="fas fa-bolt"></i> Actions</th>
           </tr></thead>
           <tbody>${rows}</tbody>
