@@ -242,7 +242,7 @@
         <a href="./">Home</a>
         <a href="./#resources">Resources</a>
         <a href="./About/">About</a>
-        <a href="./Dashboard/">Dashboard</a>
+        <a href="./Dashboard/" onclick="goToDashboard(event)">Dashboard</a>
         <button id="loginBtn" class="admin-btn" onclick="showLoginModal()">Login</button>
         <button id="signupBtn" class="admin-btn" onclick="showSignupModal()">Sign Up</button>
         <div id="userMenu" class="user-menu" style="display:none;">
@@ -282,7 +282,7 @@
         <a href="./#resources" onclick="toggleMobileMenu()">📚 Resources</a>
         <a href="./About/" onclick="toggleMobileMenu()">ℹ️ About</a>
 
-        <a href="./Dashboard/" onclick="toggleMobileMenu()">📊 Dashboard</a>
+        <a href="./Dashboard/" onclick="toggleMobileMenu(); goToDashboard(event)">📊 Dashboard</a>
         <div class="mobile-sidebar-divider"></div>
         <button id="mobileLoginBtn" class="mobile-sidebar-btn" onclick="showLoginModal(); toggleMobileMenu();">🔐
           Login</button>
@@ -700,6 +700,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
   <script src="api-config.js"></script>
+  <script src="toast.js"></script>
   <script src="landing.js"></script>
   <script>
     

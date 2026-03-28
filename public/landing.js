@@ -83,6 +83,18 @@ function closeSignupModal(){ document.getElementById('signupModal').style.displa
 function switchToSignup()  { closeLoginModal();  showSignupModal(); }
 function switchToLogin()   { closeSignupModal(); showLoginModal();  }
 
+// Intercept Dashboard links — show login modal if not logged in
+function goToDashboard(e) {
+  if (e) e.preventDefault();
+  if (isLoggedIn) {
+    window.location.href = './Dashboard/';
+  } else {
+    // Store intent so after login we redirect to Dashboard
+    window._loginRedirect = './Dashboard/';
+    showLoginModal();
+  }
+}
+
 async function handleLogin(e) {
   e.preventDefault();
   const email    = document.getElementById('loginEmail').value;
@@ -99,7 +111,10 @@ async function handleLogin(e) {
     localStorage.setItem('adminToken', data.session.access_token);
     isLoggedIn = true;
     closeLoginModal(); updateUI();
-    alert('Login successful!');
+    // Redirect to Dashboard if that was the intent, otherwise stay
+    if (window._loginRedirect) {
+      window.location.href = window._loginRedirect;
+    }
   } catch (err) { alert('Login failed: ' + err.message); }
 }
 
