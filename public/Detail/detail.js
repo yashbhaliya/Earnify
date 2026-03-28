@@ -194,7 +194,7 @@ function displayResourceDetails(isPurchased = false) {
       <h1>${currentResource.title}</h1>
       <p class="description">${currentResource.description}</p>
       <div class="resource-meta-row">
-        <div class="resource-meta-item"><i class="fas fa-rupee-sign"></i><strong>₹${currentResource.price}</strong></div>
+        <div class="resource-meta-item"><strong>₹${currentResource.price}</strong></div>
         <div class="resource-meta-item"><i class="fas fa-tag"></i><strong>${currentResource.type.toUpperCase()}</strong></div>
         <div class="resource-meta-item"><i class="fas fa-bolt"></i><strong>Instant Access</strong></div>
         <div class="resource-meta-item"><i class="fas fa-infinity"></i><strong>Lifetime Access</strong></div>
