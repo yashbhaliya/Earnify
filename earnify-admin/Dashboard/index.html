@@ -889,6 +889,13 @@
       .donut-center { font-size: 11px; }
       .legend-item  { font-size: 11px; }
       .chart-wrap canvas { max-height: 220px; }
+      /* bar chart wrapper on mobile — allow scroll if tall */
+      #barChartWrap {
+        overflow-y: auto;
+        overflow-x: hidden;
+        max-height: 320px;
+        -webkit-overflow-scrolling: touch;
+      }
     }
   </style>
 </head>
@@ -1023,7 +1030,7 @@
       <div class="chart-header">
         <div>
           <div class="chart-title">📊 Revenue per Resources</div>
-          <div class="chart-sub">Top resources by revenue earned</div>
+          <div class="chart-sub">Revenue share by resource</div>
         </div>
         <div class="chart-filters">
           <select id="resourceFilter" class="filter-select" onchange="filterResourceChart()">
@@ -1032,20 +1039,16 @@
             <option value="top10" selected>Top 10</option>
             <option value="top15">Top 15</option>
           </select>
-          <select id="sortFilter" class="filter-select" onchange="filterResourceChart()">
-            <option value="revenue" selected>Highest Revenue</option>
-            <option value="purchases">Most Purchases</option>
-            <option value="avgPrice">Highest Avg Price</option>
-            <option value="name">Name (A-Z)</option>
-          </select>
         </div>
       </div>
-      <div style="position:relative;width:100%;">
-        <canvas id="barChart"></canvas>
-        <div id="barChartEmpty" style="display:none;text-align:center;padding:40px 20px;">
-          <div style="font-size:40px;opacity:.3;margin-bottom:10px;">📊</div>
-          <div style="font-size:13px;color:#94a3b8;font-weight:600;">No resource data available</div>
-        </div>
+      <div class="chart-wrap donut-wrap" style="width:220px;height:220px;margin:0 auto 20px;">
+        <canvas id="resourceDonutChart"></canvas>
+        <div class="donut-center" id="resourceDonutCenter">—</div>
+      </div>
+      <div class="donut-legend" id="resourceDonutLegend"></div>
+      <div id="resourceDonutEmpty" style="display:none;text-align:center;padding:40px 20px;">
+        <div style="font-size:40px;opacity:.25;margin-bottom:10px;">📊</div>
+        <div style="font-size:13px;color:#94a3b8;font-weight:600;">No resource data available</div>
       </div>
     </div>
   </div>

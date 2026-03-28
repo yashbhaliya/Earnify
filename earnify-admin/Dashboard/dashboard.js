@@ -263,146 +263,91 @@ function filterDayChart() {
   renderDayChart(days);
 }
 
-function renderResourceChart(limit = 10, sortBy = 'revenue') {
-  const canvas  = document.getElementById('barChart');
-  const emptyEl = document.getElementById('barChartEmpty');
+function renderResourceChart(limit = 10) {
+  const canvas  = document.getElementById('resourceDonutChart');
+  const emptyEl = document.getElementById('resourceDonutEmpty');
+  const legend  = document.getElementById('resourceDonutLegend');
+  const center  = document.getElementById('resourceDonutCenter');
   if (!canvas) return;
 
   if (_barChart) { _barChart.destroy(); _barChart = null; }
 
-  // Build per-resource stats
+  // Build per-resource revenue
   const resourceData = {};
   _barChartData.forEach(p => {
     const title = p.resourceTitle;
     if (!title) return;
     const unitPrice = _resourcePriceMap[title] ?? p.unitPrice ?? 0;
-    if (!resourceData[title]) resourceData[title] = { revenue: 0, purchases: 0, unitPrice };
+    if (!resourceData[title]) resourceData[title] = { revenue: 0, purchases: 0 };
     resourceData[title].revenue   += unitPrice;
     resourceData[title].purchases += 1;
   });
 
-  let sorted = Object.entries(resourceData).map(([name, d]) => ({
-    name,
-    revenue:   parseFloat(d.revenue.toFixed(2)),
-    purchases: d.purchases,
-    unitPrice: parseFloat(d.unitPrice.toFixed(2))
-  }));
+  let sorted = Object.entries(resourceData)
+    .map(([name, d]) => ({ name, revenue: parseFloat(d.revenue.toFixed(2)), purchases: d.purchases }))
+    .sort((a, b) => b.revenue - a.revenue);
 
   if (!sorted.length) {
     canvas.style.display = 'none';
     if (emptyEl) emptyEl.style.display = 'block';
+    if (legend)  legend.innerHTML = '';
     return;
   }
-
   canvas.style.display = '';
   if (emptyEl) emptyEl.style.display = 'none';
 
-  switch (sortBy) {
-    case 'purchases': sorted.sort((a, b) => b.purchases - a.purchases); break;
-    case 'avgPrice':  sorted.sort((a, b) => b.unitPrice  - a.unitPrice); break;
-    case 'name':      sorted.sort((a, b) => a.name.localeCompare(b.name)); break;
-    default:          sorted.sort((a, b) => b.revenue    - a.revenue);   break;
+  const limitNum = (limit === 'all' || isNaN(Number(limit))) ? sorted.length : Math.min(Number(limit), sorted.length);
+  const top    = sorted.slice(0, limitNum);
+  const others = sorted.slice(limitNum);
+  if (others.length) {
+    top.push({ name: 'Others', revenue: others.reduce((s, r) => s + r.revenue, 0), purchases: others.reduce((s, r) => s + r.purchases, 0) });
   }
 
-  const limitNum = (limit === 'all' || isNaN(Number(limit))) ? sorted.length : Math.min(Number(limit), sorted.length);
-  sorted = sorted.slice(0, limitNum);
+  const PALETTE = ['#667eea','#10b981','#f59e0b','#f5576c','#06b6d4','#8b5cf6','#ec4899','#14b8a6','#f97316','#84cc16','#94a3b8'];
+  const labels  = top.map(r => r.name);
+  const values  = top.map(r => r.revenue);
+  const colors  = top.map((_, i) => PALETTE[i % PALETTE.length]);
+  const total   = values.reduce((s, v) => s + v, 0);
 
-  // Reverse so highest value is at top
-  sorted.reverse();
-
-  const labels = sorted.map(r => r.name.length > 28 ? r.name.substring(0, 28) + '...' : r.name);
-  const values = sorted.map(r => {
-    if (sortBy === 'purchases') return r.purchases;
-    if (sortBy === 'avgPrice')  return r.unitPrice;
-    return r.revenue;
-  });
-
-  const TYPE_COLORS = {
-    pdf:       '#667eea',
-    excel:     '#10b981',
-    exam:      '#f59e0b',
-    freelance: '#f5576c',
-    other:     '#a78bfa'
-  };
-
-  const barCtx = canvas.getContext('2d');
-  const bgColors = sorted.map(r => {
-    const type = _resourceTypeMap[r.name] || 'other';
-    const color = TYPE_COLORS[type] || TYPE_COLORS.other;
-    const grad = barCtx.createLinearGradient(0, 0, 400, 0);
-    grad.addColorStop(0, color);
-    grad.addColorStop(1, color + '55');
-    return grad;
-  });
-  const borderColors = sorted.map(r => TYPE_COLORS[_resourceTypeMap[r.name] || 'other'] || TYPE_COLORS.other);
-
-  const barHeight = 36;
-  const chartHeight = Math.max(200, sorted.length * barHeight + 60);
-  canvas.style.height = chartHeight + 'px';
-
-  const isMoney  = sortBy !== 'purchases';
-  const axisLabel = sortBy === 'purchases' ? 'Purchases' : sortBy === 'avgPrice' ? 'Unit Price (₹)' : 'Total Revenue (₹)';
-
-  _barChart = new Chart(barCtx, {
-    type: 'bar',
-    data: {
-      labels,
-      datasets: [{
-        label: axisLabel,
-        data: values,
-        backgroundColor: bgColors,
-        borderColor: borderColors,
-        borderWidth: 0,
-        borderRadius: 6,
-        borderSkipped: false
-      }]
-    },
+  const ctx = canvas.getContext('2d');
+  _barChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: { labels, datasets: [{ data: values, backgroundColor: colors, borderWidth: 3, borderColor: '#fff', hoverOffset: 10 }] },
     options: {
-      indexAxis: 'y',
+      cutout: '70%',
       responsive: true,
-      maintainAspectRatio: false,
+      maintainAspectRatio: true,
       plugins: {
         legend: { display: false },
         tooltip: {
           callbacks: {
-            title: ctx => sorted[ctx[0].dataIndex]?.name || '',
             label: ctx => {
-              const r = sorted[ctx.dataIndex];
-              if (!r) return '';
-              if (sortBy === 'purchases') return ` ${r.purchases} sales  •  unit: ${fmt(r.unitPrice)}`;
-              if (sortBy === 'avgPrice')  return ` unit: ${fmt(r.unitPrice)}  •  ${r.purchases} sales`;
-              return ` ${fmt(r.revenue)}  •  ${r.purchases} sales  •  ${fmt(r.unitPrice)}/unit`;
+              const r = top[ctx.dataIndex];
+              const pct = total > 0 ? ((r.revenue / total) * 100).toFixed(1) : 0;
+              return ` ${fmt(r.revenue)}  (${pct}%)  •  ${r.purchases} sales`;
             }
-          }
-        }
-      },
-      scales: {
-        x: {
-          beginAtZero: true,
-          grid: { color: 'rgba(0,0,0,0.05)' },
-          ticks: {
-            font: { size: 11 },
-            color: '#94a3b8',
-            callback: v => isMoney ? ('₹' + (v >= 1000 ? (v/1000).toFixed(1) + 'k' : v)) : v
-          }
-        },
-        y: {
-          grid: { display: false },
-          ticks: {
-            font: { size: 12, weight: '600' },
-            color: '#334155'
           }
         }
       }
     }
   });
+
+  if (center) center.innerHTML = `${fmt(total)}<br><span style="font-size:10px;color:#94a3b8;font-weight:500;">Total Revenue</span>`;
+
+  if (legend) legend.innerHTML = top.map((r, i) => {
+    const pct = total > 0 ? ((r.revenue / total) * 100).toFixed(1) : 0;
+    const label = r.name.length > 22 ? r.name.substring(0, 22) + '…' : r.name;
+    return `<div class="legend-item">
+      <span class="legend-label"><span class="legend-dot" style="background:${colors[i]}"></span>${label}</span>
+      <span class="legend-val">${fmt(r.revenue)} <span style="font-size:10px;color:#94a3b8;font-weight:500;">${pct}%</span></span>
+    </div>`;
+  }).join('');
 }
 
 function filterResourceChart() {
   const limitVal = document.getElementById('resourceFilter')?.value || 'top10';
-  const sortBy   = document.getElementById('sortFilter')?.value || 'revenue';
   const limit    = limitVal === 'all' ? 'all' : parseInt(limitVal.replace('top', ''));
-  renderResourceChart(limit, sortBy);
+  renderResourceChart(limit);
 }
 
 function renderCharts(available, totalGross, totalWithdrawn, platformFees, totalPending, purchases, userEmail) {
@@ -436,9 +381,9 @@ function renderCharts(available, totalGross, totalWithdrawn, platformFees, total
       </div>`).join('');
   }
 
-  // ── Bar Chart - Revenue per Resources ──
-  const barCtx = document.getElementById('barChart')?.getContext('2d');
-  if (barCtx) {
+  // ── Resource Donut Chart ──
+  const resCtx = document.getElementById('resourceDonutChart')?.getContext('2d');
+  if (resCtx) {
     db.from('resources').select('id, title, price, type').eq('user_email', userEmail)
       .then(async ({ data: resources }) => {
         _resourcePriceMap = {};
