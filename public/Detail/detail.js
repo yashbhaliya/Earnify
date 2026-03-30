@@ -108,7 +108,6 @@ async function handleLogin(e) {
     setTimeout(() => { closeLoginModal(); updateUI(); loadResourceDetails(); }, 700);
   } catch (err) { _amSetErr('Login failed: ' + err.message); if (btn) { btn.disabled=false; btn.textContent='Log In'; } }
 }
-}
 
 async function handleSignup(e) {
   e.preventDefault();

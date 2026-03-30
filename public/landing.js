@@ -391,7 +391,7 @@ async function handleEmailVerification() {
     window.location.hash = '';
   }
 }
-handleEmailVerification();
+window.addEventListener('load', handleEmailVerification);
 
 function toggleMobileMenu() {
   document.getElementById('mobileSidebar')?.classList.toggle('active');
