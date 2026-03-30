@@ -358,8 +358,10 @@ function changePage(page) {
 function filterResources(type) {
   currentFilter = type;
   currentPage   = 1;
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-  event.target.classList.add('active');
+  document.querySelectorAll('.filter-btn').forEach(b => {
+    const btnType = b.getAttribute('onclick')?.match(/'(\w+)'/)?.[1] || 'all';
+    b.classList.toggle('active', btnType === type);
+  });
   showLoader();
   scrollToResources();
   const filtered = type === 'all' ? allResources : allResources.filter(r => r.type === type);
