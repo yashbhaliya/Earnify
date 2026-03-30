@@ -92,6 +92,20 @@ function _amTab(tab) {
   const ok  = document.getElementById('amOk');  if (ok)  ok.textContent  = '';
 }
 
+function _amSetErr(msg) {
+  const el = document.getElementById('amErr');
+  if (el) { el.textContent = msg; el.style.display = msg ? 'block' : 'none'; }
+  const ok = document.getElementById('amOk');
+  if (ok) { ok.textContent = ''; ok.style.display = 'none'; }
+}
+
+function _amSetOk(msg) {
+  const el = document.getElementById('amOk');
+  if (el) { el.textContent = msg; el.style.display = msg ? 'block' : 'none'; }
+  const err = document.getElementById('amErr');
+  if (err) { err.textContent = ''; err.style.display = 'none'; }
+}
+
 function _amTogglePw(id, btn) {
   const inp = document.getElementById(id);
   if (!inp) return;
