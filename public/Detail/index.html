@@ -109,56 +109,134 @@
     </div>
   </div>
 
-  <!-- ── Auth Modal (Login + Signup) ── -->
-  <div id="loginModal" class="auth-modal-overlay" onclick="if(event.target===this)closeLoginModal()">
-    <div class="auth-modal-box" style="position:relative;">
-      <button class="am-close" onclick="closeLoginModal()">&times;</button>
+  <!-- Auth Modal -->
+  <div id="loginModal" class="auth-modal-overlay">
+    <div class="auth-modal-box">
+
+      <!-- LEFT: Site Info -->
       <div class="am-left">
-        <div class="am-brand"><div class="am-logo-box">💰</div><span class="am-brand-name">Earnify</span></div>
-        <div class="am-marketing">
-          <h2>🚀 Turn Skills into Income</h2>
-          <p>Buy premium resources or sell your own. Join thousands of students and freelancers.</p>
+        <div class="am-brand">
+          <div class="am-logo-box">💰</div>
+          <span class="am-brand-name">Earnify</span>
+        </div>
+
+        <div class="am-left-body">
+          <div class="am-headline">
+            <h2>Turn Skills into Income 🚀</h2>
+            <p>Sell notes, templates &amp; services. Buy what you need. All in one place.</p>
+          </div>
+
+          <div class="am-stats">
+            <div class="am-stat"><div class="am-stat-num">500+</div><div class="am-stat-lbl">Resources</div></div>
+            <div class="am-stat"><div class="am-stat-num">1,200+</div><div class="am-stat-lbl">Buyers</div></div>
+            <div class="am-stat"><div class="am-stat-num">5%</div><div class="am-stat-lbl">Fee Only</div></div>
+          </div>
+
+          <div class="am-features">
+            <div class="am-feature"><div class="am-feature-icon">✅</div><div class="am-feature-text"><strong>Free to list your resources</strong></div></div>
+            <div class="am-feature"><div class="am-feature-icon">⚡</div><div class="am-feature-text"><strong>Instant access after purchase</strong></div></div>
+            <div class="am-feature"><div class="am-feature-icon">🔒</div><div class="am-feature-text"><strong>Secure payments via Razorpay</strong></div></div>
+            <div class="am-feature"><div class="am-feature-icon">💸</div><div class="am-feature-text"><strong>Only 5% fee on withdrawal</strong></div></div>
+          </div>
+
           <div class="am-testimonial">
-            <p class="quote">&ldquo;I earned my first ₹5,000 selling my exam notes here!&rdquo;</p>
-            <p class="author">&mdash; Bhaliya Yash, Student</p>
+            <div class="am-stars">★★★★★</div>
+            <p class="am-quote">&ldquo;Earned my first ₹5,000 in two weeks selling my notes!&rdquo;</p>
+            <div class="am-author">
+              <div class="am-avatar">B</div>
+              <div class="am-author-info"><strong>Bhaliya Yash</strong><span>Student &bull; Verified Seller</span></div>
+            </div>
           </div>
         </div>
-        <div class="am-trust"><p>Join 1,200+ happy buyers.</p><p class="sub">Secured by Supabase &amp; Razorpay.</p></div>
+
+        <div class="am-trust">
+          <div class="am-trust-item">🔒 AES-256 Encrypted</div>
+          <div class="am-trust-item">✅ 1,200+ Users</div>
+          <div class="am-trust-item">🏦 Razorpay Secured</div>
+          <div class="am-trust-item">⚡ Instant Delivery</div>
+        </div>
       </div>
+
+      <!-- RIGHT: Form -->
       <div class="am-right">
+        <button class="am-close" onclick="closeLoginModal()">&times;</button>
         <div class="am-form-inner">
-        <div class="am-tabs">
-          <button class="am-tab active" id="amTabLogin" onclick="_amTab('login')">Login</button>
-          <button class="am-tab" id="amTabSignup" onclick="_amTab('signup')">Sign Up</button>
-        </div>
-        <div id="amErr" class="am-msg error"></div>
-        <div id="amOk"  class="am-msg success"></div>
-        <div id="amLoginForm">
-          <div class="am-header"><h2>Welcome Back</h2><p>Login to purchase and access resources.</p></div>
-          <form onsubmit="handleLogin(event)">
-            <div class="am-input-group"><label>Email</label><input class="am-input" type="email" id="loginEmail" placeholder="name@email.com" required autocomplete="email"></div>
-            <div class="am-input-group">
-              <div class="am-label-row"><label>Password</label><a href="#" class="am-forgot">Forgot?</a></div>
-              <div class="am-pw-wrap"><input class="am-input" type="password" id="loginPassword" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" required autocomplete="current-password"><button type="button" class="am-toggle-pass" onclick="_amTogglePw('loginPassword',this)">👁️</button></div>
+
+          <div class="am-tabs">
+            <button class="am-tab active" id="amTabLogin" onclick="_amTab('login')">Login</button>
+            <button class="am-tab" id="amTabSignup" onclick="_amTab('signup')">Sign Up</button>
+          </div>
+
+          <div id="amErr" class="am-msg error"></div>
+          <div id="amOk"  class="am-msg success"></div>
+
+          <!-- Login -->
+          <div id="amLoginForm">
+            <div class="am-header">
+              <h2>Welcome back 👋</h2>
+              <p>Login to access your resources, earnings &amp; dashboard.</p>
             </div>
-            <button type="submit" class="am-submit-btn">Log In</button>
-          </form>
-          <p class="am-switch">New to Earnify? <a onclick="_amTab('signup')">Create an account</a></p>
+            <form onsubmit="handleLogin(event)">
+              <div class="am-input-group">
+                <label>Email Address</label>
+                <input class="am-input" type="email" id="loginEmail" placeholder="you@example.com" required autocomplete="email">
+              </div>
+              <div class="am-input-group">
+                <div class="am-label-row">
+                  <label>Password</label>
+                  <a href="#" class="am-forgot">Forgot password?</a>
+                </div>
+                <div class="am-pw-wrap">
+                  <input class="am-input" type="password" id="loginPassword" placeholder="Enter your password" required autocomplete="current-password">
+                  <button type="button" class="am-toggle-pass" onclick="_amTogglePw('loginPassword',this)">
+                    <svg class="eye-on" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                    <svg class="eye-off" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                  </button>
+                </div>
+              </div>
+              <button type="submit" class="am-submit-btn">🚀 Log In to Earnify</button>
+            </form>
+            <p class="am-switch">New to Earnify? <a onclick="_amTab('signup')">Create a free account</a></p>
+          </div>
+
+          <!-- Sign Up -->
+          <div id="amSignupForm" style="display:none;">
+            <div class="am-header">
+              <h2>Join Earnify 🎉</h2>
+              <p>Free account. Start earning from your knowledge today.</p>
+            </div>
+            <form onsubmit="handleSignup(event)">
+              <div class="am-input-group">
+                <label>Full Name</label>
+                <input class="am-input" type="text" id="signupName" placeholder="Your full name" required autocomplete="name">
+              </div>
+              <div class="am-input-group">
+                <label>Email Address</label>
+                <input class="am-input" type="email" id="signupEmail" placeholder="you@example.com" required autocomplete="email">
+              </div>
+              <div class="am-input-group">
+                <label>Password</label>
+                <div class="am-pw-wrap">
+                  <input class="am-input" type="password" id="signupPassword" placeholder="Min 6 characters" required autocomplete="new-password">
+                  <button type="button" class="am-toggle-pass" onclick="_amTogglePw('signupPassword',this)">
+                    <svg class="eye-on" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                    <svg class="eye-off" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                  </button>
+                </div>
+              </div>
+              <div class="am-input-group">
+                <label>Confirm Password</label>
+                <input class="am-input" type="password" id="signupConfirmPassword" placeholder="Re-enter your password" required autocomplete="new-password">
+              </div>
+              <button type="submit" class="am-submit-btn">✨ Create Free Account</button>
+            </form>
+            <p class="am-switch">Already have an account? <a onclick="_amTab('login')">Log in here</a></p>
+          </div>
+
+          <div class="am-security">🔒 Secured with AES-256 encryption</div>
         </div>
-        <div id="amSignupForm" style="display:none;">
-          <div class="am-header"><h2>Create Account</h2><p>Start buying or selling in minutes.</p></div>
-          <form onsubmit="handleSignup(event)">
-            <div class="am-input-group"><label>Full Name</label><input class="am-input" type="text" id="signupName" placeholder="Your full name" required autocomplete="name"></div>
-            <div class="am-input-group"><label>Email</label><input class="am-input" type="email" id="signupEmail" placeholder="name@email.com" required autocomplete="email"></div>
-            <div class="am-input-group"><label>Password</label><div class="am-pw-wrap"><input class="am-input" type="password" id="signupPassword" placeholder="Min 6 characters" required autocomplete="new-password"><button type="button" class="am-toggle-pass" onclick="_amTogglePw('signupPassword',this)">👁️</button></div></div>
-            <div class="am-input-group"><label>Confirm Password</label><input class="am-input" type="password" id="signupConfirmPassword" placeholder="Re-enter password" required autocomplete="new-password"></div>
-            <button type="submit" class="am-submit-btn">Create Account</button>
-          </form>
-          <p class="am-switch">Already have an account? <a onclick="_amTab('login')">Login</a></p>
-        </div>
-        <div class="am-security">Your data is secured with AES-256 encryption</div>
-        </div><!-- /am-form-inner -->
       </div>
+
     </div>
   </div>
   <div id="signupModal" style="display:none;"></div>
