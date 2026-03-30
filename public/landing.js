@@ -96,7 +96,10 @@ function _amTogglePw(id, btn) {
   const inp = document.getElementById(id);
   if (!inp) return;
   inp.type = inp.type === 'password' ? 'text' : 'password';
-  btn.textContent = inp.type === 'password' ? '👁️' : '🙈';
+  const eyeOn  = btn.querySelector('.eye-on');
+  const eyeOff = btn.querySelector('.eye-off');
+  if (eyeOn)  eyeOn.style.display  = inp.type === 'password' ? '' : 'none';
+  if (eyeOff) eyeOff.style.display = inp.type === 'password' ? 'none' : '';
 }
 
 // Intercept Dashboard links — show login modal if not logged in
