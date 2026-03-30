@@ -378,44 +378,28 @@ async function loadResources(type) {
   }
   
   // Show shimmer loading
-  grid.innerHTML = `
-    <div class="shimmer-card">
-      <div class="shimmer-icon"></div>
-      <div class="shimmer-title"></div>
-      <div class="shimmer-description"></div>
-      <div class="shimmer-description"></div>
-      <div class="shimmer-price"></div>
-      <div class="shimmer-buttons">
-        <div class="shimmer-button"></div>
-        <div class="shimmer-button"></div>
-        <div class="shimmer-button"></div>
-      </div>
-    </div>
-    <div class="shimmer-card">
-      <div class="shimmer-icon"></div>
-      <div class="shimmer-title"></div>
-      <div class="shimmer-description"></div>
-      <div class="shimmer-description"></div>
-      <div class="shimmer-price"></div>
-      <div class="shimmer-buttons">
-        <div class="shimmer-button"></div>
-        <div class="shimmer-button"></div>
-        <div class="shimmer-button"></div>
-      </div>
-    </div>
-    <div class="shimmer-card">
-      <div class="shimmer-icon"></div>
-      <div class="shimmer-title"></div>
-      <div class="shimmer-description"></div>
-      <div class="shimmer-description"></div>
-      <div class="shimmer-price"></div>
-      <div class="shimmer-buttons">
-        <div class="shimmer-button"></div>
-        <div class="shimmer-button"></div>
-        <div class="shimmer-button"></div>
-      </div>
-    </div>
-  `;
+  if (window.innerWidth > 768) {
+    const shimRow = `<tr>
+      <td><div class="sh sh-sm"></div></td>
+      <td><div class="sh" style="width:64px;height:22px;border-radius:20px;"></div></td>
+      <td><div class="sh sh-md"></div></td>
+      <td><div class="sh sh-lg"></div></td>
+      <td><div class="sh sh-sm"></div></td>
+      <td><div style="display:flex;gap:6px;">
+        <div class="sh" style="width:50px;height:28px;border-radius:7px;"></div>
+        <div class="sh" style="width:42px;height:28px;border-radius:7px;"></div>
+        <div class="sh" style="width:54px;height:28px;border-radius:7px;"></div>
+      </div></td>
+    </tr>`;
+    grid.innerHTML = `<div class="res-table-wrap">
+      <table class="res-table">
+        <thead><tr><th>#</th><th>Type</th><th>Title</th><th>Description</th><th>Price</th><th>Actions</th></tr></thead>
+        <tbody class="shimmer-tbody">${shimRow.repeat(6)}</tbody>
+      </table></div>`;
+  } else {
+    const sc = `<div class="shimmer-card"><div class="shimmer-icon"></div><div class="shimmer-title"></div><div class="shimmer-description"></div><div class="shimmer-description"></div><div class="shimmer-price"></div><div class="shimmer-buttons"><div class="shimmer-button"></div><div class="shimmer-button"></div><div class="shimmer-button"></div></div></div>`;
+    grid.innerHTML = sc + sc + sc;
+  }
   
   try {
     const res = await fetch(API_CONFIG.getURL(API_CONFIG.endpoints.resources), {
@@ -462,19 +446,37 @@ async function loadResources(type) {
       return;
     }
     
-    grid.innerHTML = resources.map(r => `
-      <div class="resource-card">
-        <div class="resource-icon">${getTypeIcon(r.type)}</div>
-        <h3>${r.title}</h3>
-        <p>${r.description}</p>
-        <div class="resource-price">₹${r.price}</div>
-        <div class="resource-actions">
-          <button onclick="openFile(${r.id})" class="btn-view">Open</button>
-          <button onclick="editResource(${r.id})" class="btn-edit"> Edit</button>
-          <button onclick="deleteResource(${r.id})" class="btn-delete">Delete</button>
-        </div>
-      </div>
-    `).join('');
+    if (window.innerWidth > 768) {
+      grid.innerHTML = `<div class="res-table-wrap"><table class="res-table">
+        <thead><tr><th>#</th><th>Type</th><th>Title</th><th>Description</th><th>Price</th><th>Actions</th></tr></thead>
+        <tbody>${resources.map((r, i) => `
+          <tr>
+            <td>${i + 1}</td>
+            <td><span class="res-badge res-badge-${r.type}"><img src="/file/${r.type === 'freelance' ? 'service' : r.type}.jpg" alt="${r.type}" style="width:22px;height:22px;object-fit:contain;border-radius:4px;vertical-align:middle;margin-right:5px;">${r.type}</span></td>
+            <td><strong>${r.title}</strong></td>
+            <td class="res-desc">${r.description}</td>
+            <td><strong>&#8377;${r.price}</strong></td>
+            <td><div class="res-actions">
+              <button onclick="openFile(${r.id})" class="btn-view">Open</button>
+              <button onclick="editResource(${r.id})" class="btn-edit">Edit</button>
+              <button onclick="deleteResource(${r.id})" class="btn-delete">Delete</button>
+            </div></td>
+          </tr>`).join('')}
+        </tbody></table></div>`;
+    } else {
+      grid.innerHTML = resources.map(r => `
+        <div class="resource-card">
+          <div class="resource-icon">${getTypeIcon(r.type)}</div>
+          <h3>${r.title}</h3>
+          <p>${r.description}</p>
+          <div class="resource-price">&#8377;${r.price}</div>
+          <div class="resource-actions">
+            <button onclick="openFile(${r.id})" class="btn-view">Open</button>
+            <button onclick="editResource(${r.id})" class="btn-edit"> Edit</button>
+            <button onclick="deleteResource(${r.id})" class="btn-delete">Delete</button>
+          </div>
+        </div>`).join('');
+    }
   } catch (error) {
     console.error('Error loading resources:', error);
     grid.innerHTML = `

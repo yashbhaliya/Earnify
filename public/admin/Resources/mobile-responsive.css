@@ -147,12 +147,7 @@
         display: none;
     }
 
-    /* --- Responsive Grid --- */
-    .resource-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(100%, 1fr)); /* Stack on small screens */
-        gap: 15px;
-    }
+    
 
     /* --- Modals (Full screen on mobile) --- */
     .modal-content {
