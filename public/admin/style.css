@@ -625,11 +625,7 @@ button:last-child:hover {
   box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
 }
 
-.resource-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 25px;
-}
+
 
 .resource-card {
   background: #ffffff;
@@ -3022,11 +3018,6 @@ color: #3b82f6;
   box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
 }
 
-.resource-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 25px;
-}
 
 .resource-card {
   background: white;
