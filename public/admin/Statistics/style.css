@@ -306,11 +306,13 @@ table {
   background: #ffffff;
   border-radius: 15px;
   overflow: hidden;
+  
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
 }
 
 thead {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  
 }
 
 th {
@@ -318,9 +320,9 @@ th {
   padding: 18px;
   text-align: left;
   font-weight: 600;
-  border: none;
   text-transform: uppercase;
   font-size: 13px;
+   border-right :1px solid #e8e2e2;
   letter-spacing: 0.5px;
 }
 
@@ -328,6 +330,8 @@ td {
   padding: 15px 18px;
   border-bottom: 1px solid #e2e8f0;
   color: #475569;
+  background: #efefef;
+   /* border-right:1px solid #e8e2e2; */
 }
 
 tbody tr:hover {
@@ -407,6 +411,7 @@ button:last-child:hover {
   padding: 30px;
   border-radius: 15px;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  border: 2px solid #e2e8f0;
   margin-top: 30px;
 }
 
