@@ -137,17 +137,17 @@ body {
   text-decoration: none;
   font-weight: 500;
   font-size: 14px;
-  /* border-left: 3px solid transparent; */
-  /* border-radius: 0 10px 10px 0; */
+  border-left: 3px solid transparent;
+  border-radius: 0 10px 10px 0;
   margin: 2px 12px 2px 0;
   transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
 }
 
 .sidebar a:hover {
-  /* background: linear-gradient(90deg, rgba(59, 130, 246, 0.08) 0%, rgba(59, 130, 246, 0.04) 100%); */
-  /* border-left-color: #93c5fd; */
-  /* color: #2563eb; */
-  /* transform: translateX(4px); */
+  background: linear-gradient(90deg, rgba(59, 130, 246, 0.08) 0%, rgba(59, 130, 246, 0.04) 100%);
+  border-left-color: #93c5fd;
+  color: #2563eb;
+  transform: translateX(4px);
 }
 
 .sidebar a.active-link {
@@ -232,9 +232,8 @@ body {
   justify-content: center;
   gap: 8px;
   padding: 14px 20px;
-  color: black !important;
-  background: white;
-  border: 1px solid red;
+  color: #fff !important;
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
   border-radius: 10px;
   font-weight: 600;
   font-size: 14px;
@@ -242,15 +241,9 @@ body {
   cursor: pointer;
   text-decoration: none;
   transition: all 0.3s;
-  /* border: none; */
+  border: none;
   box-shadow: 0 2px 8px rgba(255, 255, 255, 0.3);
 }
-.logout-link:hover {
-  background: linear-gradient(90deg, rgba(255, 0, 0, 0.1) 0%, rgba(255, 0, 0, 0.2) 100%);
-  color: #dc2626;
-  transform: translateY(-2px);
-  /* box-shadow: 0 4px 12px rgba(255, 0, 0, 0.2); */
-} 
 
 
 
@@ -740,257 +733,6 @@ body {
 }
 
 /* ================================================
-   Resource Table View
-   ================================================ */
-.resource-table-wrapper {
-  width: 100%;
-  overflow-x: auto;
-  background: var(--bg-white);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-md);
-  margin-top: 24px;
-}
-
-.resource-table {
-  width: 100%;
-  border-collapse: collapse;
-  min-width: 800px;
-}
-
-.resource-table thead {
-  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-}
-
-.resource-table th {
-  padding: 16px 20px;
-  text-align: left;
-  color: white;
-  font-weight: 600;
-  font-size: 14px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  border: none;
-}
-
-.resource-table tbody tr {
-  border-bottom: 1px solid var(--border-light);
-  transition: all var(--transition-fast);
-}
-
-.resource-table tbody tr:hover {
-  background: linear-gradient(90deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
-}
-
-.resource-table tbody tr:last-child {
-  border-bottom: none;
-}
-
-.resource-table td {
-  padding: 16px 20px;
-  color: var(--text-primary);
-  font-size: 14px;
-  vertical-align: middle;
-}
-
-.resource-table td:first-child {
-  font-weight: 600;
-}
-
-.table-type-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 12px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 600;
-  text-transform: uppercase;
-}
-
-.table-type-badge.pdf {
-  background: rgba(239, 68, 68, 0.1);
-  color: #ef4444;
-}
-
-.table-type-badge.excel {
-  background: rgba(16, 185, 129, 0.1);
-  color: #10b981;
-}
-
-.table-type-badge.exam {
-  background: rgba(245, 158, 11, 0.1);
-  color: #f59e0b;
-}
-
-.table-type-badge.freelance {
-  background: rgba(139, 92, 246, 0.1);
-  color: #8b5cf6;
-}
-
-.table-type-badge img {
-  width: 16px;
-  height: 16px;
-  border-radius: 4px;
-}
-
-.table-title {
-  font-weight: 600;
-  color: var(--text-primary);
-  max-width: 250px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.table-description {
-  color: var(--text-secondary);
-  max-width: 300px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.table-price {
-  font-weight: 700;
-  font-size: 16px;
-  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.table-file {
-  color: var(--text-muted);
-  font-size: 13px;
-}
-
-.table-actions {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.table-actions button {
-  padding: 6px 12px;
-  border: none;
-  border-radius: var(--radius-sm);
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all var(--transition-fast);
-}
-
-.table-actions .btn-view {
-  background: rgba(59, 130, 246, 0.1);
-  color: #3b82f6;
-}
-
-.table-actions .btn-view:hover {
-  background: #3b82f6;
-  color: white;
-}
-
-.table-actions .btn-edit {
-  background: rgba(245, 158, 11, 0.1);
-  color: #f59e0b;
-}
-
-.table-actions .btn-edit:hover {
-  background: #f59e0b;
-  color: white;
-}
-
-.table-actions .btn-delete {
-  background: rgba(239, 68, 68, 0.1);
-  color: #ef4444;
-}
-
-.table-actions .btn-delete:hover {
-  background: #ef4444;
-  color: white;
-}
-
-.empty-row td {
-  padding: 0 !important;
-  border: none !important;
-}
-
-.empty-row .empty-state {
-  padding: 60px 20px;
-}
-
-/* Mobile Table Responsiveness */
-@media (max-width: 768px) {
-  .resource-table-wrapper {
-    border-radius: var(--radius-md);
-  }
-  
-  .resource-table {
-    display: block;
-    overflow-x: auto;
-  }
-  
-  .resource-table thead {
-    display: none;
-  }
-  
-  .resource-table tbody {
-    display: block;
-  }
-  
-  .resource-table tbody tr {
-    display: block;
-    margin-bottom: 16px;
-    border: 1px solid var(--border-light);
-    border-radius: var(--radius-md);
-    padding: 16px;
-    background: white;
-  }
-  
-  .resource-table tbody tr:hover {
-    background: white;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  }
-  
-  .resource-table td {
-    display: block;
-    padding: 8px 0;
-    border: none;
-    text-align: left;
-  }
-  
-  .resource-table td::before {
-    content: attr(data-label);
-    font-weight: 600;
-    color: var(--text-secondary);
-    display: block;
-    margin-bottom: 4px;
-    font-size: 12px;
-    text-transform: uppercase;
-  }
-  
-  .table-title,
-  .table-description {
-    max-width: 100%;
-    white-space: normal;
-  }
-  
-  .table-actions {
-    flex-direction: column;
-    gap: 8px;
-  }
-  
-  .table-actions button {
-    width: 100%;
-    justify-content: center;
-  }
-  
-  .empty-row td::before {
-    display: none;
-  }
-}
-
-/* ================================================
    Resource Grid - Grid View Only
    ================================================ */
 .resource-grid {
@@ -1001,9 +743,9 @@ body {
   min-height: 200px;
 }
 
-/* View Toggle - Hidden but functional */
+/* View Toggle */
 .view-toggle {
-  display: none;
+  display: flex;
   gap: 8px;
   margin-right: auto;
 }

@@ -48,7 +48,7 @@
     <a href="../Profile/" class="nav-link">👤 Profile</a>
     <a href="../Withdrawal/" class="nav-link">💸 Withdrawal</a>
     <a href="/" class="nav-link nav-link-divider">🏠 Main Site</a>
-    <!-- <a onclick="logout()" class="nav-link nav-link-logout"><span>🚪</span> Logout</a> -->
+    <a onclick="logout()" class="nav-link nav-link-logout"><span>🚪</span> Logout</a>
 
     <!-- User Profile Section -->
     <div class="sidebar-user" id="sidebarUser" style="display: none;">
@@ -131,6 +131,12 @@
             <h2>All Resources</h2>
             <span class="resource-count" id="allCount">0 items</span>
           </div>
+          <div class="view-toggle">
+            <button class="view-btn active" onclick="setView('grid')">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+              Grid
+            </button>
+          </div>
           <div class="add-buttons-group">
             <button class="add-btn pdf-btn" onclick="showAddModal('pdf')">
               <span class="btn-icon"><img src="/file/pdf.jpg" alt="PDF"
@@ -178,36 +184,7 @@
               </div>
             </div>
           </div>
-        
-        <!-- Table View -->
-        <div class="resource-table-wrapper">
-          <table class="resource-table" id="allTable">
-            <thead>
-              <tr>
-                <th>Type</th>
-                <th>Title</th>
-                <th>Description</th>
-                <th>Price</th>
-                <th>File</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody id="allTableBody">
-              <tr class="empty-row">
-                <td colspan="6">
-                  <div class="empty-state">
-                    <div class="empty-icon">📦</div>
-                    <h3>No Resources Yet</h3>
-                    <p>Click the buttons above to add your first resource!</p>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        
-        <!-- Grid View (Hidden) -->
-        <div class="resource-grid" id="allGrid" style="display: none;">
+        <div class="resource-grid" id="allGrid">
           <div class="empty-state">
             <div class="empty-icon">📦</div>
             <h3>No Resources Yet</h3>
