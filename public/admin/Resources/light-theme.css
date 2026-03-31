@@ -1,6 +1,6 @@
 /* light-theme.css */
 body.light-mode { background: #f1f5f9; }
-body.light-mode .sidebar { background: #fff; border-right: 1.5px solid #e2e8f0; }
+body.light-mode .sidebar { border-right: 1.5px solid #e2e8f0; }
 body.light-mode .main { background: transparent; }
 body.light-mode .resource-section { background: #fff; }
 body.light-mode .modal-content { background: #fff; }

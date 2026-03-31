@@ -362,89 +362,80 @@ function showTab(type) {
 async function loadResources(type) {
   const grid = document.getElementById(type + 'Grid');
   if (!grid) return;
-  
+
   const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
   const userEmail = currentUser.email;
-  
+
   if (!userEmail) {
-    grid.innerHTML = `
-      <div class="empty-state">
-        <div class="empty-icon">🔒</div>
-        <h3>Login Required</h3>
-        <p>Please login to view resources</p>
-      </div>
-    `;
+    grid.innerHTML = '<div class="empty-state"><div class="empty-icon">🔒</div><h3>Login Required</h3><p>Please login to view resources</p></div>';
     return;
   }
-  
-  // Show shimmer loading
-  // Show shimmer loading
-  if (window.innerWidth > 768) {
-    const sr = '<div class="res-item res-shimmer"><div class="sh" style="width:46px;height:46px;border-radius:10px;flex-shrink:0;"></div><div style="flex:1;display:flex;flex-direction:column;gap:6px;"><div class="sh sh-md"></div><div class="sh sh-lg"></div></div></div>'; grid.innerHTML = '<div style="display:flex;flex-direction:column;gap:8px;">' + sr.repeat(4) + '</div>';
-  } else { const sc = '<div class="shimmer-card"><div class="shimmer-icon"></div><div class="shimmer-title"></div><div class="shimmer-description"></div><div class="shimmer-price"></div><div class="shimmer-buttons"><div class="shimmer-button"></div><div class="shimmer-button"></div></div></div>'; grid.innerHTML = '<div class="res-grid">' + sc + sc + sc + sc + '</div>'; }
+
+  // Detect mobile by CSS media query — more reliable than innerWidth
+  const isMobile = window.matchMedia('(max-width: 768px)').matches;
+
+  // ── Show shimmer INSTANTLY before any fetch ──
+  if (isMobile) {
+    const sc = '<div class="res-card shimmer-active"><div class="res-card-top"><div class="sh-box" style="width:40px;height:40px;border-radius:9px;"></div><div class="sh-box" style="width:50px;height:18px;border-radius:10px;"></div></div><div class="res-card-body"><div class="sh-box" style="width:80%;height:14px;margin-bottom:6px;"></div><div class="sh-box" style="width:100%;height:11px;margin-bottom:4px;"></div><div class="sh-box" style="width:60%;height:11px;margin-bottom:8px;"></div><div class="sh-box" style="width:40%;height:16px;"></div></div><div class="res-card-actions"><div class="sh-box" style="flex:1;height:30px;border-radius:8px;"></div><div class="sh-box" style="flex:1;height:30px;border-radius:8px;"></div><div class="sh-box" style="flex:1;height:30px;border-radius:8px;"></div></div></div>';
+    grid.innerHTML = '<div class="res-grid">' + sc + sc + sc + sc + '</div>';
+    grid.querySelector('.res-grid').style.display = 'grid';
+  } else {
+    const sr = '<tr class="shimmer-active">' + [1,2,3,4,5].map(() => '<td><div class="sh-box" style="height:14px;border-radius:4px;"></div></td>').join('') + '</tr>';
+    grid.innerHTML = '<div class="res-table-wrap"><table class="res-table"><thead><tr><th>#</th><th>Type</th><th>Title</th><th>Price</th><th>Actions</th></tr></thead><tbody>' + sr.repeat(5) + '</tbody></table></div>';
+  }
 
   try {
-    const res = await fetch(API_CONFIG.getURL(API_CONFIG.endpoints.resources), {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
-    
-    if (!res.ok) {
-      throw new Error(`Server error: ${res.status}`);
+    // ── Cache: skip fetch on tab switch ──
+    if (!window._resourceCache) window._resourceCache = {};
+    const cacheKey = userEmail + '_' + type;
+
+    let resources;
+    if (window._resourceCache[cacheKey]) {
+      resources = window._resourceCache[cacheKey];
+    } else {
+      const url = API_CONFIG.getURL(API_CONFIG.endpoints.resources) +
+        '?user_email=' + encodeURIComponent(userEmail) +
+        (type !== 'all' ? '&type=' + encodeURIComponent(type) : '');
+      const res = await fetch(url, { method: 'GET', headers: { 'Content-Type': 'application/json' } });
+      if (!res.ok) throw new Error('Server error: ' + res.status);
+      const data = await res.json();
+      resources = Array.isArray(data) ? data.filter(r => r.user_email === userEmail) : [];
+      if (type !== 'all') resources = resources.filter(r => r.type === type);
+      window._resourceCache[cacheKey] = resources;
     }
-    
-    const allResources = await res.json();
-    
-    // Filter by user email and type
-    let resources = allResources.filter(r => r.user_email === userEmail);
-    if (type !== 'all') {
-      resources = resources.filter(r => r.type === type);
-    }
-    
-    // Update resource count
-    const countElement = document.getElementById(type + 'Count');
-    if (countElement) {
-      countElement.textContent = `${resources.length} item${resources.length !== 1 ? 's' : ''}`;
-    }
-    
+
+    // Update count badge
+    const countEl = document.getElementById(type + 'Count');
+    if (countEl) countEl.textContent = resources.length + ' item' + (resources.length !== 1 ? 's' : '');
+
+    // ── Empty state ──
     if (resources.length === 0) {
-      const emptyStates = {
-        all:       { img: '/file/all.jpg',     title: 'No Resources Yet',      text: 'Click the buttons above to add your first resource!' },
-        pdf:       { img: '/file/pdf.jpg',     title: 'No PDF Notes',          text: 'Go to "All Resources" tab to add PDF notes' },
-        excel:     { img: '/file/excel.jpg',   title: 'No Excel Templates',    text: 'Go to "All Resources" tab to add Excel templates' },
-        exam:      { img: '/file/exam.jpg',    title: 'No Exam Materials',     text: 'Go to "All Resources" tab to add exam materials' },
-        freelance: { img: '/file/service.jpg', title: 'No Freelance Services', text: 'Go to "All Resources" tab to add freelance services' }
-      };
-      const state = emptyStates[type] || emptyStates.all;
-      grid.innerHTML = `
-        <div class="empty-state">
-          <div class="empty-icon"><img src="${state.img}" alt="${type}" style="width:56px;height:56px;object-fit:contain;"></div>
-          <h3>${state.title}</h3>
-          <p>${state.text}</p>
-        </div>
-      `;
+      const es = { all:{img:'/file/all.jpg',title:'No Resources Yet',text:'Click the buttons above to add your first resource!'}, pdf:{img:'/file/pdf.jpg',title:'No PDF Notes',text:'Go to "All Resources" tab to add PDF notes'}, excel:{img:'/file/excel.jpg',title:'No Excel Templates',text:'Go to "All Resources" tab to add Excel templates'}, exam:{img:'/file/exam.jpg',title:'No Exam Materials',text:'Go to "All Resources" tab to add exam materials'}, freelance:{img:'/file/service.jpg',title:'No Freelance Services',text:'Go to "All Resources" tab to add freelance services'} };
+      const s = es[type] || es.all;
+      grid.innerHTML = '<div class="empty-state"><div class="empty-icon"><img src="' + s.img + '" alt="' + type + '" style="width:56px;height:56px;object-fit:contain;"></div><h3>' + s.title + '</h3><p>' + s.text + '</p></div>';
       return;
     }
-    
-    
-          if (window.innerWidth > 768) {
-            grid.innerHTML = '<div class="res-table-wrap"><table class="res-table"><thead><tr><th>#</th><th>Type</th><th>Title</th><th>Price</th><th>Actions</th></tr></thead><tbody>' + resources.map((r,i) => { const badge = {pdf:'res-badge-pdf',excel:'res-badge-excel',exam:'res-badge-exam',freelance:'res-badge-freelance'}[r.type]||''; return '<tr><td>' + (i+1) + '</td><td><span class="res-badge ' + badge + '">' + r.type + '</span></td><td><div class="res-title">' + r.title + '</div><div class="res-desc">' + r.description + '</div></td><td><strong>&#8377;' + r.price + '</strong></td><td><div class="res-actions"><button onclick="openFile(' + r.id + ')" class="btn-view">Open</button><button onclick="editResource(' + r.id + ')" class="btn-edit">Edit</button><button onclick="deleteResource(' + r.id + ')" class="btn-delete">Delete</button></div></td></tr>'; }).join('') + '</tbody></table></div>';
-          } else {
-            grid.innerHTML = '<div class="res-grid">' + resources.map(r => { const badge = {pdf:'res-badge-pdf',excel:'res-badge-excel',exam:'res-badge-exam',freelance:'res-badge-freelance'}[r.type]||''; const imgSrc = '/file/' + (r.type === 'freelance' ? 'service' : r.type) + '.jpg'; return '<div class="res-card"><div class="res-card-top"><img src="' + imgSrc + '" class="res-card-img" alt="' + r.type + '"><span class="res-badge ' + badge + '">' + r.type + '</span></div><div class="res-card-body"><div class="res-card-title">' + r.title + '</div><div class="res-card-desc">' + r.description + '</div><div class="res-card-price">&#8377;' + r.price + '</div></div><div class="res-card-actions"><button onclick="openFile(' + r.id + ')" class="btn-view">Open</button><button onclick="editResource(' + r.id + ')" class="btn-edit">Edit</button><button onclick="deleteResource(' + r.id + ')" class="btn-delete">Delete</button></div></div>'; }).join('') + '</div>';
-          }
+
+    const badges = {pdf:'res-badge-pdf',excel:'res-badge-excel',exam:'res-badge-exam',freelance:'res-badge-freelance'};
+
+    // ── Render ──
+    if (!isMobile) {
+      grid.innerHTML = '<div class="res-table-wrap"><table class="res-table"><thead><tr><th>#</th><th>Type</th><th>Title</th><th>Price</th><th>Actions</th></tr></thead><tbody>' +
+        resources.map((r,i) => { const b = badges[r.type]||''; return '<tr><td>'+(i+1)+'</td><td><span class="res-badge '+b+'">'+r.type+'</span></td><td><div class="res-title">'+r.title+'</div><div class="res-desc">'+r.description+'</div></td><td><strong>&#8377;'+r.price+'</strong></td><td><div class="res-actions"><button onclick="openFile('+r.id+')" class="btn-view">Open</button><button onclick="editResource('+r.id+')" class="btn-edit">Edit</button><button onclick="deleteResource('+r.id+')" class="btn-delete">Delete</button></div></td></tr>'; }).join('') +
+        '</tbody></table></div>';
+    } else {
+      grid.innerHTML = '<div class="res-grid">' +
+        resources.map(r => {
+          const imgSrc = '/file/' + (r.type === 'freelance' ? 'service' : r.type) + '.jpg';
+          return '<div class="res-card"><div class="res-card-top"><img src="'+imgSrc+'" class="res-card-img" alt="'+r.type+'"><span class="res-badge '+(badges[r.type]||'')+'">'+r.type+'</span></div><div class="res-card-body"><div class="res-card-title">'+r.title+'</div><div class="res-card-desc">'+r.description+'</div><div class="res-card-price">&#8377;'+r.price+'</div></div><div class="res-card-actions"><button onclick="openFile('+r.id+')" class="btn-view">Open</button><button onclick="editResource('+r.id+')" class="btn-edit">Edit</button><button onclick="deleteResource('+r.id+')" class="btn-delete">Delete</button></div></div>';
+        }).join('') + '</div>';
+      const rg = grid.querySelector('.res-grid');
+      if (rg) rg.style.display = 'grid';
+    }
 
   } catch (error) {
     console.error('Error loading resources:', error);
-    grid.innerHTML = `
-      <div class="empty-state">
-        <div class="empty-icon">⚠️</div>
-        <h3>Server Connection Error</h3>
-        <p>Please make sure the server is running at <strong>http://localhost:5000</strong></p>
-        <p style="margin-top: 10px; font-size: 12px; color: #ef4444;">${error.message}</p>
-      </div>
-    `;
+    grid.innerHTML = '<div class="empty-state"><div class="empty-icon">⚠️</div><h3>Connection Error</h3><p>' + error.message + '</p></div>';
   }
 }
 
@@ -612,6 +603,7 @@ async function editResource(id) {
 async function deleteResource(id) {
   if (!confirm('Delete this resource?')) return;
   await fetch(API_CONFIG.getURL(API_CONFIG.endpoints.resources) + '/' + id, { method: 'DELETE' });
+  window._resourceCache = {}; // clear cache after delete
   loadResources(currentType);
 }
 
