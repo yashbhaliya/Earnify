@@ -104,6 +104,7 @@ body {
   padding: 20px;
   border-top: 2px solid #e2e8f0;
   background: #ffffff;
+  flex-shrink: 0;
 }
 
 .user-info {

@@ -7,83 +7,28 @@
   <title>Resources - Earnify Admin</title>
   <link rel="icon" href="/file/logo1.jpeg" type="image/jpeg">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="light-theme.css">
-  <link rel="stylesheet" href="mobile-responsive.css">
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="./light-theme.css">
+  <link rel="stylesheet" href="./mobile-responsive.css">
   <style>
-    .sidebar-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 30px 30px;
-      border-bottom: 2px solid rgba(59, 130, 246, 0.2);
+    .resource-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 10px;
     }
-    .sidebar-header h2 {
-      padding: 0;
-      border-bottom: none;
-      margin: 0;
-      white-space: nowrap;
-    }
-    .sidebar-close-btn {
-      display: none;
-      background: none;
-      border: none;
-      font-size: 26px;
-      line-height: 1;
-      cursor: pointer;
-      color: #64748b;
-      padding: 2px 6px;
-      border-radius: 6px;
-      transition: background 0.2s, color 0.2s;
-      box-shadow: none !important;
-    }
-    .sidebar-close-btn:hover {
-      background: #f1f5f9;
-      color: #ef4444;
-    }
-    .logout-link {
-      background: white !important;
-      color: #1e293b !important;
-      border: 2px solid #ef4444 !important;
-      border-radius: 10px !important;
-      font-weight: 600 !important;
-      transition: all 0.3s !important;
-    }
-    .logout-link:hover {
-      background: rgb(251, 156, 156) !important;
-      color: white !important;
-      border-color: #dc2626 !important;
-      transform: translateY(-2px) !important;
-    }
-    .sidebar.active .sidebar-close-btn { display: block; }
-    @media (min-width: 769px) { .sidebar-close-btn { display: none !important; } }
-    @media (max-width: 768px) {
-      .header-content .subtitle { display: none; }
-      .mobile-menu-toggle:not(.page-header-toggle) { display: none !important; }
-      .page-header-toggle {
-        display: flex !important; position: static !important;
-        width: 44px !important; height: 44px !important; min-width: 44px !important;
-        padding: 8px !important; border-radius: 10px !important;
-        flex-shrink: 0 !important; box-shadow: none !important;
-        background: rgba(255,255,255,0.25) !important;
-        border: 2px solid rgba(255,255,255,0.5) !important;
-        align-items: center !important; justify-content: center !important;
-        flex-direction: column !important; gap: 5px !important;
-      }
-      .page-header-toggle .hamburger {
-        width: 22px !important; height: 2px !important;
-        background: #ffffff !important; border-radius: 2px !important;
-        display: block !important; margin: 0 !important;
-      }
-      .header-content { display: flex !important; align-items: center !important; gap: 14px !important; }
-      .header-content h1 { font-size: 22px !important; margin: 0 !important; }
-    }
-    @media (min-width: 769px) { .page-header-toggle { display: none !important; } }
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+ 
 </head>
 
 <body class="light-mode">
+  <script>
+    // Prevent style flash on page load - apply saved styles immediately
+    (function() {
+      const savedTheme = localStorage.getItem('theme') || 'light-mode';
+      document.body.className = savedTheme;
+    })();
+  </script>
 
   <button class="mobile-menu-toggle" onclick="toggleSidebar()">
     <div class="hamburger"></div>
@@ -103,7 +48,7 @@
     <a href="../Profile/" class="nav-link">👤 Profile</a>
     <a href="../Withdrawal/" class="nav-link">💸 Withdrawal</a>
     <a href="/" class="nav-link nav-link-divider">🏠 Main Site</a>
-    <a onclick="logout()" class="nav-link nav-link-logout"><span>🚪</span> Logout</a>
+    <!-- <a onclick="logout()" class="nav-link nav-link-logout"><span>🚪</span> Logout</a> -->
 
     <!-- User Profile Section -->
     <div class="sidebar-user" id="sidebarUser" style="display: none;">
@@ -463,7 +408,7 @@
   <script src="../api-config.js"></script>
   <script src="auth-guard.js"></script>
   <script src="supabase-config.js"></script>
-  <script src="../app.js"></script>
+  <script src="./app.js"></script>
   <script src="../auth-modal.js"></script>
   <script src="dropdown.js"></script>
   <script>
@@ -562,6 +507,60 @@
         body.classList.remove('sidebar-open');
       }
     }
+
+    // Set view mode - Grid only (table view removed)
+    function setView(view, isInit) {
+      const grids = document.querySelectorAll('.resource-grid');
+      grids.forEach(grid => {
+        grid.classList.remove('list-view');
+        grid.classList.add('grid-view');
+      });
+      
+      const viewBtns = document.querySelectorAll('.view-btn');
+      viewBtns.forEach(btn => btn.classList.remove('active'));
+      
+      // Only update button state if not initialization
+      if (!isInit && event && event.target) {
+        event.target.closest('.view-btn').classList.add('active');
+      } else {
+        // Set grid button as active on init
+        const gridBtn = document.querySelector('.view-btn[onclick*="grid"]');
+        if (gridBtn) gridBtn.classList.add('active');
+      }
+      
+      localStorage.setItem('resourceView', view);
+    }
+
+    (function() {
+      const savedView = localStorage.getItem('resourceView') || 'grid';
+      setView(savedView, true);
+    })();
+
+    // Save theme preference to prevent auto-change on refresh
+    function saveTheme() {
+      const currentTheme = document.body.className;
+      localStorage.setItem('theme', currentTheme);
+    }
+
+    // Monitor for any class changes and save them
+    const observer = new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        if (mutation.attributeName === 'class') {
+          saveTheme();
+        }
+      });
+    });
+
+    observer.observe(document.body, {
+      attributes: true,
+      attributeFilter: ['class']
+    });
+
+    // Ensure theme persists on page load
+    window.addEventListener('DOMContentLoaded', function() {
+      const savedTheme = localStorage.getItem('theme') || 'light-mode';
+      document.body.className = savedTheme;
+    });
   </script>
 </body>
 

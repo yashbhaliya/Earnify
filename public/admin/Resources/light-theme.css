@@ -1,10 +1,369 @@
-/* light-theme.css */
-body.light-mode { background: #f1f5f9; }
-body.light-mode .sidebar { border-right: 1.5px solid #e2e8f0; }
-body.light-mode .main { background: transparent; }
-body.light-mode .resource-section { background: #fff; }
-body.light-mode .modal-content { background: #fff; }
-body.light-mode .auth-modal-content { background: #fff; }
-body.light-mode .res-table { background: #fff; }
-body.light-mode .res-card { background: #fff; }
-body.light-mode .sidebar-user { background: #fff; border-top: 1.5px solid #e2e8f0; }
+/* ================================================
+   Earnify Admin - Resources Page Light Theme
+   ================================================ */
+
+/* ================================================
+   Base Light Theme
+   ================================================ */
+body.light-mode {
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+}
+
+body.light-mode .sidebar {
+  border-right: 1.5px solid #e2e8f0;
+  background: linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%);
+}
+
+body.light-mode .sidebar-header {
+  border-bottom-color: rgba(59, 130, 246, 0.2);
+}
+
+body.light-mode .sidebar-header h2 {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+body.light-mode .main {
+  background: rgba(255, 255, 255, 0.8);
+}
+
+body.light-mode .resource-section {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+}
+
+body.light-mode .modal-content {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+}
+
+body.light-mode .auth-modal-content {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+}
+
+body.light-mode .res-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+}
+
+body.light-mode .sidebar-user {
+  background: #ffffff;
+  border-top: 1.5px solid #e2e8f0;
+}
+
+body.light-mode .page-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+body.light-mode .custom-select {
+  background: #f8fafc;
+  border-color: #e2e8f0;
+}
+
+body.light-mode .custom-select:hover {
+  background: #ffffff;
+}
+
+body.light-mode .dropdown {
+  background: #ffffff;
+  border-color: #e2e8f0;
+}
+
+body.light-mode .form-group input,
+body.light-mode .form-group textarea {
+  background: #f8fafc;
+  border-color: #e2e8f0;
+}
+
+body.light-mode .form-group input:focus,
+body.light-mode .form-group textarea:focus {
+  background: #ffffff;
+}
+
+body.light-mode .modal {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+body.light-mode .auth-modal {
+  background: rgba(0, 0, 0, 0.6);
+}
+
+body.light-mode .last-file-info {
+  background: #f8fafc;
+}
+
+body.light-mode #viewContent p {
+  border-bottom-color: #e2e8f0;
+}
+
+/* ================================================
+   Dark Theme Support
+   ================================================ */
+body.dark-mode {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  color: #f1f5f9;
+}
+
+body.dark-mode .sidebar {
+  border-right-color: #334155;
+  background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+}
+
+body.dark-mode .sidebar-header {
+  border-bottom-color: #334155;
+}
+
+body.dark-mode .sidebar-header h2 {
+  background: linear-gradient(135deg, #a5b4fc 0%, #c4b5fd 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+body.dark-mode .sidebar a {
+  color: #94a3b8;
+  border-left-color: transparent;
+}
+
+body.dark-mode .sidebar a:hover {
+  background: rgba(79, 70, 229, 0.15);
+  border-left-color: #4f46e5;
+  color: #a5b4fc;
+}
+
+body.dark-mode .sidebar a.active-link {
+  background: rgba(79, 70, 229, 0.15);
+  border-left-color: #4f46e5;
+  color: #a5b4fc;
+}
+
+body.dark-mode .sidebar-close-btn {
+  color: #94a3b8;
+}
+
+body.dark-mode .sidebar-close-btn:hover {
+  background: #334155;
+  color: #fca5a5;
+}
+
+body.dark-mode .main {
+  background: rgba(30, 41, 59, 0.8);
+}
+
+body.dark-mode .resource-section {
+  background: #1e293b;
+  border-color: #334155;
+}
+
+body.dark-mode .modal-content {
+  background: #1e293b;
+  border-color: #334155;
+}
+
+body.dark-mode .auth-modal-content {
+  background: #1e293b;
+  border-color: #334155;
+}
+
+body.dark-mode .res-card {
+  background: #1e293b;
+  border-color: #334155;
+}
+
+body.dark-mode .res-card:hover {
+  border-color: #475569;
+}
+
+body.dark-mode .sidebar-user {
+  background: #1e293b;
+  border-top-color: #334155;
+}
+
+body.dark-mode .user-avatar {
+  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+}
+
+body.dark-mode .user-name {
+  color: #f1f5f9;
+}
+
+body.dark-mode .user-email {
+  color: #64748b;
+}
+
+body.dark-mode .page-header {
+  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+}
+
+body.dark-mode .custom-select {
+  background: #0f172a;
+  border-color: #334155;
+  color: #f1f5f9;
+}
+
+body.dark-mode .custom-select:hover {
+  background: #1e293b;
+  border-color: #475569;
+}
+
+body.dark-mode .custom-select span {
+  color: #f1f5f9;
+}
+
+body.dark-mode .dropdown {
+  background: #1e293b;
+  border-color: #334155;
+}
+
+body.dark-mode .dropdown div {
+  color: #f1f5f9;
+}
+
+body.dark-mode .dropdown div:hover {
+  background: rgba(79, 70, 229, 0.2);
+  color: #a5b4fc;
+}
+
+body.dark-mode .form-group input,
+body.dark-mode .form-group textarea {
+  background: #0f172a;
+  border-color: #334155;
+  color: #f1f5f9;
+}
+
+body.dark-mode .form-group input:focus,
+body.dark-mode .form-group textarea:focus {
+  background: #1e293b;
+  border-color: #4f46e5;
+}
+
+body.dark-mode .form-group input::placeholder,
+body.dark-mode .form-group textarea::placeholder {
+  color: #64748b;
+}
+
+body.dark-mode .form-group label {
+  color: #f1f5f9;
+}
+
+body.dark-mode .modal {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+body.dark-mode .auth-modal {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+body.dark-mode .modal-content .close,
+body.dark-mode .auth-modal-content .close {
+  color: #94a3b8;
+}
+
+body.dark-mode .modal-content .close:hover,
+body.dark-mode .auth-modal-content .close:hover {
+  background: #334155;
+  color: #f1f5f9;
+}
+
+body.dark-mode .modal-content h2,
+body.dark-mode .auth-modal-content h2 {
+  color: #f1f5f9;
+}
+
+body.dark-mode .last-file-info {
+  background: #0f172a;
+  color: #94a3b8;
+}
+
+body.dark-mode #viewContent p {
+  border-bottom-color: #334155;
+}
+
+body.dark-mode #viewContent strong {
+  color: #f1f5f9;
+}
+
+body.dark-mode #viewContent span {
+  color: #94a3b8;
+}
+
+body.dark-mode .empty-state h3 {
+  color: #f1f5f9;
+}
+
+body.dark-mode .empty-state p {
+  color: #94a3b8;
+}
+
+body.dark-mode .empty-icon {
+  background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+}
+
+body.dark-mode .section-title h2 {
+  color: #f1f5f9;
+}
+
+body.dark-mode .resource-count {
+  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+}
+
+body.dark-mode .add-btn {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-mode .res-card::before {
+  background: linear-gradient(90deg, #4f46e5 0%, #7c3aed 100%);
+}
+
+body.dark-mode .logout-link {
+  background: #1e293b !important;
+  color: #f1f5f9 !important;
+  border-color: #ef4444 !important;
+}
+
+body.dark-mode .logout-link:hover {
+  background: #dc2626 !important;
+  color: white !important;
+}
+
+/* ================================================
+   Scrollbar Styling (Webkit)
+   ================================================ */
+body.light-mode ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+body.light-mode ::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+body.light-mode ::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+body.light-mode ::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+body.dark-mode ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+body.dark-mode ::-webkit-scrollbar-track {
+  background: #1e293b;
+}
+
+body.dark-mode ::-webkit-scrollbar-thumb {
+  background: #475569;
+  border-radius: 4px;
+}
+
+body.dark-mode ::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
+}
