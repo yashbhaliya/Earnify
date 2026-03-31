@@ -433,37 +433,7 @@
       </div>
     </div>
 
-    <div class="resource-box">
-      <label class="resource-label">📂 SELECT RESOURCE TYPE:</label>
 
-      <div class="custom-select" onclick="toggleDropdown()">
-        <img src="/file/all.jpg" class="select-icon" id="selectedIcon">
-        <span id="selectedText">All Resources</span>
-        <span class="arrow">&#9660;</span>
-      </div>
-
-      <div class="dropdown" id="dropdownMenu">
-        <div onclick="selectOption('all','All Resources','/file/pdf.jpg')">
-          <img src="/file/pdf.jpg"> All Resources
-        </div>
-
-        <div onclick="selectOption('pdf','PDF Notes','/file/pdf.jpg')">
-          <img src="/file/pdf.jpg"> PDF Notes
-        </div>
-
-        <div onclick="selectOption('excel','Excel Templates','/file/excel.jpg')">
-          <img src="/file/excel.jpg"> Excel Templates
-        </div>
-
-        <div onclick="selectOption('exam','Exam Materials','/file/exam.jpg')">
-          <img src="/file/exam.jpg"> Exam Materials
-        </div>
-
-        <div onclick="selectOption('freelance','Freelance Services','/file/service.jpg')">
-          <img src="/file/service.jpg"> Freelance Services
-        </div>
-      </div>
-    </div>
 
     <div id="all" class="tab-content active">
       <div class="resource-section">
@@ -471,6 +441,30 @@
           <div class="section-title">
             <h2>All Resources</h2>
             <span class="resource-count" id="allCount">0 items</span>
+          </div>
+          <div class="resource-filter">
+            <div class="custom-select" onclick="toggleDropdown()">
+              <img src="/file/all.jpg" class="select-icon" id="selectedIcon">
+              <span id="selectedText">All Resources</span>
+              <span class="arrow">&#9660;</span>
+            </div>
+            <div class="dropdown" id="dropdownMenu">
+              <div onclick="selectOption('all','All Resources','/file/pdf.jpg')">
+                <img src="/file/pdf.jpg"> All Resources
+              </div>
+              <div onclick="selectOption('pdf','PDF Notes','/file/pdf.jpg')">
+                <img src="/file/pdf.jpg"> PDF Notes
+              </div>
+              <div onclick="selectOption('excel','Excel Templates','/file/excel.jpg')">
+                <img src="/file/excel.jpg"> Excel Templates
+              </div>
+              <div onclick="selectOption('exam','Exam Materials','/file/exam.jpg')">
+                <img src="/file/exam.jpg"> Exam Materials
+              </div>
+              <div onclick="selectOption('freelance','Freelance Services','/file/service.jpg')">
+                <img src="/file/service.jpg"> Freelance Services
+              </div>
+            </div>
           </div>
           <div class="add-buttons-group">
             <button class="add-btn pdf-btn" onclick="showAddModal('pdf')">
