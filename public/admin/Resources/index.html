@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="light-theme.css">
   <link rel="stylesheet" href="mobile-responsive.css">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <style>
+  <!-- <style>
     .sidebar-header {
       display: flex;
       align-items: center;
@@ -232,7 +232,7 @@
     #selectedText {
       font-size: 17px;
       font-weight: 600;
-      color: #fff;
+      color: black;
       flex: 1;
       text-align: center;
     }
@@ -336,7 +336,7 @@
         display: none !important;
       }
     }
-  </style>
+  </style> -->
 </head>
 
 <body class="light-mode">
@@ -442,30 +442,6 @@
             <h2>All Resources</h2>
             <span class="resource-count" id="allCount">0 items</span>
           </div>
-          <div class="resource-filter">
-            <div class="custom-select" onclick="toggleDropdown()">
-              <img src="/file/all.jpg" class="select-icon" id="selectedIcon">
-              <span id="selectedText">All Resources</span>
-              <span class="arrow">&#9660;</span>
-            </div>
-            <div class="dropdown" id="dropdownMenu">
-              <div onclick="selectOption('all','All Resources','/file/pdf.jpg')">
-                <img src="/file/pdf.jpg"> All Resources
-              </div>
-              <div onclick="selectOption('pdf','PDF Notes','/file/pdf.jpg')">
-                <img src="/file/pdf.jpg"> PDF Notes
-              </div>
-              <div onclick="selectOption('excel','Excel Templates','/file/excel.jpg')">
-                <img src="/file/excel.jpg"> Excel Templates
-              </div>
-              <div onclick="selectOption('exam','Exam Materials','/file/exam.jpg')">
-                <img src="/file/exam.jpg"> Exam Materials
-              </div>
-              <div onclick="selectOption('freelance','Freelance Services','/file/service.jpg')">
-                <img src="/file/service.jpg"> Freelance Services
-              </div>
-            </div>
-          </div>
           <div class="add-buttons-group">
             <button class="add-btn pdf-btn" onclick="showAddModal('pdf')">
               <span class="btn-icon"><img src="/file/pdf.jpg" alt="PDF"
@@ -489,6 +465,30 @@
             </button>
           </div>
         </div>
+        <div class="resource-filter">
+            <div class="custom-select" onclick="toggleDropdown()">
+              <img src="/file/all.jpg" class="select-icon" id="selectedIcon">
+              <span id="selectedText">All Resources</span>
+              <span class="arrow">&#9660;</span>
+            </div>
+            <div class="dropdown" id="dropdownMenu">
+              <div onclick="selectOption('all','All Resources','/file/pdf.jpg')">
+                <img src="/file/pdf.jpg"> All Resources
+              </div>
+              <div onclick="selectOption('pdf','PDF Notes','/file/pdf.jpg')">
+                <img src="/file/pdf.jpg"> PDF Notes
+              </div>
+              <div onclick="selectOption('excel','Excel Templates','/file/excel.jpg')">
+                <img src="/file/excel.jpg"> Excel Templates
+              </div>
+              <div onclick="selectOption('exam','Exam Materials','/file/exam.jpg')">
+                <img src="/file/exam.jpg"> Exam Materials
+              </div>
+              <div onclick="selectOption('freelance','Freelance Services','/file/service.jpg')">
+                <img src="/file/service.jpg"> Freelance Services
+              </div>
+            </div>
+          </div>
         <div class="resource-grid" id="allGrid">
           <div class="empty-state">
             <div class="empty-icon">📦</div>
