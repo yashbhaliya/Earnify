@@ -178,7 +178,36 @@
               </div>
             </div>
           </div>
-        <div class="resource-grid" id="allGrid">
+        
+        <!-- Table View -->
+        <div class="resource-table-wrapper">
+          <table class="resource-table" id="allTable">
+            <thead>
+              <tr>
+                <th>Type</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>File</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="allTableBody">
+              <tr class="empty-row">
+                <td colspan="6">
+                  <div class="empty-state">
+                    <div class="empty-icon">📦</div>
+                    <h3>No Resources Yet</h3>
+                    <p>Click the buttons above to add your first resource!</p>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <!-- Grid View (Hidden) -->
+        <div class="resource-grid" id="allGrid" style="display: none;">
           <div class="empty-state">
             <div class="empty-icon">📦</div>
             <h3>No Resources Yet</h3>

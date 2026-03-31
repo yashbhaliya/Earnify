@@ -359,136 +359,7 @@ function showTab(type) {
   loadResources(type);
 }
 
-async function loadResources(type) {
-  const grid = document.getElementById(type + 'Grid');
-  if (!grid) return;
-
-  const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
-  const userEmail = currentUser.email;
-
-  if (!userEmail) {
-    grid.innerHTML = `
-      <div class="empty-state">
-        <div class="empty-icon">ðŸ”’</div>
-        <h3>Login Required</h3>
-        <p>Please login to view resources</p>
-      </div>
-    `;
-    return;
-  }
-
-  // Show shimmer loading
-  grid.innerHTML = `
-    <div class="shimmer-card">
-      <div class="shimmer-icon"></div>
-      <div class="shimmer-title"></div>
-      <div class="shimmer-description"></div>
-      <div class="shimmer-description"></div>
-      <div class="shimmer-price"></div>
-      <div class="shimmer-buttons">
-        <div class="shimmer-button"></div>
-        <div class="shimmer-button"></div>
-        <div class="shimmer-button"></div>
-      </div>
-    </div>
-    <div class="shimmer-card">
-      <div class="shimmer-icon"></div>
-      <div class="shimmer-title"></div>
-      <div class="shimmer-description"></div>
-      <div class="shimmer-description"></div>
-      <div class="shimmer-price"></div>
-      <div class="shimmer-buttons">
-        <div class="shimmer-button"></div>
-        <div class="shimmer-button"></div>
-        <div class="shimmer-button"></div>
-      </div>
-    </div>
-    <div class="shimmer-card">
-      <div class="shimmer-icon"></div>
-      <div class="shimmer-title"></div>
-      <div class="shimmer-description"></div>
-      <div class="shimmer-description"></div>
-      <div class="shimmer-price"></div>
-      <div class="shimmer-buttons">
-        <div class="shimmer-button"></div>
-        <div class="shimmer-button"></div>
-        <div class="shimmer-button"></div>
-      </div>
-    </div>
-  `;
-
-  try {
-    const res = await fetch(API_CONFIG.getURL(API_CONFIG.endpoints.resources), {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
-
-    if (!res.ok) {
-      throw new Error(`Server error: ${res.status}`);
-    }
-
-    const allResources = await res.json();
-
-    // Filter by user email and type
-    let resources = allResources.filter(r => r.user_email === userEmail);
-    if (type !== 'all') {
-      resources = resources.filter(r => r.type === type);
-    }
-
-    // Update resource count
-    const countElement = document.getElementById(type + 'Count');
-    if (countElement) {
-      countElement.textContent = `${resources.length} item${resources.length !== 1 ? 's' : ''}`;
-    }
-
-    if (resources.length === 0) {
-      const emptyStates = {
-        all: { icon: 'ðŸ“¦', title: 'No Resources Yet', text: 'Click the buttons above to add your first resource!' },
-        pdf: { icon: 'ðŸ“„', title: 'No PDF Notes', text: 'Go to "All Resources" tab to add PDF notes' },
-        excel: { icon: 'ðŸ“Š', title: 'No Excel Templates', text: 'Go to "All Resources" tab to add Excel templates' },
-        exam: { icon: 'ðŸ“', title: 'No Exam Materials', text: 'Go to "All Resources" tab to add exam materials' },
-        freelance: { icon: '', title: 'No Freelance Services', text: 'Go to "All Resources" tab to add freelance services' }
-      };
-      const state = emptyStates[type];
-      grid.innerHTML = `
-        <div class="empty-state">
-          <div class="empty-icon">${state.icon}</div>
-          <h3>${state.title}</h3>
-          <p>${state.text}</p>
-        </div>
-      `;
-      return;
-    }
-
-    grid.innerHTML = resources.map(r => `
-       <div class="resource-card">
-    <div class="resource-icon">
-      ${getIcon(r.type)}
-    </div>
-    <h3>${r.title}</h3>
-    <p>${r.description}</p>
-    <div class="resource-price">&#8377;${r.price}</div>
-    <div class="resource-actions">
-      <button onclick="openFile(${r.id})" class="btn-view">Open</button>
-      <button onclick="editResource(${r.id})" class="btn-edit"> Edit</button>
-      <button onclick="deleteResource(${r.id})" class="btn-delete"> Delete</button>
-    </div>
-  </div>
-    `).join('');
-  } catch (error) {
-    console.error('Error loading resources:', error);
-    grid.innerHTML = `
-      <div class="empty-state">
-        <div class="empty-icon">âš ï¸</div>
-        <h3>Server Connection Error</h3>
-        <p>Please make sure the server is running at <strong>http://localhost:5000</strong></p>
-        <p style="margin-top: 10px; font-size: 12px; color: #ef4444;">${error.message}</p>
-      </div>
-    `;
-  }
-}
+async function loadResources(type) { const grid = document.getElementById(type + 'Grid'); const tableBody = document.getElementById(type + 'TableBody'); const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}'); const userEmail = currentUser.email; if (!userEmail) { const emptyHTML = `<div class="empty-state"><div class="empty-icon">??</div><h3>Login Required</h3><p>Please login to view resources</p></div>`; if (grid) grid.innerHTML = emptyHTML; if (tableBody) tableBody.innerHTML = `<tr class="empty-row"><td colspan="6">${emptyHTML}</td></tr>`; return; } if (grid) { grid.innerHTML = `<div class="shimmer-card"><div class="shimmer-icon"></div><div class="shimmer-title"></div><div class="shimmer-description"></div><div class="shimmer-price"></div><div class="shimmer-buttons"><div class="shimmer-button"></div></div></div>`; } try { const res = await fetch(API_CONFIG.getURL(API_CONFIG.endpoints.resources), { method: 'GET', headers: { 'Content-Type': 'application/json' } }); if (!res.ok) throw new Error(`Server error: ${res.status}`); const allResources = await res.json(); let resources = allResources.filter(r => r.user_email === userEmail); if (type !== 'all') resources = resources.filter(r => r.type === type); const countElement = document.getElementById(type + 'Count'); if (countElement) countElement.textContent = `${resources.length} item${resources.length !== 1 ? 's' : ''}`; if (resources.length === 0) { const emptyStates = { all: { icon: '??', title: 'No Resources Yet', text: 'Click the buttons above to add your first resource!' } }; const state = emptyStates[type] || emptyStates.all; const emptyHTML = `<div class="empty-state"><div class="empty-icon">${state.icon}</div><h3>${state.title}</h3><p>${state.text}</p></div>`; if (grid) grid.innerHTML = emptyHTML; if (tableBody) tableBody.innerHTML = `<tr class="empty-row"><td colspan="6">${emptyHTML}</td></tr>`; return; } if (grid) { grid.innerHTML = resources.map(r => `<div class="resource-card"><div class="resource-icon">${getIcon(r.type)}</div><h3>${r.title}</h3><p>${r.description}</p><div class="resource-price">?${r.price}</div><div class="resource-actions"><button onclick="openFile(${r.id})" class="btn-view">Open</button><button onclick="editResource(${r.id})" class="btn-edit">Edit</button><button onclick="deleteResource(${r.id})" class="btn-delete">Delete</button></div></div>`).join(''); } if (tableBody) { tableBody.innerHTML = resources.map(r => `<tr><td data-label="Type"><span class="table-type-badge ${r.type}">${getIcon(r.type)} ${r.type.toUpperCase()}</span></td><td data-label="Title"><div class="table-title">${r.title}</div></td><td data-label="Description"><div class="table-description">${r.description}</div></td><td data-label="Price"><div class="table-price">?${r.price}</div></td><td data-label="File"><div class="table-file">File uploaded</div></td><td data-label="Actions"><div class="table-actions"><button onclick="openFile(${r.id})" class="btn-view">??? View</button><button onclick="editResource(${r.id})" class="btn-edit">?? Edit</button><button onclick="deleteResource(${r.id})" class="btn-delete">??? Delete</button></div></td></tr>`).join(''); } } catch (error) { console.error('Error loading resources:', error); const errorHTML = `<div class="empty-state"><div class="empty-icon">??</div><h3>Server Connection Error</h3><p>${error.message}</p></div>`; if (grid) grid.innerHTML = errorHTML; if (tableBody) tableBody.innerHTML = `<tr class="empty-row"><td colspan="6">${errorHTML}</td></tr>`; } }
 
 function getIcon(type) {
   switch (type) {
@@ -824,4 +695,8 @@ if (document.getElementById("totalRecords")) loadSettings();
 if (document.getElementById("purchaseTableBody")) loadPurchaseStatistics();
 
 
+
+
+
+// Update loadResources to support table view
 
