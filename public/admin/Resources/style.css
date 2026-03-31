@@ -4147,7 +4147,7 @@ button, .btn, .add-btn, .tab-btn, input[type="button"], input[type="submit"] {
   padding: 4px;
   display: flex;
   align-items: center;
-  /* justify-content: space-between; */
+  justify-content: space-between;
   gap: 12px;
   cursor: pointer;
   transition: all 0.3s ease;
