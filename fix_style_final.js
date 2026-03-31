@@ -1,4 +1,6 @@
-/* ── Reset ── */
+const fs = require('fs');
+
+const css = `/* ── Reset ── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: 'Inter', 'Segoe UI', sans-serif; background: #f1f5f9; display: flex; min-height: 100vh; }
 
@@ -300,3 +302,7 @@ body { font-family: 'Inter', 'Segoe UI', sans-serif; background: #f1f5f9; displa
 @media (max-width: 400px) {
   .res-grid { grid-template-columns: 1fr !important; }
 }
+`;
+
+fs.writeFileSync('c:/Users/Admin/Downloads/Earnify/public/admin/Resources/style.css', css);
+console.log('Written:', css.length, 'chars');

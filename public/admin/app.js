@@ -378,10 +378,10 @@ async function loadResources(type) {
   }
   
   // Show shimmer loading
-  
-    const sc = '<div class="shimmer-card"><div class="shimmer-icon"></div><div class="shimmer-title"></div><div class="shimmer-description"></div><div class="shimmer-description"></div><div class="shimmer-price"></div><div class="shimmer-buttons"><div class="shimmer-button"></div><div class="shimmer-button"></div><div class="shimmer-button"></div></div></div>';
-    grid.innerHTML = sc + sc + sc;
-  
+  // Show shimmer loading
+  if (window.innerWidth > 768) {
+    const sr = '<div class="res-item res-shimmer"><div class="sh" style="width:46px;height:46px;border-radius:10px;flex-shrink:0;"></div><div style="flex:1;display:flex;flex-direction:column;gap:6px;"><div class="sh sh-md"></div><div class="sh sh-lg"></div></div></div>'; grid.innerHTML = '<div style="display:flex;flex-direction:column;gap:8px;">' + sr.repeat(4) + '</div>';
+  } else { const sc = '<div class="shimmer-card"><div class="shimmer-icon"></div><div class="shimmer-title"></div><div class="shimmer-description"></div><div class="shimmer-price"></div><div class="shimmer-buttons"><div class="shimmer-button"></div><div class="shimmer-button"></div></div></div>'; grid.innerHTML = '<div class="res-grid">' + sc + sc + sc + sc + '</div>'; }
 
   try {
     const res = await fetch(API_CONFIG.getURL(API_CONFIG.endpoints.resources), {
