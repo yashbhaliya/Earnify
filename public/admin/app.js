@@ -416,12 +416,21 @@ async function loadResources(type) {
       return;
     }
 
+    const typeImgs = {pdf:'/file/pdf.jpg',excel:'/file/excel.jpg',exam:'/file/exam.jpg',freelance:'/file/service.jpg'};
     const badges = {pdf:'res-badge-pdf',excel:'res-badge-excel',exam:'res-badge-exam',freelance:'res-badge-freelance'};
 
     // ── Render ──
     if (!isMobile) {
-      grid.innerHTML = '<div class="res-table-wrap"><table class="res-table"><thead><tr><th>#</th><th>Type</th><th>Title</th><th>Price</th><th>Actions</th></tr></thead><tbody>' +
-        resources.map((r,i) => { const b = badges[r.type]||''; return '<tr><td>'+(i+1)+'</td><td><span class="res-badge '+b+'">'+r.type+'</span></td><td><div class="res-title">'+r.title+'</div><div class="res-desc">'+r.description+'</div></td><td><strong>&#8377;'+r.price+'</strong></td><td><div class="res-actions"><button onclick="openFile('+r.id+')" class="btn-view">Open</button><button onclick="editResource('+r.id+')" class="btn-edit">Edit</button><button onclick="deleteResource('+r.id+')" class="btn-delete">Delete</button></div></td></tr>'; }).join('') +
+      grid.innerHTML = '<div class="res-table-wrap"><table class="res-table"><thead><tr><th>#</th><th>Title</th><th>Price</th><th>Actions</th></tr></thead><tbody>' +
+        resources.map((r,i) => {
+          const img = typeImgs[r.type] || '/file/all.jpg';
+          return '<tr>' +
+            '<td>'+(i+1)+'</td>' +
+            '<td><div class="res-title-cell"><img src="'+img+'" class="res-type-img" alt="'+r.type+'"><div><div class="res-title">'+r.title+'</div><div class="res-desc-full">'+r.description+'</div></div></div></td>' +
+            '<td><strong>&#8377;'+r.price+'</strong></td>' +
+            '<td><div class="res-actions"><button onclick="openFile('+r.id+')" class="btn-view">Open</button><button onclick="editResource('+r.id+')" class="btn-edit">Edit</button><button onclick="deleteResource('+r.id+')" class="btn-delete">Delete</button></div></td>' +
+            '</tr>';
+        }).join('') +
         '</tbody></table></div>';
     } else {
       grid.innerHTML = '<div class="res-grid">' +

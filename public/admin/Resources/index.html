@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="light-theme.css">
   <link rel="stylesheet" href="mobile-responsive.css">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <!-- <style>
+  <style>
     .sidebar-header {
       display: flex;
       align-items: center;
@@ -19,13 +19,12 @@
       padding: 0 30px 30px;
       border-bottom: 2px solid rgba(59, 130, 246, 0.2);
     }
-
     .sidebar-header h2 {
       padding: 0;
       border-bottom: none;
       margin: 0;
+      white-space: nowrap;
     }
-
     .sidebar-close-btn {
       display: none;
       background: none;
@@ -39,12 +38,10 @@
       transition: background 0.2s, color 0.2s;
       box-shadow: none !important;
     }
-
     .sidebar-close-btn:hover {
       background: #f1f5f9;
       color: #ef4444;
     }
-
     .logout-link {
       background: white !important;
       color: #1e293b !important;
@@ -53,290 +50,37 @@
       font-weight: 600 !important;
       transition: all 0.3s !important;
     }
-
     .logout-link:hover {
-      background: #fee2e2 !important;
-      color: #dc2626 !important;
+      background: rgb(251, 156, 156) !important;
+      color: white !important;
       border-color: #dc2626 !important;
       transform: translateY(-2px) !important;
     }
-
-    .sidebar.active .sidebar-close-btn {
-      display: block;
-    }
-
-    @media (min-width: 769px) {
-      .sidebar-close-btn {
-        display: none !important;
-      }
-    }
-
-    /* Add buttons - white bg, black text, colored border */
-    .add-btn {
-      background: white !important;
-      color: #1e293b !important;
-      border: 2px solid transparent !important;
-    }
-
-    .pdf-btn {
-      border-color: #ef4444 !important;
-    }
-
-    .excel-btn {
-      border-color: #10b981 !important;
-    }
-
-    .exam-btn {
-      border-color: #f59e0b !important;
-    }
-
-    .freelance-btn {
-      border-color: #8b5cf6 !important;
-    }
-
-    .add-btn:hover {
-      background: white !important;
-      color: #1e293b !important;
-      transform: translateY(-2px);
-    }
-
-    .pdf-btn:hover {
-      background: #f59393 !important;
-    }
-
-    .excel-btn:hover {
-      background: #7be8c4 !important;
-    }
-
-    .exam-btn:hover {
-      background: #fdcc78 !important;
-    }
-
-    .freelance-btn:hover {
-      background: #b797ff !important;
-    }
-
-    /* Resource action buttons - white bg, black text, colored border */
-    .resource-actions .btn-view,
-    .resource-actions .btn-edit,
-    .resource-actions .btn-delete {
-      background: white !important;
-      color: #1e293b !important;
-      border: 2px solid transparent !important;
-    }
-
-    .resource-actions .btn-view {
-      border-color: #3b82f6 !important;
-    }
-
-    .resource-actions .btn-edit {
-      border-color: #f59e0b !important;
-    }
-
-    .resource-actions .btn-delete {
-      border-color: #ef4444 !important;
-    }
-
-    .resource-actions .btn-view:hover {
-      background: #9bc1ff !important;
-    }
-
-    .resource-actions .btn-edit:hover {
-      background: #ffd07e !important;
-    }
-
-    .resource-actions .btn-delete:hover {
-      background: #ff8f8f !important;
-    }
-
-    /* Resource Box */
-    .resource-box {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      padding: 18px;
-      border-radius: 24px;
-      box-shadow: 0 20px 60px rgba(59, 130, 246, 0.35), 0 8px 24px rgba(124, 58, 237, 0.2);
-      position: relative;
-      overflow: hidden;
-      width: 100%;  
-    }
-
-    .resource-box::before {
-      content: '';
-      position: absolute;
-      top: -50px;
-      right: -50px;
-      width: 200px;
-      height: 200px;
-      background: rgba(255, 255, 255, 0.07);
-      border-radius: 50%;
-      pointer-events: none;
-    }
-
-    .resource-box::after {
-      content: '';
-      position: absolute;
-      bottom: -70px;
-      left: -40px;
-      width: 240px;
-      height: 240px;
-      background: rgba(255, 255, 255, 0.04);
-      border-radius: 50%;
-      pointer-events: none;
-    }
-
-    .resource-label {
-      color: #fff;
-      font-weight: 700;
-      font-size: 13px;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      display: block;
-      margin-bottom: 14px;
-      opacity: 0.92;
-    }
-
-    /* Select Box */
-    .custom-select {
-      background: rgba(255, 255, 255, 0.15);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border-radius: 16px;
-      padding: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 15px;
-      cursor: pointer;
-      border: 1.5px solid rgba(255, 255, 255, 0.3);
-      transition: all 0.3s ease;
-      position: relative;
-      z-index: 1;
-    }
-
-    .custom-select:hover {
-      background: rgba(255, 255, 255, 0.22);
-      border-color: rgba(255, 255, 255, 0.5);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-    }
-
-    .select-icon {
-      width: 52px;
-      height: 52px;
-      object-fit: contain;
-      border-radius: 12px;
-      background: rgba(255, 255, 255, 0.2);
-      padding: 6px;
-    }
-
-    #selectedText {
-      font-size: 17px;
-      font-weight: 600;
-      color: black;
-      flex: 1;
-      text-align: center;
-    }
-
-    .arrow {
-      font-size: 14px;
-      color: rgba(255, 255, 255, 0.85);
-      transition: transform 0.3s ease;
-    }
-
-    .arrow.open {
-      transform: rotate(180deg);
-    }
-
-    /* Dropdown Panel */
-    .dropdown {
-      display: none;
-      background: #fff;
-      border-radius: 16px;
-      margin-top: 10px;
-      overflow: hidden;
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.18);
-      position: relative;
-      z-index: 1;
-    }
-
-    .dropdown div {
-      padding: 13px 18px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      cursor: pointer;
-      font-size: 14.5px;
-      font-weight: 500;
-      color: #1e293b;
-      border-bottom: 1px solid #f1f5f9;
-      transition: background 0.2s, color 0.2s;
-    }
-
-    .dropdown div:last-child {
-      border-bottom: none;
-    }
-
-    .dropdown div img {
-      width: 28px;
-      height: 28px;
-      object-fit: contain;
-      border-radius: 6px;
-    }
-
-    .dropdown div:hover {
-      background: #f0f4ff;
-      color: #2563eb;
-    }
-
+    .sidebar.active .sidebar-close-btn { display: block; }
+    @media (min-width: 769px) { .sidebar-close-btn { display: none !important; } }
     @media (max-width: 768px) {
-      .header-content .subtitle {
-        display: none;
-      }
-      /* hide the fixed floating toggle — use the one inside page-header */
-      .mobile-menu-toggle:not(.page-header-toggle) {
-        display: none !important;
-      }
+      .header-content .subtitle { display: none; }
+      .mobile-menu-toggle:not(.page-header-toggle) { display: none !important; }
       .page-header-toggle {
-        display: flex !important;
-        position: static !important;
-        width: 44px !important;
-        height: 44px !important;
-        min-width: 44px !important;
-        padding: 8px !important;
-        border-radius: 10px !important;
-        flex-shrink: 0 !important;
-        box-shadow: none !important;
+        display: flex !important; position: static !important;
+        width: 44px !important; height: 44px !important; min-width: 44px !important;
+        padding: 8px !important; border-radius: 10px !important;
+        flex-shrink: 0 !important; box-shadow: none !important;
         background: rgba(255,255,255,0.25) !important;
         border: 2px solid rgba(255,255,255,0.5) !important;
-        align-items: center !important;
-        justify-content: center !important;
-        flex-direction: column !important;
-        gap: 5px !important;
+        align-items: center !important; justify-content: center !important;
+        flex-direction: column !important; gap: 5px !important;
       }
       .page-header-toggle .hamburger {
-        width: 22px !important;
-        height: 2px !important;
-        background: #ffffff !important;
-        border-radius: 2px !important;
-        display: block !important;
-        margin: 0 !important;
+        width: 22px !important; height: 2px !important;
+        background: #ffffff !important; border-radius: 2px !important;
+        display: block !important; margin: 0 !important;
       }
-      .header-content {
-        display: flex !important;
-        align-items: center !important;
-        gap: 14px !important;
-      }
-      .header-content h1 {
-        font-size: 22px !important;
-        margin: 0 !important;
-      }
+      .header-content { display: flex !important; align-items: center !important; gap: 14px !important; }
+      .header-content h1 { font-size: 22px !important; margin: 0 !important; }
     }
-    @media (min-width: 769px) {
-      .page-header-toggle {
-        display: none !important;
-      }
-    }
-  </style> -->
+    @media (min-width: 769px) { .page-header-toggle { display: none !important; } }
+  </style>
 </head>
 
 <body class="light-mode">

@@ -772,7 +772,7 @@ button:last-child:hover {
   cursor: pointer;
   border: none;
   font-weight: 600;
-  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
   text-decoration: none;
 }op: auto;
   padding: 20px;
@@ -832,7 +832,7 @@ button:last-child:hover {
   transition: all 0.3s;
   border: none;
   font-weight: 600;
-  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
   text-decoration: none;
 }
 
@@ -1001,7 +1001,7 @@ button:last-child:hover {
   cursor: pointer;
   font-weight: 600;
   transition: all 0.3s;
-  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
   border-left: none;
 }
 
@@ -1064,7 +1064,7 @@ button:last-child:hover {
 }
 
 .resource-actions button:nth-child(2) {
-  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  /* background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); */
   color: white;
   box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);
 }

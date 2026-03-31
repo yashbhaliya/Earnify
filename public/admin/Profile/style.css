@@ -1774,7 +1774,7 @@ button:last-child:hover {
   border-radius: 10px;
   font-weight: 600;
   font-size: 14px;
-  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
+  box-shadow: 0 2px 8px rgba(255, 255, 255, 0.3);
   margin-top: 10px;
 }
 

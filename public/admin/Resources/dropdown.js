@@ -16,7 +16,7 @@ function selectOption(value, text, img) {
 
 // Close on outside click
 document.addEventListener('click', function(e) {
-  if (!e.target.closest('.resource-box')) {
+  if (!e.target.closest('.resource-filter')) {
     const menu = document.getElementById('dropdownMenu');
     if (menu) menu.style.display = 'none';
     document.querySelector('.arrow')?.classList.remove('open');
