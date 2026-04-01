@@ -98,7 +98,7 @@
    display: flex;
    align-items: center;
    justify-content: space-between;
-   padding: 0 30px 30px;
+   padding:10px;
    border-bottom: 2px solid rgba(59, 130, 246, 0.2);
  }
 
@@ -141,9 +141,9 @@
  }
 
  .sidebar a:hover {
-   background: rgb(248, 150, 150);
-   /* border-left-color: #93c5fd; */
-   color: red;
+   background:  linear-gradient(90deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+   border-left-color: #93c5fd;
+   color: #3b82f6;
    transform: translateX(4px);
  }
 
@@ -2229,4 +2229,43 @@
     font-size: 13px;
     text-align: center;
   }
+}
+
+/* ================================================
+   SIDEBAR - MATCH PROFILE PAGE STYLES
+   ================================================ */
+
+.sidebar a {
+  border-left: 3px solid transparent;
+  margin: 2px 12px 2px 0;
+}
+
+.sidebar a:hover {
+  background: linear-gradient(90deg, rgba(59, 130, 246, 0.08) 0%, rgba(59, 130, 246, 0.04) 100%) !important;
+  border-left-color: #93c5fd !important;
+  color: #2563eb !important;
+  transform: translateX(4px);
+}
+
+.sidebar a.active-link {
+  background: linear-gradient(90deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.06) 100%) !important;
+  border-left-color: #667eea !important;
+  color: #667eea !important;
+  font-weight: 700;
+}
+
+.sidebar a.active-link:hover {
+  background: linear-gradient(90deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.1) 100%) !important;
+  color: #764ba2 !important;
+  transform: translateX(4px);
+}
+
+.sidebar a.nav-link-logout {
+  color: #ef4444 !important;
+}
+
+.sidebar a.nav-link-logout:hover {
+  background: linear-gradient(90deg, rgba(239, 68, 68, 0.08) 0%, rgba(239, 68, 68, 0.03) 100%) !important;
+  border-left-color: #ef4444 !important;
+  color: #dc2626 !important;
 }
