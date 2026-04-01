@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog - Earnify Admin</title>
+  <link rel="icon" href="/file/logo1.jpeg" type="image/jpeg">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body>
+
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<!-- SIDEBAR — matches Dashboard/Statistic/Payments style -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-brand">
+    <h2><span>💰</span><span class="brand-text">Earnify Admin</span></h2>
+    <p>Platform Management</p>
+  </div>
+
+  <a href="/earnify-admin/Dashboard/" class="nav-link">
+    <span class="nav-icon">🏠</span> Dashboard
+  </a>
+  <a href="/earnify-admin/statistic/" class="nav-link">
+    <span class="nav-icon">📈</span> Statistics
+  </a>
+  <a href="/earnify-admin/payments/" class="nav-link">
+    <span class="nav-icon">💳</span> Payment Requests
+  </a>
+  <a href="/earnify-admin/Blog/" class="nav-link active">
+    <span class="nav-icon">✍️</span> Blog
+  </a>
+  <a href="https://earnify-gamma.vercel.app/admin/Resources/" class="nav-link" style="border-top:1px solid #e2e8f0;padding-top:10px;margin-top:10px;color:#667eea;font-weight:600">
+    <span class="nav-icon">←</span> Back
+  </a>
+
+  <div class="sidebar-footer">
+    <div class="admin-badge is-loading" id="adminBadge">
+      <div class="admin-avatar" id="adminAvatar">A</div>
+      <div class="admin-info">
+        <div class="admin-name" id="adminEmail">Loading...</div>
+        <div class="admin-role">Super Admin</div>
+      </div>
+    </div>
+    <button class="logout-btn" onclick="logout()">🚪 Logout</button>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div style="display:flex;align-items:center;gap:16px;flex:1;">
+      <button class="mobile-toggle" onclick="toggleSidebar()">
+        <span></span><span></span><span></span>
+      </button>
+      <div>
+        <h1>✍️ Blog Manager</h1>
+        <p>Create, edit and manage your blog posts</p>
+      </div>
+    </div>
+    <div class="header-meta">
+      <button class="refresh-btn" onclick="loadBlogs()">🔄 Refresh</button>
+    </div>
+  </div>
+
+  <!-- Blog Section -->
+  <div class="blog-section">
+    <div class="section-header">
+      <div class="section-title">
+        <h3>All Posts</h3>
+        <span class="blog-count" id="blogCount">0 posts</span>
+      </div>
+      <button class="add-blog-btn" onclick="openAddModal()">➕ Add Blog Post</button>
+    </div>
+
+    <div class="blog-grid" id="blogGrid">
+      <div class="empty-state">
+        <div class="empty-icon">✍️</div>
+        <h3>No Blog Posts Yet</h3>
+        <p>Click "Add Blog Post" to create your first post!</p>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<!-- FULL-PAGE BLOG EDITOR -->
+<div id="blogEditor" class="blog-editor">
+
+  <!-- Editor Top Bar -->
+  <div class="editor-topbar">
+    <div class="editor-topbar-left">
+      <button class="editor-back-btn" onclick="closeBlogModal()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+        Back
+      </button>
+      <div class="editor-topbar-title" id="modalTitle">✍️ New Blog Post</div>
+    </div>
+    <div class="editor-topbar-right">
+      <span class="editor-autosave" id="editorStatus">Draft</span>
+      <button type="button" class="editor-cancel-btn" onclick="closeBlogModal()">Cancel</button>
+      <button type="button" class="editor-publish-btn" id="publishBtn" onclick="submitBlogForm()">🚀 Publish Post</button>
+    </div>
+  </div>
+
+  <!-- Editor Body -->
+  <div class="editor-body">
+
+    <!-- Left: Main Content -->
+    <div class="editor-main">
+
+      <!-- Cover Image Preview -->
+      <input type="file" id="coverFileInput" accept="image/*" style="display:none;" onchange="handleCoverFile(this)">
+      <div class="editor-cover" id="editorCoverPreview" onclick="document.getElementById('coverFileInput').click()" title="Click to upload cover image">
+        <div class="editor-cover-placeholder" id="coverPlaceholder">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+          <span>Click to upload cover image</span>
+          <span class="cover-hint">JPG, PNG, WEBP supported</span>
+        </div>
+        <img id="coverImgPreview" class="editor-cover-img" src="" alt="Cover">
+        <div class="cover-change-overlay">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          Change Image
+        </div>
+      </div>
+
+      <!-- Title Input -->
+      <div class="editor-title-wrap">
+        <input
+          type="text"
+          id="blogTitle"
+          class="editor-title-input"
+          placeholder="Enter your blog title here..."
+          required
+        >
+      </div>
+
+      <!-- Excerpt -->
+      <div style="display:flex;flex-direction:column;gap:6px;">
+        <label class="editor-label">Short Excerpt</label>
+        <textarea
+          id="blogExcerpt"
+          class="editor-excerpt-input"
+          placeholder="Write a short summary that appears on the blog card..."
+        ></textarea>
+      </div>
+
+      <!-- Content -->
+      <div style="display:flex;flex-direction:column;gap:6px;">
+        <label class="editor-label">Full Content *</label>
+      <!-- Toolbar -->
+      <div class="rte-toolbar" id="rteToolbar">
+          <div class="rte-group">
+            <button type="button" class="rte-btn" onclick="rte('bold')" title="Bold"><b>B</b></button>
+            <button type="button" class="rte-btn" onclick="rte('italic')" title="Italic"><i>I</i></button>
+            <button type="button" class="rte-btn" onclick="rte('underline')" title="Underline"><u>U</u></button>
+            <button type="button" class="rte-btn" onclick="rte('strikeThrough')" title="Strike"><s>S</s></button>
+          </div>
+          <div class="rte-divider"></div>
+          <div class="rte-group">
+            <button type="button" class="rte-btn" onclick="rteBlock('h2')" title="Heading 2">H2</button>
+            <button type="button" class="rte-btn" onclick="rteBlock('h3')" title="Heading 3">H3</button>
+            <button type="button" class="rte-btn" onclick="rteBlock('p')" title="Paragraph">P</button>
+          </div>
+          <div class="rte-divider"></div>
+          <div class="rte-group">
+            <button type="button" class="rte-btn" onclick="rte('insertUnorderedList')" title="Bullet List">&#8226; List</button>
+            <button type="button" class="rte-btn" onclick="rte('insertOrderedList')" title="Numbered List">1. List</button>
+          </div>
+          <div class="rte-divider"></div>
+          <div class="rte-group">
+            <button type="button" class="rte-btn" onclick="rteLink()" title="Insert Link">🔗 Link</button>
+            <button type="button" class="rte-btn" onclick="rte('removeFormat')" title="Clear Format">✕ Clear</button>
+          </div>
+          <div class="rte-divider"></div>
+          <div class="rte-group">
+            <select class="rte-select" onchange="rteFontSize(this)" title="Font Size">
+              <option value="">Size</option>
+              <option value="1">Small</option>
+              <option value="3">Normal</option>
+              <option value="4">Large</option>
+              <option value="5">X-Large</option>
+            </select>
+            <input type="color" class="rte-color" onchange="rteColor(this.value)" title="Text Color" value="#1e293b">
+          </div>
+        </div>
+        <!-- Editable content area -->
+        <div
+          id="blogContent"
+          class="editor-content-input rte-editor"
+          contenteditable="true"
+          data-placeholder="Write your full blog post content here..."
+        ></div>
+        <!-- Hidden textarea synced with editor -->
+        <textarea id="blogContentRaw" style="display:none;"></textarea>
+      </div>
+
+    </div>
+
+    <!-- Right: Sidebar Settings -->
+    <div class="editor-sidebar">
+
+      <div class="editor-sidebar-card">
+        <div class="editor-sidebar-card-title">📋 Post Settings</div>
+
+        <div class="editor-setting-group">
+          <label class="editor-label">Category</label>
+          <input type="text" id="blogCategory" class="editor-setting-input" placeholder="e.g. Tips, Tutorial, News">
+        </div>
+
+        <div class="editor-setting-group">
+          <label class="editor-label">Cover Image URL</label>
+          <input type="url" id="blogImageUrl" class="editor-setting-input" placeholder="https://example.com/image.jpg" oninput="previewCover(this.value)">
+          <span class="editor-setting-hint" id="imgHint">Paste an image URL or click the cover to upload</span>
+          <!-- Upload error popup -->
+          <div class="upload-error-popup" id="uploadErrorPopup">
+            <div class="upload-error-icon">⚠️</div>
+            <div class="upload-error-body">
+              <div class="upload-error-title">Upload Failed</div>
+              <div class="upload-error-msg" id="uploadErrorMsg">Could not upload image.</div>
+              <div class="upload-error-actions">
+                <button onclick="document.getElementById('coverFileInput').click()" class="upload-error-retry">🔄 Retry</button>
+                <button onclick="closeUploadError()" class="upload-error-close">Dismiss</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="editor-setting-group">
+          <label class="editor-label">Status</label>
+          <div class="editor-status-badge" id="statusBadge">📝 Draft</div>
+        </div>
+      </div>
+
+      <div class="editor-sidebar-card">
+        <div class="editor-sidebar-card-title">💡 Tips</div>
+        <ul class="editor-tips">
+          <li>Use a clear, catchy title</li>
+          <li>Add a cover image URL for visual appeal</li>
+          <li>Write a short excerpt for the card preview</li>
+          <li>Use categories to organise posts</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <form id="blogForm" style="display:none;"></form>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- VIEW BLOG MODAL -->
+<div id="viewBlogModal" class="view-modal" onclick="if(event.target===this)closeViewBlog()">
+  <div class="view-modal-content">
+    <div class="view-modal-topbar">
+      <button class="editor-back-btn" onclick="closeViewBlog()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+        Back
+      </button>
+      <span id="viewBlogCategory" class="blog-category"></span>
+    </div>
+    <div class="view-modal-body">
+      <img id="viewBlogImg" src="" alt="" class="view-blog-cover">
+      <h1 id="viewBlogTitle" class="view-blog-title"></h1>
+      <div class="view-blog-meta">
+        <span id="viewBlogAuthor"></span>
+        <span id="viewBlogDate"></span>
+      </div>
+      <div id="viewBlogContent" class="view-blog-content"></div>
+    </div>
+  </div>
+</div>
+
+<script src="./app.js"></script>
+<script>
+  // Init admin badge
+  (function() {
+    const token = localStorage.getItem('adminToken');
+    let email = null;
+    if (token) {
+      try { email = JSON.parse(atob(token.split('.')[1])).email; } catch(e) {}
+    }
+    if (!email) {
+      try { email = JSON.parse(localStorage.getItem('currentUser') || '{}').email; } catch(e) {}
+    }
+    if (email) {
+      document.getElementById('adminEmail').textContent = email;
+      document.getElementById('adminAvatar').textContent = email.charAt(0).toUpperCase();
+      document.getElementById('adminBadge').classList.remove('is-loading');
+    }
+  })();
+
+  function toggleSidebar() {
+    document.getElementById('sidebar').classList.toggle('active');
+    document.getElementById('overlay').classList.toggle('active');
+  }
+
+  function logout() {
+    localStorage.clear();
+    sessionStorage.clear();
+    window.location.href = '/earnify-admin/Dashboard/';
+  }
+</script>
+</body>
+</html>
