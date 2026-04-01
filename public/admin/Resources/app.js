@@ -1,4 +1,4 @@
-// API Configuration will be loaded from api-config.js
+﻿// API Configuration will be loaded from api-config.js
 // const API = "http://localhost:5000/api/users";
 // const RESOURCE_API = "http://localhost:5000/api/resources";
 
@@ -448,7 +448,7 @@ async function loadResources(type) {
         all: { icon: 'ðŸ“¦', title: 'No Resources Yet', text: 'Click the buttons above to add your first resource!' },
         pdf: { icon: 'ðŸ“„', title: 'No PDF Notes', text: 'Go to "All Resources" tab to add PDF notes' },
         excel: { icon: 'ðŸ“Š', title: 'No Excel Templates', text: 'Go to "All Resources" tab to add Excel templates' },
-        exam: { icon: 'ðŸ“', title: 'No Exam Materials', text: 'Go to "All Resources" tab to add exam materials' },
+        exam: { icon: '', title: 'No Exam Materials', text: 'Go to "All Resources" tab to add exam materials' },
         freelance: { icon: '', title: 'No Freelance Services', text: 'Go to "All Resources" tab to add freelance services' }
       };
       const state = emptyStates[type];
@@ -462,26 +462,52 @@ async function loadResources(type) {
       return;
     }
 
-    grid.innerHTML = resources.map(r => `
-       <div class="resource-card">
-    <div class="resource-icon">
-      ${getIcon(r.type)}
-    </div>
-    <h3>${r.title}</h3>
-    <p>${r.description}</p>
-    <div class="resource-price">&#8377;${r.price}</div>
-    <div class="resource-actions">
-      <button onclick="openFile(${r.id})" class="btn-view">Open</button>
-      <button onclick="editResource(${r.id})" class="btn-edit"> Edit</button>
-      <button onclick="deleteResource(${r.id})" class="btn-delete"> Delete</button>
+    //   grid.innerHTML = resources.map(r => `
+    //      <div class="resource-card">
+    //   <div class="resource-icon">
+    //     ${getIcon(r.type)}
+    //   </div>
+    //   <h3>${r.title}</h3>
+    //   <p>${r.description}</p>
+    //   <div class="resource-price">&#8377;${r.price}</div>
+    //   <div class="resource-actions">
+    //     <button onclick="openFile(${r.id})" class="btn-view">Open</button>
+    //     <button onclick="editResource(${r.id})" class="btn-edit"> Edit</button>
+    //     <button onclick="deleteResource(${r.id})" class="btn-delete"> Delete</button>
+    //   </div>
+    // </div>
+    //   `).join('');
+    grid.innerHTML = resources.map((r, index) => `
+<div class="row">
+
+  <div class="table-title">
+    <span class="icon">${getIcon(r.type)}</span>
+    <div>
+      <h4>${r.title}</h4>
+      <p>${r.description}</p>
     </div>
   </div>
-    `).join('');
+
+  <div class="price">₹${r.price}</div>
+
+  <div class="actions">
+    <button class="btn-view">Open</button>
+    <button class="btn-edit">Edit</button>
+    <button class="btn-delete">Delete</button>
+  </div>
+
+</div>
+`).join('');
   } catch (error) {
     console.error('Error loading resources:', error);
     grid.innerHTML = `
       <div class="empty-state">
-        <div class="empty-icon">âš ï¸</div>
+        <div class="empty-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+          </svg>
+        </div>
         <h3>Server Connection Error</h3>
         <p>Please make sure the server is running at <strong>http://localhost:5000</strong></p>
         <p style="margin-top: 10px; font-size: 12px; color: #ef4444;">${error.message}</p>
