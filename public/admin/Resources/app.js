@@ -491,9 +491,9 @@ async function loadResources(type) {
   <div class="price">₹${r.price}</div>
 
   <div class="actions">
-    <button class="btn-view">Open</button>
-    <button class="btn-edit">Edit</button>
-    <button class="btn-delete">Delete</button>
+    <button class="btn-view" onclick="openFile(${r.id})">Open</button>
+    <button class="btn-edit" onclick="editResource(${r.id})">Edit</button>
+    <button class="btn-delete" onclick="deleteResource(${r.id})">Delete</button>
   </div>
 
 </div>

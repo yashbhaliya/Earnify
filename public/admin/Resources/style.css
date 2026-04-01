@@ -140,36 +140,6 @@
    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
  }
 
- .sidebar a:hover {
-   background:  linear-gradient(90deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
-   border-left-color: #93c5fd;
-   color: #3b82f6;
-   transform: translateX(4px);
- }
-
- .sidebar a.active-link {
-   background: linear-gradient(90deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.06) 100%);
-   /* border-left-color: #667eea; */
-   color: #667eea;
-   font-weight: 700;
- }
-
- .sidebar a.nav-link-divider {
-   margin-top: 16px;
-   border-top: 1px solid #e2e8f0;
-   padding-top: 16px;
- }
-
- .sidebar a.nav-link-logout {
-   color: #ef4444;
- }
-
- .sidebar a.nav-link-logout:hover {
-   background: linear-gradient(90deg, rgba(239, 68, 68, 0.08) 0%, rgba(239, 68, 68, 0.03) 100%);
-   border-left-color: #ef4444;
-   color: #dc2626;
- }
-
  /* Sidebar user section */
  .sidebar-user {
    margin-top: auto;
@@ -223,29 +193,7 @@
    text-overflow: ellipsis;
  }
 
- .logout-link {
-   display: flex;
-   align-items: center;
-   justify-content: center;
-   gap: 8px;
-   padding: 14px 20px;
-   color: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-   background: white;
-   border-radius: 10px;
-   font-weight: 600;
-   font-size: 14px;
-   margin-top: 10px;
-   cursor: pointer;
-   text-decoration: none;
-   transition: all 0.3s;
-   border: 1px solid #ef4444;
-   /* box-shadow: 0 2px 8px rgba(255, 255, 255, 0.3); */
- }
-
- .logout-link:hover {
-   background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-   color: white;
- }
+ 
 
 
  /* Mobile menu toggle */
@@ -530,7 +478,55 @@
    opacity: 0.95;
  }
 
- /* ================================================
+ /* Add button hover effect */
+.add-btn {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.add-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+/* Resource card hover effect */
+.resource-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.resource-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* View toggle button effect */
+.view-btn {
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.view-btn:hover {
+  transform: translateY(-2px);
+}
+
+/* Custom select hover effect */
+.custom-select {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.custom-select:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Empty state hover */
+.empty-state {
+  transition: transform 0.3s ease;
+}
+
+.empty-state:hover {
+  transform: translateY(-3px);
+}
+
+/* ================================================
    Tab Navigation
    ================================================ */
  .tab-content {
@@ -2231,41 +2227,5 @@
   }
 }
 
-/* ================================================
-   SIDEBAR - MATCH PROFILE PAGE STYLES
-   ================================================ */
 
-.sidebar a {
-  border-left: 3px solid transparent;
-  margin: 2px 12px 2px 0;
-}
 
-.sidebar a:hover {
-  background: linear-gradient(90deg, rgba(59, 130, 246, 0.08) 0%, rgba(59, 130, 246, 0.04) 100%) !important;
-  border-left-color: #93c5fd !important;
-  color: #2563eb !important;
-  transform: translateX(4px);
-}
-
-.sidebar a.active-link {
-  background: linear-gradient(90deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.06) 100%) !important;
-  border-left-color: #667eea !important;
-  color: #667eea !important;
-  font-weight: 700;
-}
-
-.sidebar a.active-link:hover {
-  background: linear-gradient(90deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.1) 100%) !important;
-  color: #764ba2 !important;
-  transform: translateX(4px);
-}
-
-.sidebar a.nav-link-logout {
-  color: #ef4444 !important;
-}
-
-.sidebar a.nav-link-logout:hover {
-  background: linear-gradient(90deg, rgba(239, 68, 68, 0.08) 0%, rgba(239, 68, 68, 0.03) 100%) !important;
-  border-left-color: #ef4444 !important;
-  color: #dc2626 !important;
-}
