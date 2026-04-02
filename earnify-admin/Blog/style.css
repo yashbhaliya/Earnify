@@ -265,7 +265,7 @@ body {
   flex-direction: row;
   transition: box-shadow 0.22s, transform 0.22s;
   /* box-shadow: 0 2px 8px rgba(0,0,0,0.06); */
-  height: 130px;
+  /* height: 130px; */
 }
 .blog-card:hover {
   transform: translateY(-2px);
@@ -317,17 +317,9 @@ body {
 }
 
 /* Category */
-.blog-status-badge {
+.blog-category {
   display: inline-block;
   padding: 2px 8px;
-  border-radius: 5px;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.3px;
-}
-.status-published   { background: #ecfdf5; color: #059669; border: 1px solid #a7f3d0; }
-.status-unpublished { background: #fef2f2; color: #dc2626; border: 1px solid #fca5a5; }
-
   background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(118,75,162,0.1));
   color: #667eea;
   border-radius: 5px;

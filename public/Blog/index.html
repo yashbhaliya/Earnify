@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="../auth-modal.css">
   <link rel="stylesheet" href="./blog.css">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+ 
 </head>
 <body>
 
@@ -99,7 +100,7 @@
     <div id="mainArticleWrap"></div>
 
     <!-- Grid -->
-    <div id="gridWrap">
+    <div id="gridWrap" class="gridWrap">
       <div class="blog-empty"><div class="ei">⏳</div><p>Loading posts...</p></div>
     </div>
   </div>
@@ -151,13 +152,15 @@
         <span id="readCategory" style="display:inline-block;padding:2px 10px;background:linear-gradient(135deg,rgba(102,126,234,0.1),rgba(118,75,162,0.1));color:#667eea;border-radius:5px;font-size:11px;font-weight:700;text-transform:uppercase;"></span>
       </div>
       <div class="read-modal-body">
-        <img id="readCover" src="" alt="" class="read-cover">
-        <h1 id="readTitle" class="read-title"></h1>
-        <div class="read-meta">
-          <span id="readAuthor"></span>
-          <span id="readDate"></span>
+        <div class="read-modal-inner">
+          <img id="readCover" src="" alt="" class="read-cover">
+          <h1 id="readTitle" class="read-title"></h1>
+          <div class="read-meta">
+            <span id="readAuthor"></span>
+            <span id="readDate"></span>
+          </div>
+          <div id="readContent" class="read-content"></div>
         </div>
-        <div id="readContent" class="read-content"></div>
       </div>
     </div>
   </div>
@@ -217,11 +220,13 @@
       else { img.src = ''; img.classList.remove('show'); }
       document.getElementById('readTitle').textContent    = blog.title || '';
       document.getElementById('readCategory').textContent = blog.category || '';
-      document.getElementById('readAuthor').textContent   = '\u270d\ufe0f ' + (blog.author_name || 'Earnify');
+      document.getElementById('readAuthor').textContent   = '\u270d\ufe0f ' + ('Earnify Admin');
       document.getElementById('readDate').textContent     = '\ud83d\udcc5 ' + new Date(blog.created_at).toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' });
-      document.getElementById('readContent').innerHTML    = blog.content || '';
+      document.getElementById('readContent').innerHTML    =blog.content || '';
       document.getElementById('readModal').classList.add('open');
       document.body.style.overflow = 'hidden';
+      
+    
     }
 
     function closeRead() {
@@ -240,66 +245,130 @@
       const { data: blogs, error } = await supabaseClient
         .from('blogs')
         .select('*')
+        .eq('is_published', true)
         .order('created_at', { ascending: false });
 
       if (error || !blogs || blogs.length === 0) {
         mainWrap.innerHTML = '';
-        gridWrap.innerHTML = '<div class="blog-empty"><div class="ei">\u270d\ufe0f</div><p>No blog posts yet. Check back soon!</p></div>';
+        gridWrap.innerHTML = '<div class="blog-empty"><div class="ei">\u270d\ufe0f</div><p>No published posts yet. Check back soon!</p></div>';
         return;
       }
 
-      // Filter only published posts (handle null/missing is_published gracefully)
-      const published = blogs.filter(b => b.is_published === true || b.is_published === null || b.is_published === undefined);
-      const all = published.length > 0 ? published : blogs;
+      const all = blogs;
 
-      // Store in map so onclick can safely retrieve full data
+      // Store in map
       all.forEach(b => { _blogStore[b.id] = b; });
 
-      // Separate main article from rest
-      const mainIdx = all.findIndex(b => b.main_article);
-      const main    = mainIdx >= 0 ? all[mainIdx] : all[0];
-      const rest    = all.filter((_, i) => i !== (mainIdx >= 0 ? mainIdx : 0));
+      const mainArticles = all.filter(b => b.main_article === true);
+      const rest = all.filter(b => b.main_article !== true);
 
-      // Render main article — full width hero with image bg + blur overlay
-      mainWrap.innerHTML = `
-        <div class="main-article" onclick="openRead(${main.id})">
-          ${main.image_url ? `<img class="main-article-bg" src="${main.image_url}" alt="">` : ''}
-          <div class="main-article-overlay"></div>
-          <div class="main-article-content">
-            <span class="main-article-badge">${main.category || 'Main Article'}</span>
-            <div class="main-article-title">${main.title}</div>
-            <div class="main-article-bottom">
-              <div class="main-article-bottom-left">
-                <span class="main-article-label">Main Article</span>
-                <span class="main-article-date">${fmtDate(main.created_at)}</span>
-              </div>
-              <div class="main-article-bottom-right">
-                <span class="main-article-author">ByEarnify Admin</span>
+      if (mainArticles.length > 0) {
+        // Build slider
+        mainWrap.innerHTML = `
+          <div class="hero-slider" id="heroSlider">
+            <div class="hero-track" id="heroTrack">
+              ${mainArticles.map(b => `
+                <div class="hero-slide">
+                  ${b.image_url ? `<img class="hero-slide-bg" src="${b.image_url}" alt="">` : ''}
+                  <div class="hero-slide-overlay"></div>
+                  <div class="hero-slide-content">
+                    <span class="hero-slide-badge">${b.category || 'Main Article'}</span>
+                    <div class="hero-slide-title">${b.title}</div>
+                    <div class="hero-slide-bottom">
+                      <div class="hero-slide-left">
+                        <span class="hero-slide-label">Main Article</span>
+                        <span class="hero-slide-date">📅 ${fmtDate(b.created_at)}</span>
+                      </div>
+                      <div class="hero-slide-right">
+                        <span class="hero-slide-author">✍️ Earnify Admin</span>
+                        <button class="hero-slide-btn" onclick="openRead(${b.id})">Read More &rarr;</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>`).join('')}
+            </div>
+            ${mainArticles.length > 1 ? `
+              <button class="hero-arrow hero-prev" onclick="sliderMove(-1)">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+              </button>
+              <button class="hero-arrow hero-next" onclick="sliderMove(1)">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+              </button>
+              <div class="hero-dots" id="heroDots">
+                ${mainArticles.map((_, i) => `<span class="hero-dot ${i===0?'active':''}" onclick="sliderGo(${i})"></span>`).join('')}
+              </div>` : ''}
+          </div>`;
+
+        // Slider logic
+        let cur = 0;
+        const total = mainArticles.length;
+        const track = document.getElementById('heroTrack');
+        const dots  = document.querySelectorAll('.hero-dot');
+
+        function sliderUpdate() {
+          track.style.transform = `translateX(-${cur * 100}%)`;
+          dots.forEach((d, i) => d.classList.toggle('active', i === cur));
+        }
+
+        window.sliderMove = function(dir) {
+          cur = (cur + dir + total) % total;
+          sliderUpdate();
+          resetAuto();
+        };
+        window.sliderGo = function(idx) {
+          cur = idx;
+          sliderUpdate();
+          resetAuto();
+        };
+
+        let autoTimer = setInterval(() => { cur = (cur + 1) % total; sliderUpdate(); }, 4000);
+        function resetAuto() { clearInterval(autoTimer); autoTimer = setInterval(() => { cur = (cur + 1) % total; sliderUpdate(); }, 4000); }
+
+        gridWrap.innerHTML = rest.length === 0 ? '' : `
+          <div class="blog-grid-title">More Posts</div>
+          <div class="blog-grid">
+            ${rest.map(b => `
+              <div class="blog-card">
+                <div class="blog-card-img">
+                  ${b.image_url ? `<img src="${b.image_url}" alt="">` : ''}
+                  ${b.category ? `<span class="blog-card-category">${b.category}</span>` : ''}
                 </div>
+                <div class="blog-card-body">
+                  <h3 class="blog-card-title">${b.title}</h3>
+                  <div class="blog-card-footer">
+                    <div class="blog-card-footer-left">
+                      <span class="blog-card-date">📅 ${fmtDate(b.created_at)}</span>
+                      <span class="blog-card-author">By: Earnify Admin</span>
+                    </div>
+                    <button class="blog-card-read" onclick="event.stopPropagation();openRead(${b.id})">Read More →</button>
+                  </div>
                 </div>
-                <button class="main-article-read">Read More &rarr;</button>
-          </div>
-        </div>`;
+              </div>`).join('')}
+          </div>`;
 
-      // Render grid
-      if (rest.length === 0) { gridWrap.innerHTML = ''; return; }
-
-      gridWrap.innerHTML = `
-        <div class="blog-grid-title">More Posts</div>
-        <div class="blog-grid">
-          ${rest.map(b => `
-            <div class="blog-card" onclick="openRead(${b.id})">
-              <div class="blog-card-img">
-                ${b.image_url ? `<img src="${b.image_url}" alt="">` : ''}
-              </div>
-              <div class="blog-card-body">
-                ${b.category ? `<span class="blog-card-category">${b.category}</span>` : ''}
-                <div class="blog-card-title">${b.title}</div>
-                <div class="blog-card-excerpt">${b.excerpt || (b.content || '').replace(/<[^>]*>/g,'').substring(0,100)}</div>
-                <div class="blog-card-meta">\u270d\ufe0f ${b.author_name || 'Earnify'} &nbsp;\u00b7&nbsp; \ud83d\udcc5 ${fmtDate(b.created_at)}</div>
-              </div>
-            </div>`).join('')}
-        </div>`;
+      } else {
+        mainWrap.innerHTML = '';
+        gridWrap.innerHTML = `
+          <div class="blog-grid">
+            ${all.map(b => `
+              <div class="blog-card">
+                <div class="blog-card-img">
+                  ${b.image_url ? `<img src="${b.image_url}" alt="">` : ''}
+                  ${b.category ? `<span class="blog-card-category">${b.category}</span>` : ''}
+                </div>
+                <div class="blog-card-body">
+                  <h3 class="blog-card-title">${b.title}</h3>
+                  <div class="blog-card-footer">
+                    <div class="blog-card-footer-left">
+                      <span class="blog-card-date">📅 ${fmtDate(b.created_at)}</span>
+                      <span class="blog-card-author">By: Earnify Admin</span>
+                    </div>
+                    <button class="blog-card-read" onclick="event.stopPropagation();openRead(${b.id})">Read More →</button>
+                  </div>
+                </div>
+              </div>`).join('')}
+          </div>`;
+      }
     }
 
     document.addEventListener('DOMContentLoaded', loadBlog);
