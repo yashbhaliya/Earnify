@@ -255,7 +255,7 @@
       const blog = _blogStore[id];
       if (!blog) return;
       const slug = blog.slug || generateSlug(blog.title);
-      window.location.href = `./post/?slug=${slug}`;
+      window.location.href = `./post/?permalink=${slug}`;
     }
 
     function closeRead() {

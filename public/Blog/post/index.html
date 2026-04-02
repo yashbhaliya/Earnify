@@ -143,7 +143,7 @@
     async function loadPost() {
       const page   = document.getElementById('postPage');
       const params = new URLSearchParams(window.location.search);
-      const slug   = params.get('slug');
+      const slug   = params.get('permalink') || params.get('slug');
       const oldId  = params.get('id');
 
       // Redirect old ?id= URLs to ?slug=
