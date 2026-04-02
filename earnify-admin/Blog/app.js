@@ -226,6 +226,16 @@ function closeBlogModal() {
   editingId = null;
 }
 
+function generateSlug(title) {
+  return title
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .trim();
+}
+
 // ── SUBMIT ──
 async function submitBlogForm() {
   const title   = document.getElementById('blogTitle').value.trim();
@@ -287,6 +297,7 @@ async function submitBlogForm() {
 
   const payload = {
     title,
+    slug:         editingId ? undefined : generateSlug(title),
     category:     document.getElementById('blogCategory').value.trim(),
     excerpt:      document.getElementById('blogExcerpt').value.trim(),
     content,
@@ -295,6 +306,7 @@ async function submitBlogForm() {
     author_name:  authorName,
     main_article: document.getElementById('blogMainArticle').checked,
   };
+  if (payload.slug === undefined) delete payload.slug;
 
   // New posts start as published
   if (!editingId) payload.is_published = true;

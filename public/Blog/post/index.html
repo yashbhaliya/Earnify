@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog - Earnify</title>
+  <link rel="icon" href="/file/logo1.jpeg" type="image/jpeg">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="../../landing.css">
+  <link rel="stylesheet" href="../blog.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    .post-page { max-width: 1200px; margin: 0 auto; padding: 40px 24px 80px; }
+    .post-back {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 8px 16px; background: #f1f5f9; border: none;
+      border-radius: 8px; color: #475569; font-size: 13px;
+      font-weight: 600; cursor: pointer; font-family: inherit;
+      text-decoration: none; margin-bottom: 32px; transition: background 0.2s;
+    }
+    .post-back:hover { background: #e2e8f0; }
+    .post-cover {
+      width: 100%;
+      height: 420px;
+      object-fit: inherit;
+      object-position: center;
+      border-radius: 16px;
+      margin-bottom: 32px;
+      display: none;
+    }
+    .post-cover.show { display: block; }
+    .post-category {
+      display: inline-block; padding: 4px 12px;
+      background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(118,75,162,0.1));
+      color: #667eea; border-radius: 6px; font-size: 11px;
+      font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
+      margin-bottom: 16px;
+    }
+    .post-title {
+      font-size: 36px; font-weight: 800; color: #1e293b;
+      line-height: 1.3; margin-bottom: 16px; letter-spacing: -0.3px;
+    }
+    .post-meta {
+      display: flex; gap: 18px; font-size: 13px; color: #94a3b8;
+      font-weight: 500; margin-bottom: 32px; padding-bottom: 24px;
+      border-bottom: 1.5px solid #f1f5f9;
+    }
+    .post-content { font-size: 16px; color: #334155; line-height: 1.9; user-select: text; }
+    .post-content h1 { font-size: 28px; font-weight: 800; color: #1e293b; margin: 32px 0 14px; }
+    .post-content h2 { font-size: 24px; font-weight: 700; color: #1e293b; margin: 28px 0 12px; }
+    .post-content h3 { font-size: 20px; font-weight: 700; color: #1e293b; margin: 22px 0 10px; }
+    .post-content p  { margin: 0 0 18px; }
+    .post-content ul, .post-content ol { padding-left: 28px; margin: 14px 0; }
+    .post-content li { margin-bottom: 8px; }
+    .post-content a  { color: #667eea; text-decoration: underline; }
+    .post-content strong, .post-content b { font-weight: 700; color: #1e293b; }
+    .post-content em { font-style: italic; }
+    .post-content blockquote {
+      border-left: 4px solid #667eea; padding: 14px 22px;
+      margin: 20px 0; background: #f8fafc;
+      border-radius: 0 10px 10px 0; color: #475569; font-style: italic;
+    }
+    .post-loading { text-align: center; padding: 80px 20px; color: #94a3b8; font-size: 15px; }
+    .post-error   { text-align: center; padding: 80px 20px; color: #ef4444; font-size: 15px; }
+    @media (max-width: 768px) {
+      .post-page { padding: 24px 16px 60px; }
+      .post-title { font-size: 26px; }
+      .post-cover { height: 220px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-header">
+        <a href="../../" style="text-decoration:none;color:inherit;">
+          <h1 class="logo">💰 <span class="logo-text">Earnify</span></h1>
+        </a>
+        <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+          <span class="hamburger"></span><span class="hamburger"></span><span class="hamburger"></span>
+        </button>
+      </div>
+      <div class="search-box" style="visibility:hidden;"></div>
+      <div class="nav-links" id="navLinks">
+        <a href="../../">Home</a>
+        <a href="../../#resources">Resources</a>
+        <a href="../../About/">About</a>
+        <a href="../" style="color:#667eea;font-weight:700;">Blog</a>
+        <a href="../../Dashboard/" onclick="goToDashboard(event)">Dashboard</a>
+        <button id="loginBtn" class="admin-btn" onclick="showLoginModal()">Login</button>
+        <button id="signupBtn" class="admin-btn" onclick="showSignupModal()">Sign Up</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="post-page" id="postPage">
+    <div class="post-loading">⏳ Loading...</div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h3 class="footer-logo"><a href="/" class="footer-logo-link">💰 <span class="footer-logo-text">Earnify</span></a></h3>
+          <p class="footer-desc">Your trusted learning marketplace for premium study materials, templates, and professional services.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Quick Links</h4>
+          <ul class="footer-links">
+            <li><a href="../../About/">About Us</a></li>
+            <li><a href="../../FAQ/">FAQ's</a></li>
+            <li><a href="../">Blog</a></li>
+            <li><a href="../../Terms/">Terms &amp; Conditions</a></li>
+            <li><a href="../../Privacy/">Privacy Policy</a></li>
+            <li><a href="../../Contact/">Contact Us</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Contact Info</h4>
+          <p class="footer-contact">📧 support@earnify.com</p>
+          <p class="footer-contact">📞 +11 60464 53263</p>
+          <div class="social-icons">
+            <a title="Facebook"><i class="fab fa-facebook"></i></a>
+            <a title="Instagram"><i class="fab fa-instagram"></i></a>
+            <a title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom"><p>&copy; 2024 Earnify. All rights reserved.</p></div>
+    </div>
+  </footer>
+
+  <script src="../../api-config.js"></script>
+  <script src="../../toast.js"></script>
+  <script src="../../landing.js"></script>
+  <script>
+    const SUPABASE_URL = 'https://emnrgsgerfjvndexomro.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVtbnJnc2dlcmZqdm5kZXhvbXJvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI0MjAyMTAsImV4cCI6MjA4Nzk5NjIxMH0.uXr8lipxLbB4D_5JwQkpLzc-HudQw23tOFBfV4C6hqY';
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    async function loadPost() {
+      const page   = document.getElementById('postPage');
+      const params = new URLSearchParams(window.location.search);
+      const slug   = params.get('slug');
+      const oldId  = params.get('id');
+
+      // Redirect old ?id= URLs to ?slug=
+      if (!slug && oldId) {
+        const { data } = await supabaseClient.from('blogs').select('slug').eq('id', oldId).single();
+        if (data && data.slug) { window.location.replace(`?slug=${data.slug}`); return; }
+      }
+
+      if (!slug) {
+        page.innerHTML = '<div class="post-error">❌ No post specified. <a href="../" style="color:#667eea;">← Back to Blog</a></div>';
+        return;
+      }
+
+      const { data: blog, error } = await supabaseClient
+        .from('blogs').select('*').eq('slug', slug).single();
+
+      if (error || !blog) {
+        page.innerHTML = '<div class="post-error">❌ Post not found. <a href="../" style="color:#667eea;">← Back to Blog</a></div>';
+        return;
+      }
+
+      document.title = blog.title.replace(/^[^\p{L}\p{N}]+/u, '').trim() + ' - Earnify Blog';
+
+      const date = new Date(blog.created_at).toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' });
+
+      page.innerHTML = `
+        <a class="post-back" href="../">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+          Back to Blog
+        </a>
+        ${blog.image_url ? `<img src="${blog.image_url}" alt="" class="post-cover show">` : ''}
+        ${blog.category ? `<span class="post-category">${blog.category}</span>` : ''}
+        <h1 class="post-title">${blog.title}</h1>
+        <div class="post-meta">
+          <span>✍️ Earnify Admin</span>
+          <span>📅 ${date}</span>
+        </div>
+        <div class="post-content">${blog.content || ''}</div>`;
+    }
+
+    document.addEventListener('DOMContentLoaded', loadPost);
+  </script>
+</body>
+</html>

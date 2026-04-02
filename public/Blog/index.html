@@ -239,19 +239,21 @@
         </div>`;
     }
 
+    function generateSlug(title) {
+      return title
+        .toLowerCase()
+        .replace(/[^\w\s-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .replace(/^-+|-+$/g, '')
+        .trim();
+    }
+
     function openRead(id) {
       const blog = _blogStore[id];
       if (!blog) return;
-      const img = document.getElementById('readCover');
-      if (blog.image_url) { img.src = blog.image_url; img.classList.add('show'); }
-      else { img.src = ''; img.classList.remove('show'); }
-      document.getElementById('readTitle').textContent    = blog.title || '';
-      document.getElementById('readCategory').textContent = blog.category || '';
-      document.getElementById('readAuthor').textContent   = '\u270d\ufe0f Earnify Admin';
-      document.getElementById('readDate').textContent     = '\ud83d\udcc5 ' + new Date(blog.created_at).toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' });
-      document.getElementById('readContent').innerHTML    = blog.content || '';
-      document.getElementById('readModal').classList.add('open');
-      document.body.style.overflow = 'hidden';
+      const slug = blog.slug || generateSlug(blog.title);
+      window.location.href = `./post/?slug=${slug}`;
     }
 
     function closeRead() {
