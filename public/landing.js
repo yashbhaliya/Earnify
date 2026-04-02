@@ -119,8 +119,9 @@ function _amTogglePw(id, btn) {
 // Intercept Dashboard links — show login modal if not logged in
 function goToDashboard(e) {
   if (e) e.preventDefault();
-  if (isLoggedIn) { window.location.href = './Dashboard/'; }
-  else { window._loginRedirect = './Dashboard/'; showLoginModal(); }
+  const href = (e && e.currentTarget && e.currentTarget.getAttribute('href')) || './Dashboard/';
+  if (isLoggedIn) { window.location.href = href; }
+  else { window._loginRedirect = href; showLoginModal(); }
 }
 
 async function handleLogin(e) {
@@ -181,7 +182,7 @@ async function logout() {
   await supabaseClient.auth.signOut();
   ['userLoggedIn','currentUser','adminToken'].forEach(k => localStorage.removeItem(k));
   isLoggedIn = false; updateUI();
-  window.location.href = 'index.html';
+  window.location.href = '/index.html';
 }
 
 /* ── Skeleton Loader ── */

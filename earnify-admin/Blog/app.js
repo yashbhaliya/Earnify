@@ -296,6 +296,9 @@ async function submitBlogForm() {
     main_article: document.getElementById('blogMainArticle').checked,
   };
 
+  // New posts start as published
+  if (!editingId) payload.is_published = true;
+
   // Save main_article state locally so it persists across edits
   const isMainArticle = document.getElementById('blogMainArticle').checked;
   if (editingId) _mainArticleMap[editingId] = isMainArticle;
@@ -362,11 +365,14 @@ async function loadBlogs() {
         </div>
         <div class="blog-card-body">
           <div class="blog-card-title">${b.title}</div>
-          <span class="blog-category">${b.category || 'General'}</span>
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+            <span class="blog-category">${b.category || 'General'}</span>
+            <span class="blog-status-badge ${b.is_published === true ? 'status-published' : 'status-unpublished'}">${b.is_published === true ? '🟢 Published' : '🔴 Unpublished'}</span>
+          </div>
           <div class="blog-card-actions">
             <button class="btn-view-blog" onclick="viewBlog(_blogMap[${b.id}])">View</button>
             <button class="btn-edit-blog" onclick="openEditModal(_blogMap[${b.id}])">Edit</button>
-            ${b.is_published
+              ${b.is_published === true
               ? `<button class="btn-unpublish-blog" onclick="togglePublish(${b.id}, false)">Unpublish</button>`
               : `<button class="btn-publish-blog" onclick="togglePublish(${b.id}, true)">Publish</button>`
             }
@@ -420,6 +426,7 @@ async function togglePublish(id, publish) {
     .update({ is_published: publish })
     .eq('id', id);
   if (error) { showToast('❌ ' + error.message, 'error'); return; }
+  if (_blogMap[id]) _blogMap[id].is_published = publish;
   showToast(publish ? '✅ Post published!' : '📦 Post unpublished');
   loadBlogs();
 }
