@@ -13,6 +13,7 @@ const supabaseAdmin = window.supabase.createClient(SUPABASE_URL, SUPABASE_SERVIC
 
 let editingId = null;
 const _blogMap = {};
+const _mainArticleMap = {};
 
 // ── RICH TEXT EDITOR HELPERS ──
 function rte(cmd) {
@@ -174,6 +175,7 @@ function openAddModal() {
   document.getElementById('uploadErrorPopup').classList.remove('show');
   document.getElementById('imgHint').style.display = '';
   document.getElementById('blogImageUrl').placeholder = 'https://example.com/image.jpg';
+  document.getElementById('blogMainArticle').checked = false;
 
   document.getElementById('blogEditor').classList.add('open');
   document.body.style.overflow = 'hidden';
@@ -200,6 +202,7 @@ function openEditModal(blog) {
   document.getElementById('uploadErrorPopup').classList.remove('show');
   document.getElementById('imgHint').style.display = '';
   document.getElementById('blogImageUrl').placeholder = 'https://example.com/image.jpg';
+  document.getElementById('blogMainArticle').checked = blog.main_article ?? _mainArticleMap[blog.id] ?? false;
   // Set cover image
   const img   = document.getElementById('coverImgPreview');
   const cover = document.getElementById('editorCoverPreview');
@@ -290,7 +293,12 @@ async function submitBlogForm() {
     image_url:    imageUrl,
     author_email: authorEmail,
     author_name:  authorName,
+    main_article: document.getElementById('blogMainArticle').checked,
   };
+
+  // Save main_article state locally so it persists across edits
+  const isMainArticle = document.getElementById('blogMainArticle').checked;
+  if (editingId) _mainArticleMap[editingId] = isMainArticle;
 
   try {
     let error;
@@ -358,6 +366,10 @@ async function loadBlogs() {
           <div class="blog-card-actions">
             <button class="btn-view-blog" onclick="viewBlog(_blogMap[${b.id}])">View</button>
             <button class="btn-edit-blog" onclick="openEditModal(_blogMap[${b.id}])">Edit</button>
+            ${b.is_published
+              ? `<button class="btn-unpublish-blog" onclick="togglePublish(${b.id}, false)">Unpublish</button>`
+              : `<button class="btn-publish-blog" onclick="togglePublish(${b.id}, true)">Publish</button>`
+            }
             <button class="btn-delete-blog" onclick="deleteBlog(${b.id})">Delete</button>
           </div>
         </div>
@@ -399,6 +411,17 @@ function viewBlog(blog) {
 function closeViewBlog() {
   document.getElementById('viewBlogModal').classList.remove('open');
   document.body.style.overflow = '';
+}
+
+// ── TOGGLE PUBLISH ──
+async function togglePublish(id, publish) {
+  const { error } = await supabaseClient
+    .from('blogs')
+    .update({ is_published: publish })
+    .eq('id', id);
+  if (error) { showToast('❌ ' + error.message, 'error'); return; }
+  showToast(publish ? '✅ Post published!' : '📦 Post unpublished');
+  loadBlogs();
 }
 
 // ── DELETE ──
