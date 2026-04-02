@@ -12,6 +12,7 @@ const supabaseAdmin = window.supabase.createClient(SUPABASE_URL, SUPABASE_SERVIC
 });
 
 let editingId = null;
+const _blogMap = {};
 
 // ── RICH TEXT EDITOR HELPERS ──
 function rte(cmd) {
@@ -344,10 +345,9 @@ async function loadBlogs() {
       return;
     }
 
-    grid.innerHTML = blogs.map(b => {
-      // Strip HTML tags for excerpt preview
-      const plainText = b.excerpt || b.content?.replace(/<[^>]*>/g, '').substring(0, 120) || '';
-      return `
+    blogs.forEach(b => { _blogMap[b.id] = b; });
+
+    grid.innerHTML = blogs.map(b => `
       <div class="blog-card">
         <div class="blog-card-img">
           ${b.image_url ? `<img src="${b.image_url}" alt="" onerror="this.style.display='none'">` : ''}
@@ -356,12 +356,13 @@ async function loadBlogs() {
           <div class="blog-card-title">${b.title}</div>
           <span class="blog-category">${b.category || 'General'}</span>
           <div class="blog-card-actions">
-            <button class="btn-edit-blog" onclick="openEditModal(${JSON.stringify(b).replace(/"/g, '&quot;')})">Edit</button>
+            <button class="btn-view-blog" onclick="viewBlog(_blogMap[${b.id}])">View</button>
+            <button class="btn-edit-blog" onclick="openEditModal(_blogMap[${b.id}])">Edit</button>
             <button class="btn-delete-blog" onclick="deleteBlog(${b.id})">Delete</button>
           </div>
         </div>
-      </div>`;
-    }).join('');
+      </div>`
+    ).join('');
   } catch (err) {
     const msg = err?.message || err?.error_description || JSON.stringify(err);
     console.error('Error loading blogs:', msg, err);
