@@ -637,13 +637,19 @@
   .read-modal-body { padding: 24px 20px 40px; }
   .read-title { font-size: 24px; }
   .read-cover { height: 220px; }
+  /* Hide label, move author next to date in left group */
+  .hero-slide-label { display: none; }
+  .hero-slide-right { flex-direction: row; justify-content: center; }
+  .hero-slide-bottom { flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 6px;margin-bottom: 20px; }
+  .hero-slide-left { justify-content: center; }
+  .hero-slide-btn { width: auto; }
 }
 @media (max-width: 480px) {
   .hero-slider { height: 260px; margin-bottom: 24px; }
   .hero-slide-title { font-size: 15px; }
   .hero-slide-content { padding: 14px 12px; gap: 8px; }
-  .hero-slide-bottom { flex-direction: column; align-items: center; gap: 6px; padding: 8px 10px; }
-  .hero-slide-left, .hero-slide-right { flex-wrap: wrap; gap: 6px; }
+  .hero-slide-bottom { gap: 4px; padding: 8px 10px; }
+  .hero-slide-label { display: none; }
   .hero-slide-btn { padding: 7px 16px; font-size: 12px; }
   .hero-slide-author { font-size: 11px; }
   .hero-slide-date { font-size: 11px; }
