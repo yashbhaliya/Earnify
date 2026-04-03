@@ -62,6 +62,15 @@ function openLinkPreview() {
   return false;
 }
 
+function setLinkUrl(url) {
+  document.getElementById('linkUrl').value = url;
+  updateLinkPreview();
+  // Focus at end so user can type the slug after /Blog/post/?permalink=
+  const input = document.getElementById('linkUrl');
+  input.focus();
+  input.setSelectionRange(input.value.length, input.value.length);
+}
+
 function closeLinkModal() {
   document.getElementById('linkModal').classList.remove('open');
   _savedRange = null;
@@ -120,30 +129,36 @@ function rteClear() {
   const editor = document.getElementById('blogContent');
   editor.focus();
   const sel = window.getSelection();
+  const hasSelection = sel && !sel.isCollapsed;
 
-  // If nothing selected, select all
-  if (!sel || sel.isCollapsed) {
-    document.execCommand('selectAll', false, null);
+  if (hasSelection) {
+    // ── Selection exists: clear only selected text formatting ──
+    document.execCommand('removeFormat', false, null);
+    document.execCommand('unlink', false, null);
+  } else {
+    // ── No selection: clear ALL formatting but keep text & structure intact ──
+    // Walk every element inside editor and strip inline styles / tags
+    // without touching text content or block structure
+    const stripInline = (node) => {
+      if (node.nodeType !== 1) return; // skip text nodes
+      // Unwrap inline formatting tags but keep block tags and text
+      const inlineTags = ['B','STRONG','I','EM','U','S','STRIKE','FONT','SPAN','A'];
+      [...node.childNodes].forEach(child => {
+        if (child.nodeType === 1 && inlineTags.includes(child.tagName)) {
+          // Replace tag with its children
+          const frag = document.createDocumentFragment();
+          while (child.firstChild) frag.appendChild(child.firstChild);
+          node.replaceChild(frag, child);
+        } else {
+          stripInline(child);
+        }
+      });
+      // Remove inline style attribute from block elements
+      if (node.hasAttribute && node.hasAttribute('style')) node.removeAttribute('style');
+      if (node.hasAttribute && node.hasAttribute('color')) node.removeAttribute('color');
+    };
+    stripInline(editor);
   }
-
-  // 1. Remove inline formatting (bold, italic, color, font-size etc.)
-  document.execCommand('removeFormat', false, null);
-
-  // 2. Remove links — execCommand('unlink') only works on selected <a> nodes
-  //    so we also manually unwrap any <a> tags inside the editor
-  document.execCommand('unlink', false, null);
-
-  // 3. Manually unwrap any remaining <a> tags (covers cases execCommand misses)
-  editor.querySelectorAll('a').forEach(a => {
-    const parent = a.parentNode;
-    while (a.firstChild) parent.insertBefore(a.firstChild, a);
-    parent.removeChild(a);
-  });
-
-  // 4. Reset block-level formatting back to paragraph
-  document.execCommand('formatBlock', false, 'p');
-
-  sel.removeAllRanges();
 }
 
 // Get HTML content from editor

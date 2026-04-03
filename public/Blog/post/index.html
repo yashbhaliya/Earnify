@@ -142,7 +142,7 @@
     async function loadPost() {
       const page   = document.getElementById('postPage');
       const params = new URLSearchParams(window.location.search);
-      const permalink = params.get('permalink');
+      const permalink = params.get('permalink') || params.get('slug');
 
       if (!permalink) {
         page.innerHTML = '<div class="post-error">❌ No post specified. <a href="../" style="color:#667eea;">← Back to Blog</a></div>';
