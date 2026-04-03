@@ -470,8 +470,11 @@ async function loadBlogs() {
 
     blogs.forEach(b => { _blogMap[b.id] = b; });
 
-    grid.innerHTML = blogs.map(b => `
-      <div class="blog-card">
+    grid.innerHTML = blogs.map(b => {
+      const slug = b.slug || generateSlug(b.title);
+      const permalink = `/public/Blog/post/?permalink=${slug}`;
+      return `
+      <div class="blog-card" id="card-${b.id}">
         <div class="blog-card-img">
           ${b.image_url ? `<img src="${b.image_url}" alt="" onerror="this.style.display='none'">` : ''}
         </div>
@@ -482,17 +485,17 @@ async function loadBlogs() {
             <span class="blog-status-badge ${b.is_published === true ? 'status-published' : 'status-unpublished'}">${b.is_published === true ? '🟢 Published' : '🔴 Unpublished'}</span>
           </div>
           <div class="blog-card-actions">
-            <button class="btn-view-blog" onclick="viewBlog(_blogMap[${b.id}])">View</button>
+            <button class="btn-view-blog" onclick="window.open('${permalink}','_blank')">View</button>
             <button class="btn-edit-blog" onclick="openEditModal(_blogMap[${b.id}])">Edit</button>
-              ${b.is_published === true
+            ${b.is_published === true
               ? `<button class="btn-unpublish-blog" onclick="togglePublish(${b.id}, false)">Unpublish</button>`
               : `<button class="btn-publish-blog" onclick="togglePublish(${b.id}, true)">Publish</button>`
             }
             <button class="btn-delete-blog" onclick="deleteBlog(${b.id})">Delete</button>
           </div>
         </div>
-      </div>`
-    ).join('');
+      </div>`;
+    }).join('');
   } catch (err) {
     const msg = err?.message || err?.error_description || JSON.stringify(err);
     console.error('Error loading blogs:', msg, err);
