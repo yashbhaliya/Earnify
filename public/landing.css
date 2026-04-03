@@ -805,14 +805,7 @@ footer {
     font-size: 2rem;
   }
 
-  .filter-tabs {
-    gap: 0.5rem;
-  }
 
-  .filter-btn {
-    padding: 0.6rem 1.2rem;
-    font-size: 0.9rem;
-  }
 }
 
 @media (max-width: 480px) {
@@ -1434,16 +1427,7 @@ footer {
     padding: 0 1rem;
   }
 
-  .filter-tabs {
-    padding: 0 1rem;
-    margin-bottom: 2rem;
-  }
 
-  .filter-btn {
-    padding: 0.5rem 1rem;
-    font-size: 0.85rem;
-    white-space: nowrap;
-  }
 
   .resources-grid {
     grid-template-columns: 1fr;
@@ -1457,14 +1441,7 @@ footer {
     font-size: 1.8rem;
   }
 
-  .filter-tabs {
-    gap: 0.4rem;
-  }
 
-  .filter-btn {
-    padding: 0.5rem 0.8rem;
-    font-size: 0.8rem;
-  }
 }
 
 /* Mobile Resource Cards */
@@ -1808,9 +1785,7 @@ footer {
     margin-bottom: 1rem;
   }
 
-  .filter-tabs {
-    margin-bottom: 1.5rem;
-  }
+
 }
 
 /* Touch-friendly improvements */
@@ -2389,13 +2364,12 @@ body.sidebar-open {
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     -ms-overflow-style: none;
-    box-sizing: border-box;
   }
   .filter-tabs::-webkit-scrollbar { display: none; }
   .filter-btn {
     flex-shrink: 0;
     justify-content: center;
-    padding: 8px 14px;
+    padding: 8px 16px;
     font-size: 0.82rem;
     border-radius: 50px;
     white-space: nowrap;

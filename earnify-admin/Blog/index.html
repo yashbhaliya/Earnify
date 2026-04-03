@@ -175,7 +175,7 @@
           <div class="rte-divider"></div>
           <div class="rte-group">
             <button type="button" class="rte-btn" onclick="rteLink()" title="Insert Link">🔗 Link</button>
-            <button type="button" class="rte-btn" onclick="rte('removeFormat')" title="Clear Format">✕ Clear</button>
+            <button type="button" class="rte-btn" onclick="rteClear()" title="Clear Format">✕ Clear</button>
           </div>
           <div class="rte-divider"></div>
           <div class="rte-group">
@@ -287,6 +287,41 @@
         <span id="viewBlogDate"></span>
       </div>
       <div id="viewBlogContent" class="view-blog-content"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Link Insert Modal -->
+<div id="linkModal" class="link-modal-overlay" onclick="if(event.target===this)closeLinkModal()">
+  <div class="link-modal-box">
+    <div class="link-modal-header">
+      <span>🔗 Insert Link</span>
+      <button class="link-modal-close" onclick="closeLinkModal()">✕</button>
+    </div>
+    <div class="link-modal-body">
+      <div class="link-modal-field">
+        <label>URL <span style="color:#ef4444">*</span></label>
+        <input id="linkUrl" type="text" placeholder="https://example.com or /public/Blog/post/?permalink=slug" oninput="updateLinkPreview()" onkeydown="if(event.key==='Enter')insertLink()">
+      </div>
+      <div class="link-modal-field">
+        <label>Link Text <span style="color:#94a3b8;font-weight:400">(optional)</span></label>
+        <input id="linkText" type="text" placeholder="Display text" oninput="updateLinkPreview()" onkeydown="if(event.key==='Enter')insertLink()">
+      </div>
+      <div class="link-modal-field">
+        <label class="link-newtab-label">
+          <input type="checkbox" id="linkNewTab" checked>
+          <span class="link-newtab-box"></span>
+          <span>Open in new tab</span>
+        </label>
+      </div>
+      <div class="link-preview" id="linkPreview" style="display:none;">
+        <span class="link-preview-label">Preview:</span>
+        <a id="linkPreviewAnchor" href="#" target="_blank" rel="noopener" onclick="return openLinkPreview()"></a>
+      </div>
+    </div>
+    <div class="link-modal-footer">
+      <button class="link-modal-cancel" onclick="closeLinkModal()">Cancel</button>
+      <button class="link-modal-insert" onclick="insertLink()">Insert Link</button>
     </div>
   </div>
 </div>

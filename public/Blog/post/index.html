@@ -22,7 +22,6 @@
     .post-back:hover { background: #e2e8f0; }
     .post-cover {
       width: 100%;
-      /* height: 420px; */
       object-fit: inherit;
       object-position: center;
       border-radius: 16px;
@@ -143,22 +142,15 @@
     async function loadPost() {
       const page   = document.getElementById('postPage');
       const params = new URLSearchParams(window.location.search);
-      const slug   = params.get('permalink') || params.get('slug');
-      const oldId  = params.get('id');
+      const permalink = params.get('permalink') || params.get('slug');
 
-      // Redirect old ?id= URLs to ?slug=
-      if (!slug && oldId) {
-        const { data } = await supabaseClient.from('blogs').select('slug').eq('id', oldId).single();
-        if (data && data.slug) { window.location.replace(`?slug=${data.slug}`); return; }
-      }
-
-      if (!slug) {
+      if (!permalink) {
         page.innerHTML = '<div class="post-error">❌ No post specified. <a href="../" style="color:#667eea;">← Back to Blog</a></div>';
         return;
       }
 
       const { data: blog, error } = await supabaseClient
-        .from('blogs').select('*').eq('slug', slug).single();
+        .from('blogs').select('*').eq('slug', permalink).single();
 
       if (error || !blog) {
         page.innerHTML = '<div class="post-error">❌ Post not found. <a href="../" style="color:#667eea;">← Back to Blog</a></div>';
@@ -170,7 +162,7 @@
       const date = new Date(blog.created_at).toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' });
 
       page.innerHTML = `
-        <a class="post-back" href="../">
+        <a class="post-back" href="../" onclick="event.preventDefault();history.back()">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
           Back to Blog
         </a>

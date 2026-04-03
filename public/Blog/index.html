@@ -100,11 +100,7 @@
     <div id="mainArticleWrap"></div>
 
     <!-- Grid -->
-    <div id="gridWrap" class="gridWrap">
-      <div class="blog-empty"><div class="ei">⏳</div><p>Loading posts...</p></div>
-    </div>
-    <!-- Pagination -->
-    <div id="paginationWrap" class="pagination-wrap"></div>
+    <div id="gridWrap" class="gridWrap"></div>
   </div>
 
   <!-- ── FOOTER (same as index.html) ── -->
@@ -271,6 +267,15 @@
       const mainWrap = document.getElementById('mainArticleWrap');
       const gridWrap = document.getElementById('gridWrap');
 
+      // Serve from sessionStorage cache instantly — no loading flash on back navigation
+      try {
+        const c = JSON.parse(sessionStorage.getItem('earnify_blog_v1'));
+        if (c && Date.now() - c.ts < 300000) {
+          renderBlogs(c.blogs, mainWrap, gridWrap);
+          return;
+        }
+      } catch(e) {}
+
       const { data: blogs, error } = await supabaseClient
         .from('blogs')
         .select('*')
@@ -283,46 +288,14 @@
         return;
       }
 
-      blogs.forEach(b => { _blogStore[b.id] = b; });
+      try { sessionStorage.setItem('earnify_blog_v1', JSON.stringify({ ts: Date.now(), blogs })); } catch(e) {}
+      renderBlogs(blogs, mainWrap, gridWrap);
+    }
 
+    function renderBlogs(blogs, mainWrap, gridWrap) {
+      blogs.forEach(b => { _blogStore[b.id] = b; });
       const mainArticles = blogs.filter(b => b.main_article === true);
       const rest = blogs.filter(b => b.main_article !== true);
-
-      const POSTS_PER_PAGE = 9;
-      let currentPage = 1;
-
-      function renderGrid(posts, page) {
-        const paginationWrap = document.getElementById('paginationWrap');
-        const totalPages = Math.ceil(posts.length / POSTS_PER_PAGE);
-        const start = (page - 1) * POSTS_PER_PAGE;
-        const pagePosts = posts.slice(start, start + POSTS_PER_PAGE);
-
-        gridWrap.innerHTML = pagePosts.length === 0 ? '' :
-          `<div class="blog-grid-title">More Posts</div><div class="blog-grid">${pagePosts.map(cardHtml).join('')}</div>`;
-
-        if (totalPages <= 1) { paginationWrap.innerHTML = ''; return; }
-
-        let btns = '';
-        btns += `<button class="pg-btn pg-prev" onclick="changePage(${page - 1})" ${page === 1 ? 'disabled' : ''}>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-        </button>`;
-        for (let i = 1; i <= totalPages; i++) {
-          btns += `<button class="pg-btn pg-num ${i === page ? 'active' : ''}" onclick="changePage(${i})">${i}</button>`;
-        }
-        btns += `<button class="pg-btn pg-next" onclick="changePage(${page + 1})" ${page === totalPages ? 'disabled' : ''}>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
-        </button>`;
-        paginationWrap.innerHTML = `<div class="pagination">${btns}</div>`;
-      }
-
-      window.changePage = function(page) {
-        const posts = mainArticles.length > 0 ? rest : blogs;
-        const totalPages = Math.ceil(posts.length / POSTS_PER_PAGE);
-        if (page < 1 || page > totalPages) return;
-        currentPage = page;
-        renderGrid(posts, currentPage);
-        gridWrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      };
 
       if (mainArticles.length > 0) {
         mainWrap.innerHTML = `
@@ -373,11 +346,11 @@
         let autoTimer = setInterval(() => { cur = (cur + 1) % total; sliderUpdate(); }, 4000);
         function resetAuto() { clearInterval(autoTimer); autoTimer = setInterval(() => { cur = (cur + 1) % total; sliderUpdate(); }, 4000); }
 
-        renderGrid(rest, currentPage);
+        gridWrap.innerHTML = rest.length === 0 ? '' : `<div class="blog-grid-title">More Posts</div><div class="blog-grid">${rest.map(cardHtml).join('')}</div>`;
 
       } else {
         mainWrap.innerHTML = '';
-        renderGrid(blogs, currentPage);
+        gridWrap.innerHTML = `<div class="blog-grid">${blogs.map(cardHtml).join('')}</div>`;
       }
     }
 

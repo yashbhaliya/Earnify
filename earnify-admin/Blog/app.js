@@ -26,12 +26,91 @@ function rteBlock(tag) {
   document.execCommand('formatBlock', false, tag);
 }
 
+let _savedRange = null;
+
 function rteLink() {
-  const url = prompt('Enter URL:');
+  const editor = document.getElementById('blogContent');
+  editor.focus();
+  const sel = window.getSelection();
+  _savedRange = (sel && sel.rangeCount > 0) ? sel.getRangeAt(0).cloneRange() : null;
+  const selectedText = _savedRange ? _savedRange.toString() : '';
+  document.getElementById('linkText').value = selectedText;
+  document.getElementById('linkUrl').value = '';
+  document.getElementById('linkNewTab').checked = true;
+  document.getElementById('linkPreview').style.display = 'none';
+  document.getElementById('linkModal').classList.add('open');
+  setTimeout(() => document.getElementById('linkUrl').focus(), 80);
+}
+
+function updateLinkPreview() {
+  const url  = document.getElementById('linkUrl').value.trim();
+  const text = document.getElementById('linkText').value.trim();
+  const preview = document.getElementById('linkPreview');
+  const anchor  = document.getElementById('linkPreviewAnchor');
   if (url) {
-    document.getElementById('blogContent').focus();
-    document.execCommand('createLink', false, url);
+    anchor.href        = url;
+    anchor.textContent = text || url;
+    preview.style.display = 'flex';
+  } else {
+    preview.style.display = 'none';
   }
+}
+
+function openLinkPreview() {
+  const url = document.getElementById('linkUrl').value.trim();
+  if (url) window.open(url, '_blank');
+  return false;
+}
+
+function setLinkUrl(url) {
+  document.getElementById('linkUrl').value = url;
+  updateLinkPreview();
+  // Focus at end so user can type the slug after /Blog/post/?permalink=
+  const input = document.getElementById('linkUrl');
+  input.focus();
+  input.setSelectionRange(input.value.length, input.value.length);
+}
+
+function closeLinkModal() {
+  document.getElementById('linkModal').classList.remove('open');
+  _savedRange = null;
+}
+
+function insertLink() {
+  const url     = document.getElementById('linkUrl').value.trim();
+  const text    = document.getElementById('linkText').value.trim();
+  const newTab  = document.getElementById('linkNewTab').checked;
+  if (!url) { document.getElementById('linkUrl').focus(); return; }
+
+  const editor = document.getElementById('blogContent');
+  editor.focus();
+
+  const sel = window.getSelection();
+  if (_savedRange) {
+    sel.removeAllRanges();
+    sel.addRange(_savedRange);
+  }
+
+  if (text && _savedRange && _savedRange.toString() === '') {
+    const a = document.createElement('a');
+    a.href = url;
+    a.textContent = text;
+    if (newTab) { a.target = '_blank'; a.rel = 'noopener'; }
+    _savedRange.insertNode(a);
+    const range = document.createRange();
+    range.setStartAfter(a);
+    range.collapse(true);
+    sel.removeAllRanges();
+    sel.addRange(range);
+  } else {
+    document.execCommand('createLink', false, url);
+    const links = editor.querySelectorAll('a[href="' + url + '"]');
+    links.forEach(a => {
+      if (newTab) { a.target = '_blank'; a.rel = 'noopener'; }
+    });
+  }
+
+  closeLinkModal();
 }
 
 function rteFontSize(sel) {
@@ -44,6 +123,42 @@ function rteFontSize(sel) {
 function rteColor(color) {
   document.getElementById('blogContent').focus();
   document.execCommand('foreColor', false, color);
+}
+
+function rteClear() {
+  const editor = document.getElementById('blogContent');
+  editor.focus();
+  const sel = window.getSelection();
+  const hasSelection = sel && !sel.isCollapsed;
+
+  if (hasSelection) {
+    // ── Selection exists: clear only selected text formatting ──
+    document.execCommand('removeFormat', false, null);
+    document.execCommand('unlink', false, null);
+  } else {
+    // ── No selection: clear ALL formatting but keep text & structure intact ──
+    // Walk every element inside editor and strip inline styles / tags
+    // without touching text content or block structure
+    const stripInline = (node) => {
+      if (node.nodeType !== 1) return; // skip text nodes
+      // Unwrap inline formatting tags but keep block tags and text
+      const inlineTags = ['B','STRONG','I','EM','U','S','STRIKE','FONT','SPAN','A'];
+      [...node.childNodes].forEach(child => {
+        if (child.nodeType === 1 && inlineTags.includes(child.tagName)) {
+          // Replace tag with its children
+          const frag = document.createDocumentFragment();
+          while (child.firstChild) frag.appendChild(child.firstChild);
+          node.replaceChild(frag, child);
+        } else {
+          stripInline(child);
+        }
+      });
+      // Remove inline style attribute from block elements
+      if (node.hasAttribute && node.hasAttribute('style')) node.removeAttribute('style');
+      if (node.hasAttribute && node.hasAttribute('color')) node.removeAttribute('color');
+    };
+    stripInline(editor);
+  }
 }
 
 // Get HTML content from editor
@@ -370,8 +485,11 @@ async function loadBlogs() {
 
     blogs.forEach(b => { _blogMap[b.id] = b; });
 
-    grid.innerHTML = blogs.map(b => `
-      <div class="blog-card">
+    grid.innerHTML = blogs.map(b => {
+      const slug = b.slug || generateSlug(b.title);
+      const permalink = `/public/Blog/post/?permalink=${slug}`;
+      return `
+      <div class="blog-card" id="card-${b.id}">
         <div class="blog-card-img">
           ${b.image_url ? `<img src="${b.image_url}" alt="" onerror="this.style.display='none'">` : ''}
         </div>
@@ -382,17 +500,17 @@ async function loadBlogs() {
             <span class="blog-status-badge ${b.is_published === true ? 'status-published' : 'status-unpublished'}">${b.is_published === true ? '🟢 Published' : '🔴 Unpublished'}</span>
           </div>
           <div class="blog-card-actions">
-            <button class="btn-view-blog" onclick="viewBlog(_blogMap[${b.id}])">View</button>
+            <button class="btn-view-blog" onclick="window.open('${permalink}','_blank')">View</button>
             <button class="btn-edit-blog" onclick="openEditModal(_blogMap[${b.id}])">Edit</button>
-              ${b.is_published === true
+            ${b.is_published === true
               ? `<button class="btn-unpublish-blog" onclick="togglePublish(${b.id}, false)">Unpublish</button>`
               : `<button class="btn-publish-blog" onclick="togglePublish(${b.id}, true)">Publish</button>`
             }
             <button class="btn-delete-blog" onclick="deleteBlog(${b.id})">Delete</button>
           </div>
         </div>
-      </div>`
-    ).join('');
+      </div>`;
+    }).join('');
   } catch (err) {
     const msg = err?.message || err?.error_description || JSON.stringify(err);
     console.error('Error loading blogs:', msg, err);
