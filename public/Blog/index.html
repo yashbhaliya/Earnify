@@ -267,6 +267,15 @@
       const mainWrap = document.getElementById('mainArticleWrap');
       const gridWrap = document.getElementById('gridWrap');
 
+      // Serve from sessionStorage cache instantly — no loading flash on back navigation
+      try {
+        const c = JSON.parse(sessionStorage.getItem('earnify_blog_v1'));
+        if (c && Date.now() - c.ts < 300000) {
+          renderBlogs(c.blogs, mainWrap, gridWrap);
+          return;
+        }
+      } catch(e) {}
+
       const { data: blogs, error } = await supabaseClient
         .from('blogs')
         .select('*')
@@ -279,8 +288,12 @@
         return;
       }
 
-      blogs.forEach(b => { _blogStore[b.id] = b; });
+      try { sessionStorage.setItem('earnify_blog_v1', JSON.stringify({ ts: Date.now(), blogs })); } catch(e) {}
+      renderBlogs(blogs, mainWrap, gridWrap);
+    }
 
+    function renderBlogs(blogs, mainWrap, gridWrap) {
+      blogs.forEach(b => { _blogStore[b.id] = b; });
       const mainArticles = blogs.filter(b => b.main_article === true);
       const rest = blogs.filter(b => b.main_article !== true);
 
