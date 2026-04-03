@@ -638,4 +638,53 @@
   .hero-slider { height: 240px; }
   .hero-slide-title { font-size: 16px; }
   .blog-card-img { height: 170px; }
+<<<<<<< HEAD
+=======
+}
+
+/* ── Pagination ── */
+.pagination-wrap {
+  max-width: 1200px;
+  margin: 36px auto 60px;
+  padding: 0 24px;
+  display: flex;
+  justify-content: center;
+}
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.pg-btn {
+  min-width: 40px;
+  height: 40px;
+  padding: 0 10px;
+  border-radius: 10px;
+  border: 1.5px solid #e2e8f0;
+  background: #fff;
+  color: #475569;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.18s;
+}
+.pg-btn:hover:not(:disabled) {
+  border-color: #667eea;
+  color: #667eea;
+  background: rgba(102,126,234,0.06);
+}
+.pg-btn.active {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 4px 12px rgba(102,126,234,0.35);
+}
+.pg-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+>>>>>>> parent of c74fb6e (home page in blog section add)
 }
