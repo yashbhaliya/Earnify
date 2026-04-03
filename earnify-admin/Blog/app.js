@@ -26,12 +26,82 @@ function rteBlock(tag) {
   document.execCommand('formatBlock', false, tag);
 }
 
+let _savedRange = null;
+
 function rteLink() {
-  const url = prompt('Enter URL:');
+  const editor = document.getElementById('blogContent');
+  editor.focus();
+  const sel = window.getSelection();
+  _savedRange = (sel && sel.rangeCount > 0) ? sel.getRangeAt(0).cloneRange() : null;
+  const selectedText = _savedRange ? _savedRange.toString() : '';
+  document.getElementById('linkText').value = selectedText;
+  document.getElementById('linkUrl').value = '';
+  document.getElementById('linkNewTab').checked = true;
+  document.getElementById('linkPreview').style.display = 'none';
+  document.getElementById('linkModal').classList.add('open');
+  setTimeout(() => document.getElementById('linkUrl').focus(), 80);
+}
+
+function updateLinkPreview() {
+  const url  = document.getElementById('linkUrl').value.trim();
+  const text = document.getElementById('linkText').value.trim();
+  const preview = document.getElementById('linkPreview');
+  const anchor  = document.getElementById('linkPreviewAnchor');
   if (url) {
-    document.getElementById('blogContent').focus();
-    document.execCommand('createLink', false, url);
+    anchor.href        = url;
+    anchor.textContent = text || url;
+    preview.style.display = 'flex';
+  } else {
+    preview.style.display = 'none';
   }
+}
+
+function openLinkPreview() {
+  const url = document.getElementById('linkUrl').value.trim();
+  if (url) window.open(url, '_blank');
+  return false;
+}
+
+function closeLinkModal() {
+  document.getElementById('linkModal').classList.remove('open');
+  _savedRange = null;
+}
+
+function insertLink() {
+  const url     = document.getElementById('linkUrl').value.trim();
+  const text    = document.getElementById('linkText').value.trim();
+  const newTab  = document.getElementById('linkNewTab').checked;
+  if (!url) { document.getElementById('linkUrl').focus(); return; }
+
+  const editor = document.getElementById('blogContent');
+  editor.focus();
+
+  const sel = window.getSelection();
+  if (_savedRange) {
+    sel.removeAllRanges();
+    sel.addRange(_savedRange);
+  }
+
+  if (text && _savedRange && _savedRange.toString() === '') {
+    const a = document.createElement('a');
+    a.href = url;
+    a.textContent = text;
+    if (newTab) { a.target = '_blank'; a.rel = 'noopener'; }
+    _savedRange.insertNode(a);
+    const range = document.createRange();
+    range.setStartAfter(a);
+    range.collapse(true);
+    sel.removeAllRanges();
+    sel.addRange(range);
+  } else {
+    document.execCommand('createLink', false, url);
+    const links = editor.querySelectorAll('a[href="' + url + '"]');
+    links.forEach(a => {
+      if (newTab) { a.target = '_blank'; a.rel = 'noopener'; }
+    });
+  }
+
+  closeLinkModal();
 }
 
 function rteFontSize(sel) {
@@ -44,6 +114,36 @@ function rteFontSize(sel) {
 function rteColor(color) {
   document.getElementById('blogContent').focus();
   document.execCommand('foreColor', false, color);
+}
+
+function rteClear() {
+  const editor = document.getElementById('blogContent');
+  editor.focus();
+  const sel = window.getSelection();
+
+  // If nothing selected, select all
+  if (!sel || sel.isCollapsed) {
+    document.execCommand('selectAll', false, null);
+  }
+
+  // 1. Remove inline formatting (bold, italic, color, font-size etc.)
+  document.execCommand('removeFormat', false, null);
+
+  // 2. Remove links — execCommand('unlink') only works on selected <a> nodes
+  //    so we also manually unwrap any <a> tags inside the editor
+  document.execCommand('unlink', false, null);
+
+  // 3. Manually unwrap any remaining <a> tags (covers cases execCommand misses)
+  editor.querySelectorAll('a').forEach(a => {
+    const parent = a.parentNode;
+    while (a.firstChild) parent.insertBefore(a.firstChild, a);
+    parent.removeChild(a);
+  });
+
+  // 4. Reset block-level formatting back to paragraph
+  document.execCommand('formatBlock', false, 'p');
+
+  sel.removeAllRanges();
 }
 
 // Get HTML content from editor

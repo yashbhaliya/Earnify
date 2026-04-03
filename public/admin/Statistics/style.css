@@ -330,8 +330,8 @@ td {
   padding: 15px 18px;
   border-bottom: 1px solid #e2e8f0;
   color: #475569;
-  background: #efefef;
-   /* border-right:1px solid #e8e2e2; */
+  /* background: #efefef; */
+   border-right:2px solid #e8e2e2;
 }
 
 tbody tr:hover {

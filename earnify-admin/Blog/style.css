@@ -1082,3 +1082,190 @@ body {
   .editor-title-input { font-size: 22px; }
   .editor-cover { height: 160px; }
 }
+
+/* ── Link Insert Modal ── */
+.link-modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(0,0,0,0.45);
+  align-items: center;
+  justify-content: center;
+}
+.link-modal-overlay.open {
+  display: flex;
+  animation: toastIn 0.2s ease;
+}
+.link-modal-box {
+  background: #fff;
+  border-radius: 14px;
+  width: 100%;
+  max-width: 420px;
+  margin: 16px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.18);
+  overflow: hidden;
+}
+.link-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1.5px solid #f1f5f9;
+  font-size: 14px;
+  font-weight: 700;
+  color: #1e293b;
+}
+.link-modal-close {
+  background: #f1f5f9;
+  border: none;
+  border-radius: 6px;
+  width: 28px;
+  height: 28px;
+  font-size: 14px;
+  cursor: pointer;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+}
+.link-modal-close:hover { background: #e2e8f0; color: #1e293b; }
+.link-modal-body {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.link-modal-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.link-modal-field label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+.link-modal-field input {
+  padding: 10px 13px;
+  border: 2px solid #e8edf5;
+  border-radius: 9px;
+  font-size: 13px;
+  font-family: inherit;
+  color: #1e293b;
+  background: #f8fafc;
+  outline: none;
+  transition: border-color 0.2s, background 0.2s;
+}
+.link-modal-field input:focus {
+  border-color: #667eea;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(102,126,234,0.1);
+}
+.link-modal-field input::placeholder { color: #cbd5e1; }
+.link-modal-footer {
+  display: flex;
+  gap: 10px;
+  padding: 14px 20px;
+  border-top: 1.5px solid #f1f5f9;
+  justify-content: flex-end;
+}
+.link-modal-cancel {
+  padding: 9px 18px;
+  background: #f1f5f9;
+  border: none;
+  border-radius: 8px;
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.2s;
+}
+.link-modal-cancel:hover { background: #e2e8f0; color: #1e293b; }
+.link-modal-insert {
+  padding: 9px 20px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  transition: opacity 0.2s, transform 0.2s;
+  box-shadow: 0 4px 12px rgba(102,126,234,0.3);
+}
+.link-modal-insert:hover { opacity: 0.9; transform: translateY(-1px); }
+
+/* ── Link Modal: New Tab Checkbox ── */
+.link-newtab-label {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  cursor: pointer;
+  user-select: none;
+  font-size: 13px;
+  font-weight: 600;
+  color: #475569;
+}
+.link-newtab-label input { display: none; }
+.link-newtab-box {
+  width: 18px;
+  height: 18px;
+  border: 2px solid #cbd5e1;
+  border-radius: 5px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.15s;
+}
+.link-newtab-label input:checked ~ .link-newtab-box {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  border-color: #667eea;
+}
+.link-newtab-label input:checked ~ .link-newtab-box::after {
+  content: '';
+  width: 5px;
+  height: 9px;
+  border: 2px solid #fff;
+  border-top: none;
+  border-left: none;
+  transform: rotate(45deg) translateY(-1px);
+  display: block;
+}
+.link-newtab-label:hover .link-newtab-box { border-color: #667eea; }
+
+/* ── Link Modal: URL Preview ── */
+.link-preview {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 13px;
+  background: #f0f4ff;
+  border: 1.5px solid rgba(102,126,234,0.25);
+  border-radius: 9px;
+  flex-wrap: wrap;
+}
+.link-preview-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  flex-shrink: 0;
+}
+.link-preview a {
+  font-size: 13px;
+  font-weight: 600;
+  color: #667eea;
+  text-decoration: underline;
+  word-break: break-all;
+  cursor: pointer;
+}
+.link-preview a:hover { color: #764ba2; }
