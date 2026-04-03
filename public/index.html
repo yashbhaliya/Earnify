@@ -220,6 +220,7 @@
 }
   </style>
   <link rel="stylesheet" href="auth-modal.css">
+  <link rel="stylesheet" href="./Blog/blog.css">
 </head>
 
 <body>
@@ -561,7 +562,27 @@
     </div>
   </section>
 
-  <!-- ── Trust Strip ── -->
+ 
+
+  <!-- ── Latest Blog Posts ── -->
+  <section class="blog-home-section" style="padding: 70px 0; background: #f8fafc;">
+    <div class="container">
+      <div class="section-header" style="margin-bottom: 40px;">
+        <h2>Latest from the <span class="grad-text">Blog</span></h2>
+        <p>Tips, guides, and insights to help you learn and earn smarter</p>
+      </div>
+      <div id="homeBlogGrid" class="blog-grid" style="max-width:1200px;margin:0 auto;">
+        <div class="blog-card" style="pointer-events:none;"><div class="blog-card-img blog-shimmer-img"></div><div class="blog-card-body"><div class="blog-shimmer-line" style="width:60%;height:14px;"></div><div class="blog-shimmer-line" style="width:100%;height:12px;margin-top:8px;"></div><div class="blog-shimmer-line" style="width:80%;height:12px;"></div></div></div>
+        <div class="blog-card" style="pointer-events:none;"><div class="blog-card-img blog-shimmer-img"></div><div class="blog-card-body"><div class="blog-shimmer-line" style="width:60%;height:14px;"></div><div class="blog-shimmer-line" style="width:100%;height:12px;margin-top:8px;"></div><div class="blog-shimmer-line" style="width:80%;height:12px;"></div></div></div>
+        <div class="blog-card" style="pointer-events:none;"><div class="blog-card-img blog-shimmer-img"></div><div class="blog-card-body"><div class="blog-shimmer-line" style="width:60%;height:14px;"></div><div class="blog-shimmer-line" style="width:100%;height:12px;margin-top:8px;"></div><div class="blog-shimmer-line" style="width:80%;height:12px;"></div></div></div>
+      </div>
+      <div style="text-align:center;margin-top:36px;">
+        <a href="./Blog/" style="display:inline-flex;align-items:center;gap:8px;padding:12px 32px;background:linear-gradient(135deg,#667eea,#764ba2);color:white;border-radius:50px;font-weight:700;font-size:15px;text-decoration:none;box-shadow:0 6px 20px rgba(102,126,234,0.3);transition:transform 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">View All Posts →</a>
+      </div>
+    </div>
+  </section>
+
+ <!-- ── Trust Strip ── -->
   <section class="trust-section">
     <div class="container">
       <div class="trust-grid">
@@ -596,6 +617,27 @@
       </div>
     </div>
   </section>
+
+  <style>
+    .blog-home-section .blog-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 28px; }
+    .blog-shimmer-img {
+      background: linear-gradient(90deg,#f0f0f0 25%,#e8e8e8 50%,#f0f0f0 75%);
+      background-size: 400% 100%;
+      animation: bhs 1.4s infinite linear;
+    }
+    .blog-shimmer-line {
+      border-radius: 6px;
+      background: linear-gradient(90deg,#f0f0f0 25%,#e8e8e8 50%,#f0f0f0 75%);
+      background-size: 400% 100%;
+      animation: bhs 1.4s infinite linear;
+    }
+    @keyframes bhs { 0%{background-position:100% 0} 100%{background-position:-100% 0} }
+    @media (max-width: 1024px) { .blog-home-section .blog-grid { grid-template-columns: repeat(2,1fr); } }
+    @media (max-width: 768px) {
+      .blog-home-section .blog-grid { grid-template-columns: 1fr; }
+      #homeBlogGrid .blog-card:nth-child(n+2) { display: none !important; }
+    }
+  </style>
 
   <!-- ── FAQ ── -->
   <section class="faq-section">
@@ -811,6 +853,57 @@
     const supabaseUrl = 'https://emnrgsgerfjvndexomro.supabase.co';
     const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVtbnJnc2dlcmZqdm5kZXhvbXJvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI0MjAyMTAsImV4cCI6MjA4Nzk5NjIxMH0.uXr8lipxLbB4D_5JwQkpLzc-HudQw23tOFBfV4C6hqY';
     const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+    // ── Load latest 3 blog posts ──
+    (async () => {
+      const SUPA_URL = 'https://emnrgsgerfjvndexomro.supabase.co';
+      const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVtbnJnc2dlcmZqdm5kZXhvbXJvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI0MjAyMTAsImV4cCI6MjA4Nzk5NjIxMH0.uXr8lipxLbB4D_5JwQkpLzc-HudQw23tOFBfV4C6hqY';
+      const grid = document.getElementById('homeBlogGrid');
+
+      function fmtDate(d) {
+        return new Date(d).toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' });
+      }
+      function getExcerpt(b) {
+        const tmp = document.createElement('div');
+        tmp.innerHTML = b.excerpt || b.content || '';
+        return (tmp.innerText || tmp.textContent || '').trim().substring(0, 150);
+      }
+      function cardHtml(b) {
+        const slug = (b.slug || b.title.toLowerCase().replace(/[^\w\s-]/g,'').replace(/\s+/g,'-').replace(/-+/g,'-').trim());
+        return `
+          <div class="blog-card" onclick="window.location.href='./Blog/post/?permalink=${slug}'" style="cursor:pointer;">
+            <div class="blog-card-img">
+              ${b.image_url ? `<img src="${b.image_url}" alt="" loading="lazy">` : ''}
+              ${b.category ? `<span class="blog-card-category">${b.category}</span>` : ''}
+            </div>
+            <div class="blog-card-body">
+              <h3 class="blog-card-title">${b.title}</h3>
+              <p class="blog-card-excerpt">${getExcerpt(b)}</p>
+              <div class="blog-card-footer-meta">
+                <span class="blog-card-date">📅 ${fmtDate(b.created_at)}</span>
+                <span class="blog-card-author">By: Earnify Admin</span>
+              </div>
+              <div class="blog-card-footer">
+                <button class="blog-card-read" onclick="event.stopPropagation();window.location.href='./Blog/post/?permalink=${slug}'">Read More →</button>
+              </div>
+            </div>
+          </div>`;
+      }
+
+      try {
+        const res = await fetch(`${SUPA_URL}/rest/v1/blogs?select=*&is_published=eq.true&order=created_at.desc&limit=3`, {
+          headers: { apikey: SUPA_KEY, Authorization: `Bearer ${SUPA_KEY}` }
+        });
+        const posts = res.ok ? await res.json() : [];
+        if (!posts.length) {
+          grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:50px 20px;color:#94a3b8;"><div style="font-size:48px;margin-bottom:12px;">✍️</div><p style="font-size:15px;font-weight:600;">No blog posts yet. Check back soon!</p></div>`;
+          return;
+        }
+        grid.innerHTML = posts.map(cardHtml).join('');
+      } catch(e) {
+        grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:40px;color:#94a3b8;">Could not load blog posts.</div>`;
+      }
+    })();
 
     // Handle email confirmation token on page load
     (async () => {

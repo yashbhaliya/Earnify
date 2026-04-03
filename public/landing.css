@@ -585,7 +585,7 @@ background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 /* ── Trust Strip ── */
 .trust-section {
   padding: 56px 0;
-  background: #f8fafc;
+  background: white;
   border-top: 1px solid #e8edf5;
   border-bottom: 1px solid #e8edf5;
 }
@@ -615,14 +615,14 @@ background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 @media (max-width: 500px) { .trust-grid { grid-template-columns: 1fr; gap: 16px; } .trust-section { padding: 40px 0; } }
 
 /* ── FAQ ── */
-.faq-section { padding: 72px 0; background: white; }
+.faq-section { padding: 72px 0; background: #f8fafc; }
 .faq-grid {
   display: grid;
   grid-template-columns: repeat(2,1fr);
   gap: 16px;
 }
 .faq-item-home {
-  background: #f8fafc;
+  background: white;
   border: 1px solid #e8edf5;
   border-radius: 14px;
   padding: 22px 24px;
@@ -1436,7 +1436,6 @@ footer {
 
   .filter-tabs {
     padding: 0 1rem;
-    gap: 0.5rem;
     margin-bottom: 2rem;
   }
 
@@ -2380,19 +2379,28 @@ body.sidebar-open {
 @media (max-width: 640px) {
   .filter-tabs {
     width: 100%;
-    border-radius: 16px;
-    padding: 4px;
-    gap: 2px;
-    justify-content: stretch;
+    border-radius: 50px;
+    padding: 5px;
+    gap: 4px;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    justify-content: flex-start;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    box-sizing: border-box;
   }
+  .filter-tabs::-webkit-scrollbar { display: none; }
   .filter-btn {
-    flex: 1;
+    flex-shrink: 0;
     justify-content: center;
-    padding: 8px 6px;
-    font-size: 0.75rem;
-    border-radius: 12px;
+    padding: 8px 14px;
+    font-size: 0.82rem;
+    border-radius: 50px;
+    white-space: nowrap;
   }
-  .filter-btn img { width: 15px; height: 15px; }
+  .filter-btn img { width: 16px; height: 16px; }
 }
 
 /* ── Pagination Redesign ── */
