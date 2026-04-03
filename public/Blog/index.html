@@ -96,11 +96,19 @@
 
   <!-- ── BLOG CONTENT ── -->
   <div class="blog-page">
-       <!-- Main Article -->
-    <div id="mainArticleWrap"></div>
-
+    <!-- Main Article -->
+    <div id="mainArticleWrap">
+      <!-- Hero Skeleton -->
+      <div class="skel-hero"></div>
+    </div>
     <!-- Grid -->
-    <div id="gridWrap" class="gridWrap"></div>
+    <div id="gridWrap" class="gridWrap">
+      <div class="blog-grid">
+        <div class="skel-card"><div class="skel-card-img"></div><div class="skel-card-body"><div class="skel-line skel-w60"></div><div class="skel-line skel-w100"></div><div class="skel-line skel-w80"></div><div class="skel-line skel-w40"></div></div></div>
+        <div class="skel-card"><div class="skel-card-img"></div><div class="skel-card-body"><div class="skel-line skel-w60"></div><div class="skel-line skel-w100"></div><div class="skel-line skel-w80"></div><div class="skel-line skel-w40"></div></div></div>
+        <div class="skel-card"><div class="skel-card-img"></div><div class="skel-card-body"><div class="skel-line skel-w60"></div><div class="skel-line skel-w100"></div><div class="skel-line skel-w80"></div><div class="skel-line skel-w40"></div></div></div>
+      </div>
+    </div>
   </div>
 
   <!-- ── FOOTER (same as index.html) ── -->
@@ -266,16 +274,20 @@
     async function loadBlog() {
       const mainWrap = document.getElementById('mainArticleWrap');
       const gridWrap = document.getElementById('gridWrap');
+      const fromPost = new URLSearchParams(window.location.search).get('from') === 'post';
 
-      // Serve from sessionStorage cache instantly — no loading flash on back navigation
+      // Coming back from a post OR cache exists — render instantly, no skeleton, no fetch
       try {
         const c = JSON.parse(sessionStorage.getItem('earnify_blog_v1'));
         if (c && Date.now() - c.ts < 300000) {
           renderBlogs(c.blogs, mainWrap, gridWrap);
+          // Clean URL without reloading
+          if (fromPost) history.replaceState(null, '', window.location.pathname);
           return;
         }
       } catch(e) {}
 
+      // No cache — skeletons already visible in HTML, just fetch
       const { data: blogs, error } = await supabaseClient
         .from('blogs')
         .select('*')
@@ -294,6 +306,9 @@
 
     function renderBlogs(blogs, mainWrap, gridWrap) {
       blogs.forEach(b => { _blogStore[b.id] = b; });
+      // Clear skeletons
+      mainWrap.innerHTML = '';
+      gridWrap.innerHTML = '';
       const mainArticles = blogs.filter(b => b.main_article === true);
       const rest = blogs.filter(b => b.main_article !== true);
 

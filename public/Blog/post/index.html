@@ -62,6 +62,32 @@
     }
     .post-loading { text-align: center; padding: 80px 20px; color: #94a3b8; font-size: 15px; }
     .post-error   { text-align: center; padding: 80px 20px; color: #ef4444; font-size: 15px; }
+
+    /* ── Skeleton ── */
+    @keyframes post-shimmer {
+      0%   { background-position: -600px 0; }
+      100% { background-position:  600px 0; }
+    }
+    .post-skel-back,
+    .post-skel-img,
+    .post-skel-category,
+    .post-skel-title,
+    .post-skel-meta,
+    .post-skel-line {
+      background: linear-gradient(90deg, #e8edf5 25%, #f1f5f9 50%, #e8edf5 75%);
+      background-size: 600px 100%;
+      animation: post-shimmer 1.4s infinite linear;
+      border-radius: 8px;
+    }
+    .post-skel-back    { width: 110px; height: 34px; border-radius: 8px; margin-bottom: 32px; }
+    .post-skel-img     { width: 100%; height: 300px; border-radius: 16px; margin-bottom: 32px; }
+    .post-skel-category{ width: 80px; height: 22px; border-radius: 6px; margin-bottom: 16px; }
+    .post-skel-title   { width: 85%; height: 40px; border-radius: 8px; margin-bottom: 12px; }
+    .post-skel-title-short { width: 55%; height: 40px; margin-bottom: 24px; }
+    .post-skel-meta    { width: 220px; height: 18px; border-radius: 6px; margin-bottom: 28px; padding-bottom: 24px; }
+    .post-skel-line    { width: 100%; height: 16px; border-radius: 6px; margin-bottom: 12px; }
+    .post-skel-line-short { width: 65%; }
+    .post-skel-line-mid   { width: 80%; }
     @media (max-width: 768px) {
       .post-page { padding: 24px 16px 60px; }
       .post-title { font-size: 26px; }
@@ -95,7 +121,19 @@
   </nav>
 
   <div class="post-page" id="postPage">
-    <div class="post-loading">⏳ Loading...</div>
+    <!-- Skeleton -->
+    <div class="post-skel-back"></div>
+    <div class="post-skel-img"></div>
+    <div class="post-skel-category"></div>
+    <div class="post-skel-title"></div>
+    <div class="post-skel-title post-skel-title-short"></div>
+    <div class="post-skel-meta"></div>
+    <div class="post-skel-line"></div>
+    <div class="post-skel-line"></div>
+    <div class="post-skel-line post-skel-line-short"></div>
+    <div class="post-skel-line"></div>
+    <div class="post-skel-line"></div>
+    <div class="post-skel-line post-skel-line-mid"></div>
   </div>
 
   <footer>
@@ -162,7 +200,7 @@
       const date = new Date(blog.created_at).toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' });
 
       page.innerHTML = `
-        <a class="post-back" href="../" onclick="event.preventDefault();history.back()">
+        <a class="post-back" href="../" onclick="event.preventDefault();window.location.href='../?from=post'">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
           Back to Blog
         </a>
