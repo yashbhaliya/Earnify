@@ -131,7 +131,7 @@ app.post("/api/auth/signup", async (req, res) => {
       return res.status(400).json({ success: false, message: error.message });
     }
 
-    // 2. Generate confirmation link
+    // 2. Generate confirmation link and extract token
     const siteUrl = process.env.SITE_URL || 'https://earnify-gamma.vercel.app';
     const { data: linkData, error: linkError } = await supabase.auth.admin.generateLink({
       type: 'signup',
@@ -144,10 +144,13 @@ app.post("/api/auth/signup", async (req, res) => {
       return res.status(500).json({ success: false, message: 'Failed to generate confirmation link: ' + linkError.message });
     }
 
-    const confirmUrl = linkData?.properties?.action_link || linkData?.action_link;
-    if (!confirmUrl) {
-      return res.status(500).json({ success: false, message: 'Confirmation link not generated' });
+    // Extract hashed_token and build URL with correct domain (ignores Supabase Site URL setting)
+    const token = linkData?.properties?.hashed_token;
+    if (!token) {
+      return res.status(500).json({ success: false, message: 'Confirmation token not generated' });
     }
+    const supabaseUrl = process.env.SUPABASE_URL;
+    const confirmUrl = `${supabaseUrl}/auth/v1/verify?token=${token}&type=signup&redirect_to=${encodeURIComponent(siteUrl + '/?verified=1')}`;
 
     // 3. Send confirmation email via Gmail
     const transporter = nodemailer.createTransport({
