@@ -562,12 +562,61 @@ async function togglePublish(id, publish) {
 }
 
 // ── DELETE ──
-async function deleteBlog(id) {
-  if (!confirm('Delete this blog post?')) return;
-  const { error } = await supabaseClient.from('blogs').delete().eq('id', id);
-  if (error) { showToast('❌ ' + error.message, 'error'); return; }
-  showToast('🗑️ Post deleted');
+let _deletePostId = null;
+let _deletePostData = null;
+let _deletePostTimer = null;
+
+function deleteBlog(id) {
+  _deletePostId = id;
+  document.getElementById('blogDeleteModal').style.display = 'flex';
+}
+
+function closeDeletePostModal() {
+  _deletePostId = null;
+  document.getElementById('blogDeleteModal').style.display = 'none';
+}
+
+async function confirmDeletePost() {
+  if (!_deletePostId) return;
+  const btn = document.getElementById('confirmDeletePostBtn');
+  btn.disabled = true;
+  btn.textContent = 'Deleting...';
+  _deletePostData = _blogMap[_deletePostId] || null;
+  const { error } = await supabaseClient.from('blogs').delete().eq('id', _deletePostId);
+  closeDeletePostModal();
+  if (error) { showToast('\u274c ' + error.message, 'error'); return; }
   loadBlogs();
+  showUndoPostToast();
+}
+
+function showUndoPostToast() {
+  const toast = document.getElementById('undoPostToast');
+  const bar   = document.getElementById('undoPostBar');
+  clearTimeout(_deletePostTimer);
+  toast.style.display = 'flex';
+  bar.style.transition = 'none';
+  bar.style.width = '100%';
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    bar.style.transition = 'width 5s linear';
+    bar.style.width = '0%';
+  }));
+  _deletePostTimer = setTimeout(() => {
+    toast.style.display = 'none';
+    _deletePostData = null;
+  }, 5000);
+}
+
+async function undoDeletePost() {
+  clearTimeout(_deletePostTimer);
+  document.getElementById('undoPostToast').style.display = 'none';
+  if (!_deletePostData) return;
+  const payload = Object.assign({}, _deletePostData);
+  delete payload.id;
+  const { error } = await supabaseClient.from('blogs').insert([payload]);
+  if (error) { showToast('\u274c Undo failed: ' + error.message, 'error'); return; }
+  showToast('\u2705 Post restored!');
+  loadBlogs();
+  _deletePostData = null;
 }
 
 // ── INIT ──
