@@ -132,7 +132,8 @@ app.post("/api/auth/signup", async (req, res) => {
     }
 
     // 2. Generate confirmation link
-    const siteUrl = process.env.SITE_URL || 'https://earnify-gamma.vercel.app';
+    // Always use Vercel production URL - never localhost
+    const siteUrl = 'https://earnify-gamma.vercel.app';
     const { data: linkData, error: linkError } = await supabase.auth.admin.generateLink({
       type: 'signup',
       email,
@@ -144,19 +145,22 @@ app.post("/api/auth/signup", async (req, res) => {
       return res.status(500).json({ success: false, message: 'Failed to generate confirmation link: ' + linkError.message });
     }
 
-    // Get action_link and fix the redirect_to param to always use Vercel URL
-    let confirmUrl = linkData?.properties?.action_link;
-    if (!confirmUrl) {
-      const token = linkData?.properties?.hashed_token;
-      if (!token) {
-        return res.status(500).json({ success: false, message: 'Confirmation token not generated' });
-      }
-      confirmUrl = `${process.env.SUPABASE_URL}/auth/v1/verify?token=${token}&type=signup&redirect_to=${encodeURIComponent(siteUrl + '/?verified=1')}`;
-    } else {
-      // Replace whatever redirect_to is in the URL with the correct Vercel URL
-      const urlObj = new URL(confirmUrl);
+    // ALWAYS replace redirect_to with correct Vercel URL
+    // Supabase dashboard Site URL overrides redirectTo option, so we fix it manually
+    let confirmUrl;
+    const actionLink = linkData?.properties?.action_link;
+    const hashedToken = linkData?.properties?.hashed_token;
+
+    if (hashedToken) {
+      // Build URL directly from token - most reliable approach
+      confirmUrl = `${process.env.SUPABASE_URL}/auth/v1/verify?token=${hashedToken}&type=signup&redirect_to=${encodeURIComponent(siteUrl + '/?verified=1')}`;
+    } else if (actionLink) {
+      // Replace redirect_to in existing action_link
+      const urlObj = new URL(actionLink);
       urlObj.searchParams.set('redirect_to', siteUrl + '/?verified=1');
       confirmUrl = urlObj.toString();
+    } else {
+      return res.status(500).json({ success: false, message: 'Confirmation token not generated' });
     }
     console.log('Confirmation URL:', confirmUrl);
 
