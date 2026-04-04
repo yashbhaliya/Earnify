@@ -100,24 +100,55 @@ app.post("/api/admin/login", async (req, res) => {
   }
 });
 
-// User Signup with Supabase Auth
+// User Signup with Supabase Auth + Custom Gmail Confirmation Email
 app.post("/api/auth/signup", async (req, res) => {
   try {
-    const { email, password } = req.body;
-    
-    const { data, error } = await supabase.auth.signUp({
-      email: email,
-      password: password
+    const { email, password, name } = req.body;
+
+    // 1. Create user in Supabase (email confirmation disabled or enabled)
+    const { data, error } = await supabase.auth.admin.createUser({
+      email,
+      password,
+      email_confirm: false, // we handle confirmation ourselves
+      user_metadata: { name: name || email.split('@')[0] }
     });
-    
-    if (error) {
-      return res.json({ success: false, message: error.message });
+
+    if (error) return res.status(400).json({ success: false, message: error.message });
+
+    // 2. Generate a confirmation link via Supabase
+    const { data: linkData, error: linkError } = await supabase.auth.admin.generateLink({
+      type: 'signup',
+      email,
+      options: { redirectTo: (process.env.SITE_URL || 'https://earnify-gamma.vercel.app') + '/?verified=1' }
+    });
+
+    if (linkError) {
+      console.error('Link generation error:', linkError.message);
+      return res.json({ success: true, message: 'Account created! Please login.' });
     }
-    
-    res.json({
-      success: true,
-      message: "Verification email sent. Please check your inbox."
+
+    const confirmUrl = linkData.properties?.action_link || linkData.action_link;
+
+    // 3. Send confirmation email via Gmail SMTP
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: { user: process.env.GMAIL_USER, pass: process.env.GMAIL_PASS }
     });
+
+    await transporter.sendMail({
+      from: `"Earnify" <${process.env.GMAIL_USER}>`,
+      to: email,
+      subject: 'Confirm your Earnify account',
+      html: `
+        <div style="font-family:Inter,sans-serif;max-width:560px;margin:0 auto;padding:32px 24px;background:#f8fafc;border-radius:16px;">
+          <h2 style="color:#667eea;margin:0 0 8px;">💰 Welcome to Earnify!</h2>
+          <p style="color:#475569;margin:0 0 24px;">Hi ${name || email.split('@')[0]}, please confirm your email to activate your account.</p>
+          <a href="${confirmUrl}" style="display:inline-block;padding:14px 32px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border-radius:50px;text-decoration:none;font-weight:700;font-size:15px;">✅ Confirm Email</a>
+          <p style="color:#94a3b8;font-size:12px;margin-top:24px;">If you didn't create this account, ignore this email.</p>
+        </div>`
+    });
+
+    res.json({ success: true, message: 'Account created! Check your email to confirm.' });
   } catch (err) {
     console.error('Signup error:', err);
     res.status(500).json({ success: false, message: err.message });

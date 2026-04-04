@@ -160,6 +160,28 @@ async function handleSignup(e) {
   if (password.length < 6)  { _amSetErr('Password must be at least 6 characters!'); return; }
   const btn = e.target.querySelector('button[type="submit"]');
   if (btn) { btn.disabled = true; btn.textContent = 'Creating account\u2026'; }
+
+  // Try server endpoint first (sends branded Gmail confirmation email)
+  try {
+    const res = await fetch(API_CONFIG.getURL(API_CONFIG.endpoints.auth.signup), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password, name }),
+      signal: AbortSignal.timeout(8000)
+    });
+    const data = await res.json();
+    if (data.success) {
+      _amSetOk('\u2705 Account created! Check your email to confirm, then login.');
+      if (btn) { btn.disabled = false; btn.textContent = 'Create Account'; }
+      setTimeout(() => _amTab('login'), 2000);
+      return;
+    }
+    // Server returned an error — fall through to Supabase direct
+  } catch (_) {
+    // Server unreachable — fall through to Supabase direct
+  }
+
+  // Fallback: direct Supabase signup
   try {
     const { error } = await supabaseClient.auth.signUp({
       email, password,
@@ -168,29 +190,24 @@ async function handleSignup(e) {
         emailRedirectTo: window.location.origin + '/?verified=1'
       }
     });
-    if (error) {
-      const isEmailError = error.message.toLowerCase().includes('email') ||
-                           error.message.toLowerCase().includes('smtp')  ||
-                           error.message.toLowerCase().includes('sending') ||
-                           error.message.toLowerCase().includes('confirmation') ||
-                           error.message.toLowerCase().includes('database');
-      if (isEmailError) {
-        _amSetOk('\u2705 Account created! Check your email to verify, then login.');
-        if (btn) { btn.disabled = false; btn.textContent = 'Create Account'; }
-        setTimeout(() => _amTab('login'), 2000);
-        return;
-      }
+    const isEmailErr = error && (
+      error.message.toLowerCase().includes('email') ||
+      error.message.toLowerCase().includes('smtp') ||
+      error.message.toLowerCase().includes('sending') ||
+      error.message.toLowerCase().includes('confirmation') ||
+      error.message.toLowerCase().includes('database')
+    );
+    if (error && !isEmailErr) {
       _amSetErr(error.message);
       if (btn) { btn.disabled = false; btn.textContent = 'Create Account'; }
       return;
     }
-    _amSetOk('\u2705 Account created! Check your email to verify, then login.');
+    _amSetOk('\u2705 Account created! Check your email to confirm, then login.');
     if (btn) { btn.disabled = false; btn.textContent = 'Create Account'; }
     setTimeout(() => _amTab('login'), 2000);
   } catch (err) {
-    _amSetOk('\u2705 Account created! Check your email to verify, then login.');
+    _amSetErr('Signup failed: ' + err.message);
     if (btn) { btn.disabled = false; btn.textContent = 'Create Account'; }
-    setTimeout(() => _amTab('login'), 2000);
   }
 }
 
