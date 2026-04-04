@@ -131,7 +131,7 @@ app.post("/api/auth/signup", async (req, res) => {
       return res.status(400).json({ success: false, message: error.message });
     }
 
-    // 2. Generate confirmation link and extract token
+    // 2. Generate confirmation link
     const siteUrl = process.env.SITE_URL || 'https://earnify-gamma.vercel.app';
     const { data: linkData, error: linkError } = await supabase.auth.admin.generateLink({
       type: 'signup',
@@ -144,13 +144,21 @@ app.post("/api/auth/signup", async (req, res) => {
       return res.status(500).json({ success: false, message: 'Failed to generate confirmation link: ' + linkError.message });
     }
 
-    // Extract hashed_token and build URL with correct domain (ignores Supabase Site URL setting)
-    const token = linkData?.properties?.hashed_token;
-    if (!token) {
-      return res.status(500).json({ success: false, message: 'Confirmation token not generated' });
+    // Get action_link and fix the redirect_to param to always use Vercel URL
+    let confirmUrl = linkData?.properties?.action_link;
+    if (!confirmUrl) {
+      const token = linkData?.properties?.hashed_token;
+      if (!token) {
+        return res.status(500).json({ success: false, message: 'Confirmation token not generated' });
+      }
+      confirmUrl = `${process.env.SUPABASE_URL}/auth/v1/verify?token=${token}&type=signup&redirect_to=${encodeURIComponent(siteUrl + '/?verified=1')}`;
+    } else {
+      // Replace whatever redirect_to is in the URL with the correct Vercel URL
+      const urlObj = new URL(confirmUrl);
+      urlObj.searchParams.set('redirect_to', siteUrl + '/?verified=1');
+      confirmUrl = urlObj.toString();
     }
-    const supabaseUrl = process.env.SUPABASE_URL;
-    const confirmUrl = `${supabaseUrl}/auth/v1/verify?token=${token}&type=signup&redirect_to=${encodeURIComponent(siteUrl + '/?verified=1')}`;
+    console.log('Confirmation URL:', confirmUrl);
 
     // 3. Send confirmation email via Gmail
     const transporter = nodemailer.createTransport({
