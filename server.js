@@ -100,6 +100,28 @@ app.post("/api/admin/login", async (req, res) => {
   }
 });
 
+// Debug endpoint - check what confirmation URL is generated
+app.get("/api/auth/debug-link", async (req, res) => {
+  try {
+    const siteUrl = 'https://earnify-gamma.vercel.app';
+    const email = req.query.email || 'test@test.com';
+    const { data, error } = await supabase.auth.admin.generateLink({
+      type: 'magiclink',
+      email,
+      options: { redirectTo: siteUrl + '/?verified=1' }
+    });
+    res.json({
+      error: error?.message,
+      action_link: data?.properties?.action_link,
+      hashed_token: data?.properties?.hashed_token,
+      redirect_to: data?.properties?.redirect_to,
+      built_url: data?.properties?.hashed_token
+        ? `${process.env.SUPABASE_URL}/auth/v1/verify?token=${data.properties.hashed_token}&type=signup&redirect_to=${encodeURIComponent(siteUrl + '/?verified=1')}`
+        : null
+    });
+  } catch(e) { res.json({ error: e.message }); }
+});
+
 // User Signup with Supabase Auth + Custom Gmail Confirmation Email
 app.post("/api/auth/signup", async (req, res) => {
   try {
