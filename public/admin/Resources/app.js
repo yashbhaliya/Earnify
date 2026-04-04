@@ -359,14 +359,26 @@ function showTab(type) {
   loadResources(type);
 }
 
+function getFilterEl(type) {
+  const grid = document.getElementById(type + 'Grid');
+  return grid ? grid.closest('.resource-section').querySelector('.resource-filter') : null;
+}
+
+function showSelectSkeleton(filterEl) {}
+
+function hideSelectSkeleton(filterEl) {}
+
 async function loadResources(type) {
   const grid = document.getElementById(type + 'Grid');
   if (!grid) return;
+  const filterEl = getFilterEl(type);
+  showSelectSkeleton(filterEl);
 
   const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
   const userEmail = currentUser.email;
 
   if (!userEmail) {
+    hideSelectSkeleton(filterEl);
     grid.innerHTML = `
       <div class="empty-state">
         <div class="empty-icon">ðŸ”’</div>
@@ -377,45 +389,24 @@ async function loadResources(type) {
     return;
   }
 
-  // Show shimmer loading
-  grid.innerHTML = `
-    <div class="shimmer-card">
-      <div class="shimmer-icon"></div>
-      <div class="shimmer-title"></div>
-      <div class="shimmer-description"></div>
-      <div class="shimmer-description"></div>
-      <div class="shimmer-price"></div>
-      <div class="shimmer-buttons">
-        <div class="shimmer-button"></div>
-        <div class="shimmer-button"></div>
-        <div class="shimmer-button"></div>
+  // Show shimmer loading — row-shaped skeletons matching .row layout
+  const skRow = `
+    <div class="row skeleton-row">
+      <div class="table-title">
+        <span class="icon"><div class="sk-row-icon"></div></span>
+        <div style="flex:1;min-width:0;">
+          <div class="sk-row-title"></div>
+          <div class="sk-row-desc"></div>
+        </div>
       </div>
-    </div>
-    <div class="shimmer-card">
-      <div class="shimmer-icon"></div>
-      <div class="shimmer-title"></div>
-      <div class="shimmer-description"></div>
-      <div class="shimmer-description"></div>
-      <div class="shimmer-price"></div>
-      <div class="shimmer-buttons">
-        <div class="shimmer-button"></div>
-        <div class="shimmer-button"></div>
-        <div class="shimmer-button"></div>
+      <div class="sk-row-price"></div>
+      <div class="actions">
+        <div class="sk-row-btn"></div>
+        <div class="sk-row-btn"></div>
+        <div class="sk-row-btn"></div>
       </div>
-    </div>
-    <div class="shimmer-card">
-      <div class="shimmer-icon"></div>
-      <div class="shimmer-title"></div>
-      <div class="shimmer-description"></div>
-      <div class="shimmer-description"></div>
-      <div class="shimmer-price"></div>
-      <div class="shimmer-buttons">
-        <div class="shimmer-button"></div>
-        <div class="shimmer-button"></div>
-        <div class="shimmer-button"></div>
-      </div>
-    </div>
-  `;
+    </div>`;
+  grid.innerHTML = skRow + skRow + skRow;
 
   try {
     const res = await fetch(API_CONFIG.getURL(API_CONFIG.endpoints.resources), {
@@ -452,6 +443,7 @@ async function loadResources(type) {
         freelance: { icon: '', title: 'No Freelance Services', text: 'Go to "All Resources" tab to add freelance services' }
       };
       const state = emptyStates[type];
+      hideSelectSkeleton(filterEl);
       grid.innerHTML = `
         <div class="empty-state">
           <div class="empty-icon">${state.icon}</div>
@@ -477,6 +469,7 @@ async function loadResources(type) {
     //   </div>
     // </div>
     //   `).join('');
+    hideSelectSkeleton(filterEl);
     grid.innerHTML = resources.map((r, index) => `
 <div class="row">
 
@@ -499,6 +492,7 @@ async function loadResources(type) {
 </div>
 `).join('');
   } catch (error) {
+    hideSelectSkeleton(filterEl);
     console.error('Error loading resources:', error);
     grid.innerHTML = `
       <div class="empty-state">

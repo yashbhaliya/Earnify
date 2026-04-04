@@ -1,9 +1,98 @@
 /* ══════════════════════════════════════
-   BLOG PAGE — Premium Style
+   BLOG HERO BANNER
 ══════════════════════════════════════ */
+.blog-hero-banner {
+  position: relative;
+  width: 100%;
+  background: #0f0c29;
+  overflow: hidden;
+  padding: 72px 24px 64px;
+  text-align: center;
+  margin-bottom: 0;
+}
+.blog-hero-banner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url('../file/hero.png') center center / cover no-repeat;
+  z-index: 0;
+}
+.blog-hero-banner::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+.blog-hero-inner {
+  position: relative;
+  z-index: 2;
+  max-width: 700px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+.blog-hero-tag {
+  display: inline-block;
+  padding: 6px 20px;
+  background: rgb(97 72 72 / 25%);
+  border: 1px solid rgb(97 72 72 / 25%);
+  color: black;
+  border-radius: 50px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+}
+.blog-hero-title {
+  font-size: 52px;
+  font-weight: 900;
+  color: black;
+  line-height: 1.15;
+  letter-spacing: -1px;
+  margin: 0;
+}
+.blog-hero-title span {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.blog-hero-sub {
+  font-size: 17px;
+  color: #334155;
+  font-weight: 400;
+  line-height: 1.7;
+  margin: 0;
+  max-width: 520px;
+}
+/* Decorative blobs */
+.blog-hero-shapes { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
+.bhs {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(70px);
+  opacity: 0.15;
+}
+.bhs1 { width: 380px; height: 380px; background: #667eea; top: -120px; left: -80px; }
+.bhs2 { width: 300px; height: 300px; background: #764ba2; bottom: -100px; right: -60px; }
+.bhs3 { width: 200px; height: 200px; background: #a78bfa; top: 20px; right: 25%; }
+
+@media (max-width: 768px) {
+  .blog-hero-banner { padding: 52px 20px 44px; }
+  .blog-hero-title { font-size: 34px; }
+  .blog-hero-sub { font-size: 15px; }
+}
+@media (max-width: 480px) {
+  .blog-hero-title { font-size: 26px; }
+  .blog-hero-sub { font-size: 14px; }
+}
+
+
 
 .blog-page {
-  padding-top: 0;
+  padding-top: 10px;
 }
 
 /* ── Hero Slider wrapper breaks out of any container ── */
@@ -19,6 +108,7 @@
   position: relative;
   width: 100%;
   height: 520px;
+  margin-top: 20px;
   border-radius: 20px;
   overflow: hidden;
   margin-bottom: 56px;
@@ -348,11 +438,7 @@
   padding: 0 24px;
 }
 .blog-grid-title {
-  font-size: 22px;
-  font-weight: 800;
-  color: #1e293b;
-  margin-bottom: 28px;
-  letter-spacing: -0.3px;
+  display: none;
 }
 .blog-grid {
   display: grid;
@@ -396,7 +482,7 @@
   transform: scale(1.05);
 }
 .blog-card-body {
-  padding: 10px;
+  padding: 15px;
   display: flex;
   flex-direction: column;
   gap: 5px;
@@ -425,7 +511,7 @@
   margin: 0;
 }
 .blog-card-excerpt {
-  font-size: 13px;
+  font-size: 14px;
   color: #64748b;
   line-height: 1.6;
   margin: 0;
@@ -629,9 +715,7 @@
   .hero-slide-bottom { flex-direction: column; gap: 8px; padding: 10px 14px; width: 100%; box-sizing: border-box; }
   .hero-slide-left, .hero-slide-right { justify-content: center; flex-wrap: wrap; }
   .hero-slide-btn { width: 100%; text-align: center; }
-  .hero-arrow { width: 36px; height: 36px; }
-  .hero-prev { left: 10px; }
-  .hero-next { right: 10px; }
+  .hero-arrow { display: none; }
   .blog-grid { grid-template-columns: 1fr; gap: 18px; }
   .gridWrap { padding: 0 16px; }
   .read-modal-body { padding: 24px 20px 40px; }
@@ -653,12 +737,9 @@
   .hero-slide-btn { padding: 7px 16px; font-size: 12px; }
   .hero-slide-author { font-size: 11px; }
   .hero-slide-date { font-size: 11px; }
-  .hero-arrow { width: 30px; height: 30px; }
-  .hero-prev { left: 6px; }
-  .hero-next { right: 6px; }
   .blog-card-img { height: 170px; }
-  .blog-card-title { font-size: 17px; }
-  .gridWrap { padding: 0 12px; }
+  .blog-card-title { font-size: 23px; }
+  .gridWrap { padding: 0 24px; }
   #mainArticleWrap { padding: 0 12px; }
 }
 
