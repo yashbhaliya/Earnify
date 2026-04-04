@@ -679,10 +679,73 @@ async function editResource(id) {
   }
 }
 
-async function deleteResource(id) {
-  if (!confirm('Delete this resource?')) return;
-  await fetch(API_CONFIG.getURL(API_CONFIG.endpoints.resources) + '/' + id, { method: 'DELETE' });
+let _deleteId = null;
+let _undoTimer = null;
+let _undoResource = null;
+
+function deleteResource(id) {
+  _deleteId = id;
+  document.getElementById('deleteModal').style.display = 'flex';
+}
+
+function closeDeleteModal() {
+  _deleteId = null;
+  document.getElementById('deleteModal').style.display = 'none';
+}
+
+async function confirmDelete() {
+  if (!_deleteId) return;
+  const btn = document.getElementById('confirmDeleteBtn');
+  btn.disabled = true;
+  btn.textContent = 'Deleting...';
+
+  // Fetch resource data before deleting for undo
+  try {
+    const res = await fetch(API_CONFIG.getURL(API_CONFIG.endpoints.resources));
+    const all = await res.json();
+    _undoResource = all.find(r => r.id === _deleteId) || null;
+  } catch(e) { _undoResource = null; }
+
+  await fetch(API_CONFIG.getURL(API_CONFIG.endpoints.resources) + '/' + _deleteId, { method: 'DELETE' });
+  closeDeleteModal();
   loadResources(currentType);
+  showUndoToast();
+}
+
+function showUndoToast() {
+  const toast = document.getElementById('undoToast');
+  const bar   = document.getElementById('undoBar');
+  clearTimeout(_undoTimer);
+  toast.style.display = 'flex';
+  bar.style.transition = 'none';
+  bar.style.width = '100%';
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      bar.style.transition = 'width 5s linear';
+      bar.style.width = '0%';
+    });
+  });
+  _undoTimer = setTimeout(() => {
+    toast.style.display = 'none';
+    _undoResource = null;
+  }, 5000);
+}
+
+async function undoDelete() {
+  clearTimeout(_undoTimer);
+  document.getElementById('undoToast').style.display = 'none';
+  if (!_undoResource) return;
+  try {
+    const formData = new FormData();
+    formData.append('type',        _undoResource.type);
+    formData.append('title',       _undoResource.title);
+    formData.append('description', _undoResource.description);
+    formData.append('price',       _undoResource.price);
+    formData.append('user_email',  _undoResource.user_email);
+    await fetch(API_CONFIG.getURL(API_CONFIG.endpoints.resources), { method: 'POST', body: formData });
+    loadResources(currentType);
+  } catch(e) { console.error('Undo failed', e); }
+  _undoResource = null;
 }
 
 if (document.getElementById('resourceForm')) {
