@@ -105,31 +105,51 @@ app.post("/api/auth/signup", async (req, res) => {
   try {
     const { email, password, name } = req.body;
 
-    // 1. Create user in Supabase (email confirmation disabled or enabled)
+    if (!email || !password) {
+      return res.status(400).json({ success: false, message: 'Email and password are required' });
+    }
+
+    // Check Gmail env vars are set
+    if (!process.env.GMAIL_USER || !process.env.GMAIL_PASS) {
+      console.error('GMAIL_USER or GMAIL_PASS not set in environment');
+      return res.status(500).json({ success: false, message: 'Email service not configured on server' });
+    }
+
+    // 1. Create user in Supabase
     const { data, error } = await supabase.auth.admin.createUser({
       email,
       password,
-      email_confirm: false, // we handle confirmation ourselves
+      email_confirm: false,
       user_metadata: { name: name || email.split('@')[0] }
     });
 
-    if (error) return res.status(400).json({ success: false, message: error.message });
+    if (error) {
+      // User might already exist
+      if (error.message.toLowerCase().includes('already') || error.message.toLowerCase().includes('exists')) {
+        return res.status(400).json({ success: false, message: 'An account with this email already exists.' });
+      }
+      return res.status(400).json({ success: false, message: error.message });
+    }
 
-    // 2. Generate a confirmation link via Supabase
+    // 2. Generate confirmation link
+    const siteUrl = process.env.SITE_URL || 'https://earnify-gamma.vercel.app';
     const { data: linkData, error: linkError } = await supabase.auth.admin.generateLink({
       type: 'signup',
       email,
-      options: { redirectTo: (process.env.SITE_URL || 'https://earnify-gamma.vercel.app') + '/?verified=1' }
+      options: { redirectTo: siteUrl + '/?verified=1' }
     });
 
     if (linkError) {
-      console.error('Link generation error:', linkError.message);
-      return res.json({ success: true, message: 'Account created! Please login.' });
+      console.error('generateLink error:', linkError.message);
+      return res.status(500).json({ success: false, message: 'Failed to generate confirmation link: ' + linkError.message });
     }
 
-    const confirmUrl = linkData.properties?.action_link || linkData.action_link;
+    const confirmUrl = linkData?.properties?.action_link || linkData?.action_link;
+    if (!confirmUrl) {
+      return res.status(500).json({ success: false, message: 'Confirmation link not generated' });
+    }
 
-    // 3. Send confirmation email via Gmail SMTP
+    // 3. Send confirmation email via Gmail
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: { user: process.env.GMAIL_USER, pass: process.env.GMAIL_PASS }
@@ -148,10 +168,12 @@ app.post("/api/auth/signup", async (req, res) => {
         </div>`
     });
 
+    console.log('Confirmation email sent to:', email);
     res.json({ success: true, message: 'Account created! Check your email to confirm.' });
+
   } catch (err) {
-    console.error('Signup error:', err);
-    res.status(500).json({ success: false, message: err.message });
+    console.error('Signup error:', err.message);
+    res.status(500).json({ success: false, message: 'Signup failed: ' + err.message });
   }
 });
 

@@ -1,5 +1,10 @@
 {
   "version": 2,
+  "env": {
+    "GMAIL_USER": "hardikkotadiya90@gmail.com",
+    "GMAIL_PASS": "qmipirlvmpoygyqs",
+    "SITE_URL": "https://earnify-gamma.vercel.app"
+  },
   "builds": [
     {
       "src": "server.js",
