@@ -336,7 +336,7 @@ body.sidebar-open { overflow: hidden; }
   color: #1e293b;
   font-size: 28px;
   font-weight: 700;
-  margin-bottom: 24px;
+  /* margin-bottom: 24px; */
 }
 
 #purchases {
@@ -602,7 +602,7 @@ footer {
 
   .container h1 {
     font-size: 20px;
-    margin-bottom: 16px;
+
   }
 
   #purchases {
@@ -669,7 +669,7 @@ footer {
 ══════════════════════════════ */
 @media (max-width: 480px) {
   .container { padding: 0 12px; }
-  .container h1 { font-size: 18px; }
+  .container h1 { font-size: 20px; }
   .purchase-card { padding: 12px; }
   .purchase-card h3 { font-size: 13px; padding-right: 72px; }
   .purchase-card p  { font-size: 11px; }

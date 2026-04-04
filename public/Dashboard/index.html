@@ -83,7 +83,7 @@
           <p>All your purchased resources are here — download anytime.</p>
         </div>
         <div class="dash-banner-actions">
-          <a href="../" class="dash-action-btn primary"><i class="fas fa-shopping-bag"></i> Browse Resources</a>
+          <a href="../#resources" class="dash-action-btn primary"><i class="fas fa-shopping-bag"></i> Browse Resources</a>
           <a href="../admin/Resources/" class="dash-action-btn secondary"><i class="fas fa-plus"></i> Sell a Resource</a>
         </div>
       </div>
@@ -235,6 +235,7 @@
         const res = await fetch(API_CONFIG.getURL(`${API_CONFIG.endpoints.payments}/${currentUser.id}`));
         allPurchases = res.ok ? await res.json() : [];
       } catch { allPurchases = []; }
+      hideShimmer();
       renderStats(allPurchases);
       renderPurchases(allPurchases);
     }
@@ -266,21 +267,45 @@
 
     /* ── Shimmer ── */
     function showShimmer() {
-      const row = () => `
+      const wrap = document.querySelector('.dash-filter-select-wrap');
+      if (wrap) wrap.style.visibility = 'hidden';
+      const skRow = () => `
         <tr class="shimmer-row">
-          <td><div class="shimmer-wrap"><div class="sh-row-cell" style="width:70%"></div></div></td>
-          <td><div class="shimmer-wrap"><div class="sh-row-cell" style="width:45%"></div></div></td>
-          <td><div class="shimmer-wrap"><div class="sh-row-cell" style="width:40%"></div></div></td>
-          <td><div class="shimmer-wrap"><div class="sh-row-cell" style="width:55%"></div></div></td>
-          <td><div class="shimmer-wrap"><div class="sh-row-cell" style="width:80%"></div></div></td>
+          <td>
+            <div class="td-resource">
+              <div class="sh sh-icon"></div>
+              <div class="dash-skel-text">
+                <div class="sh" style="height:13px;width:120px;"></div>
+                <div class="sh" style="height:10px;width:60px;margin-top:6px;border-radius:50px;"></div>
+              </div>
+            </div>
+          </td>
+          <td><div class="sh" style="height:14px;width:50px;"></div></td>
+          <td><div class="sh" style="height:12px;width:80px;"></div></td>
+          <td>
+            <div class="td-actions">
+              <div class="sh" style="height:30px;width:90px;border-radius:8px;"></div>
+              <div class="sh" style="height:30px;width:60px;border-radius:8px;"></div>
+            </div>
+          </td>
         </tr>`;
       document.getElementById('purchases').innerHTML = `
-        <table class="purchases-table">
-          <thead><tr>
-            <th>Resource</th><th>Type</th><th>Price</th><th>Date</th><th>Actions</th>
-          </tr></thead>
-          <tbody>${row()}${row()}${row()}${row()}</tbody>
-        </table>`;
+        <div class="shimmer-wrap">
+          <table class="purchases-table">
+            <thead><tr>
+              <th><i class="fas fa-box"></i> Resource</th>
+              <th>₹Price</th>
+              <th class="col-date"><i class="fas fa-calendar"></i> Date</th>
+              <th><i class="fas fa-bolt"></i> Actions</th>
+            </tr></thead>
+            <tbody>${skRow()}${skRow()}${skRow()}${skRow()}</tbody>
+          </table>
+        </div>`;
+    }
+
+    function hideShimmer() {
+      const wrap = document.querySelector('.dash-filter-select-wrap');
+      if (wrap) wrap.style.visibility = '';
     }
 
     /* ── Render Table ── */
@@ -294,7 +319,7 @@
             <div class="empty-icon">🛒</div>
             <h2>No Purchases Yet</h2>
             <p>You haven't made any purchases. Browse our resources to get started!</p>
-            <a href="../" class="empty-cta"><i class="fas fa-shopping-bag"></i> Browse Resources</a>
+            <a href="../#resources" class="empty-cta"><i class="fas fa-shopping-bag"></i> Browse Resources</a>
           </div>`;
         return;
       }

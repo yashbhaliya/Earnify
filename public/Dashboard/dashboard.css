@@ -67,7 +67,7 @@
 .dash-banner-actions {
   display: flex;
   gap: 10px;
-  flex-wrap: wrap;
+  /* flex-wrap: wrap; */
 }
 
 .dash-action-btn {
@@ -773,8 +773,8 @@
     font-size: 0.82rem;
   }
 
-  /* Actions col: hide Download, keep only View */
-  .pc-btn.download {
+  /* Actions col: hide Download in table only, keep visible in modal */
+  .purchases-table .pc-btn.download {
     display: none;
   }
 
