@@ -381,7 +381,7 @@ async function loadResources(type) {
     hideSelectSkeleton(filterEl);
     grid.innerHTML = `
       <div class="empty-state">
-        <div class="empty-icon">ðŸ”’</div>
+        <div class="empty-icon"><img src="/file/logo1.jpeg" style="width:52px;height:52px;border-radius:50%;object-fit:cover;"></div>
         <h3>Login Required</h3>
         <p>Please login to view resources</p>
       </div>
@@ -436,11 +436,11 @@ async function loadResources(type) {
 
     if (resources.length === 0) {
       const emptyStates = {
-        all: { icon: 'ðŸ“¦', title: 'No Resources Yet', text: 'Click the buttons above to add your first resource!' },
-        pdf: { icon: 'ðŸ“„', title: 'No PDF Notes', text: 'Go to "All Resources" tab to add PDF notes' },
-        excel: { icon: 'ðŸ“Š', title: 'No Excel Templates', text: 'Go to "All Resources" tab to add Excel templates' },
-        exam: { icon: '', title: 'No Exam Materials', text: 'Go to "All Resources" tab to add exam materials' },
-        freelance: { icon: '', title: 'No Freelance Services', text: 'Go to "All Resources" tab to add freelance services' }
+        all:       { icon: '<img src="/file/all.jpg" style="width:52px;height:52px;border-radius:10px;object-fit:cover;">', title: 'No Resources Yet', text: 'Click the buttons above to add your first resource!' },
+        pdf:       { icon: '<img src="/file/pdf.jpg" style="width:52px;height:52px;border-radius:10px;object-fit:cover;">', title: 'No PDF Notes', text: 'Go to "All Resources" tab to add PDF notes' },
+        excel:     { icon: '<img src="/file/excel.jpg" style="width:52px;height:52px;border-radius:10px;object-fit:cover;">', title: 'No Excel Templates', text: 'Go to "All Resources" tab to add Excel templates' },
+        exam:      { icon: '<img src="/file/exam.jpg" style="width:52px;height:52px;border-radius:10px;object-fit:cover;">', title: 'No Exam Materials', text: 'Go to "All Resources" tab to add exam materials' },
+        freelance: { icon: '<img src="/file/service.jpg" style="width:52px;height:52px;border-radius:10px;object-fit:cover;">', title: 'No Freelance Services', text: 'Go to "All Resources" tab to add freelance services' }
       };
       const state = emptyStates[type];
       hideSelectSkeleton(filterEl);
@@ -905,6 +905,7 @@ if (document.getElementById("totalUsers")) loadDashboard();
 if (document.getElementById("activeRate")) loadAnalytics();
 if (document.getElementById("totalRecords")) loadSettings();
 if (document.getElementById("purchaseTableBody")) loadPurchaseStatistics();
+
 
 
 

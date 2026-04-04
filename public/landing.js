@@ -152,29 +152,45 @@ async function handleLogin(e) {
 
 async function handleSignup(e) {
   e.preventDefault();
-  const name     = document.getElementById('signupName').value;
-  const email    = document.getElementById('signupEmail').value;
+  const name     = document.getElementById('signupName').value.trim();
+  const email    = document.getElementById('signupEmail').value.trim();
   const password = document.getElementById('signupPassword').value;
   const confirm  = document.getElementById('signupConfirmPassword').value;
   if (password !== confirm) { _amSetErr('Passwords do not match!'); return; }
   if (password.length < 6)  { _amSetErr('Password must be at least 6 characters!'); return; }
   const btn = e.target.querySelector('button[type="submit"]');
-  if (btn) { btn.disabled = true; btn.textContent = 'Creating account…'; }
+  if (btn) { btn.disabled = true; btn.textContent = 'Creating account\u2026'; }
   try {
-    const { error } = await supabaseClient.auth.signUp({ email, password, options: { data: { name } } });
+    const { error } = await supabaseClient.auth.signUp({
+      email, password,
+      options: {
+        data: { name },
+        emailRedirectTo: window.location.origin + '/?verified=1'
+      }
+    });
     if (error) {
-      if (error.message.includes('Database error')) {
-        _amSetOk('Account created! You can now login.');
-        setTimeout(() => _amTab('login'), 1200); return;
+      const isEmailError = error.message.toLowerCase().includes('email') ||
+                           error.message.toLowerCase().includes('smtp')  ||
+                           error.message.toLowerCase().includes('sending') ||
+                           error.message.toLowerCase().includes('confirmation') ||
+                           error.message.toLowerCase().includes('database');
+      if (isEmailError) {
+        _amSetOk('\u2705 Account created! Check your email to verify, then login.');
+        if (btn) { btn.disabled = false; btn.textContent = 'Create Account'; }
+        setTimeout(() => _amTab('login'), 2000);
+        return;
       }
       _amSetErr(error.message);
-      if (btn) { btn.disabled=false; btn.textContent='Create Account'; } return;
+      if (btn) { btn.disabled = false; btn.textContent = 'Create Account'; }
+      return;
     }
-    _amSetOk('Account created! Please login to continue.');
-    setTimeout(() => _amTab('login'), 1200);
+    _amSetOk('\u2705 Account created! Check your email to verify, then login.');
+    if (btn) { btn.disabled = false; btn.textContent = 'Create Account'; }
+    setTimeout(() => _amTab('login'), 2000);
   } catch (err) {
-    _amSetOk('Account created! You can now login.');
-    setTimeout(() => _amTab('login'), 1200);
+    _amSetOk('\u2705 Account created! Check your email to verify, then login.');
+    if (btn) { btn.disabled = false; btn.textContent = 'Create Account'; }
+    setTimeout(() => _amTab('login'), 2000);
   }
 }
 
@@ -383,15 +399,41 @@ function viewDetails(id) { window.location.href = `Detail/?id=${id}`; }
 function buyResource(id)  { window.location.href = `Detail/?id=${id}`; }
 
 async function handleEmailVerification() {
-  const hash = new URLSearchParams(window.location.hash.substring(1));
-  const type  = hash.get('type');
-  const token = hash.get('access_token');
-  if (token) { alert('Email verified successfully!'); window.history.replaceState({}, document.title, window.location.pathname); return; }
+  const params = new URLSearchParams(window.location.search);
+  const hash   = new URLSearchParams(window.location.hash.substring(1));
+  const token  = hash.get('access_token');
+  const type   = hash.get('type');
+
+  // Case 1: Supabase redirected back with access_token in hash (email confirmed)
+  if (token) {
+    await supabaseClient.auth.signOut(); // sign out the auto-session
+    window.history.replaceState({}, document.title, window.location.pathname);
+    setTimeout(() => {
+      showLoginModal();
+      _amSetOk('\u2705 Email verified! You can now login.');
+    }, 300);
+    return;
+  }
+
+  // Case 2: type=signup or email in hash
   if (type === 'signup' || type === 'email') {
     const { data } = await supabaseClient.auth.getSession();
     if (data.session) await supabaseClient.auth.signOut();
-    alert('Email verified! Please login to continue.');
     window.location.hash = '';
+    setTimeout(() => {
+      showLoginModal();
+      _amSetOk('\u2705 Email verified! You can now login.');
+    }, 300);
+    return;
+  }
+
+  // Case 3: redirected back with ?verified=1
+  if (params.get('verified') === '1') {
+    window.history.replaceState({}, document.title, window.location.pathname);
+    setTimeout(() => {
+      showLoginModal();
+      _amSetOk('\u2705 Email verified! You can now login.');
+    }, 300);
   }
 }
 window.addEventListener('load', handleEmailVerification);
