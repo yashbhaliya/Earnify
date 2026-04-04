@@ -273,6 +273,9 @@
 
    .sidebar.active .sidebar-close-btn {
      display: block;
+         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
    }
 
    .sidebar-overlay.active {
@@ -650,11 +653,11 @@
    Resource Section
    ================================================ */
  .resource-section {
-   background: var(--bg-white);
-   border-radius: var(--radius-xl);
+   /* background: var(--bg-white); */
+   /* border-radius: var(--radius-xl); */
    padding: 32px;
-   box-shadow: var(--shadow-lg);
-   border: 1px solid var(--border-light);
+   /* box-shadow: var(--shadow-lg); */
+   /* border: 1px solid var(--border-light); */
  }
 
  .section-header {
@@ -2289,7 +2292,6 @@
     flex-direction: column;
     align-items: flex-start;
     padding: 16px;
-    gap: 10px;
   }
 
   .table-title {

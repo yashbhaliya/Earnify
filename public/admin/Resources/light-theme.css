@@ -29,10 +29,10 @@ body.light-mode .main {
   background: rgba(255, 255, 255, 0.8);
 }
 
-body.light-mode .resource-section {
+/* body.light-mode .resource-section {
   background: #ffffff;
   border: 1px solid #e2e8f0;
-}
+} */
 
 body.light-mode .modal-content {
   background: #ffffff;

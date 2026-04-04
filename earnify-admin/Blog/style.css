@@ -1086,7 +1086,7 @@ body {
   .bulk-btn { padding: 5px 10px; font-size: 11px; }
 
   /* Blog grid */
-  .blog-grid { padding: 10px; gap: 10px; }
+  .blog-grid { padding: 20px; gap: 10px; }
 
   /* Blog card — stack vertically on mobile */
   .blog-card { flex-direction: column; }
@@ -1097,7 +1097,7 @@ body {
   }
   .card-checkbox-wrap { padding: 10px 10px 0; align-self: flex-start; }
   .blog-card-body { padding: 10px 12px 12px; gap: 6px; }
-  .blog-card-title { font-size: 15px; -webkit-line-clamp: 2; }
+  .blog-card-title { font-size: 18px; -webkit-line-clamp: 2; }
 
   /* Card action buttons — wrap into 2 rows */
   .blog-card-actions {
