@@ -191,10 +191,23 @@
   .about-cta { padding: 32px 20px; }
   .about-cta h2 { font-size: 1.5rem !important; }
   .about-btn-primary, .about-btn-secondary { width: 100%; text-align: center; padding: 13px 20px; }
-}
-@media (max-width: 480px) {
-  .faq-cat-nav { gap: 8px; }
-  .faq-cat-btn { font-size: 0.8rem; padding: 8px 14px; }
+  .faq-cat-nav {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding-bottom: 4px;
+    gap: 8px;
+  }
+  .faq-cat-nav::-webkit-scrollbar { display: none; }
+  .faq-cat-btn {
+    flex-shrink: 0;
+    font-size: 0.8rem;
+    padding: 8px 14px;
+    white-space: nowrap;
+  }
 }
 
 /* ── Contact Us Strip ── */

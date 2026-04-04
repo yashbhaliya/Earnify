@@ -240,7 +240,7 @@ app.post("/api/resources", upload.single('file'), async (req, res) => {
     if (error) {
       console.error('Database error:', error);
       return res.status(500).json({ error: 'Database insert failed: ' + error.message });
-    }
+    }     
     
     res.json(data[0]);
   } catch (err) {
