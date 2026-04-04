@@ -610,26 +610,47 @@
       document.getElementById('sidebarUserEmail').textContent = currentUser.email;
       document.getElementById('sidebarAvatar').textContent    = userName.charAt(0).toUpperCase();
 
-      // Check role from profiles table
+      function addSuperAdminBtn() {
+        if (sidebarUser.querySelector('.admin-panel-btn')) return;
+        const logoutLink = sidebarUser.querySelector('.sb-logout');
+        const adminBtn = document.createElement('a');
+        adminBtn.textContent = '\uD83D\uDEE1\uFE0F Super Admin Panel';
+        adminBtn.className = 'admin-panel-btn';
+        adminBtn.href = '/earnify-admin/Dashboard/';
+        sidebarUser.insertBefore(adminBtn, logoutLink);
+      }
+
+      // Method 1: Check role from profiles table
       try {
         const { data } = await supabaseClient
           .from('profiles')
           .select('role')
           .eq('id', currentUser.id)
           .single();
+        if (data?.role === 'super_admin') { addSuperAdminBtn(); return; }
+      } catch(e) {}
 
-        if (data?.role === 'super_admin') {
-          const logoutLink = sidebarUser.querySelector('a[onclick="logout()"]');
-          if (logoutLink && !sidebarUser.querySelector('.admin-panel-btn')) {
-            const adminBtn = document.createElement('a');
-            adminBtn.textContent = '🛡️ Super Admin Panel';
-            adminBtn.className = 'admin-panel-btn';
-            adminBtn.style.cssText = 'display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:12px 16px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border:none;border-radius:10px;font-weight:700;font-size:14px;cursor:pointer;text-decoration:none;text-align:center;box-sizing:border-box;';
-            adminBtn.onclick = () => { window.location.href = '/earnify-admin/Dashboard/'; };
-            sidebarUser.insertBefore(adminBtn, logoutLink);
+      // Method 2: Check from Supabase auth session user_metadata
+      try {
+        const { data: { user } } = await supabaseClient.auth.getUser();
+        if (user?.user_metadata?.role === 'super_admin' ||
+            user?.app_metadata?.role === 'super_admin') {
+          addSuperAdminBtn(); return;
+        }
+      } catch(e) {}
+
+      // Method 3: Check adminToken JWT for role claim
+      try {
+        const token = localStorage.getItem('adminToken');
+        if (token) {
+          const payload = JSON.parse(atob(token.split('.')[1]));
+          if (payload?.user_metadata?.role === 'super_admin' ||
+              payload?.app_metadata?.role === 'super_admin' ||
+              payload?.role === 'super_admin') {
+            addSuperAdminBtn(); return;
           }
         }
-      } catch(e) { console.warn('Role check failed', e); }
+      } catch(e) {}
     })();
 
     function logout() {
