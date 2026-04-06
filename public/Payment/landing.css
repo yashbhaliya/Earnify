@@ -78,7 +78,7 @@ body {
 }
 
 .admin-btn {
-  background: #2563EB;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white !important;
   padding: 0.5rem 1.5rem;
   border-radius: 25px;
