@@ -37,7 +37,7 @@
   })();
 
   /* ── Helpers ── */
-  window.logout = () => { localStorage.clear(); sessionStorage.clear(); location.href = '/admin/login.html'; };
+  window.logout = () => { localStorage.clear(); sessionStorage.clear(); location.href = '/'; };
   window.toggleSidebar = () => {
     document.getElementById('sidebar').classList.toggle('active');
     document.getElementById('overlay').classList.toggle('active');

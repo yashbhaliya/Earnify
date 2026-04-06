@@ -55,7 +55,7 @@ async function apiFetch(path) {
 
 function logout() {
   localStorage.clear(); sessionStorage.clear();
-  location.href = '/admin/login.html';
+  location.href = '/';
 }
 
 function toggleSidebar() {
