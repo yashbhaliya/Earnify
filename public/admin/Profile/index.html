@@ -573,71 +573,33 @@
       gap: 12px;
       margin-top: 6px;
     }
-
     .wi-method {
-      border-radius: 14px;
-      padding: 16px 12px;
+      border-radius: 16px;
+      padding: 20px 12px 16px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
       cursor: pointer;
       transition: transform 0.2s, box-shadow 0.2s;
       position: relative;
       overflow: hidden;
       text-align: center;
+      border: 1.5px solid #e8edf5;
+      background: #fafbff;
     }
-
-    .wi-method::after {
+    .wi-method::before {
       content: '';
       position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      border-radius: 16px 16px 0 0;
     }
-
-    .wi-method.upi {
-      background: linear-gradient(135deg, #f0f0ff, #e8e4ff);
-      border: 1.5px solid #c4b5fd;
-    }
-
-    .wi-method.upi::after {
-      background: linear-gradient(90deg, #667eea, #764ba2);
-    }
-
-    .wi-method.bank {
-      background: linear-gradient(135deg, #f0fdf4, #dcfce7);
-      border: 1.5px solid #86efac;
-    }
-
-    .wi-method.bank::after {
-      background: linear-gradient(90deg, #10b981, #059669);
-    }
-
-    .wi-method.gpay {
-      background: linear-gradient(135deg, #f0fdf9, #ccfbf1);
-      border: 1.5px solid #5eead4;
-    }
-
-    .wi-method.gpay::after {
-      background: linear-gradient(90deg, #14b8a6, #0d9488);
-    }
-
-    .wi-method.paytm {
-      background: linear-gradient(135deg, #eff6ff, #dbeafe);
-      border: 1.5px solid #93c5fd;
-    }
-
-    .wi-method.paytm::after {
-      background: linear-gradient(90deg, #3b82f6, #2563eb);
-    }
-
-    .wi-method:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.12);
-    }
-
+    .wi-method.upi::before   { background: linear-gradient(90deg,#667eea,#764ba2); }
+    .wi-method.bank::before  { background: linear-gradient(90deg,#10b981,#059669); }
+    .wi-method.gpay::before  { background: linear-gradient(90deg,#14b8a6,#0d9488); }
+    .wi-method.paytm::before { background: linear-gradient(90deg,#3b82f6,#2563eb); }
+    .wi-method:hover { transform: translateY(-4px); box-shadow: 0 10px 28px rgba(0,0,0,0.10); border-color: #c7d2fe; }
     .wi-method-header {
       display: flex;
       flex-direction: column;
@@ -645,87 +607,39 @@
       gap: 8px;
       width: 100%;
     }
-
     .wi-icon {
-      width: 46px;
-      height: 46px;
-      border-radius: 13px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 22px;
-      flex-shrink: 0;
+      width: 48px; height: 48px;
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; flex-shrink: 0;
     }
-
-    .wi-method.upi .wi-icon {
-      background: linear-gradient(135deg, #667eea, #764ba2);
-    }
-
-    .wi-method.bank .wi-icon {
-      background: linear-gradient(135deg, #10b981, #059669);
-    }
-
-    .wi-method.gpay .wi-icon {
-      background: linear-gradient(135deg, #14b8a6, #0d9488);
-    }
-
-    .wi-method.paytm .wi-icon {
-      background: linear-gradient(135deg, #3b82f6, #2563eb);
-    }
-
+    .wi-method.upi   .wi-icon { background: linear-gradient(135deg,#667eea,#764ba2); }
+    .wi-method.bank  .wi-icon { background: linear-gradient(135deg,#10b981,#059669); }
+    .wi-method.gpay  .wi-icon { background: linear-gradient(135deg,#14b8a6,#0d9488); }
+    .wi-method.paytm .wi-icon { background: linear-gradient(135deg,#3b82f6,#2563eb); }
     .wi-label {
-      font-size: 11px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.6px;
-      color: #64748b;
+      font-size: 12px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.5px;
+      color: #1e293b;
     }
-
     .wi-status {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      font-size: 10px;
-      font-weight: 700;
-      padding: 2px 8px;
-      border-radius: 20px;
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 10px; font-weight: 700;
+      padding: 3px 10px; border-radius: 20px;
     }
-
-    .wi-status.set {
-      background: #dcfce7;
-      color: #16a34a;
-    }
-
-    .wi-status.unset {
-      background: #fee2e2;
-      color: #dc2626;
-    }
-
+    .wi-status.set   { background: #dcfce7; color: #16a34a; }
+    .wi-status.unset { background: #fee2e2; color: #dc2626; }
     .wi-edit-btn {
       padding: 7px 16px;
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-size: 12px;
-      font-weight: 700;
-      cursor: pointer;
-      font-family: inherit;
-      white-space: nowrap;
-      transition: opacity 0.2s, transform 0.2s;
-      flex-shrink: 0;
+      background: linear-gradient(135deg,#667eea,#764ba2);
+      color: white; border: none; border-radius: 8px;
+      font-size: 12px; font-weight: 700; cursor: pointer;
+      font-family: inherit; white-space: nowrap;
+      transition: opacity 0.2s, transform 0.2s; flex-shrink: 0;
     }
-
-    .wi-edit-btn:hover {
-      opacity: 0.88;
-      transform: translateY(-1px);
-    }
-
+    .wi-edit-btn:hover { opacity: 0.88; transform: translateY(-1px); }
     @media (max-width: 600px) {
-      .wi-methods {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
-      }
+      .wi-methods { grid-template-columns: repeat(2, 1fr); gap: 10px; }
     }
 
     /* ── WI Detail Popup ── */
@@ -880,7 +794,7 @@
 
     .wi-detail-cancel-btn {
       padding: 12px 18px;
-      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      background: #f1f5f9;
       color: #64748b;
       border: 2px solid #e2e8f0;
       border-radius: 10px;
@@ -890,10 +804,7 @@
       font-family: inherit;
       transition: all .2s;
     }
-
-    .wi-detail-cancel-btn:hover {
-      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-    }
+    .wi-detail-cancel-btn:hover { background: #e2e8f0; color: #1e293b; }
 
     /* ── Withdrawal Edit Modal ── */
     #wiModal .modal-content {
