@@ -17,7 +17,7 @@ body {
 }
 .navbar .container { display: flex; justify-content: space-between; align-items: center; }
 .logo { font-size: 1.6rem; font-weight: 800; color: #1a202c; }
-.logo b {
+.logo .logo-grad {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
