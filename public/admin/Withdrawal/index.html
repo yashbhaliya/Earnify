@@ -855,12 +855,20 @@
         const wdList = Array.isArray(withdrawals) ? withdrawals : [];
         const approved = wdList.filter(w => w.status === 'approved' || w.status === 'completed');
         const pending  = wdList.filter(w => w.status === 'pending');
-        const platformFees = wdList
-          .filter(w => ['approved','completed','pending'].includes(w.status))
-          .reduce((s, w) => s + parseFloat(w.amount || 0) * WD_FEE, 0);
-        const totalWithdrawn = approved.reduce((s, w) => s + parseFloat(w.amount || 0) * 0.95, 0);
-        const totalPending   = pending.reduce((s, w)  => s + parseFloat(w.amount || 0) * 0.95, 0);
-        const available = Math.max(0, totalGross - totalWithdrawn - totalPending - platformFees);
+
+        // Gross withdrawal amounts
+        const totalWithdrawnGross = approved.reduce((s, w) => s + parseFloat(w.amount || 0), 0);
+        const totalPendingGross   = pending.reduce((s, w)  => s + parseFloat(w.amount || 0), 0);
+
+        // Net amounts (what user receives)
+        const totalWithdrawn = totalWithdrawnGross * 0.95;
+        const totalPending   = totalPendingGross   * 0.95;
+
+        // Platform fees = 5% of total gross earnings
+        const platformFees = totalGross * 0.05;
+
+        // Available = gross earnings - platform fees - gross withdrawn - gross pending
+        const available = Math.max(0, totalGross - platformFees - totalWithdrawnGross - totalPendingGross);
         _availableBalance = available;
 
         document.getElementById('availableBalance').textContent = `₹${available.toFixed(0)}`;
