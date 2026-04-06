@@ -24,14 +24,23 @@ body {
   background: linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%);
   box-shadow: 4px 0 30px rgba(0, 0, 0, 0.1);
   padding: 30px 0;
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
   height: 100vh;
   display: flex;
   flex-direction: column;
   overflow-y: auto;
+  overflow-x: hidden;
   border-right: 2px solid rgba(59, 130, 246, 0.2);
+  z-index: 100;
+  scrollbar-width: thin;
+  scrollbar-color: #c7d2fe transparent;
 }
+
+.sidebar::-webkit-scrollbar { width: 4px; }
+.sidebar::-webkit-scrollbar-track { background: transparent; }
+.sidebar::-webkit-scrollbar-thumb { background: #c7d2fe; border-radius: 4px; }
 
 .sidebar h2 {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -144,9 +153,9 @@ body {
   padding: 40px;
   background: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(10px);
+  margin-left: 260px;
+  min-height: 100vh;
 }
-
-.main h1 {
   color: #1e293b;
   margin-bottom: 30px;
   font-size: 32px;
@@ -161,11 +170,22 @@ body {
 }
 
 @media (max-width: 768px) {
-  .cards {
-    grid-template-columns: 1fr;
-    gap: 15px;
-    padding: 0;
+  .mobile-menu-toggle { display: flex; }
+  .sidebar {
+    position: fixed;
+    left: calc(-1 * 260px);
+    top: 0; bottom: 0;
+    z-index: 1000;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
+  .sidebar.active { transform: translateX(260px); }
+  .main {
+    margin-left: 0 !important;
+    padding: 20px 15px;
+    padding-top: 70px;
+    width: 100%;
+  }
+}
   
   .card {
     padding: 15px;

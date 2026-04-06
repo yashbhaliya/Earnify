@@ -3,7 +3,11 @@
   "env": {
     "GMAIL_USER": "hardikkotadiya90@gmail.com",
     "GMAIL_PASS": "qmipirlvmpoygyqs",
-    "SITE_URL": "https://earnify-gamma.vercel.app"
+    "SITE_URL": "https://earnify-gamma.vercel.app",
+    "SUPABASE_URL": "https://emnrgsgerfjvndexomro.supabase.co",
+    "SUPABASE_SERVICE_ROLE_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVtbnJnc2dlcmZqdm5kZXhvbXJvIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3MjQyMDIxMCwiZXhwIjoyMDg3OTk2MjEwfQ.mr4k_GsJ14CC1mqvEZgf9cTaNiLMlnj_sZxFjJud67k",
+    "RAZORPAY_KEY_ID": "rzp_test_S1gSQmdix2Benc",
+    "RAZORPAY_KEY_SECRET": "fkYyNgIgiG4IXBAAwAdgHWQk"
   },
   "builds": [
     {
@@ -39,6 +43,22 @@
     {
       "src": "/earnify-admin/statistic/(.*)",
       "dest": "/earnify-admin/statistic/$1"
+    },
+    {
+      "src": "/earnify-admin/payments/?$",
+      "dest": "/earnify-admin/payments/index.html"
+    },
+    {
+      "src": "/earnify-admin/payments/(.*)",
+      "dest": "/earnify-admin/payments/$1"
+    },
+    {
+      "src": "/earnify-admin/Blog/?$",
+      "dest": "/earnify-admin/Blog/index.html"
+    },
+    {
+      "src": "/earnify-admin/Blog/(.*)",
+      "dest": "/earnify-admin/Blog/$1"
     },
     {
       "src": "/earnify-admin/(.*)",

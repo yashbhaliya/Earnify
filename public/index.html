@@ -829,6 +829,129 @@
   </div>
   <div id="signupModal" style="display:none;"></div>
 
+  <!-- ── Mobile Bottom Nav ── -->
+  <nav class="mob-nav" id="mobNav">
+    <a href="./" class="mob-nav-item" id="mnHome">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <span>Home</span>
+    </a>
+    <a href="#resources" class="mob-nav-item" id="mnResources" onclick="closeMobNav()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+      <span>Resources</span>
+    </a>
+    <a href="./admin/Resources/" class="mob-nav-item mob-nav-add" id="mnAdd">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      <span>Add</span>
+    </a>
+    <a href="./Blog/" class="mob-nav-item" id="mnBlog">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+      <span>Blog</span>
+    </a>
+    <a href="./admin/Resources/" class="mob-nav-item" id="mnDash" onclick="goToDashboard(event)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      <span>Dashboard</span>
+    </a>
+  </nav>
+
+  <style>
+    .mob-nav {
+      display: none;
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      height: 64px;
+      background: #fff;
+      border-top: 1px solid #e8edf5;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+      z-index: 999;
+      align-items: stretch;
+      justify-content: space-around;
+      padding: 0 4px;
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+    @media (max-width: 768px) {
+      .mob-nav { display: flex; }
+      body { padding-bottom: 64px; }
+    }
+    .mob-nav-item {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      text-decoration: none;
+      color: #94a3b8;
+      font-size: 10px;
+      font-weight: 600;
+      font-family: 'Inter', sans-serif;
+      transition: color 0.18s;
+      padding: 6px 2px;
+      position: relative;
+    }
+    .mob-nav-item svg {
+      width: 22px; height: 22px;
+      stroke: currentColor;
+      transition: stroke 0.18s;
+    }
+    .mob-nav-item.active,
+    .mob-nav-item:hover {
+      color: #667eea;
+    }
+    .mob-nav-item.active svg,
+    .mob-nav-item:hover svg {
+      stroke: #667eea;
+    }
+    /* Active indicator dot */
+    .mob-nav-item.active::after {
+      content: '';
+      position: absolute;
+      top: 6px;
+      width: 4px; height: 4px;
+      border-radius: 50%;
+      background: #667eea;
+    }
+    /* Add button — raised pill */
+    .mob-nav-add {
+      flex: 0 0 56px;
+      margin: -14px 6px 0;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      border-radius: 16px;
+      color: #fff !important;
+      box-shadow: 0 6px 18px rgba(102,126,234,0.40);
+      height: 56px;
+      align-self: flex-start;
+      padding: 6px 4px;
+    }
+    .mob-nav-add svg { stroke: #fff !important; width: 24px; height: 24px; }
+    .mob-nav-add span { font-size: 10px; color: #fff; }
+    .mob-nav-add:hover { opacity: 0.9; color: #fff !important; }
+    .mob-nav-add.active::after { display: none; }
+  </style>
+
+  <script>
+    // Set active nav item based on current path
+    (function() {
+      const path = location.pathname;
+      const map = {
+        mnHome:      ['/public/', '/public/index.html', '/'],
+        mnResources: [],
+        mnAdd:       ['/public/admin/Resources/', '/admin/Resources/'],
+        mnBlog:      ['/public/Blog/', '/Blog/'],
+        mnDash:      ['/public/Dashboard/', '/Dashboard/']
+      };
+      Object.entries(map).forEach(([id, paths]) => {
+        if (paths.some(p => path === p || path.startsWith(p))) {
+          document.getElementById(id)?.classList.add('active');
+        }
+      });
+      // Default home active on root
+      if (path === '/' || path.endsWith('index.html')) {
+        document.getElementById('mnHome')?.classList.add('active');
+      }
+    })();
+    function closeMobNav() {}
+  </script>
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
   <script src="api-config.js"></script>

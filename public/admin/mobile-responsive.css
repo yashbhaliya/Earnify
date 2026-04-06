@@ -5,20 +5,38 @@
     --bg-light: #f8fafc;
 }
 
+/* Prevent horizontal overflow on all admin pages */
+html, body {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
 /* --- Media Queries for Mobile (Under 768px) --- */
 @media (max-width: 768px) {
     /* --- Layout Adjustments --- */
     body.sidebar-open {
-        overflow: hidden; /* Prevent scrolling when menu is open */
+        overflow: hidden;
     }
 
     .main {
         transition: margin-left 0.3s ease;
-        padding: 10px;
+        padding: 16px;
         width: 100%;
         box-sizing: border-box;
         margin-left: 0 !important;
-        padding-top: 20px; /* Space for the floating hamburger */
+        padding-top: 20px;
+    }
+
+    /* Ensure all images are responsive */
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    /* Prevent any child from overflowing */
+    .main > * {
+        max-width: 100%;
+        box-sizing: border-box;
     }
 
     /* --- Hamburger Menu Button --- */
@@ -87,24 +105,12 @@
         scrollbar-width: thin;
         background: white;
         border-radius: 12px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     }
 
-    .resource-tabs::-webkit-scrollbar {
-        height: 6px;
-    }
+    .resource-tabs::-webkit-scrollbar { height: 4px; }
+    .resource-tabs::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 10px; }
+    .resource-tabs::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
 
-    .resource-tabs::-webkit-scrollbar-track {
-        background: #f1f5f9;
-        border-radius: 10px;
-    }
-
-    .resource-tabs::-webkit-scrollbar-thumb {
-        background: linear-gradient(135deg, #cbd5e1 0%, #94a3b8 100%);
-        border-radius: 10px;
-    }
-
-    /* Show tab buttons with vertical layout on mobile */
     .tab-btn {
         display: flex !important;
         flex-direction: column !important;
@@ -113,43 +119,13 @@
         flex-shrink: 0 !important;
         min-width: 70px !important;
         padding: 10px 12px !important;
-        background: transparent;
-        border: 2px solid transparent;
-        color: #64748b;
-        border-radius: 10px;
-        cursor: pointer;
-        font-weight: 600;
-        transition: all 0.3s;
+        min-height: 44px !important;
     }
 
-    .tab-btn span:first-child {
-        font-size: 20px;
-    }
+    .tab-btn span:first-child { font-size: 20px; }
+    .tab-btn span:last-child { font-size: 11px; white-space: nowrap; }
 
-    .tab-btn span:last-child {
-        font-size: 11px;
-        white-space: nowrap;
-    }
-
-    .tab-btn:hover {
-        background: #f8fafc;
-        color: #3b82f6;
-    }
-
-    .tab-btn.active {
-        background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-        color: white;
-        border-color: transparent;
-        box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
-    }
-
-    .tab-dropdown {
-        display: none;
-    }
-
- 
-
-    /* --- Modals (Full screen on mobile) --- */
+    /* --- Modals --- */
     .modal-content {
         width: 95% !important;
         margin: 10px auto;
@@ -159,9 +135,12 @@
         overflow-y: auto;
     }
 
-    .page-header h1 {
-        font-size: 1.5rem;
+    /* Inputs: font-size 16px prevents iOS auto-zoom */
+    input, textarea, select {
+        font-size: 16px !important;
     }
+
+    .page-header h1 { font-size: 1.4rem; }
 
     .section-header {
         flex-direction: column;
@@ -186,130 +165,81 @@
         white-space: normal !important;
         min-width: auto !important;
         width: 100% !important;
+        min-height: 44px !important;
     }
 
-    .add-btn .btn-icon {
-        font-size: 28px !important;
-    }
+    .add-btn .btn-icon { font-size: 24px !important; }
+    .add-btn .btn-text { font-size: 12px !important; font-weight: 600 !important; }
 
-    .add-btn .btn-text {
-        font-size: 12px !important;
-        font-weight: 600 !important;
-        text-align: center !important;
-    }
+    .resource-card { padding: 15px; }
 
-    /* Adjust resource card styling for mobile */
-    .resource-card {
-        padding: 15px;
-    }
-
-    /* --- Statistics Page Mobile Styles --- */
+    /* --- Statistics Page --- */
     .page-header {
-        padding: 25px 20px !important;
+        padding: 20px 16px !important;
         margin-bottom: 10px !important;
-        display: block !important;
-        visibility: visible !important;
-    }
-
-    .page-header h1 {
-        font-size: 24px !important;
-    }
-
-    .subtitle {
-        font-size: 14px !important;
     }
 
     .stats-overview {
         grid-template-columns: 1fr !important;
-        gap: 15px !important;
+        gap: 12px !important;
     }
 
     .stat-card {
-        padding: 20px !important;
+        padding: 16px !important;
         display: flex !important;
         flex-direction: row !important;
         align-items: center !important;
-        text-align: left !important;
-        gap: 15px !important;
+        gap: 14px !important;
     }
 
     .stat-icon {
-        font-size: 32px !important;
-        margin-bottom: 0 !important;
+        font-size: 28px !important;
         flex-shrink: 0 !important;
-        
+        width: 48px !important;
+        height: 48px !important;
     }
 
-    .stat-value {
-        font-size: 24px !important;
-        margin-bottom: 0 !important;
-    }
+    .stat-value { font-size: 22px !important; }
+    .stat-label { font-size: 11px !important; }
 
-    .stat-label {
-        font-size: 11px !important;
-    }
-
-    .section-header {
-        text-align: left !important;
-        margin-bottom: 20px !important;
-    }
-
-    .section-header h2 {
-        font-size: 20px !important;
-    }
-
-    .section-header p {
-        font-size: 13px !important;
-    }
+    .section-header h2 { font-size: 18px !important; }
+    .section-header p  { font-size: 13px !important; }
 
     .table-wrapper {
         overflow-x: auto !important;
         -webkit-overflow-scrolling: touch !important;
-        padding: 0px;
-
     }
 
-    .modern-table {
-        min-width: 600px !important;
-        /* padding: 0px; */
-    }
+    .modern-table { min-width: 560px !important; }
+    .modern-table th, .modern-table td { padding: 10px !important; font-size: 12px !important; }
+    .th-content { font-size: 11px !important; }
 
-    .modern-table th,
-    .modern-table td {
-        padding: 10px !important;
-        font-size: 12px !important;
-    }
+    .analytics-section { padding: 16px !important; margin-top: 16px !important; }
 
-    .th-content {
-        font-size: 11px !important;
-        gap: 6px !important;
-    }
+    /* --- Profile page grid --- */
+    .profile-grid { grid-template-columns: 1fr !important; }
+    .stats-grid   { grid-template-columns: 1fr !important; gap: 12px !important; }
 
-    .th-icon {
-        font-size: 14px !important;
-    }
-
-    .analytics-section {
-        padding: 20px !important;
-        margin-top: 20px !important;
-    }
+    /* --- Withdrawal hero banner --- */
+    .hero-banner { padding: 24px 18px !important; }
+    .hero-amount { font-size: 34px !important; }
+    .hero-stats  { gap: 12px !important; flex-wrap: wrap !important; }
+    .hero-top    { flex-direction: column !important; }
+    .hero-cta    { width: 100% !important; text-align: center !important; }
+    .form-grid   { grid-template-columns: 1fr !important; }
+    .w-card      { padding: 20px 16px !important; }
 }
 
-/* --- Media Queries for very small screens (Under 480px) --- */
+/* --- Very small screens (Under 480px) --- */
 @media (max-width: 480px) {
     .add-buttons-group {
         grid-template-columns: repeat(2, 1fr) !important;
     }
-
-    .add-btn {
-        padding: 10px 6px !important;
-    }
-
-    .add-btn .btn-icon {
-        font-size: 24px !important;
-    }
-
-    .add-btn .btn-text {
-        font-size: 11px !important;
-    }
+    .add-btn { padding: 10px 6px !important; }
+    .add-btn .btn-icon { font-size: 22px !important; }
+    .add-btn .btn-text { font-size: 11px !important; }
+    .main { padding: 12px; }
+    .stat-card { padding: 12px !important; gap: 10px !important; }
+    .stat-icon { width: 40px !important; height: 40px !important; font-size: 22px !important; }
+    .stat-value { font-size: 20px !important; }
 }

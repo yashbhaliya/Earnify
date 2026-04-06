@@ -137,11 +137,18 @@ async function logout() {
   window.location.href = '../';
 }
 
+function toSlug(title) {
+  return title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+}
+
 async function loadResourceDetails() {
-  const resourceId = new URLSearchParams(window.location.search).get('id');
-  if (!resourceId) {
+  const params = new URLSearchParams(window.location.search);
+  const titleSlug = params.get('title');
+  const resourceId = params.get('id');
+
+  if (!titleSlug && !resourceId) {
     document.getElementById('resourceDetails').innerHTML =
-      '<p class="loading">No resource ID provided. <a href="../">Return Home</a></p>';
+      '<p class="loading">No resource specified. <a href="../">Return Home</a></p>';
     return;
   }
 
@@ -150,7 +157,17 @@ async function loadResourceDetails() {
   try {
     const res       = await fetch(API_CONFIG.getURL(API_CONFIG.endpoints.resources));
     const resources = await res.json();
-    currentResource = resources.find(r => r.id == resourceId);
+
+    if (titleSlug) {
+      currentResource = resources.find(r => toSlug(r.title) === titleSlug);
+    } else {
+      currentResource = resources.find(r => r.id == resourceId);
+      // redirect old ?id= URL to clean slug URL
+      if (currentResource) {
+        const slug = toSlug(currentResource.title);
+        window.history.replaceState({}, '', `?title=${slug}`);
+      }
+    }
 
     if (!currentResource) {
       document.getElementById('resourceDetails').innerHTML =

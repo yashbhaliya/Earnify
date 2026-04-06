@@ -356,10 +356,15 @@
   .auth-modal-box { grid-template-columns: 1fr; }
   .am-left { display: none; }
   .am-right {
-    padding: 52px 22px 36px;
+    padding: 52px 20px 36px;
     background: linear-gradient(160deg,#f0f4ff 0%,#f8fafc 100%);
     justify-content: flex-start;
+    min-height: 100vh;
+    overflow-y: auto;
   }
   .am-form-inner { max-width: 100%; }
   .am-close { top: 12px; right: 12px; }
+  .am-input { font-size: 16px; /* prevent iOS zoom */ }
+  .am-submit-btn { padding: 14px; font-size: 15px; min-height: 48px; }
+  .am-tab { min-height: 44px; }
 }

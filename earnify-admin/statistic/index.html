@@ -1,13 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Statistics - Earnify Admin</title>
   <link rel="icon" href="/file/logo1.jpeg" type="image/jpeg">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      user-select: none;
+    }
+
+    html,
+    body {
+      overflow-x: hidden;
+      max-width: 100%;
+    }
 
     body {
       font-family: 'Inter', sans-serif;
@@ -20,10 +33,11 @@
     .sidebar {
       width: 260px;
       background: linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%);
-      border-right: 2px solid rgba(102,126,234,0.15);
+      border-right: 2px solid rgba(102, 126, 234, 0.15);
       padding: 30px 0;
       position: fixed;
-      top: 0; left: 0;
+      top: 0;
+      left: 0;
       height: 100vh;
       display: flex;
       flex-direction: column;
@@ -34,7 +48,7 @@
 
     .sidebar-brand {
       padding: 0 28px 24px;
-      border-bottom: 2px solid rgba(102,126,234,0.12);
+      border-bottom: 2px solid rgba(102, 126, 234, 0.12);
       margin-bottom: 12px;
     }
 
@@ -74,20 +88,24 @@
     }
 
     .nav-link:hover {
-      background: rgba(102,126,234,0.07);
+      background: rgba(102, 126, 234, 0.07);
       border-left-color: #667eea;
       color: #667eea;
       padding-left: 34px;
     }
 
     .nav-link.active {
-      background: linear-gradient(90deg, rgba(102,126,234,0.13), rgba(102,126,234,0.06));
+      background: linear-gradient(90deg, rgba(102, 126, 234, 0.13), rgba(102, 126, 234, 0.06));
       border-left-color: #667eea;
       color: #667eea;
       font-weight: 700;
     }
 
-    .nav-icon { font-size: 17px; width: 22px; text-align: center; }
+    .nav-icon {
+      font-size: 17px;
+      width: 22px;
+      text-align: center;
+    }
 
     .sidebar-footer {
       margin-top: auto;
@@ -100,45 +118,47 @@
       align-items: center;
       gap: 12px;
       padding: 12px 14px;
-      background: linear-gradient(135deg, rgba(102,126,234,0.08), rgba(118,75,162,0.08));
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.08), rgba(118, 75, 162, 0.08));
       border-radius: 12px;
       margin-bottom: 12px;
       min-height: 60px;
     }
 
     .admin-avatar {
-      width: 40px; 
+      width: 40px;
       height: 40px;
       background: linear-gradient(135deg, #667eea, #764ba2);
       border-radius: 50%;
-      display: flex; 
-      align-items: center; 
+      display: flex;
+      align-items: center;
       justify-content: center;
-      font-size: 16px; 
-      color: white; 
-      font-weight: 700; 
+      font-size: 16px;
+      color: white;
+      font-weight: 700;
       flex-shrink: 0;
       box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
     }
 
-    .admin-info { 
-      flex: 1; 
+    .admin-info {
+      flex: 1;
       min-width: 0;
       overflow: hidden;
     }
-    .admin-name { 
-      font-size: 11px; 
-      font-weight: 600; 
-      color: #1e293b; 
+
+    .admin-name {
+      font-size: 11px;
+      font-weight: 600;
+      color: #1e293b;
       word-break: break-word;
       overflow-wrap: break-word;
       line-height: 1.4;
       margin-bottom: 3px;
       max-width: 100%;
     }
-    .admin-role { 
-      font-size: 10px; 
-      color: #94a3b8; 
+
+    .admin-role {
+      font-size: 10px;
+      color: #94a3b8;
       font-weight: 500;
       white-space: nowrap;
       overflow: hidden;
@@ -159,22 +179,28 @@
       font-family: inherit;
     }
 
-    .logout-btn:hover { background: #fee2e2; }
+    .logout-btn:hover {
+      background: #fee2e2;
+    }
 
     /* ── Overlay ── */
     .overlay {
       display: none;
-      position: fixed; inset: 0;
-      background: rgba(0,0,0,0.4);
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.4);
       z-index: 99;
     }
-    .overlay.active { display: block; }
+
+    .overlay.active {
+      display: block;
+    }
 
     /* ── Mobile toggle ── */
     .mobile-toggle {
       display: none;
       background: rgba(255, 255, 255, 0.25);
-      border: 2px solid rgba(255,255,255,0.5) !important;
+      border: 2px solid rgba(255, 255, 255, 0.5) !important;
       border-radius: 10px;
       padding: 14px 12px;
       cursor: pointer;
@@ -183,7 +209,8 @@
     }
 
     .mobile-toggle span {
-      width: 22px; height: 2px;
+      width: 22px;
+      height: 2px;
       background: #fff;
       border-radius: 2px;
       display: block;
@@ -215,8 +242,17 @@
       margin-right: 12px;
     }
 
-    .page-header h1 { color: #fff; font-size: 26px; font-weight: 800; margin-bottom: 4px; }
-    .page-header p  { color: rgba(255,255,255,0.82); font-size: 14px; }
+    .page-header h1 {
+      color: #fff;
+      font-size: 26px;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .page-header p {
+      color:white;
+      font-size: 14px;
+    }
 
     .header-meta {
       display: flex;
@@ -229,8 +265,8 @@
       align-items: center;
       gap: 6px;
       padding: 8px 16px;
-      background: rgba(255,255,255,0.18);
-      border: 1.5px solid rgba(255,255,255,0.35);
+      background: rgba(255, 255, 255, 0.18);
+      border: 1.5px solid rgba(255, 255, 255, 0.35);
       border-radius: 10px;
       color: white;
       font-size: 13px;
@@ -240,7 +276,9 @@
       font-family: inherit;
     }
 
-    .refresh-btn:hover { background: rgba(255,255,255,0.28); }
+    .refresh-btn:hover {
+      background: rgba(255, 255, 255, 0.28);
+    }
 
     /* ── Stat Cards ── */
     .stat-grid {
@@ -257,7 +295,7 @@
       display: flex;
       align-items: center;
       gap: 16px;
-      border: 1px solid rgba(0,0,0,0.05);
+      border: 1px solid rgba(0, 0, 0, 0.05);
       position: relative;
       overflow: hidden;
       transition: transform 0.22s, box-shadow 0.22s;
@@ -267,36 +305,73 @@
     .stat-card::before {
       content: '';
       position: absolute;
-      top: 0; left: 0; right: 0;
+      top: 0;
+      left: 0;
+      right: 0;
       height: 3px;
       transition: height 0.2s;
     }
 
-    .stat-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.09); }
-    .stat-card:hover::before { height: 4px; }
+    .stat-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.09);
+    }
 
-    .stat-card:nth-child(1)::before { background: linear-gradient(90deg, #667eea, #764ba2); }
-    .stat-card:nth-child(2)::before { background: linear-gradient(90deg, #f093fb, #f5576c); }
-    .stat-card:nth-child(3)::before { background: linear-gradient(90deg, #ff6b6b, #ee5a24); }
-    .stat-card:nth-child(4)::before { background: linear-gradient(90deg, #f9ca24, #f0932b); }
+    .stat-card:hover::before {
+      height: 4px;
+    }
+
+    .stat-card:nth-child(1)::before {
+      background: linear-gradient(90deg, #667eea, #764ba2);
+    }
+
+    .stat-card:nth-child(2)::before {
+      background: linear-gradient(90deg, #f093fb, #f5576c);
+    }
+
+    .stat-card:nth-child(3)::before {
+      background: linear-gradient(90deg, #ff6b6b, #ee5a24);
+    }
+
+    .stat-card:nth-child(4)::before {
+      background: linear-gradient(90deg, #f9ca24, #f0932b);
+    }
 
     .stat-icon {
-      width: 54px; height: 54px;
+      width: 54px;
+      height: 54px;
       border-radius: 14px;
-      display: flex; align-items: center; justify-content: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       font-size: 24px;
       flex-shrink: 0;
       transition: transform 0.2s;
     }
 
-    .stat-card:hover .stat-icon { transform: scale(1.08); }
+    .stat-card:hover .stat-icon {
+      transform: scale(1.08);
+    }
 
-    .stat-card:nth-child(1) .stat-icon { background: linear-gradient(135deg, #667eea, #764ba2); }
-    .stat-card:nth-child(2) .stat-icon { background: linear-gradient(135deg, #f093fb, #f5576c); }
-    .stat-card:nth-child(3) .stat-icon { background: linear-gradient(135deg, #ff6b6b, #ee5a24); }
-    .stat-card:nth-child(4) .stat-icon { background: linear-gradient(135deg, #f9ca24, #f0932b); }
+    .stat-card:nth-child(1) .stat-icon {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+    }
 
-    .stat-body { flex: 1; }
+    .stat-card:nth-child(2) .stat-icon {
+      background: linear-gradient(135deg, #f093fb, #f5576c);
+    }
+
+    .stat-card:nth-child(3) .stat-icon {
+      background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+    }
+
+    .stat-card:nth-child(4) .stat-icon {
+      background: linear-gradient(135deg, #f9ca24, #f0932b);
+    }
+
+    .stat-body {
+      flex: 1;
+    }
 
     .stat-label {
       font-size: 11px;
@@ -316,7 +391,9 @@
       transition: color 0.2s;
     }
 
-    .stat-card:hover .stat-value { color: #667eea; }
+    .stat-card:hover .stat-value {
+      color: #667eea;
+    }
 
     .stat-sub {
       font-size: 11px;
@@ -334,31 +411,47 @@
     }
 
     @keyframes shimmer-slide {
-      0%   { background-position: 100% 0; }
-      100% { background-position: -100% 0; }
+      0% {
+        background-position: 100% 0;
+      }
+
+      100% {
+        background-position: -100% 0;
+      }
     }
 
-    .shimmer-value { width: 90px; height: 32px; margin-bottom: 6px; }
-    .shimmer-sub   { width: 110px; height: 12px; }
+    .shimmer-value {
+      width: 90px;
+      height: 32px;
+      margin-bottom: 6px;
+    }
+
+    .shimmer-sub {
+      width: 110px;
+      height: 12px;
+    }
 
     .stat-card.is-shimmer .stat-icon {
       background: linear-gradient(90deg, #e8eef5 25%, #d4dce8 50%, #e8eef5 75%) !important;
       background-size: 400% 100% !important;
       animation: shimmer-slide 1.4s infinite linear !important;
     }
-    .stat-card.is-shimmer .stat-icon span { 
-      visibility: hidden; 
+
+    .stat-card.is-shimmer .stat-icon span {
+      visibility: hidden;
     }
 
     /* Table shimmer */
-    .table-shimmer-row { 
+    .table-shimmer-row {
       background: white;
     }
-    .table-shimmer-row td { 
-      padding: 14px 18px !important; 
+
+    .table-shimmer-row td {
+      padding: 14px 18px !important;
       background: white;
       border-bottom: 1px solid #f8fafc;
     }
+
     .table-shimmer-cell {
       height: 16px;
       background: linear-gradient(90deg, #e8eef5 25%, #d4dce8 50%, #e8eef5 75%);
@@ -367,20 +460,34 @@
       border-radius: 6px;
       display: block;
     }
-    .table-shimmer-cell.w-30 { width: 30px; }
-    .table-shimmer-cell.w-120 { width: 120px; }
-    .table-shimmer-cell.w-80 { width: 80px; }
-    .table-shimmer-cell.w-60 { width: 60px; }
+
+    .table-shimmer-cell.w-30 {
+      width: 30px;
+    }
+
+    .table-shimmer-cell.w-120 {
+      width: 120px;
+    }
+
+    .table-shimmer-cell.w-80 {
+      width: 80px;
+    }
+
+    .table-shimmer-cell.w-60 {
+      width: 60px;
+    }
 
     /* Table header shimmer */
     thead.is-loading {
       background: linear-gradient(135deg, #667eea, #764ba2) !important;
     }
+
     thead.is-loading th {
       color: transparent !important;
       position: relative;
       overflow: hidden;
     }
+
     thead.is-loading th::before {
       content: '';
       position: absolute;
@@ -389,10 +496,10 @@
       transform: translate(-50%, -50%);
       width: 80%;
       height: 12px;
-      background: rgba(255,255,255,0.3);
+      background: rgba(255, 255, 255, 0.3);
       border-radius: 4px;
       animation: shimmer-slide 1.4s infinite linear;
-      background: linear-gradient(90deg, rgba(255,255,255,0.2) 25%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0.2) 75%);
+      background: linear-gradient(90deg, rgba(255, 255, 255, 0.2) 25%, rgba(255, 255, 255, 0.4) 50%, rgba(255, 255, 255, 0.2) 75%);
       background-size: 400% 100%;
     }
 
@@ -400,12 +507,14 @@
     .table-card {
       background: white;
       border-radius: 16px;
-      border: 1px solid rgba(0,0,0,0.05);
+      border: 1px solid rgba(0, 0, 0, 0.05);
       overflow: hidden;
       margin-bottom: 28px;
     }
 
-    .table-card > div { overflow-x: auto; }
+    .table-card>div {
+      overflow-x: auto;
+    }
 
     .table-header {
       padding: 24px 28px;
@@ -417,7 +526,11 @@
       gap: 16px;
     }
 
-    .table-header h3 { font-size: 17px; font-weight: 700; color: #1e293b; }
+    .table-header h3 {
+      font-size: 17px;
+      font-weight: 700;
+      color: #1e293b;
+    }
 
     .table-controls {
       display: flex;
@@ -446,7 +559,9 @@
       font-family: inherit;
     }
 
-    .search-box input::placeholder { color: #94a3b8; }
+    .search-box input::placeholder {
+      color: #94a3b8;
+    }
 
     .filter-btn {
       padding: 8px 14px;
@@ -461,7 +576,10 @@
       font-family: inherit;
     }
 
-    .filter-btn:hover { border-color: #667eea; color: #667eea; }
+    .filter-btn:hover {
+      border-color: #667eea;
+      color: #667eea;
+    }
 
     .record-count {
       font-size: 12px;
@@ -469,9 +587,15 @@
       font-weight: 500;
     }
 
-    table { width: 100%; border-collapse: collapse; min-width: 600px; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 600px;
+    }
 
-    thead { background: linear-gradient(135deg, #667eea, #764ba2); }
+    thead {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+    }
 
     th {
       padding: 14px 18px;
@@ -481,7 +605,7 @@
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.5px;
-       border-right:1px solid #e8e2e2;
+      border-right: 1px solid #e8e2e2;
     }
 
     td {
@@ -489,11 +613,16 @@
       border-bottom: 1px solid #f8fafc;
       font-size: 13px;
       color: #475569;
-       border-right:1px solid #e8e2e2;
+      border-right: 1px solid #e8e2e2;
     }
 
-    tbody tr:last-child td { border-bottom: none; }
-    tbody tr:hover { background: #fafbff; }
+    tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    tbody tr:hover {
+      background: #fafbff;
+    }
 
     .badge {
       display: inline-block;
@@ -503,9 +632,20 @@
       font-weight: 600;
     }
 
-    .badge-completed { background: #d1fae5; color: #065f46; }
-    .badge-pending   { background: #fef3c7; color: #92400e; }
-    .badge-failed    { background: #fee2e2; color: #991b1b; }
+    .badge-completed {
+      background: #d1fae5;
+      color: #065f46;
+    }
+
+    .badge-pending {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .badge-failed {
+      background: #fee2e2;
+      color: #991b1b;
+    }
 
     .empty-state {
       text-align: center;
@@ -513,8 +653,14 @@
       color: #94a3b8;
     }
 
-    .empty-state .empty-icon { font-size: 48px; margin-bottom: 12px; }
-    .empty-state p { font-size: 14px; }
+    .empty-state .empty-icon {
+      font-size: 48px;
+      margin-bottom: 12px;
+    }
+
+    .empty-state p {
+      font-size: 14px;
+    }
 
     /* ── Mobile Table View ── */
     .mobile-table-row {
@@ -526,7 +672,7 @@
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.5);
+      background: rgba(0, 0, 0, 0.5);
       z-index: 300;
       align-items: center;
       justify-content: center;
@@ -546,7 +692,7 @@
       max-height: 80vh;
       overflow-y: auto;
       position: relative;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
     }
 
     .modal-header {
@@ -618,58 +764,178 @@
 
     /* ── Responsive ── */
     @media (max-width: 1100px) {
-      .stat-grid { grid-template-columns: repeat(2, 1fr); }
+      .stat-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
     }
 
     @media (max-width: 768px) {
-      .mobile-toggle { display: flex; }
-      .sidebar { transform: translateX(-100%); }
-      .sidebar.active { transform: translateX(0); }
-      .main { margin-left: 0; padding: 16px 14px; }
-      .stat-grid { grid-template-columns: repeat(2,1fr); gap: 12px; margin-bottom: 20px; }
-      .stat-card { padding: 16px 14px; gap: 12px; }
-      .stat-icon { width: 44px; height: 44px; font-size: 20px; }
-      .stat-value { font-size: 22px; }
-      .stat-label { font-size: 10px; }
-      .stat-sub { font-size: 10px; }
-      .page-header { padding: 16px 18px; border-radius: 14px; margin-bottom: 20px; }
-      .page-header h1 { font-size: 18px; }
-      .page-header p { font-size: 12px; }
+      .mobile-toggle {
+        display: flex;
+      }
+
+      .sidebar {
+        transform: translateX(-100%);
+      }
+
+      .sidebar.active {
+        transform: translateX(0);
+      }
+
+      .main {
+        margin-left: 0;
+        padding: 14px 12px 80px;
+        overflow-x: hidden;
+      }
+
+      /* Stat cards — 2 col on 768, 1 col on 480 */
+      .stat-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        margin-bottom: 16px;
+      }
+
+      .stat-card {
+        padding: 14px 12px;
+        gap: 10px;
+      }
+
+      .stat-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+        border-radius: 10px;
+      }
+
+      .stat-value {
+        font-size: 20px;
+      }
+
+      .stat-label {
+        font-size: 10px;
+      }
+
+      .stat-sub {
+        font-size: 10px;
+      }
+
+      /* Page header */
+      .page-header {
+        padding: 14px 14px;
+        border-radius: 12px;
+        margin-bottom: 16px;
+        gap: 10px;
+      }
+
+      .page-header h1 {
+        font-size: 16px;
+        margin-bottom: 2px;
+      }
+
+      .page-header p {
+        font-size: 11px;
+      }
+
+      .refresh-btn {
+        padding: 7px 12px;
+        font-size: 12px;
+      }
 
       /* Table card */
-      .table-card { border-radius: 14px; }
-      .table-header { padding: 14px 14px 10px; gap: 10px; }
-      .table-header h3 { font-size: 15px; }
-      .table-controls { width: 100%; flex-direction: column; align-items: stretch; gap: 8px; }
-      .search-box { width: 100%; border-radius: 10px; padding: 9px 12px; }
-      .search-box input { width: 100%; font-size: 13px; }
-      .filter-btn { width: 100%; border-radius: 10px; padding: 9px 12px; text-align: left; font-size: 13px; }
-      .record-count { font-size: 12px; text-align: right; }
+      .table-card {
+        border-radius: 12px;
+      }
 
-      /* Hide desktop table rows */
-      .table-card > div { overflow-x: visible; }
-      table { min-width: auto; }
-      table thead { display: none; }
-      table tbody tr { display: none; }
+      .table-header {
+        padding: 12px 12px 10px;
+        gap: 8px;
+      }
+
+      .table-header h3 {
+        font-size: 14px;
+      }
+
+      .table-controls {
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+      }
+
+      .search-box {
+        width: 100%;
+        padding: 9px 12px;
+        box-sizing: border-box;
+      }
+
+      .search-box input {
+        width: 100%;
+        font-size: 14px;
+        /* prevent iOS zoom */
+      }
+
+      .filter-btn {
+        width: 100%;
+        padding: 9px 12px;
+        text-align: left;
+        font-size: 14px;
+        box-sizing: border-box;
+      }
+
+      .record-count {
+        font-size: 11px;
+        text-align: right;
+      }
+
+      /* Hide desktop table, show mobile cards */
+      .table-card>div {
+        overflow-x: hidden;
+      }
+
+      table {
+        min-width: unset;
+        width: 100%;
+      }
+
+      table thead {
+        display: none;
+      }
+
+      table tbody tr:not(.mobile-table-row) {
+        display: none !important;
+      }
 
       /* Mobile card rows */
       table tbody tr.mobile-table-row {
         display: block;
         border-bottom: 1px solid #f1f5f9;
-        padding: 0;
       }
-      table tbody tr.mobile-table-row:last-child { border-bottom: none; }
+
+      table tbody tr.mobile-table-row:last-child {
+        border-bottom: none;
+      }
+
       table tbody tr.mobile-table-row td {
         display: block;
-        padding: 14px 16px;
+        padding: 12px 6px;
         border: none;
       }
+
+      /* Mobile cell layout */
       .mobile-cell {
         display: flex;
         align-items: center;
         gap: 10px;
+        width: 100%;
+        min-width: 0;
       }
-      .mobile-left { flex: 1; min-width: 0; }
+
+      .mobile-left {
+        flex: 1;
+        min-width: 0;
+        overflow: hidden;
+      }
+
       .mobile-email {
         font-weight: 700;
         color: #1e293b;
@@ -677,7 +943,9 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        max-width: 100%;
       }
+
       .mobile-resource {
         font-size: 11px;
         color: #64748b;
@@ -685,57 +953,134 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        max-width: 100%;
       }
+
       .mobile-right {
         display: flex;
         flex-direction: column;
         align-items: flex-end;
-        gap: 5px;
+        gap: 4px;
         flex-shrink: 0;
       }
+
       .mobile-amount {
         font-weight: 800;
         color: #667eea;
-        font-size: 15px;
+        font-size: 14px;
         white-space: nowrap;
       }
+
       .view-btn {
-        padding: 6px 14px;
-        background: linear-gradient(135deg,#667eea,#764ba2);
+        padding: 5px 12px;
+        background: linear-gradient(135deg, #667eea, #764ba2);
         color: white;
         border: none;
-        border-radius: 8px;
+        border-radius: 7px;
         font-size: 11px;
         font-weight: 700;
         cursor: pointer;
         font-family: inherit;
         white-space: nowrap;
+        min-height: 28px;
       }
     }
 
     @media (max-width: 480px) {
-      .stat-grid { grid-template-columns: 1fr; gap: 10px; }
-      .stat-card { padding: 14px 12px; gap: 10px; }
-      .stat-icon { width: 40px; height: 40px; font-size: 18px; }
-      .stat-value { font-size: 20px; }
+      .stat-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+      }
+
+      .stat-card {
+        padding: 12px 10px;
+        gap: 8px;
+      }
+
+      .stat-icon {
+        width: 36px;
+        height: 36px;
+        font-size: 16px;
+      }
+
+      .stat-value {
+        font-size: 18px;
+      }
+
+      .main {
+        padding: 12px 10px 80px;
+      }
+    }
+
+    /* Extra small — 375px and below */
+    @media (max-width: 390px) {
+      .stat-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 7px;
+      }
+
+      .stat-card {
+        padding: 10px 8px;
+        gap: 7px;
+      }
+
+      .stat-icon {
+        width: 32px;
+        height: 32px;
+        font-size: 14px;
+        border-radius: 8px;
+      }
+
+      .stat-value {
+        font-size: 16px;
+      }
+
+      .stat-label {
+        font-size: 9px;
+      }
+
+      .stat-sub {
+        font-size: 9px;
+      }
+
+      .page-header h1 {
+        font-size: 14px;
+      }
+
+      .mobile-email {
+        font-size: 12px;
+      }
+
+      .mobile-amount {
+        font-size: 13px;
+      }
+
+      .table-header h3 {
+        font-size: 13px;
+      }
+
+      .main {
+        padding: 10px 8px 80px;
+      }
     }
   </style>
 </head>
+
 <body>
 
-<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+  <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
 
-<!-- Sidebar -->
-<div class="sidebar" id="sidebar">
-  <div class="sidebar-brand">
-    <h2><span>💰</span><span class="brand-text">Earnify Admin</span></h2>
-    <p>Platform Management</p>
-  </div>
+  <!-- Sidebar -->
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <h2><span>💰</span><span class="brand-text">Earnify Admin</span></h2>
+      <p>Platform Management</p>
+    </div>
 
-  <a href="/earnify-admin/Dashboard/" class="nav-link">
+    <a href="/earnify-admin/Dashboard/" class="nav-link">
       <span class="nav-icon">🏠</span> Dashboard
     </a>
-    
+
     <a href="/earnify-admin/statistic/" class="nav-link active">
       <span class="nav-icon">📈</span> Statistics
     </a>
@@ -746,153 +1091,162 @@
     <a href="/earnify-admin/Blog/" class="nav-link">
       <span class="nav-icon">✍️</span> Blog
     </a>
-    <a href="https://earnify-gamma.vercel.app/admin/Resources/" class="nav-link" style="border-top:1px solid #e2e8f0; padding-top:10px; margin-top:10px;  color:#667eea;font-weight:600">
-    <span class="nav-icon">←</span> Back
-  </a>
-    
-  <div class="sidebar-footer">
-    <div class="admin-badge">
-      <div class="admin-avatar" id="adminAvatar">A</div>
-      <div class="admin-info">
-        <div class="admin-name" id="adminEmail">Loading...</div>
-        <div class="admin-role">Super Admin</div>
+    <a href="https://earnify-gamma.vercel.app/admin/Resources/" class="nav-link"
+      style="border-top:1px solid #e2e8f0; padding-top:10px; margin-top:10px;  color:#667eea;font-weight:600">
+      <span class="nav-icon">←</span> Back
+    </a>
+
+    <div class="sidebar-footer">
+      <div class="admin-badge">
+        <div class="admin-avatar" id="adminAvatar">A</div>
+        <div class="admin-info">
+          <div class="admin-name" id="adminEmail">Loading...</div>
+          <div class="admin-role">Super Admin</div>
+        </div>
+      </div>
+      <button class="logout-btn" onclick="logout()">🚪 Logout</button>
+    </div>
+  </div>
+
+  <!-- Main -->
+  <div class="main">
+
+    <!-- Header -->
+    <div class="page-header">
+      <div style="display: flex; align-items: center;">
+        <button class="mobile-toggle" onclick="toggleSidebar()">
+          <span></span><span></span><span></span>
+        </button>
+        <div>
+          <h1>📊 Statistics</h1>
+          <p>Detailed analytics and recent purchases</p>
+        </div>
+      </div>
+      <div class="header-meta">
+        <button class="refresh-btn" onclick="loadStats()">🔄 Refresh</button>
       </div>
     </div>
-    <button class="logout-btn" onclick="logout()">🚪 Logout</button>
-  </div>
-</div>
 
-<!-- Main -->
-<div class="main">
+    <!-- 4 Stat Cards -->
+    <div class="stat-grid">
 
-  <!-- Header -->
-  <div class="page-header">
-    <div style="display: flex; align-items: center;">
-      <button class="mobile-toggle" onclick="toggleSidebar()">
-        <span></span><span></span><span></span>
-      </button>
+      <!-- 1. Total Revenue -->
+      <div class="stat-card">
+        <div class="stat-icon">💰</div>
+        <div class="stat-body">
+          <div class="stat-label">Total Revenue</div>
+          <div class="stat-value" id="valRevenue">
+            <div class="shimmer shimmer-value"></div>
+          </div>
+          <div class="stat-sub" id="subRevenue">
+            <div class="shimmer shimmer-sub"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Total Purchases -->
+      <div class="stat-card">
+        <div class="stat-icon">🛒</div>
+        <div class="stat-body">
+          <div class="stat-label">Total Purchases</div>
+          <div class="stat-value" id="valPurchases">
+            <div class="shimmer shimmer-value"></div>
+          </div>
+          <div class="stat-sub" id="subPurchases">
+            <div class="shimmer shimmer-sub"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Avg Order Value -->
+      <div class="stat-card">
+        <div class="stat-icon">📊</div>
+        <div class="stat-body">
+          <div class="stat-label">Avg Order Value</div>
+          <div class="stat-value" id="valAvgOrder">
+            <div class="shimmer shimmer-value"></div>
+          </div>
+          <div class="stat-sub" id="subAvgOrder">
+            <div class="shimmer shimmer-sub"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. Unique Buyers -->
+      <div class="stat-card">
+        <div class="stat-icon">👥</div>
+        <div class="stat-body">
+          <div class="stat-label">Unique Buyers</div>
+          <div class="stat-value" id="valBuyers">
+            <div class="shimmer shimmer-value"></div>
+          </div>
+          <div class="stat-sub" id="subBuyers">
+            <div class="shimmer shimmer-sub"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Recent Purchases Table -->
+    <div class="table-card">
+      <div class="table-header">
+        <h3>🛒 Recent Purchases</h3>
+        <div class="table-controls">
+          <div class="search-box">
+            <span>🔍</span>
+            <input type="text" id="searchInput" placeholder="Search email or resource..." oninput="filterTable()">
+          </div>
+          <select id="statusFilter" class="filter-btn" onchange="filterTable()">
+            <option value="">All Status</option>
+            <option value="completed">✅ Completed</option>
+            <option value="pending">⏳ Pending</option>
+            <option value="failed">❌ Failed</option>
+          </select>
+          <span class="record-count" id="recordCount">Loading...</span>
+        </div>
+      </div>
       <div>
-        <h1>📊 Statistics</h1>
-        <p>Detailed analytics and recent purchases</p>
-      </div>
-    </div>
-    <div class="header-meta">
-      <button class="refresh-btn" onclick="loadStats()">🔄 Refresh</button>
-    </div>
-  </div>
-
-  <!-- 4 Stat Cards -->
-  <div class="stat-grid">
-
-    <!-- 1. Total Revenue -->
-    <div class="stat-card">
-      <div class="stat-icon">💰</div>
-      <div class="stat-body">
-        <div class="stat-label">Total Revenue</div>
-        <div class="stat-value" id="valRevenue">
-          <div class="shimmer shimmer-value"></div>
-        </div>
-        <div class="stat-sub" id="subRevenue">
-          <div class="shimmer shimmer-sub"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 2. Total Purchases -->
-    <div class="stat-card">
-      <div class="stat-icon">🛒</div>
-      <div class="stat-body">
-        <div class="stat-label">Total Purchases</div>
-        <div class="stat-value" id="valPurchases">
-          <div class="shimmer shimmer-value"></div>
-        </div>
-        <div class="stat-sub" id="subPurchases">
-          <div class="shimmer shimmer-sub"></div>
-        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Email</th>
+              <th>Resource</th>
+              <th>Amount</th>
+              <th>Status</th>
+              <th>View</th>
+            </tr>
+          </thead>
+          <tbody id="purchaseTbody">
+            <tr>
+              <td colspan="6">
+                <div class="empty-state">
+                  <div class="empty-icon">⏳</div>
+                  <p>Loading...</p>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
 
-    <!-- 3. Avg Order Value -->
-    <div class="stat-card">
-      <div class="stat-icon">📊</div>
-      <div class="stat-body">
-        <div class="stat-label">Avg Order Value</div>
-        <div class="stat-value" id="valAvgOrder">
-          <div class="shimmer shimmer-value"></div>
+    <!-- Purchase Details Modal -->
+    <div class="details-modal" id="detailsModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="modal-title">🛒 Purchase Details</div>
+          <button class="modal-close" onclick="closeDetailsModal()">×</button>
         </div>
-        <div class="stat-sub" id="subAvgOrder">
-          <div class="shimmer shimmer-sub"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 4. Unique Buyers -->
-    <div class="stat-card">
-      <div class="stat-icon">👥</div>
-      <div class="stat-body">
-        <div class="stat-label">Unique Buyers</div>
-        <div class="stat-value" id="valBuyers">
-          <div class="shimmer shimmer-value"></div>
-        </div>
-        <div class="stat-sub" id="subBuyers">
-          <div class="shimmer shimmer-sub"></div>
-        </div>
+        <div class="modal-body" id="modalBody"></div>
       </div>
     </div>
 
   </div>
 
-  <!-- Recent Purchases Table -->
-  <div class="table-card">
-    <div class="table-header">
-      <h3>🛒 Recent Purchases</h3>
-      <div class="table-controls">
-        <div class="search-box">
-          <span>🔍</span>
-          <input type="text" id="searchInput" placeholder="Search email or resource..." oninput="filterTable()">
-        </div>
-        <select id="statusFilter" class="filter-btn" onchange="filterTable()">
-          <option value="">All Status</option>
-          <option value="completed">✅ Completed</option>
-          <option value="pending">⏳ Pending</option>
-          <option value="failed">❌ Failed</option>
-        </select>
-        <span class="record-count" id="recordCount">Loading...</span>
-      </div>
-    </div>
-    <div>
-      <table>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Email</th>
-            <th>Resource</th>
-            <th>Amount</th>
-            <th>Status</th>
-            <th>View</th>
-          </tr>
-        </thead>
-        <tbody id="purchaseTbody">
-          <tr><td colspan="6"><div class="empty-state"><div class="empty-icon">⏳</div><p>Loading...</p></div></td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- Purchase Details Modal -->
-  <div class="details-modal" id="detailsModal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <div class="modal-title">🛒 Purchase Details</div>
-        <button class="modal-close" onclick="closeDetailsModal()">×</button>
-      </div>
-      <div class="modal-body" id="modalBody"></div>
-    </div>
-  </div>
-
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="statistic.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="statistic.js"></script>
 </body>
+
 </html>

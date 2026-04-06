@@ -180,23 +180,44 @@
   <script src="landing.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script>
-    // Resolve user from currentUser or adminToken JWT (Vercel)
+    // Resolve user from currentUser or adminToken JWT or Supabase auth
     function _jwtPay(t) { try { return JSON.parse(atob(t.split('.')[1].replace(/-/g,'+').replace(/_/g,'/'))); } catch(e){return null;} }
     let currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
     if (!currentUser) {
       const tok = localStorage.getItem('adminToken');
       if (tok) { const p = _jwtPay(tok); if (p?.email) currentUser = { email: p.email, id: p.sub, user_metadata: {} }; }
     }
-    if (!currentUser) { throw new Error('not logged in'); }
+    // If still no user, try Supabase session (async — will be resolved in loadPurchases)
+    if (!currentUser) {
+      supabaseClient.auth.getUser().then(({ data: { user } }) => {
+        if (user) {
+          currentUser = user;
+          const dName  = user.user_metadata?.name || user.email?.split('@')[0] || 'there';
+          const dEmail = user.email || '';
+          document.getElementById('bannerName').textContent      = dName;
+          document.getElementById('userName').textContent        = dName;
+          document.getElementById('userDisplayName').textContent = dName;
+          document.getElementById('userEmail').textContent       = dEmail;
+          document.getElementById('mobileUserName').textContent  = dName;
+          document.getElementById('mobileUserEmail').textContent = dEmail;
+          loadPurchases();
+        } else {
+          window.location.href = '../';
+        }
+      });
+    }
 
     const dName = currentUser?.user_metadata?.name || currentUser?.email?.split('@')[0] || 'there';
     const dEmail = currentUser?.email || '';
-    document.getElementById('bannerName').textContent      = dName;
-    document.getElementById('userName').textContent        = dName;
-    document.getElementById('userDisplayName').textContent = dName;
-    document.getElementById('userEmail').textContent       = dEmail;
-    document.getElementById('mobileUserName').textContent  = dName;
-    document.getElementById('mobileUserEmail').textContent = dEmail;
+    if (currentUser) {
+      document.getElementById('bannerName').textContent      = dName;
+      document.getElementById('userName').textContent        = dName;
+      document.getElementById('userDisplayName').textContent = dName;
+      document.getElementById('userEmail').textContent       = dEmail;
+      document.getElementById('mobileUserName').textContent  = dName;
+      document.getElementById('mobileUserEmail').textContent = dEmail;
+      loadPurchases();
+    }
 
     let allPurchases = [];
     const typeIcons = { pdf:'📄', excel:'📊', exam:'📝', freelance:'💼' };
@@ -232,9 +253,20 @@
     async function loadPurchases() {
       showShimmer();
       try {
-        const res = await fetch(API_CONFIG.getURL(`${API_CONFIG.endpoints.payments}/${currentUser.id}`));
+        // Get real user ID from Supabase auth (most reliable)
+        let userId = currentUser?.id;
+        if (!userId || userId === 'undefined') {
+          const { data: { user } } = await supabaseClient.auth.getUser();
+          userId = user?.id;
+          if (userId && currentUser) currentUser.id = userId;
+        }
+        if (!userId) throw new Error('User ID not found');
+        const res = await fetch(API_CONFIG.getURL(`${API_CONFIG.endpoints.payments}/${userId}`));
         allPurchases = res.ok ? await res.json() : [];
-      } catch { allPurchases = []; }
+      } catch(e) {
+        console.error('[Dashboard] loadPurchases error =>', e);
+        allPurchases = [];
+      }
       hideShimmer();
       renderStats(allPurchases);
       renderPurchases(allPurchases);

@@ -142,31 +142,16 @@
     const btn = document.getElementById('_agLoginBtn');
     btn.disabled = true; btn.textContent = 'Logging in…';
     try {
-      const res  = await fetch('/api/admin/login', {
-        method:'POST', headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({ email, password })
-      });
-      const data = await res.json();
-      if (data.token) {
-        _agSetOk('Login successful!');
-        setTimeout(() => _agDismiss(data.user || { email }, data.token), 600);
-      } else {
-        _agSetErr(data.error || 'Invalid email or password.');
-        btn.disabled = false; btn.textContent = 'Login';
-      }
+      // Always try Supabase directly first — works without backend
+      const sc = window.supabase?.createClient(SUPA_URL, SUPA_ANON, { auth:{ storageKey:'ag-tmp', persistSession:false } });
+      if (!sc) throw new Error('no supabase');
+      const { data, error } = await sc.auth.signInWithPassword({ email, password });
+      if (error) throw error;
+      _agSetOk('Login successful!');
+      setTimeout(() => _agDismiss(data.user, data.session?.access_token), 600);
     } catch(e) {
-      // Fallback: try Supabase directly (for local dev)
-      try {
-        const sc = window.supabase?.createClient(SUPA_URL, SUPA_ANON, { auth:{ storageKey:'ag-tmp', persistSession:false } });
-        if (!sc) throw new Error('no supabase');
-        const { data, error } = await sc.auth.signInWithPassword({ email, password });
-        if (error) throw error;
-        _agSetOk('Login successful!');
-        setTimeout(() => _agDismiss(data.user, data.session?.access_token), 600);
-      } catch(e2) {
-        _agSetErr('Login failed. Check your credentials.');
-        btn.disabled = false; btn.textContent = 'Login';
-      }
+      _agSetErr('Invalid email or password.');
+      btn.disabled = false; btn.textContent = 'Login';
     }
   };
 
@@ -181,20 +166,19 @@
     const btn = document.getElementById('_agSignupBtn');
     btn.disabled = true; btn.textContent = 'Creating account…';
     try {
-      const res  = await fetch('/api/admin/signup', {
-        method:'POST', headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({ email, password, name })
-      });
-      const data = await res.json();
-      if (data.token) {
+      const sc = window.supabase?.createClient(SUPA_URL, SUPA_ANON, { auth:{ storageKey:'ag-tmp', persistSession:false } });
+      if (!sc) throw new Error('no supabase');
+      const { data, error } = await sc.auth.signUp({ email, password, options:{ data:{ name } } });
+      if (error) throw error;
+      if (data.session) {
         _agSetOk('Account created! Logging in…');
-        setTimeout(() => _agDismiss(data.user || { email }, data.token), 600);
+        setTimeout(() => _agDismiss(data.user, data.session.access_token), 600);
       } else {
-        _agSetErr(data.error || 'Signup failed. Try again.');
-        btn.disabled = false; btn.textContent = 'Create Account';
+        _agSetOk('Account created! Please check your email to confirm, then login.');
+        setTimeout(() => _agShowTab('login'), 2000);
       }
     } catch(e) {
-      _agSetErr('Connection error. Please try again.');
+      _agSetErr(e.message || 'Signup failed. Try again.');
       btn.disabled = false; btn.textContent = 'Create Account';
     }
   };

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 
 <head>
@@ -6,11 +6,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Resources - Earnify Admin</title>
   <link rel="icon" href="/file/logo1.jpeg" type="image/jpeg">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="./style.css">
   <link rel="stylesheet" href="./site-view.css">
   <link rel="stylesheet" href="./light-theme.css">
   <link rel="stylesheet" href="./mobile-responsive.css">
+  <link rel="stylesheet" href="../admin-bottom-nav.css">
   <style>
     .resource-container {
       max-width: 1400px;
@@ -22,45 +24,53 @@
     .sidebar {
       padding: 30px 0 !important;
     }
+
     .sidebar-header {
-      padding: 0 20px 30px !important;
-      border-bottom: 2px solid rgba(59,130,246,0.2) !important;
+      padding: 0 20px 20px !important;
+      border-bottom: 2px solid rgba(59, 130, 246, 0.2) !important;
     }
+
     .sidebar a:not(.sb-logout):not(.admin-panel-btn) {
       border-left: 3px solid transparent !important;
       margin: 2px 12px 2px 0 !important;
     }
+
     .sidebar a:not(.sb-logout):not(.admin-panel-btn):hover {
-      background: linear-gradient(90deg,rgba(59,130,246,0.08),rgba(59,130,246,0.04)) !important;
+      background: linear-gradient(90deg, rgba(59, 130, 246, 0.08), rgba(59, 130, 246, 0.04)) !important;
       border-left-color: #93c5fd !important;
       color: #2563eb !important;
       transform: translateX(4px) !important;
     }
+
     .sidebar a.active-link {
-      background: linear-gradient(90deg,rgba(102,126,234,0.15),rgba(118,75,162,0.06)) !important;
+      background: linear-gradient(90deg, rgba(102, 126, 234, 0.15), rgba(118, 75, 162, 0.06)) !important;
       border-left-color: #667eea !important;
       color: #667eea !important;
       font-weight: 700 !important;
     }
+
     .sidebar a.active-link:not(.sb-logout):not(.admin-panel-btn):hover {
-      background: linear-gradient(90deg,rgba(102,126,234,0.2),rgba(118,75,162,0.1)) !important;
+      background: linear-gradient(90deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.1)) !important;
       color: #764ba2 !important;
       transform: translateX(4px) !important;
     }
+
     .sidebar a.nav-link-divider {
       margin-top: 16px !important;
       border-top: 1px solid #e2e8f0 !important;
       padding-top: 16px !important;
     }
+
     /* no hover on sidebar-user buttons */
     .sb-logout:hover {
-      background: rgb(251,156,156) !important;
+      background: rgb(251, 156, 156) !important;
       color: white !important;
       border-color: #dc2626 !important;
       transform: translateY(-2px) !important;
     }
+
     .admin-panel-btn:hover {
-      background: linear-gradient(135deg,#667eea,#764ba2) !important;
+      background: linear-gradient(135deg, #667eea, #764ba2) !important;
       color: #fff !important;
       transform: translateY(-2px) !important;
       opacity: 0.88 !important;
@@ -76,6 +86,7 @@
       flex-direction: column !important;
       gap: 8px !important;
     }
+
     .sidebar-user .user-info {
       display: flex !important;
       align-items: center !important;
@@ -84,11 +95,12 @@
       padding-bottom: 15px !important;
       border-bottom: 1px solid #e2e8f0 !important;
     }
+
     .sidebar-user .user-avatar {
       width: 40px !important;
       height: 40px !important;
       border-radius: 50% !important;
-      background: linear-gradient(135deg,#667eea,#764ba2) !important;
+      background: linear-gradient(135deg, #667eea, #764ba2) !important;
       display: flex !important;
       align-items: center !important;
       justify-content: center !important;
@@ -97,10 +109,12 @@
       font-weight: 600 !important;
       flex-shrink: 0 !important;
     }
+
     .sidebar-user .user-details {
       flex: 1 !important;
       overflow: hidden !important;
     }
+
     .sidebar-user .user-name {
       font-weight: 600 !important;
       color: #1e293b !important;
@@ -109,6 +123,7 @@
       overflow: hidden !important;
       text-overflow: ellipsis !important;
     }
+
     .sidebar-user .user-email {
       font-size: 11px !important;
       color: #64748b !important;
@@ -116,6 +131,7 @@
       overflow: hidden !important;
       text-overflow: ellipsis !important;
     }
+
     .admin-panel-btn {
       display: flex !important;
       align-items: center !important;
@@ -123,7 +139,7 @@
       gap: 8px !important;
       width: 100% !important;
       padding: 12px 16px !important;
-      background: linear-gradient(135deg,#667eea,#764ba2) !important;
+      background: linear-gradient(135deg, #667eea, #764ba2) !important;
       color: #fff !important;
       border-radius: 10px !important;
       font-weight: 700 !important;
@@ -135,6 +151,7 @@
       box-sizing: border-box !important;
       margin: 0 !important;
     }
+
     .sb-logout {
       display: flex !important;
       align-items: center !important;
@@ -155,6 +172,7 @@
       margin: 0 !important;
       transition: all 0.3s ease !important;
     }
+
     .sb-logout:hover {
       background: #fef2f2 !important;
       color: #dc2626 !important;
@@ -162,15 +180,122 @@
       transform: translateY(-2px) !important;
       box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3) !important;
     }
+
+    /* ── Purchased filter strip ── */
+    .pr-filter-strip {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      padding-bottom: 2px;
+    }
+    .pr-filter-strip::-webkit-scrollbar { display: none; }
+    .pr-filter {
+      padding: 8px 16px;
+      border-radius: 50px;
+      border: 2px solid #e2e8f0;
+      background: #fff;
+      color: #64748b;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: all 0.18s;
+    }
+    .pr-filter.active,
+    .pr-filter:hover {
+      background: linear-gradient(135deg,#667eea,#764ba2);
+      color: #fff;
+      border-color: #667eea;
+    }
+    .pr-card {
+      background: #fff;
+      border-radius: 14px;
+      padding: 16px 18px;
+      border: 1px solid #e8edf5;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      transition: box-shadow 0.2s;
+    }
+    .pr-card:hover { box-shadow: 0 4px 16px rgba(102,126,234,0.12); }
+    .pr-icon {
+      width: 46px; height: 46px; border-radius: 12px; flex-shrink: 0;
+      background: linear-gradient(135deg,rgba(102,126,234,0.12),rgba(118,75,162,0.12));
+      display: flex; align-items: center; justify-content: center; font-size: 22px;
+    }
+    .pr-info { flex: 1; min-width: 0; }
+    .pr-title {
+      font-size: 14px; font-weight: 700; color: #1e293b;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .pr-meta { font-size: 12px; color: #94a3b8; margin-top: 3px; }
+    .pr-right {
+      display: flex; align-items: center; gap: 12px; flex-shrink: 0;
+    }
+    .pr-price { font-size: 15px; font-weight: 800; color: #667eea; white-space: nowrap; }
+    .pr-dl-btn {
+      padding: 7px 14px;
+      background: linear-gradient(135deg,#667eea,#764ba2);
+      color: #fff; border: none; border-radius: 8px;
+      font-size: 12px; font-weight: 700; cursor: pointer;
+      text-decoration: none; white-space: nowrap; display: inline-block;
+    }
+    .pr-no-file { font-size: 12px; color: #cbd5e1; }
+
+    /* ── Skeleton shimmer ── */
+    @keyframes pr-shimmer {
+      0%   { background-position: -400px 0; }
+      100% { background-position:  400px 0; }
+    }
+    .pr-sk {
+      background: linear-gradient(90deg,#f0f0f0 25%,#e8e8e8 50%,#f0f0f0 75%);
+      background-size: 400px 100%;
+      animation: pr-shimmer 1.4s infinite linear;
+      border-radius: 6px;
+      display: block;
+    }
+    .pr-sk-card {
+      background: #fff;
+      border-radius: 14px;
+      padding: 16px 18px;
+      border: 1px solid #e8edf5;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .pr-sk-icon  { width:46px; height:46px; border-radius:12px; flex-shrink:0; }
+    .pr-sk-body  { flex:1; display:flex; flex-direction:column; gap:9px; }
+    .pr-sk-title { height:13px; width:52%; }
+    .pr-sk-meta  { height:10px; width:32%; }
+    .pr-sk-right { display:flex; align-items:center; gap:10px; flex-shrink:0; }
+    .pr-sk-price { height:15px; width:42px; }
+    .pr-sk-btn   { height:30px; width:78px; border-radius:8px; }
+
+    /* Mobile: stack price + download below title */
+    @media (max-width: 520px) {
+      .pr-card { flex-wrap: wrap; gap: 10px; }
+      .pr-info { width: calc(100% - 60px); }
+      .pr-title { white-space: normal; }
+      .pr-right {
+        width: 100%; justify-content: space-between;
+        padding-top: 8px; border-top: 1px solid #f1f5f9;
+      }
+      .pr-dl-btn { flex: 1; text-align: center; padding: 9px 10px; font-size: 13px; }
+    }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
- 
+
 </head>
 
 <body class="light-mode">
   <script>
     // Prevent style flash on page load - apply saved styles immediately
-    (function() {
+    (function () {
       const savedTheme = localStorage.getItem('theme') || 'light-mode';
       document.body.className = savedTheme;
     })();
@@ -188,7 +313,7 @@
     <a href="../Profile/" class="nav-link">👤 Profile</a>
     <a href="../Withdrawal/" class="nav-link">💸 Withdrawal</a>
     <a href="/" class="nav-link nav-link-divider">🏠 Main Site</a>
-    
+
 
     <!-- User Profile Section -->
     <div class="sidebar-user" id="sidebarUser">
@@ -258,10 +383,16 @@
           <div class="hamburger"></div>
         </button>
         <div class="header-text">
-          <h1>My Resources</h1>
+          <h1>Resources</h1>
           <p class="subtitle">Manage your PDF notes, Excel templates, Exam materials, and Freelance services</p>
         </div>
       </div>
+    </div>
+
+    <!-- View Toggle Buttons -->
+    <div style="display:flex;gap:10px;margin-bottom:24px;">
+      <button id="btnAllResources" onclick="switchView('resources')" style="padding:10px 22px;border-radius:10px;border:2px solid #667eea;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;">📚 All Resources</button>
+      <button id="btnPurchases" onclick="switchView('purchases')" style="padding:10px 22px;border-radius:10px;border:2px solid #e2e8f0;background:#fff;color:#64748b;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;">🛒 Purchased Resources</button>
     </div>
 
 
@@ -275,7 +406,12 @@
           </div>
           <div class="view-toggle">
             <button class="view-btn active" onclick="setView('grid')">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="7" height="7" />
+                <rect x="14" y="3" width="7" height="7" />
+                <rect x="3" y="14" width="7" height="7" />
+                <rect x="14" y="14" width="7" height="7" />
+              </svg>
               Grid
             </button>
           </div>
@@ -303,29 +439,29 @@
           </div>
         </div>
         <div class="resource-filter">
-            <div class="custom-select" onclick="toggleDropdown()">
-              <img src="/file/all.jpg" class="select-icon" id="selectedIcon">
-              <span id="selectedText">All Resources</span>
-              <span class="arrow">&#9660;</span>
+          <div class="custom-select" onclick="toggleDropdown()">
+            <img src="/file/all.jpg" class="select-icon" id="selectedIcon">
+            <span id="selectedText">All Resources</span>
+            <span class="arrow">&#9660;</span>
+          </div>
+          <div class="dropdown" id="dropdownMenu">
+            <div onclick="selectOption('all','All Resources','/file/pdf.jpg')">
+              <img src="/file/pdf.jpg"> All Resources
             </div>
-            <div class="dropdown" id="dropdownMenu">
-              <div onclick="selectOption('all','All Resources','/file/pdf.jpg')">
-                <img src="/file/pdf.jpg"> All Resources
-              </div>
-              <div onclick="selectOption('pdf','PDF Notes','/file/pdf.jpg')">
-                <img src="/file/pdf.jpg"> PDF Notes
-              </div>
-              <div onclick="selectOption('excel','Excel Templates','/file/excel.jpg')">
-                <img src="/file/excel.jpg"> Excel Templates
-              </div>
-              <div onclick="selectOption('exam','Exam Materials','/file/exam.jpg')">
-                <img src="/file/exam.jpg"> Exam Materials
-              </div>
-              <div onclick="selectOption('freelance','Freelance Services','/file/service.jpg')">
-                <img src="/file/service.jpg"> Freelance Services
-              </div>
+            <div onclick="selectOption('pdf','PDF Notes','/file/pdf.jpg')">
+              <img src="/file/pdf.jpg"> PDF Notes
+            </div>
+            <div onclick="selectOption('excel','Excel Templates','/file/excel.jpg')">
+              <img src="/file/excel.jpg"> Excel Templates
+            </div>
+            <div onclick="selectOption('exam','Exam Materials','/file/exam.jpg')">
+              <img src="/file/exam.jpg"> Exam Materials
+            </div>
+            <div onclick="selectOption('freelance','Freelance Services','/file/service.jpg')">
+              <img src="/file/service.jpg"> Freelance Services
             </div>
           </div>
+        </div>
         <div class="resource-grid" id="allGrid">
           <div class="empty-state">
             <div class="empty-icon">📦</div>
@@ -340,30 +476,36 @@
       <div class="resource-section">
         <div class="section-header">
           <div class="section-title">
-            <h2><img src="/file/pdf.jpg" alt="PDF" style="width:24px;height:24px;object-fit:contain;vertical-align:middle;"> PDF Notes</h2>
+            <h2><img src="/file/pdf.jpg" alt="PDF"
+                style="width:24px;height:24px;object-fit:contain;vertical-align:middle;"> PDF Notes</h2>
             <span class="resource-count" id="pdfCount">0 items</span>
           </div>
         </div>
         <div class="resource-filter">
-          <div class="custom-select" onclick="toggleDropdownById('dropdownMenuPdf')"
-            <img src="/file/pdf.jpg" class="select-icon" id="selectedIconPdf">
+          <div class="custom-select" onclick="toggleDropdownById('dropdownMenuPdf')" <img src="/file/pdf.jpg"
+            class="select-icon" id="selectedIconPdf">
             <span id="selectedTextPdf">PDF Notes</span>
             <span class="arrow">&#9660;</span>
           </div>
           <div class="dropdown" id="dropdownMenuPdf">
-            <div onclick="selectOption('all','All Resources','/file/all.jpg'); document.getElementById('dropdownMenuPdf').style.display='none';">
+            <div
+              onclick="selectOption('all','All Resources','/file/all.jpg'); document.getElementById('dropdownMenuPdf').style.display='none';">
               <img src="/file/all.jpg"> All Resources
             </div>
-            <div onclick="selectOption('pdf','PDF Notes','/file/pdf.jpg'); document.getElementById('dropdownMenuPdf').style.display='none';">
+            <div
+              onclick="selectOption('pdf','PDF Notes','/file/pdf.jpg'); document.getElementById('dropdownMenuPdf').style.display='none';">
               <img src="/file/pdf.jpg"> PDF Notes
             </div>
-            <div onclick="selectOption('excel','Excel Templates','/file/excel.jpg'); document.getElementById('dropdownMenuPdf').style.display='none';">
+            <div
+              onclick="selectOption('excel','Excel Templates','/file/excel.jpg'); document.getElementById('dropdownMenuPdf').style.display='none';">
               <img src="/file/excel.jpg"> Excel Templates
             </div>
-            <div onclick="selectOption('exam','Exam Materials','/file/exam.jpg'); document.getElementById('dropdownMenuPdf').style.display='none';">
+            <div
+              onclick="selectOption('exam','Exam Materials','/file/exam.jpg'); document.getElementById('dropdownMenuPdf').style.display='none';">
               <img src="/file/exam.jpg"> Exam Materials
             </div>
-            <div onclick="selectOption('freelance','Freelance Services','/file/service.jpg'); document.getElementById('dropdownMenuPdf').style.display='none';">
+            <div
+              onclick="selectOption('freelance','Freelance Services','/file/service.jpg'); document.getElementById('dropdownMenuPdf').style.display='none';">
               <img src="/file/service.jpg"> Freelance Services
             </div>
           </div>
@@ -382,30 +524,35 @@
       <div class="resource-section">
         <div class="section-header">
           <div class="section-title">
-            <h2><img src="/file/excel.jpg" alt="Excel" style="width:24px;height:24px;object-fit:contain;vertical-align:middle;"> Excel Templates</h2>
+            <h2><img src="/file/excel.jpg" alt="Excel"
+                style="width:24px;height:24px;object-fit:contain;vertical-align:middle;"> Excel Templates</h2>
             <span class="resource-count" id="excelCount">0 items</span>
           </div>
         </div>
         <div class="resource-filter">
-          <div class="custom-select" onclick="toggleDropdownExcel()"
-            <img src="/file/excel.jpg" class="select-icon">
+          <div class="custom-select" onclick="toggleDropdownExcel()" <img src="/file/excel.jpg" class="select-icon">
             <span>Excel Templates</span>
             <span class="arrow">&#9660;</span>
           </div>
           <div class="dropdown" id="dropdownMenuExcel">
-            <div onclick="selectOption('all','All Resources','/file/all.jpg'); document.getElementById('dropdownMenuExcel').style.display='none';">
+            <div
+              onclick="selectOption('all','All Resources','/file/all.jpg'); document.getElementById('dropdownMenuExcel').style.display='none';">
               <img src="/file/all.jpg"> All Resources
             </div>
-            <div onclick="selectOption('pdf','PDF Notes','/file/pdf.jpg'); document.getElementById('dropdownMenuExcel').style.display='none';">
+            <div
+              onclick="selectOption('pdf','PDF Notes','/file/pdf.jpg'); document.getElementById('dropdownMenuExcel').style.display='none';">
               <img src="/file/pdf.jpg"> PDF Notes
             </div>
-            <div onclick="selectOption('excel','Excel Templates','/file/excel.jpg'); document.getElementById('dropdownMenuExcel').style.display='none';">
+            <div
+              onclick="selectOption('excel','Excel Templates','/file/excel.jpg'); document.getElementById('dropdownMenuExcel').style.display='none';">
               <img src="/file/excel.jpg"> Excel Templates
             </div>
-            <div onclick="selectOption('exam','Exam Materials','/file/exam.jpg'); document.getElementById('dropdownMenuExcel').style.display='none';">
+            <div
+              onclick="selectOption('exam','Exam Materials','/file/exam.jpg'); document.getElementById('dropdownMenuExcel').style.display='none';">
               <img src="/file/exam.jpg"> Exam Materials
             </div>
-            <div onclick="selectOption('freelance','Freelance Services','/file/service.jpg'); document.getElementById('dropdownMenuExcel').style.display='none';">
+            <div
+              onclick="selectOption('freelance','Freelance Services','/file/service.jpg'); document.getElementById('dropdownMenuExcel').style.display='none';">
               <img src="/file/service.jpg"> Freelance Services
             </div>
           </div>
@@ -424,30 +571,35 @@
       <div class="resource-section">
         <div class="section-header">
           <div class="section-title">
-            <h2><img src="/file/exam.jpg" alt="Exam" style="width:24px;height:24px;object-fit:contain;vertical-align:middle;"> Exam Materials</h2>
+            <h2><img src="/file/exam.jpg" alt="Exam"
+                style="width:24px;height:24px;object-fit:contain;vertical-align:middle;"> Exam Materials</h2>
             <span class="resource-count" id="examCount">0 items</span>
           </div>
         </div>
         <div class="resource-filter">
-          <div class="custom-select" onclick="toggleDropdownExam()"
-            <img src="/file/exam.jpg" class="select-icon">
+          <div class="custom-select" onclick="toggleDropdownExam()" <img src="/file/exam.jpg" class="select-icon">
             <span>Exam Materials</span>
             <span class="arrow">&#9660;</span>
           </div>
           <div class="dropdown" id="dropdownMenuExam">
-            <div onclick="selectOption('all','All Resources','/file/all.jpg'); document.getElementById('dropdownMenuExam').style.display='none';">
+            <div
+              onclick="selectOption('all','All Resources','/file/all.jpg'); document.getElementById('dropdownMenuExam').style.display='none';">
               <img src="/file/all.jpg"> All Resources
             </div>
-            <div onclick="selectOption('pdf','PDF Notes','/file/pdf.jpg'); document.getElementById('dropdownMenuExam').style.display='none';">
+            <div
+              onclick="selectOption('pdf','PDF Notes','/file/pdf.jpg'); document.getElementById('dropdownMenuExam').style.display='none';">
               <img src="/file/pdf.jpg"> PDF Notes
             </div>
-            <div onclick="selectOption('excel','Excel Templates','/file/excel.jpg'); document.getElementById('dropdownMenuExam').style.display='none';">
+            <div
+              onclick="selectOption('excel','Excel Templates','/file/excel.jpg'); document.getElementById('dropdownMenuExam').style.display='none';">
               <img src="/file/excel.jpg"> Excel Templates
             </div>
-            <div onclick="selectOption('exam','Exam Materials','/file/exam.jpg'); document.getElementById('dropdownMenuExam').style.display='none';">
+            <div
+              onclick="selectOption('exam','Exam Materials','/file/exam.jpg'); document.getElementById('dropdownMenuExam').style.display='none';">
               <img src="/file/exam.jpg"> Exam Materials
             </div>
-            <div onclick="selectOption('freelance','Freelance Services','/file/service.jpg'); document.getElementById('dropdownMenuExam').style.display='none';">
+            <div
+              onclick="selectOption('freelance','Freelance Services','/file/service.jpg'); document.getElementById('dropdownMenuExam').style.display='none';">
               <img src="/file/service.jpg"> Freelance Services
             </div>
           </div>
@@ -466,30 +618,36 @@
       <div class="resource-section">
         <div class="section-header">
           <div class="section-title">
-            <h2><img src="/file/service.jpg" alt="Freelance" style="width:24px;height:24px;object-fit:contain;vertical-align:middle;"> Freelance Services</h2>
+            <h2><img src="/file/service.jpg" alt="Freelance"
+                style="width:24px;height:24px;object-fit:contain;vertical-align:middle;"> Freelance Services</h2>
             <span class="resource-count" id="freelanceCount">0 items</span>
           </div>
         </div>
         <div class="resource-filter">
-          <div class="custom-select" onclick="toggleDropdownFreelance()"
-            <img src="/file/service.jpg" class="select-icon">
+          <div class="custom-select" onclick="toggleDropdownFreelance()" <img src="/file/service.jpg"
+            class="select-icon">
             <span>Freelance Services</span>
             <span class="arrow">&#9660;</span>
           </div>
           <div class="dropdown" id="dropdownMenuFreelance">
-            <div onclick="selectOption('all','All Resources','/file/all.jpg'); document.getElementById('dropdownMenuFreelance').style.display='none';">
+            <div
+              onclick="selectOption('all','All Resources','/file/all.jpg'); document.getElementById('dropdownMenuFreelance').style.display='none';">
               <img src="/file/all.jpg"> All Resources
             </div>
-            <div onclick="selectOption('pdf','PDF Notes','/file/pdf.jpg'); document.getElementById('dropdownMenuFreelance').style.display='none';">
+            <div
+              onclick="selectOption('pdf','PDF Notes','/file/pdf.jpg'); document.getElementById('dropdownMenuFreelance').style.display='none';">
               <img src="/file/pdf.jpg"> PDF Notes
             </div>
-            <div onclick="selectOption('excel','Excel Templates','/file/excel.jpg'); document.getElementById('dropdownMenuFreelance').style.display='none';">
+            <div
+              onclick="selectOption('excel','Excel Templates','/file/excel.jpg'); document.getElementById('dropdownMenuFreelance').style.display='none';">
               <img src="/file/excel.jpg"> Excel Templates
             </div>
-            <div onclick="selectOption('exam','Exam Materials','/file/exam.jpg'); document.getElementById('dropdownMenuFreelance').style.display='none';">
+            <div
+              onclick="selectOption('exam','Exam Materials','/file/exam.jpg'); document.getElementById('dropdownMenuFreelance').style.display='none';">
               <img src="/file/exam.jpg"> Exam Materials
             </div>
-            <div onclick="selectOption('freelance','Freelance Services','/file/service.jpg'); document.getElementById('dropdownMenuFreelance').style.display='none';">
+            <div
+              onclick="selectOption('freelance','Freelance Services','/file/service.jpg'); document.getElementById('dropdownMenuFreelance').style.display='none';">
               <img src="/file/service.jpg"> Freelance Services
             </div>
           </div>
@@ -503,6 +661,22 @@
         </div>
       </div>
     </div>
+
+    <!-- Purchased Resources Section -->
+    <div id="purchasedSection" style="display:none;padding-bottom:30px;">
+      <div class="dash-section-head" style="margin-bottom:16px;">
+        <h2 style="font-size:18px;font-weight:700;color:#1e293b;margin-bottom:14px;">🛒 My Purchased Resources</h2>
+        <div class="pr-filter-strip">
+          <button class="pr-filter active" onclick="filterPurchased('all',this)">All</button>
+          <button class="pr-filter" onclick="filterPurchased('pdf',this)">📄 PDF</button>
+          <button class="pr-filter" onclick="filterPurchased('excel',this)">📊 Excel</button>
+          <button class="pr-filter" onclick="filterPurchased('exam',this)">📝 Exam</button>
+          <button class="pr-filter" onclick="filterPurchased('freelance',this)">💼 Services</button>
+        </div>
+      </div>
+      <div id="purchasedGrid" style="display:grid;gap:16px;margin-top:16px;"></div>
+    </div>
+
   </div>
 
   <div id="addModal" class="modal">
@@ -554,26 +728,37 @@
   </div>
 
   <!-- Delete Confirm Modal -->
-  <div id="deleteModal" style="display:none;position:fixed;inset:0;background:rgba(15,23,42,0.55);backdrop-filter:blur(4px);z-index:3000;align-items:center;justify-content:center;">
-    <div style="background:#fff;border-radius:20px;padding:32px 28px;width:90%;max-width:400px;box-shadow:0 24px 60px rgba(0,0,0,0.22);text-align:center;">
-      <div style="width:60px;height:60px;background:#fef2f2;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:1.6rem;">🗑️</div>
+  <div id="deleteModal"
+    style="display:none;position:fixed;inset:0;background:rgba(15,23,42,0.55);backdrop-filter:blur(4px);z-index:3000;align-items:center;justify-content:center;">
+    <div
+      style="background:#fff;border-radius:20px;padding:32px 28px;width:90%;max-width:400px;box-shadow:0 24px 60px rgba(0,0,0,0.22);text-align:center;">
+      <div
+        style="width:60px;height:60px;background:#fef2f2;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:1.6rem;">
+        🗑️</div>
       <h3 style="font-size:1.1rem;font-weight:800;color:#0f172a;margin:0 0 8px;">Delete Resource?</h3>
-      <p style="font-size:0.88rem;color:#64748b;margin:0 0 24px;line-height:1.6;">This action cannot be undone. The resource will be permanently removed.</p>
+      <p style="font-size:0.88rem;color:#64748b;margin:0 0 24px;line-height:1.6;">This action cannot be undone. The
+        resource will be permanently removed.</p>
       <div style="display:flex;gap:10px;justify-content:center;">
-        <button onclick="closeDeleteModal()" style="flex:1;padding:11px;border-radius:10px;border:1.5px solid #e2e8f0;background:#fff;color:#475569;font-size:0.9rem;font-weight:700;cursor:pointer;font-family:inherit;">Cancel</button>
-        <button id="confirmDeleteBtn" onclick="confirmDelete()" style="flex:1;padding:11px;border-radius:10px;border:none;background:linear-gradient(135deg,#ef4444,#dc2626);color:#fff;font-size:0.9rem;font-weight:700;cursor:pointer;font-family:inherit;">Delete</button>
+        <button onclick="closeDeleteModal()"
+          style="flex:1;padding:11px;border-radius:10px;border:1.5px solid #e2e8f0;background:#fff;color:#475569;font-size:0.9rem;font-weight:700;cursor:pointer;font-family:inherit;">Cancel</button>
+        <button id="confirmDeleteBtn" onclick="confirmDelete()"
+          style="flex:1;padding:11px;border-radius:10px;border:none;background:linear-gradient(135deg,#ef4444,#dc2626);color:#fff;font-size:0.9rem;font-weight:700;cursor:pointer;font-family:inherit;">Delete</button>
       </div>
     </div>
   </div>
 
   <!-- Undo Toast -->
-  <div id="undoToast" style="display:none;position:fixed;bottom:28px;left:50%;transform:translateX(-50%);z-index:4000;background:#1e293b;border-radius:14px;padding:14px 20px;box-shadow:0 8px 32px rgba(0,0,0,0.25);flex-direction:column;gap:10px;min-width:280px;max-width:360px;">
+  <div id="undoToast"
+    style="display:none;position:fixed;bottom:28px;left:50%;transform:translateX(-50%);z-index:4000;background:#1e293b;border-radius:14px;padding:14px 20px;box-shadow:0 8px 32px rgba(0,0,0,0.25);flex-direction:column;gap:10px;min-width:280px;max-width:360px;">
     <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
       <span style="font-size:0.88rem;font-weight:600;color:#fff;">🗑️ Resource deleted</span>
-      <button onclick="undoDelete()" style="padding:7px 18px;border-radius:8px;border:none;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;font-size:0.82rem;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap;">↩ Undo</button>
+      <button onclick="undoDelete()"
+        style="padding:7px 18px;border-radius:8px;border:none;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;font-size:0.82rem;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap;">↩
+        Undo</button>
     </div>
     <div style="height:3px;background:rgba(255,255,255,0.15);border-radius:2px;overflow:hidden;">
-      <div id="undoBar" style="height:100%;width:100%;background:linear-gradient(135deg,#667eea,#764ba2);border-radius:2px;"></div>
+      <div id="undoBar"
+        style="height:100%;width:100%;background:linear-gradient(135deg,#667eea,#764ba2);border-radius:2px;"></div>
     </div>
   </div>
 
@@ -606,9 +791,9 @@
 
       if (sidebarUser) sidebarUser.style.display = 'flex';
       const userName = currentUser.user_metadata?.name || currentUser.email.split('@')[0] || 'User';
-      document.getElementById('sidebarUserName').textContent  = userName;
+      document.getElementById('sidebarUserName').textContent = userName;
       document.getElementById('sidebarUserEmail').textContent = currentUser.email;
-      document.getElementById('sidebarAvatar').textContent    = userName.charAt(0).toUpperCase();
+      document.getElementById('sidebarAvatar').textContent = userName.charAt(0).toUpperCase();
 
       // Check role from profiles table
       try {
@@ -629,7 +814,7 @@
             sidebarUser.insertBefore(adminBtn, logoutLink);
           }
         }
-      } catch(e) { console.warn('Role check failed', e); }
+      } catch (e) { console.warn('Role check failed', e); }
     })();
 
     function logout() {
@@ -687,10 +872,10 @@
         grid.classList.remove('list-view');
         grid.classList.add('grid-view');
       });
-      
+
       const viewBtns = document.querySelectorAll('.view-btn');
       viewBtns.forEach(btn => btn.classList.remove('active'));
-      
+
       // Only update button state if not initialization
       if (!isInit && event && event.target) {
         event.target.closest('.view-btn').classList.add('active');
@@ -699,11 +884,11 @@
         const gridBtn = document.querySelector('.view-btn[onclick*="grid"]');
         if (gridBtn) gridBtn.classList.add('active');
       }
-      
+
       localStorage.setItem('resourceView', view);
     }
 
-    (function() {
+    (function () {
       const savedView = localStorage.getItem('resourceView') || 'grid';
       setView(savedView, true);
     })();
@@ -715,8 +900,8 @@
     }
 
     // Monitor for any class changes and save them
-    const observer = new MutationObserver(function(mutations) {
-      mutations.forEach(function(mutation) {
+    const observer = new MutationObserver(function (mutations) {
+      mutations.forEach(function (mutation) {
         if (mutation.attributeName === 'class') {
           saveTheme();
         }
@@ -729,12 +914,139 @@
     });
 
     // Ensure theme persists on page load
-    window.addEventListener('DOMContentLoaded', function() {
+    window.addEventListener('DOMContentLoaded', function () {
       const savedTheme = localStorage.getItem('theme') || 'light-mode';
       document.body.className = savedTheme;
     });
+
+    /* ── View Switcher ── */
+    let _allPurchased = [];
+
+    function switchView(view) {
+      const btnRes      = document.getElementById('btnAllResources');
+      const btnPur      = document.getElementById('btnPurchases');
+      const purchasedSec = document.getElementById('purchasedSection');
+      const tabContents  = document.querySelectorAll('.tab-content');
+
+      if (view === 'resources') {
+        tabContents.forEach(t => {
+          t.style.display = t.classList.contains('active') ? 'block' : 'none';
+        });
+        purchasedSec.style.display = 'none';
+        btnRes.style.cssText = 'padding:10px 22px;border-radius:10px;border:2px solid #667eea;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;';
+        btnPur.style.cssText = 'padding:10px 22px;border-radius:10px;border:2px solid #e2e8f0;background:#fff;color:#64748b;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;';
+      } else {
+        tabContents.forEach(t => t.style.display = 'none');
+        purchasedSec.style.display = 'block';
+        btnPur.style.cssText = 'padding:10px 22px;border-radius:10px;border:2px solid #667eea;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;';
+        btnRes.style.cssText = 'padding:10px 22px;border-radius:10px;border:2px solid #e2e8f0;background:#fff;color:#64748b;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;';
+        loadPurchased();
+      }
+    }
+
+    async function loadPurchased() {
+      showPrSkeleton();
+      try {
+        const cu = JSON.parse(localStorage.getItem('currentUser') || '{}');
+        let userId = cu.id;
+        if (!userId) {
+          const { data: { user } } = await supabaseClient.auth.getUser();
+          userId = user?.id;
+        }
+        if (!userId) throw new Error('Not logged in');
+        const baseURL = (location.hostname === '127.0.0.1' || location.hostname === 'localhost')
+          ? (location.port === '5500' ? 'https://earnify-gamma.vercel.app' : 'http://localhost:5000')
+          : location.origin;
+        const res = await fetch(baseURL + '/api/payments/' + userId);
+        _allPurchased = res.ok ? await res.json() : [];
+      } catch (e) {
+        console.error('[Purchased] load error =>', e);
+        _allPurchased = [];
+      }
+      renderPurchased(_allPurchased);
+    }
+
+    function showPrSkeleton() {
+      const grid = document.getElementById('purchasedGrid');
+      const skCard = `
+        <div class="pr-sk-card">
+          <span class="pr-sk pr-sk-icon"></span>
+          <div class="pr-sk-body">
+            <span class="pr-sk pr-sk-title"></span>
+            <span class="pr-sk pr-sk-meta"></span>
+          </div>
+          <div class="pr-sk-right">
+            <span class="pr-sk pr-sk-price"></span>
+            <span class="pr-sk pr-sk-btn"></span>
+          </div>
+        </div>`;
+      grid.innerHTML = skCard + skCard + skCard;
+    }
+
+    function filterPurchased(type, btn) {
+      document.querySelectorAll('.pr-filter').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      showPrSkeleton();
+      setTimeout(() => {
+        renderPurchased(type === 'all' ? _allPurchased : _allPurchased.filter(p => p.resources?.type === type));
+      }, 300);
+    }
+
+    function renderPurchased(list) {
+      const grid = document.getElementById('purchasedGrid');
+      const valid = list.filter(p => p.resources);
+      if (!valid.length) {
+        grid.innerHTML = '<div style="text-align:center;padding:60px 20px;"><div style="font-size:48px;margin-bottom:12px;">🛒</div><div style="font-size:16px;font-weight:700;color:#1e293b;margin-bottom:6px;">No Purchases Yet</div><div style="font-size:13px;color:#94a3b8;">Resources you purchase will appear here.</div></div>';
+        return;
+      }
+      const icons = { pdf: '📄', excel: '📊', exam: '📝', freelance: '💼' };
+      grid.innerHTML = valid.map(p => {
+        const r    = p.resources;
+        const icon = icons[r.type] || '📦';
+        const date = new Date(p.created_at).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+        const dlBtn = r.fileurl
+          ? `<a href="${r.fileurl}" target="_blank" download class="pr-dl-btn">&#8595; Download</a>`
+          : `<span class="pr-no-file">No file</span>`;
+        return `
+        <div class="pr-card">
+          <div class="pr-icon">${icon}</div>
+          <div class="pr-info">
+            <div class="pr-title">${r.title || 'Resource'}</div>
+            <div class="pr-meta">${(r.type || '').toUpperCase()} &nbsp;•&nbsp; ${date}</div>
+          </div>
+          <div class="pr-right">
+            <div class="pr-price">&#8377;${r.price || '—'}</div>
+            ${dlBtn}
+          </div>
+        </div>`;
+      }).join('');
+    }
   </script>
   <script src="site-view.js"></script>
+
+  <!-- Admin Mobile Bottom Nav -->
+  <nav class="admin-mob-nav">
+    <a href="../Resources/" class="amn-item active">
+      <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+      <span>Resources</span>
+    </a>
+    <a href="../Statistics/" class="amn-item">
+      <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      <span>Statistics</span>
+    </a>
+    <a href="/" class="amn-item amn-home">
+      <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <span>Home</span>
+    </a>
+    <a href="../Profile/" class="amn-item">
+      <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span>Profile</span>
+    </a>
+    <a href="../Withdrawal/" class="amn-item">
+      <svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      <span>Withdrawal</span>
+    </a>
+  </nav>
 </body>
 
 </html>
