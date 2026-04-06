@@ -3,10 +3,11 @@ const API_BASE = (location.hostname === 'localhost' || location.hostname === '12
   : location.origin;
 
 const SUPA_URL = 'https://emnrgsgerfjvndexomro.supabase.co';
-const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVtbnJnc2dlcmZqdm5kZXhvbXJvIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3MjQyMDIxMCwiZXhwIjoyMDg3OTk2MjEwfQ.mr4k_GsJ14CC1mqvEZgf9cTaNiLMlnj_sZxFjJud67k';
+const SUPA_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVtbnJnc2dlcmZqdm5kZXhvbXJvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI0MjAyMTAsImV4cCI6MjA4Nzk5NjIxMH0.uXr8lipxLbB4D_5JwQkpLzc-HudQw23tOFBfV4C6hqY';
+const SUPA_SERVICE = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVtbnJnc2dlcmZqdm5kZXhvbXJvIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3MjQyMDIxMCwiZXhwIjoyMDg3OTk2MjEwfQ.mr4k_GsJ14CC1mqvEZgf9cTaNiLMlnj_sZxFjJud67k';
 
-// Single isolated client — storageKey prevents GoTrueClient conflicts with other scripts
-const db = window.supabase.createClient(SUPA_URL, SUPA_KEY, {
+// Use service-role key so queries work regardless of RLS policies
+const db = window.supabase.createClient(SUPA_URL, SUPA_SERVICE, {
   auth: { storageKey: 'earnify-dashboard', persistSession: false, autoRefreshToken: false }
 });
 
@@ -23,19 +24,34 @@ function decodeJwtPayload(token) {
   } catch(e) { return null; }
 }
 
-// Get email synchronously — works on both local and Vercel
-function getUserEmail() {
-  // 1. adminToken JWT (Vercel: login.html stores only this)
+// Get email — checks all storage sources including live Supabase session
+async function getUserEmail() {
+  // 1. adminToken JWT
   const token = localStorage.getItem('adminToken');
   if (token) {
     const p = decodeJwtPayload(token);
-    if (p?.email) { console.log('[Dashboard] email from adminToken =>', p.email); return p.email; }
+    if (p?.email) {
+      console.log('[Dashboard] email from adminToken =>', p.email);
+      return p.email;
+    }
   }
-  // 2. currentUser (local dev: auth-modal stores this)
+  // 2. currentUser object
   try {
     const cu = JSON.parse(localStorage.getItem('currentUser') || '{}');
     if (cu?.email) { console.log('[Dashboard] email from currentUser =>', cu.email); return cu.email; }
   } catch(e) {}
+  // 3. Live Supabase session (anon client)
+  try {
+    const anonDb = window.supabase.createClient(SUPA_URL, SUPA_ANON, {
+      auth: { storageKey: 'earnify-anon-session', persistSession: true, autoRefreshToken: true }
+    });
+    const { data: { user } } = await anonDb.auth.getUser();
+    if (user?.email) {
+      console.log('[Dashboard] email from Supabase session =>', user.email);
+      localStorage.setItem('currentUser', JSON.stringify(user));
+      return user.email;
+    }
+  } catch(e) { console.warn('[Dashboard] Supabase session check failed =>', e.message); }
   console.warn('[Dashboard] No email found in any source');
   return null;
 }
@@ -496,19 +512,29 @@ async function loadDashboard() {
 
   // Get logged-in user email
   const token = localStorage.getItem('adminToken');
-  const userEmail = getUserEmail();
+  const userEmail = await getUserEmail();
   console.log('[Dashboard] userEmail =>', userEmail);
+
+  if (!userEmail) {
+    // No session found — redirect to login
+    window.location.href = '/admin/login.html';
+    return;
+  }
 
   try {
     console.log('[Dashboard] fetching stats for =>', userEmail);
 
     // Fetch everything directly from Supabase — no Node server needed
     const [resourcesResult, wdResult] = await Promise.all([
-      userEmail ? db.from('resources').select('id, title, price').eq('user_email', userEmail) : Promise.resolve({ data: [] }),
-      userEmail ? db.from('withdrawals').select('*').eq('user_email', userEmail).order('created_at', { ascending: false }) : Promise.resolve({ data: [] })
+      db.from('resources').select('id, title, price').eq('user_email', userEmail),
+      db.from('withdrawals').select('*').eq('user_email', userEmail).order('created_at', { ascending: false })
     ]);
 
+    if (resourcesResult.error) throw new Error('Resources fetch failed: ' + resourcesResult.error.message);
+    if (wdResult.error) throw new Error('Withdrawals fetch failed: ' + wdResult.error.message);
+
     const userResources = resourcesResult.data || [];
+    console.log('[Dashboard] userResources =>', userResources.length, 'for', userEmail);
     const resourceIds   = userResources.map(r => r.id);
     const priceMap      = {};
     const titleMap      = {};
@@ -539,7 +565,7 @@ async function loadDashboard() {
             .limit(1); // just a probe — actual email lookup below
           // Use Supabase auth admin API via service-role client
           const res = await fetch(`${SUPA_URL}/auth/v1/admin/users?per_page=1000`, {
-            headers: { apikey: SUPA_KEY, Authorization: `Bearer ${SUPA_KEY}` }
+            headers: { apikey: SUPA_SERVICE, Authorization: `Bearer ${SUPA_SERVICE}` }
           });
           if (res.ok) {
             const json = await res.json();

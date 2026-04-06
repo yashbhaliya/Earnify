@@ -562,6 +562,11 @@
         
         if (data.token) {
           localStorage.setItem('adminToken', data.token);
+          // Also store decoded user so dashboard can read email without a live session
+          try {
+            const payload = JSON.parse(atob(data.token.split('.')[1]));
+            if (payload?.email) localStorage.setItem('currentUser', JSON.stringify({ email: payload.email, id: payload.sub }));
+          } catch(e) {}
           showSuccess('Login successful! Redirecting...');
           setTimeout(() => window.location.href = 'Resources/', 1000);
         } else {
@@ -634,6 +639,10 @@
         
         if (data.token) {
           localStorage.setItem('adminToken', data.token);
+          try {
+            const payload = JSON.parse(atob(data.token.split('.')[1]));
+            if (payload?.email) localStorage.setItem('currentUser', JSON.stringify({ email: payload.email, id: payload.sub }));
+          } catch(e) {}
           showSuccess('Account created successfully! Redirecting...');
           setTimeout(() => window.location.href = 'Resources/', 1000);
         } else if (data.error) {
