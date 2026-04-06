@@ -944,7 +944,30 @@
   <script src="../toast.js"></script>
   <script src="../supabase-config.js"></script>
   <script>
-    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    const SUPA_URL = 'https://emnrgsgerfjvndexomro.supabase.co';
+    const SUPA_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVtbnJnc2dlcmZqdm5kZXhvbXJvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI0MjAyMTAsImV4cCI6MjA4Nzk5NjIxMH0.uXr8lipxLbB4D_5JwQkpLzc-HudQw23tOFBfV4C6hqY';
+    const SUPA_SVC  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVtbnJnc2dlcmZqdm5kZXhvbXJvIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3MjQyMDIxMCwiZXhwIjoyMDg3OTk2MjEwfQ.mr4k_GsJ14CC1mqvEZgf9cTaNiLMlnj_sZxFjJud67k';
+    const _db = window.supabase.createClient(SUPA_URL, SUPA_SVC, {
+      auth: { persistSession: false, autoRefreshToken: false }
+    });
+
+    // Get current logged-in user email from any auth source
+    function getCurrentEmail() {
+      try {
+        const cu = JSON.parse(localStorage.getItem('currentUser') || '{}');
+        if (cu?.email) return cu;
+      } catch(e) {}
+      const token = localStorage.getItem('adminToken');
+      if (token) {
+        try {
+          const p = JSON.parse(atob(token.split('.')[1].replace(/-/g,'+').replace(/_/g,'/')));
+          if (p?.email) return { email: p.email, id: p.sub || p.id, ...p };
+        } catch(e) {}
+      }
+      return null;
+    }
+
+    const currentUser = getCurrentEmail() || JSON.parse(localStorage.getItem('currentUser') || '{}');
 
     function showShimmers() {
       document.getElementById('profileAvatarShimmer').style.display = 'block';
@@ -1110,74 +1133,54 @@
     });
 
     async function loadProfileStats() {
-      // Show shimmer for resources list
       loadRecentResources(null);
 
+      const userEmail = currentUser?.email;
+      if (!userEmail) {
+        document.getElementById('totalResources').textContent = '0';
+        document.getElementById('totalEarnings').textContent = '\u20b90';
+        document.getElementById('totalCustomers').textContent = '0';
+        loadRecentResources([]);
+        return;
+      }
+
       try {
-        const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
-        const userEmail = currentUser.email;
-        const userId = currentUser.id;
+        // 1. Fetch user's resources directly from Supabase
+        const { data: userResources, error: resErr } = await _db
+          .from('resources').select('id, title, description, type, price, user_email')
+          .eq('user_email', userEmail);
+        if (resErr) throw resErr;
 
-        if (!userEmail) {
-          document.getElementById('totalResources').textContent = '0';
-          document.getElementById('totalEarnings').textContent = '₹0';
-          document.getElementById('totalCustomers').textContent = '0';
-          loadRecentResources([]);
-          return;
-        }
+        document.getElementById('totalResources').textContent = (userResources || []).length;
 
-        // Load user's resources count
-        const resourcesRes = await fetch(API_CONFIG.getURL(API_CONFIG.endpoints.resources));
-        if (!resourcesRes.ok) throw new Error('Failed to fetch resources');
-
-        const allResources = await resourcesRes.json();
-        const userResources = allResources.filter(r => r.user_email === userEmail);
-
-        document.getElementById('totalResources').textContent = userResources.length;
-
-        // Calculate potential earnings (sum of all resource prices)
-        const potentialEarnings = userResources.reduce((sum, r) => sum + parseFloat(r.price || 0), 0);
-
-        // Load user's actual purchases/sales
-        let actualEarnings = 0;
+        // 2. Fetch completed payments for this user's resources
+        let totalEarnings = 0;
         let totalSales = 0;
 
-        try {
-          const statsRes = await fetch(API_CONFIG.getURL(API_CONFIG.endpoints.statistics));
-          if (statsRes.ok) {
-            const statsData = await statsRes.json();
+        if (userResources && userResources.length > 0) {
+          const resourceIds = userResources.map(r => r.id);
+          const priceMap = Object.fromEntries(userResources.map(r => [r.id, parseFloat(r.price || 0)]));
 
-            if (statsData.userStats) {
-              // Get all payments and match with user's resources
-              statsData.userStats.forEach(stat => {
-                stat.resources.forEach(resourceTitle => {
-                  const matchingResource = userResources.find(r => r.title === resourceTitle);
-                  if (matchingResource) {
-                    actualEarnings += parseFloat(matchingResource.price || 0);
-                    totalSales++;
-                  }
-                });
-              });
-            }
+          const { data: payments } = await _db
+            .from('payments').select('resource_id, user_id')
+            .eq('status', 'completed')
+            .in('resource_id', resourceIds);
+
+          if (payments && payments.length > 0) {
+            totalEarnings = payments.reduce((s, p) => s + (priceMap[p.resource_id] || 0), 0);
+            totalSales = new Set(payments.map(p => p.user_id)).size;
           }
-        } catch (statsError) {
-          console.log('Stats not available:', statsError.message);
         }
 
-        // Display earnings (use actual if available, otherwise potential)
-        const displayEarnings = actualEarnings > 0 ? actualEarnings : potentialEarnings;
-        document.getElementById('totalEarnings').textContent = '₹' + displayEarnings.toFixed(0);
-
-        // Display total sales/customers
+        document.getElementById('totalEarnings').textContent = '\u20b9' + totalEarnings.toFixed(0);
         document.getElementById('totalCustomers').textContent = totalSales;
 
-        // Load recent resources
-        loadRecentResources(userResources);
+        loadRecentResources(userResources || []);
 
       } catch (error) {
         console.error('Error loading profile stats:', error);
         document.getElementById('totalResources').textContent = '0';
-        document.getElementById('totalEarnings').textContent = '₹0';
+        document.getElementById('totalEarnings').textContent = '\u20b90';
         document.getElementById('totalCustomers').textContent = '0';
         loadRecentResources([]);
       }
