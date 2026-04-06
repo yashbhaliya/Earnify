@@ -864,11 +864,11 @@
         const totalWithdrawn = totalWithdrawnGross * 0.95;
         const totalPending   = totalPendingGross   * 0.95;
 
-        // Platform fees = 5% of total gross earnings
-        const platformFees = totalGross * 0.05;
+        // Platform fees = 5% only from approved/completed withdrawal requests
+        const platformFees = totalWithdrawnGross * 0.05;
 
-        // Available = gross earnings - platform fees - gross withdrawn - gross pending
-        const available = Math.max(0, totalGross - platformFees - totalWithdrawnGross - totalPendingGross);
+        // Available = gross earnings - gross withdrawn - gross pending
+        const available = Math.max(0, totalGross - totalWithdrawnGross - totalPendingGross);
         _availableBalance = available;
 
         document.getElementById('availableBalance').textContent = `₹${available.toFixed(0)}`;
