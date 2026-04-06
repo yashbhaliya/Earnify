@@ -1,4 +1,4 @@
-﻿const API_BASE = (location.hostname === 'localhost' || location.hostname === '127.0.0.1')
+const API_BASE = (location.hostname === 'localhost' || location.hostname === '127.0.0.1')
   ? 'http://127.0.0.1:5000' : location.origin;
 
 console.log('[Statistics] API_BASE =>', API_BASE);
@@ -55,7 +55,7 @@ async function apiFetch(path) {
 
 function logout() {
   localStorage.clear(); sessionStorage.clear();
-  location.href = '/';
+  location.href = '/admin/login.html';
 }
 
 function toggleSidebar() {

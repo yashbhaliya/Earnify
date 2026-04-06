@@ -1,29 +1,29 @@
-﻿const API_BASE = (location.hostname === 'localhost' || location.hostname === '127.0.0.1')
+const API_BASE = (location.hostname === 'localhost' || location.hostname === '127.0.0.1')
   ? 'http://127.0.0.1:5000'
   : location.origin;
 
 const SUPA_URL = 'https://emnrgsgerfjvndexomro.supabase.co';
 const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVtbnJnc2dlcmZqdm5kZXhvbXJvIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3MjQyMDIxMCwiZXhwIjoyMDg3OTk2MjEwfQ.mr4k_GsJ14CC1mqvEZgf9cTaNiLMlnj_sZxFjJud67k';
 
-// Single isolated client â€” storageKey prevents GoTrueClient conflicts with other scripts
+// Single isolated client — storageKey prevents GoTrueClient conflicts with other scripts
 const db = window.supabase.createClient(SUPA_URL, SUPA_KEY, {
   auth: { storageKey: 'earnify-dashboard', persistSession: false, autoRefreshToken: false }
 });
 
 // XSS sanitizer
 function esc(str) {
-  if (str == null) return 'â€”';
+  if (str == null) return '—';
   return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
 }
 
-// Decode base64url JWT â€” synchronous, no network needed
+// Decode base64url JWT — synchronous, no network needed
 function decodeJwtPayload(token) {
   try {
     return JSON.parse(atob(token.split('.')[1].replace(/-/g,'+').replace(/_/g,'/')));
   } catch(e) { return null; }
 }
 
-// Get email synchronously â€” works on both local and Vercel
+// Get email synchronously — works on both local and Vercel
 function getUserEmail() {
   // 1. adminToken JWT (Vercel: login.html stores only this)
   const token = localStorage.getItem('adminToken');
@@ -57,7 +57,7 @@ async function apiFetch(path) {
 }
 
 function fmt(n) {
-  return 'â‚¹' + parseFloat(n || 0).toLocaleString('en-IN', { maximumFractionDigits: 0 });
+  return '₹' + parseFloat(n || 0).toLocaleString('en-IN', { maximumFractionDigits: 0 });
 }
 
 function setCard(id, subId, value, sub) {
@@ -74,7 +74,7 @@ function badgeClass(status) {
 }
 
 function fmtDate(d) {
-  if (!d) return 'â€”';
+  if (!d) return '—';
   return new Date(d).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
 }
 
@@ -124,7 +124,7 @@ function renderDayWiseChart(purchases, selectedMonth, selectedYear) {
     empty.className = 'dw-empty';
     empty.innerHTML = `
       <div style="text-align:center;padding:52px 20px;">
-        <div style="font-size:52px;opacity:.3;margin-bottom:14px;">ðŸ“­</div>
+        <div style="font-size:52px;opacity:.3;margin-bottom:14px;">📭</div>
         <div style="font-size:15px;font-weight:700;color:#1e293b;margin-bottom:6px;">No Revenue for ${monthName}</div>
         <div style="font-size:13px;color:#94a3b8;">No completed sales recorded for this month.</div>
         <div style="font-size:12px;color:#b0b8c8;margin-top:4px;">Select a different month from the filter above.</div>
@@ -260,7 +260,7 @@ function renderDayChart(days = 7) {
           ticks: { 
             font: { size: 11 },
             color: '#94a3b8',
-            callback: v => 'â‚¹' + (v >= 1000 ? (v/1000).toFixed(0) + 'k' : v)
+            callback: v => '₹' + (v >= 1000 ? (v/1000).toFixed(0) + 'k' : v)
           }
         }
       }
@@ -335,7 +335,7 @@ function renderResourceChart(limit = 10) {
             label: ctx => {
               const r = top[ctx.dataIndex];
               const pct = total > 0 ? ((r.revenue / total) * 100).toFixed(1) : 0;
-              return ` ${fmt(r.revenue)}  (${pct}%)  â€¢  ${r.purchases} sales`;
+              return ` ${fmt(r.revenue)}  (${pct}%)  •  ${r.purchases} sales`;
             }
           }
         }
@@ -347,7 +347,7 @@ function renderResourceChart(limit = 10) {
 
   if (legend) legend.innerHTML = top.map((r, i) => {
     const pct = total > 0 ? ((r.revenue / total) * 100).toFixed(1) : 0;
-    const label = r.name.length > 22 ? r.name.substring(0, 22) + 'â€¦' : r.name;
+    const label = r.name.length > 22 ? r.name.substring(0, 22) + '…' : r.name;
     return `<div class="legend-item">
       <span class="legend-label"><span class="legend-dot" style="background:${colors[i]}"></span>${label}</span>
       <span class="legend-val">${fmt(r.revenue)} <span style="font-size:10px;color:#94a3b8;font-weight:500;">${pct}%</span></span>
@@ -362,7 +362,7 @@ function filterResourceChart() {
 }
 
 function renderCharts(available, totalGross, totalWithdrawn, platformFees, totalPending, purchases, userEmail) {
-  // â”€â”€ Donut Chart â”€â”€
+  // ── Donut Chart ──
   const donutCtx = document.getElementById('donutChart')?.getContext('2d');
   if (donutCtx) {
     if (_donutChart) _donutChart.destroy();
@@ -392,7 +392,7 @@ function renderCharts(available, totalGross, totalWithdrawn, platformFees, total
       </div>`).join('');
   }
 
-  // â”€â”€ Resource Donut Chart â”€â”€
+  // ── Resource Donut Chart ──
   const resCtx = document.getElementById('resourceDonutChart')?.getContext('2d');
   if (resCtx) {
     db.from('resources').select('id, title, price, type').eq('user_email', userEmail)
@@ -427,13 +427,13 @@ function renderCharts(available, totalGross, totalWithdrawn, platformFees, total
       }).catch(() => renderResourceChart(10, 'revenue'));
   }
   
-  // â”€â”€ Day-wise Revenue Chart â”€â”€
+  // ── Day-wise Revenue Chart ──
   const dayCtx = document.getElementById('dayChart')?.getContext('2d');
   if (dayCtx && purchases.length) {
     renderDayChart(7);
   }
   
-  // â”€â”€ Day-wise Monthly Chart â”€â”€
+  // ── Day-wise Monthly Chart ──
   const dayWiseCtx = document.getElementById('dayWiseChart')?.getContext('2d');
   if (dayWiseCtx) {
     initializeDateFilters();
@@ -502,7 +502,7 @@ async function loadDashboard() {
   try {
     console.log('[Dashboard] fetching stats for =>', userEmail);
 
-    // Fetch everything directly from Supabase â€” no Node server needed
+    // Fetch everything directly from Supabase — no Node server needed
     const [resourcesResult, wdResult] = await Promise.all([
       userEmail ? db.from('resources').select('id, title, price').eq('user_email', userEmail) : Promise.resolve({ data: [] }),
       userEmail ? db.from('withdrawals').select('*').eq('user_email', userEmail).order('created_at', { ascending: false }) : Promise.resolve({ data: [] })
@@ -536,7 +536,7 @@ async function loadDashboard() {
           const { data: uRows } = await db.from('payments')
             .select('user_id')
             .in('user_id', chunk)
-            .limit(1); // just a probe â€” actual email lookup below
+            .limit(1); // just a probe — actual email lookup below
           // Use Supabase auth admin API via service-role client
           const res = await fetch(`${SUPA_URL}/auth/v1/admin/users?per_page=1000`, {
             headers: { apikey: SUPA_KEY, Authorization: `Bearer ${SUPA_KEY}` }
@@ -552,8 +552,8 @@ async function loadDashboard() {
 
     // Build one row per payment (each resource purchase = separate row)
     const purchases = relevantPayments.map(p => ({
-      email:      userEmailMap[p.user_id] || p.user_id || 'â€”',
-      resource:   titleMap[p.resource_id] || 'â€”',
+      email:      userEmailMap[p.user_id] || p.user_id || '—',
+      resource:   titleMap[p.resource_id] || '—',
       amount:     priceMap[p.resource_id] || 0,
       created_at: p.created_at
     }));
@@ -587,13 +587,13 @@ async function loadDashboard() {
 
     console.log('[Dashboard] computed =>', { totalGross, totalWithdrawn, totalPending, platformFees, available });
 
-    // â”€â”€ Stat Cards â”€â”€
+    // ── Stat Cards ──
     const cardData = [
       { id: 'cardAvailable', value: fmt(available), sub: 'Ready to withdraw', subId: null },
       { id: 'cardRevenue',   value: fmt(totalGross), sub: `${completedCount} completed sales`, subId: 'cardRevenueSub' },
-      { id: 'cardWithdrawn', value: fmt(totalWithdrawn), sub: `${approvedCount} approved â€¢ net after 5% fee`, subId: 'cardWithdrawnSub' },
+      { id: 'cardWithdrawn', value: fmt(totalWithdrawn), sub: `${approvedCount} approved • net after 5% fee`, subId: 'cardWithdrawnSub' },
       { id: 'cardFees',      value: fmt(platformFees),   sub: '5% of all withdrawal requests', subId: null },
-      { id: 'cardPending',   value: fmt(totalPending),   sub: `${pendingCount} pending â€¢ net after 5% fee`, subId: null }
+      { id: 'cardPending',   value: fmt(totalPending),   sub: `${pendingCount} pending • net after 5% fee`, subId: null }
     ];
     cardData.forEach(({ id, value, sub, subId }) => {
       const el = document.getElementById(id);
@@ -610,7 +610,7 @@ async function loadDashboard() {
       if (icon) { icon.style.visibility = ''; }
     });
 
-    // â”€â”€ Charts â”€â”€
+    // ── Charts ──
     renderCharts(available, totalGross, totalWithdrawn, platformFees, totalPending, statsData.userStats || [], userEmail);
     
     // Remove chart loader
@@ -628,7 +628,7 @@ async function loadDashboard() {
       }
       
       tbody.innerHTML = !purchaseRows.length
-        ? `<tr><td colspan="6"><div class="empty-state"><div class="empty-icon">ðŸ“­</div><p>No purchases yet</p></div></td></tr>`
+        ? `<tr><td colspan="6"><div class="empty-state"><div class="empty-icon">📭</div><p>No purchases yet</p></div></td></tr>`
         : purchaseRows.map((p, i) => `
           <tr class="mobile-table-row" data-index="${i}">
             <td colspan="6">
@@ -651,7 +651,7 @@ async function loadDashboard() {
       window.purchasesData = purchaseRows;
     }
 
-    // â”€â”€ Withdrawals Table â”€â”€
+    // ── Withdrawals Table ──
     const wdTbody = document.getElementById('wdTbody');
     const wdEl = document.getElementById('wdCount');
     if (wdEl) wdEl.textContent = `${wdList.length} requests`;
@@ -664,17 +664,17 @@ async function loadDashboard() {
       }
       
       wdTbody.innerHTML = !wdList.length
-        ? `<tr><td colspan="7"><div class="empty-state"><div class="empty-icon">ðŸ“­</div><p>No withdrawal requests yet</p></div></td></tr>`
+        ? `<tr><td colspan="7"><div class="empty-state"><div class="empty-icon">📭</div><p>No withdrawal requests yet</p></div></td></tr>`
         : wdList.map((w, i) => {
             const gross = parseFloat(w.amount || 0);
             const fee   = gross * 0.05;
             const net   = gross - fee;
             const reasonCell = w.reject_reason
               ? `<button onclick="showRejectReason('${w.reject_reason.replace(/'/g, "&#39;").replace(/"/g, '&quot;')}')" style="padding:4px 12px;background:white;border:1.5px solid #667eea;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">View</button>`
-              : `<span style="color:#cbd5e1;font-size:13px;">â€”</span>`;
+              : `<span style="color:#cbd5e1;font-size:13px;">—</span>`;
             const mobileReason = w.reject_reason
               ? `<div style="margin-top:6px;">
-                   <button onclick="showRejectReason('${w.reject_reason.replace(/'/g, "&#39;").replace(/"/g, '&quot;')}')" style="display:none;padding:5px 14px;background:white;border:1.5px solid #667eea;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">âš  View Reason</button>
+                   <button onclick="showRejectReason('${w.reject_reason.replace(/'/g, "&#39;").replace(/"/g, '&quot;')}')" style="display:none;padding:5px 14px;background:white;border:1.5px solid #667eea;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">⚠ View Reason</button>
                  </div>`
               : '';
             return `
@@ -708,7 +708,7 @@ async function loadDashboard() {
       window.withdrawalsData = wdList;
     }
 
-    // â”€â”€ Sidebar admin info â”€â”€
+    // ── Sidebar admin info ──
     const adminBadge = document.querySelector('.admin-badge');
     if (adminBadge) adminBadge.classList.remove('is-loading');
     
@@ -722,19 +722,19 @@ async function loadDashboard() {
       document.getElementById('adminAvatar').textContent = email.charAt(0).toUpperCase();
     }
 
-    console.log('[Dashboard] âœ… done');
+    console.log('[Dashboard] ✅ done');
 
   } catch (err) {
-    console.error('[Dashboard] âŒ loadDashboard error =>', err);
+    console.error('[Dashboard] ❌ loadDashboard error =>', err);
     console.error('[Dashboard] error stack =>', err.stack);
-    if (errEl) { errEl.style.display = 'block'; errEl.textContent = `âš ï¸ ${err.message}`; }
+    if (errEl) { errEl.style.display = 'block'; errEl.textContent = `⚠️ ${err.message}`; }
   }
 }
 
 function logout() {
   localStorage.clear();
   sessionStorage.clear();
-  location.href = '/';
+  location.href = '/admin/login.html';
 }
 
 function toggleSidebar() {
@@ -752,23 +752,23 @@ function showPurchaseDetails(index) {
       <div class="detail-value">${index + 1}</div>
     </div>
     <div class="detail-row">
-      <div class="detail-label">ðŸ“§ Buyer Email</div>
+      <div class="detail-label">📧 Buyer Email</div>
       <div class="detail-value">${esc(purchase.email)}</div>
     </div>
     <div class="detail-row">
-      <div class="detail-label">ðŸ“š Resource Purchased</div>
+      <div class="detail-label">📚 Resource Purchased</div>
       <div class="detail-value">${esc(purchase.resource)}</div>
     </div>
     <div class="detail-row">
-      <div class="detail-label">ðŸ’° Amount</div>
+      <div class="detail-label">💰 Amount</div>
       <div class="detail-value amount">${fmt(purchase.amount)}</div>
     </div>
     <div class="detail-row">
-      <div class="detail-label">âœ… Status</div>
+      <div class="detail-label">✅ Status</div>
       <div class="detail-value"><span class="badge badge-completed">completed</span></div>
     </div>
     <div class="detail-row">
-      <div class="detail-label">ðŸ“… Purchase Date</div>
+      <div class="detail-label">📅 Purchase Date</div>
       <div class="detail-value">${fmtDate(purchase.created_at)}</div>
     </div>
   `;
@@ -790,32 +790,32 @@ function showWithdrawalDetails(index) {
       <div class="detail-value">${index + 1}</div>
     </div>
     <div class="detail-row">
-      <div class="detail-label">ðŸ“§ User Email</div>
+      <div class="detail-label">📧 User Email</div>
       <div class="detail-value">${esc(withdrawal.user_email)}</div>
     </div>
     <div class="detail-row">
-      <div class="detail-label">ðŸ’µ Gross Amount</div>
+      <div class="detail-label">💵 Gross Amount</div>
       <div class="detail-value">${fmt(gross)}</div>
     </div>
     <div class="detail-row">
-      <div class="detail-label">ðŸ’° Net Amount</div>
+      <div class="detail-label">💰 Net Amount</div>
       <div class="detail-value amount">${fmt(net)}</div>
     </div>
     <div class="detail-row">
-      <div class="detail-label">ðŸ“Š Platform Fee (5%)</div>
+      <div class="detail-label">📊 Platform Fee (5%)</div>
       <div class="detail-value" style="color:#ef4444;">-${fmt(fee)}</div>
     </div>
     <div class="detail-row">
-      <div class="detail-label">ðŸ“Š Status</div>
+      <div class="detail-label">📊 Status</div>
       <div class="detail-value"><span class="badge ${badgeClass(withdrawal.status)}">${withdrawal.status}</span></div>
     </div>
     <div class="detail-row">
-      <div class="detail-label">ðŸ“… Request Date</div>
+      <div class="detail-label">📅 Request Date</div>
       <div class="detail-value">${fmtDate(withdrawal.created_at)}</div>
     </div>
     ${withdrawal.reject_reason ? `
     <div style="padding:12px 14px;background:#fef2f2;border:1.5px solid #fecaca;border-radius:12px;">
-      <div style="font-size:11px;font-weight:700;color:#991b1b;text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px;">âš  Rejection Reason</div>
+      <div style="font-size:11px;font-weight:700;color:#991b1b;text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px;">⚠ Rejection Reason</div>
       <div style="font-size:13px;font-weight:600;color:#991b1b;line-height:1.5;">${withdrawal.reject_reason}</div>
     </div>` : ''}
   `;
