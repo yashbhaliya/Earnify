@@ -1,13 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Payment Requests - Earnify Admin</title>
   <link rel="icon" href="/file/logo1.jpeg" type="image/jpeg">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      user-select: none;
+    }
 
     body {
       font-family: 'Inter', sans-serif;
@@ -20,10 +27,11 @@
     .sidebar {
       width: 260px;
       background: linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%);
-      border-right: 2px solid rgba(102,126,234,0.15);
+      border-right: 2px solid rgba(102, 126, 234, 0.15);
       padding: 30px 0;
       position: fixed;
-      top: 0; left: 0;
+      top: 0;
+      left: 0;
       height: 100vh;
       display: flex;
       flex-direction: column;
@@ -34,7 +42,7 @@
 
     .sidebar-brand {
       padding: 0 28px 24px;
-      border-bottom: 2px solid rgba(102,126,234,0.12);
+      border-bottom: 2px solid rgba(102, 126, 234, 0.12);
       margin-bottom: 12px;
     }
 
@@ -74,20 +82,24 @@
     }
 
     .nav-link:hover {
-      background: rgba(102,126,234,0.07);
+      background: rgba(102, 126, 234, 0.07);
       border-left-color: #667eea;
       color: #667eea;
       padding-left: 34px;
     }
 
     .nav-link.active {
-      background: linear-gradient(90deg, rgba(102,126,234,0.13), rgba(102,126,234,0.06));
+      background: linear-gradient(90deg, rgba(102, 126, 234, 0.13), rgba(102, 126, 234, 0.06));
       border-left-color: #667eea;
       color: #667eea;
       font-weight: 700;
     }
 
-    .nav-icon { font-size: 17px; width: 22px; text-align: center; }
+    .nav-icon {
+      font-size: 17px;
+      width: 22px;
+      text-align: center;
+    }
 
     .sidebar-footer {
       margin-top: auto;
@@ -100,45 +112,47 @@
       align-items: center;
       gap: 12px;
       padding: 12px 14px;
-      background: linear-gradient(135deg, rgba(102,126,234,0.08), rgba(118,75,162,0.08));
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.08), rgba(118, 75, 162, 0.08));
       border-radius: 12px;
       margin-bottom: 12px;
       min-height: 60px;
     }
 
     .admin-avatar {
-      width: 40px; 
+      width: 40px;
       height: 40px;
       background: linear-gradient(135deg, #667eea, #764ba2);
       border-radius: 50%;
-      display: flex; 
-      align-items: center; 
+      display: flex;
+      align-items: center;
       justify-content: center;
-      font-size: 16px; 
-      color: white; 
-      font-weight: 700; 
+      font-size: 16px;
+      color: white;
+      font-weight: 700;
       flex-shrink: 0;
       box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
     }
 
-    .admin-info { 
-      flex: 1; 
+    .admin-info {
+      flex: 1;
       min-width: 0;
       overflow: hidden;
     }
-    .admin-name { 
-      font-size: 11px; 
-      font-weight: 600; 
-      color: #1e293b; 
+
+    .admin-name {
+      font-size: 11px;
+      font-weight: 600;
+      color: #1e293b;
       word-break: break-word;
       overflow-wrap: break-word;
       line-height: 1.4;
       margin-bottom: 3px;
       max-width: 100%;
     }
-    .admin-role { 
-      font-size: 10px; 
-      color: #94a3b8; 
+
+    .admin-role {
+      font-size: 10px;
+      color: #94a3b8;
       font-weight: 500;
       white-space: nowrap;
       overflow: hidden;
@@ -159,22 +173,28 @@
       font-family: inherit;
     }
 
-    .logout-btn:hover { background: #fee2e2; }
+    .logout-btn:hover {
+      background: #fee2e2;
+    }
 
     /* ── Overlay ── */
     .overlay {
       display: none;
-      position: fixed; inset: 0;
-      background: rgba(0,0,0,0.4);
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.4);
       z-index: 99;
     }
-    .overlay.active { display: block; }
+
+    .overlay.active {
+      display: block;
+    }
 
     /* ── Mobile toggle ── */
     .mobile-toggle {
       display: none;
       background: rgba(255, 255, 255, 0.25);
-      border: 2px solid rgba(255,255,255,0.5) !important;
+      border: 2px solid rgba(255, 255, 255, 0.5) !important;
       border-radius: 10px;
       padding: 14px 12px;
       cursor: pointer;
@@ -183,7 +203,8 @@
     }
 
     .mobile-toggle span {
-      width: 22px; height: 2px;
+      width: 22px;
+      height: 2px;
       background: #fff;
       border-radius: 2px;
       display: block;
@@ -215,8 +236,17 @@
       margin-right: 12px;
     }
 
-    .page-header h1 { color: #fff; font-size: 26px; font-weight: 800; margin-bottom: 4px; }
-    .page-header p  { color: rgba(255,255,255,0.82); font-size: 14px; }
+    .page-header h1 {
+      color: #fff;
+      font-size: 26px;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .page-header p {
+      color: white;
+      font-size: 14px;
+    }
 
     .header-meta {
       display: flex;
@@ -229,8 +259,8 @@
       align-items: center;
       gap: 6px;
       padding: 8px 16px;
-      background: rgba(255,255,255,0.18);
-      border: 1.5px solid rgba(255,255,255,0.35);
+      background: rgba(255, 255, 255, 0.18);
+      border: 1.5px solid rgba(255, 255, 255, 0.35);
       border-radius: 10px;
       color: white;
       font-size: 13px;
@@ -240,7 +270,9 @@
       font-family: inherit;
     }
 
-    .refresh-btn:hover { background: rgba(255,255,255,0.28); }
+    .refresh-btn:hover {
+      background: rgba(255, 255, 255, 0.28);
+    }
 
     /* ── Stats Cards ── */
     .stats-grid {
@@ -254,7 +286,7 @@
       background: white;
       border-radius: 16px;
       padding: 20px;
-      border: 1px solid rgba(0,0,0,0.05);
+      border: 1px solid rgba(0, 0, 0, 0.05);
       position: relative;
       overflow: hidden;
       transition: transform 0.22s, box-shadow 0.22s;
@@ -266,28 +298,50 @@
     .stat-card::before {
       content: '';
       position: absolute;
-      left: 0; top: 0; bottom: 0;
+      left: 0;
+      top: 0;
+      bottom: 0;
       width: 4px;
       border-radius: 16px 0 0 16px;
     }
 
-    .stat-card:nth-child(1)::before { background: linear-gradient(180deg, #f59e0b, #f97316); }
-    .stat-card:nth-child(2)::before { background: linear-gradient(180deg, #667eea, #764ba2); }
+    .stat-card:nth-child(1)::before {
+      background: linear-gradient(180deg, #f59e0b, #f97316);
+    }
+
+    .stat-card:nth-child(2)::before {
+      background: linear-gradient(180deg, #667eea, #764ba2);
+    }
 
 
-    .stat-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.09); }
+    .stat-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.09);
+    }
 
     .stat-icon {
-      width: 52px; height: 52px;
+      width: 52px;
+      height: 52px;
       border-radius: 14px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 22px; flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      flex-shrink: 0;
     }
-    .stat-card:nth-child(1) .stat-icon { background: linear-gradient(135deg,rgba(245,158,11,0.15),rgba(249,115,22,0.15)); }
-    .stat-card:nth-child(2) .stat-icon { background: linear-gradient(135deg,rgba(102,126,234,0.15),rgba(118,75,162,0.15)); }
+
+    .stat-card:nth-child(1) .stat-icon {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(249, 115, 22, 0.15));
+    }
+
+    .stat-card:nth-child(2) .stat-icon {
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.15), rgba(118, 75, 162, 0.15));
+    }
 
 
-    .stat-body { flex: 1; }
+    .stat-body {
+      flex: 1;
+    }
 
     .stat-label {
       font-size: 11px;
@@ -322,13 +376,13 @@
       background: white;
       border-radius: 16px;
       padding: 16px;
-      border: 1px solid rgba(0,0,0,0.05);
+      border: 1px solid rgba(0, 0, 0, 0.05);
       transition: transform 0.2s, box-shadow 0.2s;
     }
 
     .payment-card:hover {
       transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
     }
 
     .payment-header {
@@ -475,16 +529,28 @@
       color: #94a3b8;
     }
 
-    .empty-state .empty-icon { font-size: 64px; margin-bottom: 16px; }
-    .empty-state h3 { font-size: 18px; font-weight: 700; color: #64748b; margin-bottom: 8px; }
-    .empty-state p { font-size: 14px; }
+    .empty-state .empty-icon {
+      font-size: 64px;
+      margin-bottom: 16px;
+    }
+
+    .empty-state h3 {
+      font-size: 18px;
+      font-weight: 700;
+      color: #64748b;
+      margin-bottom: 8px;
+    }
+
+    .empty-state p {
+      font-size: 14px;
+    }
 
     /* ── Confirmation Modal ── */
     .confirm-modal {
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.5);
+      background: rgba(0, 0, 0, 0.5);
       z-index: 1000;
       align-items: center;
       justify-content: center;
@@ -503,13 +569,20 @@
       width: 100%;
       max-height: 85vh;
       overflow-y: auto;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
       animation: modalSlideUp 0.3s ease;
     }
 
     @keyframes modalSlideUp {
-      from { transform: translateY(30px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
+      from {
+        transform: translateY(30px);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
     }
 
     .modal-header {
@@ -649,7 +722,7 @@
       background: white;
       padding: 16px 20px;
       border-radius: 12px;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
       display: flex;
       align-items: center;
       gap: 12px;
@@ -662,8 +735,13 @@
       transform: translateX(0);
     }
 
-    .toast.success { border-left: 4px solid #10b981; }
-    .toast.error { border-left: 4px solid #ef4444; }
+    .toast.success {
+      border-left: 4px solid #10b981;
+    }
+
+    .toast.error {
+      border-left: 4px solid #ef4444;
+    }
 
     .toast-icon {
       font-size: 24px;
@@ -677,9 +755,15 @@
 
     /* ── Shimmer ── */
     @keyframes shimmer {
-      0%   { background-position: -600px 0; }
-      100% { background-position: 600px 0; }
+      0% {
+        background-position: -600px 0;
+      }
+
+      100% {
+        background-position: 600px 0;
+      }
     }
+
     .sh {
       background: linear-gradient(90deg, #f1f5f9 25%, #e8edf5 50%, #f1f5f9 75%);
       background-size: 1200px 100%;
@@ -687,16 +771,24 @@
       border-radius: 8px;
       display: block;
     }
+
     /* stat card shimmer */
-    .stat-card.shimmer-card .stat-icon { background: #f1f5f9 !important; }
-    .stat-card.shimmer-card .stat-icon span { visibility: hidden; }
+    .stat-card.shimmer-card .stat-icon {
+      background: #f1f5f9 !important;
+    }
+
+    .stat-card.shimmer-card .stat-icon span {
+      visibility: hidden;
+    }
+
     /* payment card shimmer */
     .payment-shimmer {
       background: white;
       border-radius: 16px;
       padding: 24px;
-      border: 1px solid rgba(0,0,0,0.05);
+      border: 1px solid rgba(0, 0, 0, 0.05);
     }
+
     .payment-shimmer .ps-header {
       display: flex;
       align-items: center;
@@ -705,39 +797,96 @@
       margin-bottom: 20px;
       border-bottom: 2px solid #f1f5f9;
     }
-    .payment-shimmer .ps-user { display: flex; align-items: center; gap: 12px; }
+
+    .payment-shimmer .ps-user {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
     .payment-shimmer .ps-details {
       display: grid;
-      grid-template-columns: repeat(4,1fr);
+      grid-template-columns: repeat(4, 1fr);
       gap: 16px;
       padding: 16px;
       background: #f8fafc;
       border-radius: 12px;
       margin-bottom: 20px;
     }
-    .payment-shimmer .ps-actions { display: flex; gap: 12px; }
+
+    .payment-shimmer .ps-actions {
+      display: flex;
+      gap: 12px;
+    }
 
     /* ── Responsive ── */
     @media (max-width: 1100px) {
-      .payment-details { grid-template-columns: repeat(2,1fr); }
-      .modal-details { grid-template-columns: 1fr; }
+      .payment-details {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .modal-details {
+        grid-template-columns: 1fr;
+      }
     }
 
     @media (max-width: 768px) {
-      .mobile-toggle { display: flex; }
-      .sidebar { transform: translateX(-100%); }
-      .sidebar.active { transform: translateX(0); }
-      .main { margin-left: 0; padding: 16px 14px; }
-      .stats-grid { grid-template-columns: 1fr; gap: 10px; margin-bottom: 20px; }
-      .stat-value { font-size: 22px; }
-      .stat-icon { width: 44px; height: 44px; font-size: 20px; }
-      .page-header { padding: 16px; border-radius: 14px; margin-bottom: 16px; }
-      .page-header h1 { font-size: 18px; }
-      .page-header p { font-size: 12px; }
-      .modal-details { grid-template-columns: 1fr; }
+      .mobile-toggle {
+        display: flex;
+      }
+
+      .sidebar {
+        transform: translateX(-100%);
+      }
+
+      .sidebar.active {
+        transform: translateX(0);
+      }
+
+      .main {
+        margin-left: 0;
+        padding: 16px 14px;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+
+      .stat-value {
+        font-size: 22px;
+      }
+
+      .stat-icon {
+        width: 44px;
+        height: 44px;
+        font-size: 20px;
+      }
+
+      .page-header {
+        padding: 16px;
+        border-radius: 14px;
+        margin-bottom: 16px;
+      }
+
+      .page-header h1 {
+        font-size: 18px;
+      }
+
+      .page-header p {
+        font-size: 12px;
+      }
+
+      .modal-details {
+        grid-template-columns: 1fr;
+      }
 
       /* Payment card mobile layout */
-      .payment-card { padding: 14px; border-radius: 14px; }
+      .payment-card {
+        padding: 14px;
+        border-radius: 14px;
+      }
 
       .payment-header {
         flex-direction: column;
@@ -746,10 +895,25 @@
         margin-bottom: 14px;
         padding-bottom: 12px;
       }
-      .payment-user { gap: 10px; }
-      .user-avatar { width: 40px; height: 40px; font-size: 15px; }
-      .user-info h3 { font-size: 13px; word-break: break-all; }
-      .user-info p  { font-size: 11px; }
+
+      .payment-user {
+        gap: 10px;
+      }
+
+      .user-avatar {
+        width: 40px;
+        height: 40px;
+        font-size: 15px;
+      }
+
+      .user-info h3 {
+        font-size: 13px;
+        word-break: break-all;
+      }
+
+      .user-info p {
+        font-size: 11px;
+      }
 
       .payment-amount {
         display: flex;
@@ -760,8 +924,15 @@
         border-radius: 10px;
         padding: 10px 14px;
       }
-      .amount-label { font-size: 11px; margin-bottom: 0; }
-      .amount-value { font-size: 20px; }
+
+      .amount-label {
+        font-size: 11px;
+        margin-bottom: 0;
+      }
+
+      .amount-value {
+        font-size: 20px;
+      }
 
       /* Show details as 2-col grid on mobile */
       .payment-details {
@@ -771,216 +942,249 @@
         padding: 12px;
         margin-bottom: 14px;
       }
-      .detail-label { font-size: 10px; }
-      .detail-value { font-size: 13px; }
 
-      .payment-actions { gap: 8px; }
-      .action-btn { padding: 11px; font-size: 13px; border-radius: 10px; }
+      .detail-label {
+        font-size: 10px;
+      }
+
+      .detail-value {
+        font-size: 13px;
+      }
+
+      .payment-actions {
+        gap: 8px;
+      }
+
+      .action-btn {
+        padding: 11px;
+        font-size: 13px;
+        border-radius: 10px;
+      }
 
       /* Shimmer mobile */
-      .payment-shimmer { padding: 14px; }
-      .payment-shimmer .ps-details { grid-template-columns: 1fr 1fr; }
+      .payment-shimmer {
+        padding: 14px;
+      }
+
+      .payment-shimmer .ps-details {
+        grid-template-columns: 1fr 1fr;
+      }
     }
   </style>
 </head>
+
 <body>
 
-<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+  <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
 
-<!-- Sidebar -->
-<div class="sidebar" id="sidebar">
-  <div class="sidebar-brand">
-    <h2><span>💰</span><span class="brand-text">Earnify Admin</span></h2>
-    <p>Platform Management</p>
-  </div>
-
-  <a href="/earnify-admin/Dashboard/" class="nav-link">
-    <span class="nav-icon">🏠</span> Dashboard
-  </a>
-  
-  <a href="/earnify-admin/statistic/" class="nav-link">
-    <span class="nav-icon">📈</span> Statistics
-  </a>
-
-  <a href="/earnify-admin/payments/" class="nav-link active">
-    <span class="nav-icon">💳</span> Payment Requests
-  </a>
-  <a href="/earnify-admin/Blog/" class="nav-link">
-    <span class="nav-icon">✍️</span> Blog
-  </a>
-  <a href="https://earnify-gamma.vercel.app/admin/Resources/" class="nav-link" style="border-top:1px solid #e2e8f0; padding-top:10px; margin-top:10px; color:#667eea;font-weight:600">
-    <span class="nav-icon">←</span> Back
-  </a>
-  
-  <div class="sidebar-footer">
-    <div class="admin-badge">
-      <div class="admin-avatar" id="adminAvatar">A</div>
-      <div class="admin-info">
-        <div class="admin-name" id="adminEmail">Loading...</div>
-        <div class="admin-role">Super Admin</div>
-      </div>
+  <!-- Sidebar -->
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <h2><span>💰</span><span class="brand-text">Earnify Admin</span></h2>
+      <p>Platform Management</p>
     </div>
-    <button class="logout-btn" onclick="logout()">🚪 Logout</button>
-  </div>
-</div>
 
-<!-- Main -->
-<div class="main">
+    <a href="/earnify-admin/Dashboard/" class="nav-link">
+      <span class="nav-icon">🏠</span> Dashboard
+    </a>
 
-  <!-- Header -->
-  <div class="page-header">
-    <div style="display: flex; align-items: center;">
-      <button class="mobile-toggle" onclick="toggleSidebar()">
-        <span></span><span></span><span></span>
-      </button>
-      <div>
-        <h1>💳 Payment Requests</h1>
-        <p>Review and process withdrawal requests</p>
-      </div>
-    </div>
-    <div class="header-meta">
-      <button class="refresh-btn" onclick="loadPayments()">🔄 Refresh</button>
-    </div>
-  </div>
+    <a href="/earnify-admin/statistic/" class="nav-link">
+      <span class="nav-icon">📈</span> Statistics
+    </a>
 
+    <a href="/earnify-admin/payments/" class="nav-link active">
+      <span class="nav-icon">💳</span> Payment Requests
+    </a>
+    <a href="/earnify-admin/Blog/" class="nav-link">
+      <span class="nav-icon">✍️</span> Blog
+    </a>
+    <a href="https://earnify-gamma.vercel.app/admin/Resources/" class="nav-link"
+      style="border-top:1px solid #e2e8f0; padding-top:10px; margin-top:10px; color:#667eea;font-weight:600">
+      <span class="nav-icon">←</span> Back
+    </a>
 
-  <!-- Stats -->
-  <div class="stats-grid" id="statsGrid">
-    <div class="stat-card shimmer-card">
-      <div class="stat-icon"><span>⏳</span></div>
-      <div class="stat-body">
-        <span class="sh" style="height:10px;width:70px;margin-bottom:10px;"></span>
-        <span class="sh" style="height:26px;width:60px;margin-bottom:8px;"></span>
-        <span class="sh" style="height:9px;width:90px;"></span>
-      </div>
-    </div>
-    <div class="stat-card shimmer-card">
-      <div class="stat-icon"><span>💰</span></div>
-      <div class="stat-body">
-        <span class="sh" style="height:10px;width:80px;margin-bottom:10px;"></span>
-        <span class="sh" style="height:26px;width:80px;margin-bottom:8px;"></span>
-        <span class="sh" style="height:9px;width:100px;"></span>
-      </div>
-    </div>
-  </div>
-
- 
-
-  <!-- Payment Requests -->
-  <div class="payments-grid" id="paymentsGrid">
-    <div class="payment-shimmer">
-      <div class="ps-header">
-        <div class="ps-user">
-          <span class="sh" style="width:48px;height:48px;border-radius:50%;flex-shrink:0;"></span>
-          <div><span class="sh" style="height:14px;width:160px;margin-bottom:8px;"></span><span class="sh" style="height:11px;width:100px;"></span></div>
+    <div class="sidebar-footer">
+      <div class="admin-badge">
+        <div class="admin-avatar" id="adminAvatar">A</div>
+        <div class="admin-info">
+          <div class="admin-name" id="adminEmail">Loading...</div>
+          <div class="admin-role">Super Admin</div>
         </div>
-        <span class="sh" style="height:22px;width:90px;"></span>
       </div>
-      <div class="ps-details">
-        <span class="sh" style="height:44px;"></span>
-        <span class="sh" style="height:44px;"></span>
-        <span class="sh" style="height:44px;"></span>
-        <span class="sh" style="height:44px;"></span>
-      </div>
-      <div class="ps-actions">
-        <span class="sh" style="height:44px;flex:1;border-radius:10px;"></span>
-        <span class="sh" style="height:44px;flex:1;border-radius:10px;"></span>
-      </div>
+      <button class="logout-btn" onclick="logout()">🚪 Logout</button>
     </div>
-    <div class="payment-shimmer">
-      <div class="ps-header">
-        <div class="ps-user">
-          <span class="sh" style="width:48px;height:48px;border-radius:50%;flex-shrink:0;"></span>
-          <div><span class="sh" style="height:14px;width:140px;margin-bottom:8px;"></span><span class="sh" style="height:11px;width:80px;"></span></div>
+  </div>
+
+  <!-- Main -->
+  <div class="main">
+
+    <!-- Header -->
+    <div class="page-header">
+      <div style="display: flex; align-items: center;">
+        <button class="mobile-toggle" onclick="toggleSidebar()">
+          <span></span><span></span><span></span>
+        </button>
+        <div>
+          <h1>💳 Payment Requests</h1>
+          <p>Review and process withdrawal requests</p>
         </div>
-        <span class="sh" style="height:22px;width:80px;"></span>
       </div>
-      <div class="ps-details">
-        <span class="sh" style="height:44px;"></span>
-        <span class="sh" style="height:44px;"></span>
-        <span class="sh" style="height:44px;"></span>
-        <span class="sh" style="height:44px;"></span>
-      </div>
-      <div class="ps-actions">
-        <span class="sh" style="height:44px;flex:1;border-radius:10px;"></span>
-        <span class="sh" style="height:44px;flex:1;border-radius:10px;"></span>
+      <div class="header-meta">
+        <button class="refresh-btn" onclick="loadPayments()">🔄 Refresh</button>
       </div>
     </div>
-    <div class="payment-shimmer">
-      <div class="ps-header">
-        <div class="ps-user">
-          <span class="sh" style="width:48px;height:48px;border-radius:50%;flex-shrink:0;"></span>
-          <div><span class="sh" style="height:14px;width:180px;margin-bottom:8px;"></span><span class="sh" style="height:11px;width:90px;"></span></div>
+
+
+    <!-- Stats -->
+    <div class="stats-grid" id="statsGrid">
+      <div class="stat-card shimmer-card">
+        <div class="stat-icon"><span>⏳</span></div>
+        <div class="stat-body">
+          <span class="sh" style="height:10px;width:70px;margin-bottom:10px;"></span>
+          <span class="sh" style="height:26px;width:60px;margin-bottom:8px;"></span>
+          <span class="sh" style="height:9px;width:90px;"></span>
         </div>
-        <span class="sh" style="height:22px;width:100px;"></span>
       </div>
-      <div class="ps-details">
-        <span class="sh" style="height:44px;"></span>
-        <span class="sh" style="height:44px;"></span>
-        <span class="sh" style="height:44px;"></span>
-        <span class="sh" style="height:44px;"></span>
+      <div class="stat-card shimmer-card">
+        <div class="stat-icon"><span>💰</span></div>
+        <div class="stat-body">
+          <span class="sh" style="height:10px;width:80px;margin-bottom:10px;"></span>
+          <span class="sh" style="height:26px;width:80px;margin-bottom:8px;"></span>
+          <span class="sh" style="height:9px;width:100px;"></span>
+        </div>
       </div>
-      <div class="ps-actions">
-        <span class="sh" style="height:44px;flex:1;border-radius:10px;"></span>
-        <span class="sh" style="height:44px;flex:1;border-radius:10px;"></span>
+    </div>
+
+
+
+    <!-- Payment Requests -->
+    <div class="payments-grid" id="paymentsGrid">
+      <div class="payment-shimmer">
+        <div class="ps-header">
+          <div class="ps-user">
+            <span class="sh" style="width:48px;height:48px;border-radius:50%;flex-shrink:0;"></span>
+            <div><span class="sh" style="height:14px;width:160px;margin-bottom:8px;"></span><span class="sh"
+                style="height:11px;width:100px;"></span></div>
+          </div>
+          <span class="sh" style="height:22px;width:90px;"></span>
+        </div>
+        <div class="ps-details">
+          <span class="sh" style="height:44px;"></span>
+          <span class="sh" style="height:44px;"></span>
+          <span class="sh" style="height:44px;"></span>
+          <span class="sh" style="height:44px;"></span>
+        </div>
+        <div class="ps-actions">
+          <span class="sh" style="height:44px;flex:1;border-radius:10px;"></span>
+          <span class="sh" style="height:44px;flex:1;border-radius:10px;"></span>
+        </div>
+      </div>
+      <div class="payment-shimmer">
+        <div class="ps-header">
+          <div class="ps-user">
+            <span class="sh" style="width:48px;height:48px;border-radius:50%;flex-shrink:0;"></span>
+            <div><span class="sh" style="height:14px;width:140px;margin-bottom:8px;"></span><span class="sh"
+                style="height:11px;width:80px;"></span></div>
+          </div>
+          <span class="sh" style="height:22px;width:80px;"></span>
+        </div>
+        <div class="ps-details">
+          <span class="sh" style="height:44px;"></span>
+          <span class="sh" style="height:44px;"></span>
+          <span class="sh" style="height:44px;"></span>
+          <span class="sh" style="height:44px;"></span>
+        </div>
+        <div class="ps-actions">
+          <span class="sh" style="height:44px;flex:1;border-radius:10px;"></span>
+          <span class="sh" style="height:44px;flex:1;border-radius:10px;"></span>
+        </div>
+      </div>
+      <div class="payment-shimmer">
+        <div class="ps-header">
+          <div class="ps-user">
+            <span class="sh" style="width:48px;height:48px;border-radius:50%;flex-shrink:0;"></span>
+            <div><span class="sh" style="height:14px;width:180px;margin-bottom:8px;"></span><span class="sh"
+                style="height:11px;width:90px;"></span></div>
+          </div>
+          <span class="sh" style="height:22px;width:100px;"></span>
+        </div>
+        <div class="ps-details">
+          <span class="sh" style="height:44px;"></span>
+          <span class="sh" style="height:44px;"></span>
+          <span class="sh" style="height:44px;"></span>
+          <span class="sh" style="height:44px;"></span>
+        </div>
+        <div class="ps-actions">
+          <span class="sh" style="height:44px;flex:1;border-radius:10px;"></span>
+          <span class="sh" style="height:44px;flex:1;border-radius:10px;"></span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast">
+    <div class="toast-icon" id="toastIcon"></div>
+    <div class="toast-message" id="toastMessage"></div>
+  </div>
+
+  <!-- Confirmation Modal -->
+  <div class="confirm-modal" id="confirmModal" onclick="if(event.target===this)closeConfirmModal()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title">
+          <span>✅</span>
+          <span>Confirm Payment Approval</span>
+        </div>
+        <button class="modal-close" onclick="closeConfirmModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-details" id="modalDetails"></div>
+      </div>
+      <div class="modal-actions">
+        <button class="modal-btn modal-btn-cancel" onclick="closeConfirmModal()">Cancel</button>
+        <button class="modal-btn modal-btn-confirm" id="confirmBtn" onclick="confirmPayment()">✓ Approve
+          Payment</button>
       </div>
     </div>
   </div>
 
-</div>
-
-<!-- Toast -->
-<div class="toast" id="toast">
-  <div class="toast-icon" id="toastIcon"></div>
-  <div class="toast-message" id="toastMessage"></div>
-</div>
-
-<!-- Confirmation Modal -->
-<div class="confirm-modal" id="confirmModal" onclick="if(event.target===this)closeConfirmModal()">
-  <div class="modal-content">
-    <div class="modal-header">
-      <div class="modal-title">
-        <span>✅</span>
-        <span>Confirm Payment Approval</span>
+  <!-- Reject Reason Modal -->
+  <div class="confirm-modal" id="rejectModal" onclick="if(event.target===this)closeRejectModal()">
+    <div class="modal-content" style="max-width:480px;">
+      <div class="modal-header">
+        <div class="modal-title">
+          <span>✕</span>
+          <span>Reject Withdrawal</span>
+        </div>
+        <button class="modal-close" onclick="closeRejectModal()">&times;</button>
       </div>
-      <button class="modal-close" onclick="closeConfirmModal()">&times;</button>
-    </div>
-    <div class="modal-body">
-      <div class="modal-details" id="modalDetails"></div>
-    </div>
-    <div class="modal-actions">
-      <button class="modal-btn modal-btn-cancel" onclick="closeConfirmModal()">Cancel</button>
-      <button class="modal-btn modal-btn-confirm" id="confirmBtn" onclick="confirmPayment()">✓ Approve Payment</button>
+      <div class="modal-body">
+        <p style="font-size:14px;color:#64748b;margin-bottom:16px;">Please provide a reason for rejecting this
+          withdrawal request. The user will see this reason.</p>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <label
+            style="font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.6px;">Rejection
+            Reason <span style="color:#ef4444;">*</span></label>
+          <textarea id="rejectReasonInput" rows="4"
+            placeholder="e.g. Invalid account details, insufficient verification…"
+            style="padding:13px 16px;border:2px solid #e8edf5;border-radius:12px;font-size:14px;font-family:inherit;background:#f8fafc;color:#1e293b;resize:none;outline:none;transition:border-color .2s;"
+            onfocus="this.style.borderColor='#ef4444'" onblur="this.style.borderColor='#e8edf5'"></textarea>
+          <div id="rejectReasonError" style="display:none;font-size:12px;color:#ef4444;font-weight:600;">Please enter a
+            rejection reason.</div>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="modal-btn modal-btn-cancel" onclick="closeRejectModal()">Cancel</button>
+        <button class="modal-btn" id="rejectConfirmBtn" onclick="confirmReject()"
+          style="background:linear-gradient(135deg,#ef4444,#dc2626);color:white;flex:1;">✕ Confirm Reject</button>
+      </div>
     </div>
   </div>
-</div>
 
-<!-- Reject Reason Modal -->
-<div class="confirm-modal" id="rejectModal" onclick="if(event.target===this)closeRejectModal()">
-  <div class="modal-content" style="max-width:480px;">
-    <div class="modal-header">
-      <div class="modal-title">
-        <span>✕</span>
-        <span>Reject Withdrawal</span>
-      </div>
-      <button class="modal-close" onclick="closeRejectModal()">&times;</button>
-    </div>
-    <div class="modal-body">
-      <p style="font-size:14px;color:#64748b;margin-bottom:16px;">Please provide a reason for rejecting this withdrawal request. The user will see this reason.</p>
-      <div style="display:flex;flex-direction:column;gap:6px;">
-        <label style="font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.6px;">Rejection Reason <span style="color:#ef4444;">*</span></label>
-        <textarea id="rejectReasonInput" rows="4" placeholder="e.g. Invalid account details, insufficient verification…" style="padding:13px 16px;border:2px solid #e8edf5;border-radius:12px;font-size:14px;font-family:inherit;background:#f8fafc;color:#1e293b;resize:none;outline:none;transition:border-color .2s;" onfocus="this.style.borderColor='#ef4444'" onblur="this.style.borderColor='#e8edf5'"></textarea>
-        <div id="rejectReasonError" style="display:none;font-size:12px;color:#ef4444;font-weight:600;">Please enter a rejection reason.</div>
-      </div>
-    </div>
-    <div class="modal-actions">
-      <button class="modal-btn modal-btn-cancel" onclick="closeRejectModal()">Cancel</button>
-      <button class="modal-btn" id="rejectConfirmBtn" onclick="confirmReject()" style="background:linear-gradient(135deg,#ef4444,#dc2626);color:white;flex:1;">✕ Confirm Reject</button>
-    </div>
-  </div>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="payments.js?v=15"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="payments.js?v=15"></script>
 </body>
+
 </html>
