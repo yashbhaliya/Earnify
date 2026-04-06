@@ -270,20 +270,22 @@ async function loadDashboard() {
 
     const totalWithdrawn = totalWithdrawnGross * 0.95;
     const totalPending   = totalPendingGross   * 0.95;
-    // Platform fees = 5% only from approved/completed withdrawals (actually collected)
-    const platformFees   = totalWithdrawnGross * 0.05;
-    const available      = Math.max(0, totalGross - totalWithdrawnGross - totalPendingGross);
+    // Platform fees = 5% from ALL withdrawal requests (approved + pending)
+    const allWdGross   = totalWithdrawnGross + totalPendingGross;
+    const platformFees = allWdGross * 0.05;
+    const available    = Math.max(0, totalGross - totalWithdrawnGross - totalPendingGross);
 
     const completedCount = completedPurchases.length;
     const approvedCount  = myWithdrawals.filter(w => w.status === 'approved' || w.status === 'completed').length;
     const pendingCount   = myWithdrawals.filter(w => w.status === 'pending').length;
+    const totalWdCount   = approvedCount + pendingCount;
 
     // Update stat cards
     const cardData = [
       { id: 'cardAvailable', value: fmt(available),      sub: 'Ready to withdraw' },
       { id: 'cardRevenue',   value: fmt(totalGross),     sub: `${completedCount} completed sales` },
       { id: 'cardWithdrawn', value: fmt(totalWithdrawn), sub: `${approvedCount} approved • net after 5% fee` },
-      { id: 'cardFees',      value: fmt(platformFees),   sub: `${approvedCount} withdrawal req • 5% each` },
+      { id: 'cardFees',      value: fmt(platformFees),   sub: `${totalWdCount} withdrawal req • 5% each` },
       { id: 'cardPending',   value: fmt(totalPending),   sub: `${pendingCount} pending • net after 5% fee` }
     ];
     cardData.forEach(({ id, value, sub }) => {

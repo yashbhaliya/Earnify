@@ -864,10 +864,11 @@
         const totalWithdrawn = totalWithdrawnGross * 0.95;
         const totalPending   = totalPendingGross   * 0.95;
 
-        // Platform fees = 5% only from approved/completed withdrawal requests
-        const platformFees = totalWithdrawnGross * 0.05;
+        // Platform fees = 5% from ALL withdrawal requests (approved + pending) — user sees fee on every req
+        const allWdGross   = totalWithdrawnGross + totalPendingGross;
+        const platformFees = allWdGross * 0.05;
 
-        // Available = gross earnings - gross withdrawn - gross pending
+        // Available = gross earnings − all withdrawal requests (approved + pending)
         const available = Math.max(0, totalGross - totalWithdrawnGross - totalPendingGross);
         _availableBalance = available;
 
