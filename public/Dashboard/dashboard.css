@@ -337,7 +337,7 @@
 }
 
 .td-icon.pdf {
-  background: linear-gradient(135deg, #fee2e2, #fecaca);
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(217, 119, 6, 0.15));
 }
 
 .td-icon.excel {

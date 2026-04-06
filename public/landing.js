@@ -257,6 +257,7 @@ async function loadResources() {
         } catch {}
       }
     }
+    window._cachedPurchases = userPurchases;
     displayResources(allResources, userPurchases);
   } catch (err) {
     const grid = document.getElementById('resourcesGrid');
@@ -266,25 +267,17 @@ async function loadResources() {
 
 /* ── Search ── */
 function searchResources() {
-  const q = document.getElementById('searchInput').value.toLowerCase();
-  const filtered = allResources.filter(r =>
+  const q = document.getElementById('searchInput').value.toLowerCase().trim();
+  currentPage = 1;
+  const base = currentFilter === 'all' ? allResources : allResources.filter(r => r.type === currentFilter);
+  const filtered = !q ? base : base.filter(r =>
     (r.title||'').toLowerCase().includes(q) ||
     (r.type||'').toLowerCase().includes(q)  ||
     (r.description||'').toLowerCase().includes(q) ||
     String(r.price||'').includes(q)
   );
-  showLoader();
-  if (isLoggedIn) {
-    const cu = JSON.parse(localStorage.getItem('currentUser'));
-    if (cu) {
-      fetch(API_CONFIG.getURL(`${API_CONFIG.endpoints.payments}/${cu.id}`))
-        .then(r => r.ok ? r.json() : [])
-        .then(p => displayResources(filtered, p))
-        .catch(() => displayResources(filtered, []));
-      return;
-    }
-  }
-  displayResources(filtered, []);
+  displayResources(filtered, window._cachedPurchases || []);
+  if (q) scrollToResources();
 }
 
 /* ── Display ── */
@@ -292,8 +285,16 @@ function displayResources(resources, userPurchases = []) {
   const grid = document.getElementById('resourcesGrid');
   if (!grid) return;
 
+  const q = (document.getElementById('searchInput')?.value || '').trim();
+
   if (!resources || resources.length === 0) {
-    grid.innerHTML = '<p style="text-align:center;color:#666;grid-column:1/-1;">No resources available yet.</p>';
+    grid.innerHTML = q
+      ? `<div style="text-align:center;color:#666;grid-column:1/-1;padding:40px 20px;">
+           <div style="font-size:48px;margin-bottom:12px;">🔍</div>
+           <p style="font-size:16px;font-weight:600;color:#1e293b;">No results for "${q}"</p>
+           <p style="font-size:13px;color:#94a3b8;margin-top:6px;">Try a different keyword or clear the search.</p>
+         </div>`
+      : '<p style="text-align:center;color:#666;grid-column:1/-1;">No resources available yet.</p>';
     const pag = document.querySelector('.pagination');
     if (pag) pag.innerHTML = '';
     return;
@@ -372,44 +373,31 @@ function scrollToResources() {
 
 function changePage(page) {
   currentPage = page;
-  showLoader();
   scrollToResources();
-  const filtered = currentFilter === 'all' ? allResources : allResources.filter(r => r.type === currentFilter);
-  if (isLoggedIn) {
-    const cu = JSON.parse(localStorage.getItem('currentUser'));
-    if (cu) {
-      fetch(API_CONFIG.getURL(`${API_CONFIG.endpoints.payments}/${cu.id}`))
-        .then(r => r.ok ? r.json() : [])
-        .then(p => displayResources(filtered, p))
-        .catch(() => displayResources(filtered, []));
-      return;
-    }
-  }
-  displayResources(filtered, []);
+  const q = (document.getElementById('searchInput')?.value || '').toLowerCase().trim();
+  const base = currentFilter === 'all' ? allResources : allResources.filter(r => r.type === currentFilter);
+  const filtered = !q ? base : base.filter(r =>
+    (r.title||'').toLowerCase().includes(q) ||
+    (r.type||'').toLowerCase().includes(q)  ||
+    (r.description||'').toLowerCase().includes(q) ||
+    String(r.price||'').includes(q)
+  );
+  displayResources(filtered, window._cachedPurchases || []);
 }
 
 /* ── Filter ── */
 function filterResources(type) {
   currentFilter = type;
   currentPage   = 1;
+  const searchInput = document.getElementById('searchInput');
+  if (searchInput) searchInput.value = '';
   document.querySelectorAll('.filter-btn').forEach(b => {
     const btnType = b.getAttribute('onclick')?.match(/'(\w+)'/)?.[1] || 'all';
     b.classList.toggle('active', btnType === type);
   });
-  showLoader();
   scrollToResources();
   const filtered = type === 'all' ? allResources : allResources.filter(r => r.type === type);
-  if (isLoggedIn) {
-    const cu = JSON.parse(localStorage.getItem('currentUser'));
-    if (cu) {
-      fetch(API_CONFIG.getURL(`${API_CONFIG.endpoints.payments}/${cu.id}`))
-        .then(r => r.ok ? r.json() : [])
-        .then(p => displayResources(filtered, p))
-        .catch(() => displayResources(filtered, []));
-      return;
-    }
-  }
-  displayResources(filtered, []);
+  displayResources(filtered, window._cachedPurchases || []);
 }
 
 function viewDetails(id) { window.location.href = `Detail/?id=${id}`; }

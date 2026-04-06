@@ -17,6 +17,12 @@ body {
 }
 .navbar .container { display: flex; justify-content: space-between; align-items: center; }
 .logo { font-size: 1.6rem; font-weight: 800; color: #1a202c; }
+.logo b {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
 .nav-links { display: flex; gap: 1.8rem; align-items: center; }
 .nav-links a { text-decoration: none; color: #4a5568; font-weight: 500; font-size: 0.95rem; transition: color 0.2s; }
 .nav-links a:hover { color: #667eea; }
