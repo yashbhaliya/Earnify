@@ -301,173 +301,6 @@
       }
     }
 
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-      margin-bottom: 30px;
-    }
-
-    .stat-card {
-      background: white;
-      border-radius: 12px;
-      padding: 16px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-      transition: all 0.2s ease;
-      border: 1px solid rgba(0, 0, 0, 0.04);
-      position: relative;
-      overflow: hidden;
-      cursor: pointer;
-      min-height: 80px !important;
-    }
-
-    .stat-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-      transition: height 0.2s ease;
-    }
-
-    .stat-card:nth-child(2)::before {
-      background: linear-gradient(90deg, #f093fb 0%, #f5576c 100%);
-    }
-
-    .stat-card:nth-child(3)::before {
-      background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
-    }
-
-    /* shimmer sweep */
-    .stat-card.shimmer-active::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 60%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.55), transparent);
-      animation: shimmer 1.6s infinite;
-    }
-
-    .stat-card:hover {
-      transform: translateY(-2px);
-    }
-
-    .stat-card:hover::before {
-      height: 4px;
-    }
-
-    .stat-icon {
-      width: 44px;
-      height: 44px;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 20px;
-      flex-shrink: 0;
-      background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-      border: 1px solid #e2e8f0;
-      transition: transform 0.2s ease;
-    }
-
-    .stat-card:hover .stat-icon {
-      transform: scale(1.06);
-    }
-
-    /* shimmer icon placeholder */
-    .stat-icon.shimmer-icon {
-      background: linear-gradient(90deg, #efefef 0%, #e0e0e0 50%, #efefef 100%);
-      background-size: 800px 100%;
-      animation: shimmer 1.6s infinite linear;
-      border: none;
-    }
-
-    .stat-card:nth-child(1) .stat-icon.shimmer-icon {
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      opacity: 0.3;
-      animation: none;
-    }
-
-    .stat-card:nth-child(2) .stat-icon.shimmer-icon {
-      background: linear-gradient(135deg, #f093fb, #f5576c);
-      opacity: 0.3;
-      animation: none;
-    }
-
-    .stat-card:nth-child(3) .stat-icon.shimmer-icon {
-      background: linear-gradient(135deg, #4facfe, #00f2fe);
-      opacity: 0.3;
-      animation: none;
-    }
-
-    .stat-content {
-      flex: 1;
-      text-align: right;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      gap: 5px;
-    }
-
-    .stat-value {
-      font-size: 22px;
-      font-weight: 800;
-      background: linear-gradient(135deg, #1e293b 0%, #475569 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      line-height: 1.1;
-      margin: 0;
-      transition: all 0.2s ease;
-    }
-
-    .stat-card:hover .stat-value {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    /* shimmer value/label bars */
-    .stat-value.shimmer-bar,
-    .stat-label.shimmer-bar {
-      background: linear-gradient(90deg, #efefef 0%, #e0e0e0 50%, #efefef 100%) !important;
-      background-size: 800px 100% !important;
-      animation: shimmer 1.6s infinite linear !important;
-      -webkit-text-fill-color: transparent;
-      border-radius: 4px;
-      color: transparent !important;
-      display: block;
-      margin-left: auto;
-    }
-
-    .stat-value.shimmer-bar {
-      width: 65%;
-      height: 20px;
-    }
-
-    .stat-label.shimmer-bar {
-      width: 45%;
-      height: 9px;
-      margin-top: 2px;
-    }
-
-    .stat-label {
-      font-size: 10px;
-      color: #94a3b8;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin: 0;
-    }
-
     .shimmer-gradient {
       background: linear-gradient(90deg, #f0f0f0 0%, #e0e0e0 50%, #f0f0f0 100%);
       background-size: 800px 100%;
@@ -481,6 +314,7 @@
       .mobile-profile-header {
         display: flex;
         align-items: center;
+        gap:10px;
         /* justify-content: center; */
         position: relative;
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -506,27 +340,6 @@
       }
       .profile-page-header {
         display: none !important;
-      }
-
-      .stats-grid {
-        grid-template-columns: 1fr;
-        gap: 12px;
-      }
-
-      .stat-card {
-        padding: 12px 14px;
-        gap: 10px;
-        min-height: 68px;
-      }
-
-      .stat-icon {
-        width: 38px;
-        height: 38px;
-        font-size: 17px;
-      }
-
-      .stat-value {
-        font-size: 18px;
       }
 
       .profile-actions {
@@ -666,27 +479,6 @@
       border-radius: 4px;
     }
 
-    .shimmer-stat-icon {
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      margin: 0 auto 10px;
-    }
-
-    .shimmer-stat-value {
-      width: 60%;
-      height: 28px;
-      border-radius: 6px;
-      margin: 0 auto 5px;
-    }
-
-    .shimmer-stat-label {
-      width: 80%;
-      height: 12px;
-      border-radius: 4px;
-      margin: 0 auto;
-    }
-
     .shimmer-resource-item {
       display: flex;
       align-items: center;
@@ -743,6 +535,114 @@
         display: block !important; margin: 0 !important;
       }
     }
+    /* ── Withdrawal Info Card ── */
+    .wi-methods {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin-top: 6px;
+    }
+    .wi-method {
+      border-radius: 16px;
+      padding: 18px 16px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: transform 0.2s, box-shadow 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .wi-method::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+    }
+    .wi-method.upi   { background: linear-gradient(135deg,#f0f0ff 0%,#e8e4ff 100%); border: 1.5px solid #c4b5fd; }
+    .wi-method.upi::after { background: linear-gradient(90deg,#667eea,#764ba2); }
+    .wi-method.bank  { background: linear-gradient(135deg,#f0fdf4 0%,#dcfce7 100%); border: 1.5px solid #86efac; }
+    .wi-method.bank::after { background: linear-gradient(90deg,#10b981,#059669); }
+    .wi-method.gpay  { background: linear-gradient(135deg,#f0fdf9 0%,#ccfbf1 100%); border: 1.5px solid #5eead4; }
+    .wi-method.gpay::after { background: linear-gradient(90deg,#14b8a6,#0d9488); }
+    .wi-method.paytm { background: linear-gradient(135deg,#eff6ff 0%,#dbeafe 100%); border: 1.5px solid #93c5fd; }
+    .wi-method.paytm::after { background: linear-gradient(90deg,#3b82f6,#2563eb); }
+    .wi-method:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.10); }
+    .wi-method-header {
+      display: flex; align-items: center; gap: 10px;
+    }
+    .wi-icon {
+      width: 44px; height: 44px;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+      flex-shrink: 0;
+    }
+    .wi-method.upi   .wi-icon { background: linear-gradient(135deg,#667eea,#764ba2); }
+    .wi-method.bank  .wi-icon { background: linear-gradient(135deg,#10b981,#059669); }
+    .wi-method.gpay  .wi-icon { background: linear-gradient(135deg,#14b8a6,#0d9488); }
+    .wi-method.paytm .wi-icon { background: linear-gradient(135deg,#3b82f6,#2563eb); }
+    .wi-title-wrap { flex: 1; min-width: 0; }
+    .wi-label {
+      font-size: 11px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.6px;
+      color: #64748b; margin-bottom: 2px;
+    }
+    .wi-status {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 10px; font-weight: 700;
+      padding: 2px 8px; border-radius: 20px;
+    }
+    .wi-status.set   { background: #dcfce7; color: #16a34a; }
+    .wi-status.unset { background: #fee2e2; color: #dc2626; }
+    .wi-value {
+      font-size: 13px; font-weight: 600; color: #1e293b;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      background: rgba(255,255,255,0.7);
+      border-radius: 8px; padding: 7px 10px;
+      border: 1px solid rgba(0,0,0,0.06);
+    }
+    .wi-value.wi-empty { color: #94a3b8; font-style: italic; font-weight: 400; }
+    .wi-edit-btn {
+      padding: 7px 16px;
+      background: linear-gradient(135deg,#667eea,#764ba2);
+      color: white; border: none; border-radius: 8px;
+      font-size: 12px; font-weight: 700; cursor: pointer;
+      font-family: inherit; white-space: nowrap;
+      transition: opacity 0.2s, transform 0.2s;
+      flex-shrink: 0;
+    }
+    .wi-edit-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+    @media (max-width: 600px) {
+      .wi-methods { grid-template-columns: 1fr; gap: 12px; }
+    }
+
+    /* ── Withdrawal Edit Modal ── */
+    #wiModal .modal-content { max-width: 480px; }
+    .wi-form-group { margin-bottom: 16px; }
+    .wi-form-group label {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 12px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.5px;
+      color: #64748b; margin-bottom: 7px;
+    }
+    .wi-form-group input {
+      width: 100%; padding: 12px 14px;
+      border: 2px solid #e2e8f0; border-radius: 10px;
+      font-size: 14px; font-family: inherit;
+      background: #f8fafc; color: #1e293b;
+      transition: border-color 0.2s, box-shadow 0.2s; outline: none;
+      box-sizing: border-box;
+    }
+    .wi-form-group input:focus { border-color: #667eea; background: #fff; box-shadow: 0 0 0 3px rgba(102,126,234,0.12); }
+    .wi-save-btn {
+      width: 100%; padding: 14px;
+      background: linear-gradient(135deg,#667eea,#764ba2);
+      color: white; border: none; border-radius: 10px;
+      font-size: 15px; font-weight: 700; cursor: pointer;
+      font-family: inherit; margin-top: 8px;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .wi-save-btn:hover { opacity: 0.9; transform: translateY(-1px); }
     @media (min-width: 769px) {
       .page-header-toggle { display: none !important; }
     }
@@ -786,7 +686,7 @@
           <div class="hamburger"></div>
           <div class="hamburger"></div>
         </button>
-        <h2>👤 My Profile</h2>
+        <h2>My Profile</h2>
       </div>
 
       <div class="profile-page-header">
@@ -796,7 +696,7 @@
             <div class="hamburger"></div>
             <div class="hamburger"></div>
           </button>
-          <h1>👤 My Profile</h1>
+          <h1>My Profile</h1>
         </div>
         <p style="display: flex;">Manage your account information and settings</p>
       </div>
@@ -884,30 +784,55 @@
         </div>
       </div>
 
-      <div class="stats-grid">
-        <div class="stat-card shimmer-active" id="statCard1">
-          <div class="stat-icon shimmer-icon" id="statIcon1"></div>
-          <div class="stat-content">
-            <div class="stat-value shimmer-bar" id="totalResources">&nbsp;</div>
-            <div class="stat-label shimmer-bar" id="statLabel1">&nbsp;</div>
+       <!-- Withdrawal Info Card -->
+      <div class="profile-card" style="margin-top: 24px;">
+        <h2>💳 Withdrawal Info
+          <button class="wi-edit-btn" onclick="openWiModal()" style="margin-left:auto;">✏️ Edit Info</button>
+        </h2>
+        <div class="wi-methods">
+          <div class="wi-method upi">
+            <div class="wi-method-header">
+              <div class="wi-icon">🔗</div>
+              <div class="wi-title-wrap">
+                <div class="wi-label">UPI ID</div>
+                <span class="wi-status unset" id="wi-status-upi">● Not Set</span>
+              </div>
+            </div>
+            <div class="wi-value wi-empty" id="wi-upi">Add your UPI ID</div>
           </div>
-        </div>
-        <div class="stat-card shimmer-active" id="statCard2">
-          <div class="stat-icon shimmer-icon" id="statIcon2"></div>
-          <div class="stat-content">
-            <div class="stat-value shimmer-bar" id="totalEarnings">&nbsp;</div>
-            <div class="stat-label shimmer-bar" id="statLabel2">&nbsp;</div>
+          <div class="wi-method bank">
+            <div class="wi-method-header">
+              <div class="wi-icon">🏦</div>
+              <div class="wi-title-wrap">
+                <div class="wi-label">Bank Transfer</div>
+                <span class="wi-status unset" id="wi-status-bank">● Not Set</span>
+              </div>
+            </div>
+            <div class="wi-value wi-empty" id="wi-bank">Add account number</div>
+            <div class="wi-value wi-empty" style="margin-top:4px;" id="wi-ifsc">Add IFSC code</div>
           </div>
-        </div>
-        <div class="stat-card shimmer-active" id="statCard3">
-          <div class="stat-icon shimmer-icon" id="statIcon3"></div>
-          <div class="stat-content">
-            <div class="stat-value shimmer-bar" id="totalCustomers">&nbsp;</div>
-            <div class="stat-label shimmer-bar" id="statLabel3">&nbsp;</div>
+          <div class="wi-method gpay">
+            <div class="wi-method-header">
+              <div class="wi-icon">💚</div>
+              <div class="wi-title-wrap">
+                <div class="wi-label">Google Pay</div>
+                <span class="wi-status unset" id="wi-status-gpay">● Not Set</span>
+              </div>
+            </div>
+            <div class="wi-value wi-empty" id="wi-gpay">Add GPay number / UPI</div>
+          </div>
+          <div class="wi-method paytm">
+            <div class="wi-method-header">
+              <div class="wi-icon">💙</div>
+              <div class="wi-title-wrap">
+                <div class="wi-label">Paytm</div>
+                <span class="wi-status unset" id="wi-status-paytm">● Not Set</span>
+              </div>
+            </div>
+            <div class="wi-value wi-empty" id="wi-paytm">Add Paytm number / UPI</div>
           </div>
         </div>
       </div>
-
       <div class="profile-card" style="margin-top: 30px;">
         <h2>📚 My Recent Resources</h2>
         <div id="recentResourcesList">
@@ -916,6 +841,8 @@
           </div>
         </div>
       </div>
+
+     
     </div>
   </div>
 
@@ -935,6 +862,35 @@
         </div>
         <button type="submit" class="btn-submit">Save Changes</button>
       </form>
+    </div>
+  </div>
+
+  <!-- Withdrawal Info Modal -->
+  <div id="wiModal" class="modal">
+    <div class="modal-content" id="wiModalContent">
+      <span class="close" onclick="closeWiModal()">&times;</span>
+      <h2 style="color:#667eea;text-align:center;margin-bottom:22px;font-size:20px;">💳 Edit Withdrawal Info</h2>
+      <div class="wi-form-group">
+        <label>🔗 UPI ID</label>
+        <input type="text" id="wi-input-upi" placeholder="e.g. yourname@okaxis">
+      </div>
+      <div class="wi-form-group">
+        <label>🏦 Bank Account Number</label>
+        <input type="text" id="wi-input-bank" placeholder="e.g. 9876543210123">
+      </div>
+      <div class="wi-form-group">
+        <label>🏦 IFSC Code</label>
+        <input type="text" id="wi-input-ifsc" placeholder="e.g. SBIN0001234" oninput="this.value=this.value.toUpperCase()">
+      </div>
+      <div class="wi-form-group">
+        <label>💚 Google Pay Number / UPI</label>
+        <input type="text" id="wi-input-gpay" placeholder="e.g. 9876543210 or name@okicici">
+      </div>
+      <div class="wi-form-group">
+        <label>💙 Paytm Number / UPI</label>
+        <input type="text" id="wi-input-paytm" placeholder="e.g. 9876543210 or name@paytm">
+      </div>
+      <button class="wi-save-btn" onclick="saveWiInfo()">💾 Save Withdrawal Info</button>
     </div>
   </div>
 
@@ -974,12 +930,6 @@
       document.getElementById('profileAvatarContent').style.display = 'none';
       document.getElementById('profileDetailsShimmer').style.display = 'block';
       document.getElementById('profileDetailsContent').style.display = 'none';
-      [1, 2, 3].forEach(i => {
-        document.getElementById('statCard' + i).classList.add('shimmer-active');
-        document.getElementById('statIcon' + i).classList.add('shimmer-icon');
-        document.getElementById('statIcon' + i).textContent = '';
-      });
-      document.querySelectorAll('.stat-value, .stat-label').forEach(el => el.classList.add('shimmer-bar'));
     }
 
     function hideShimmers() {
@@ -987,16 +937,6 @@
       document.getElementById('profileAvatarContent').style.display = 'block';
       document.getElementById('profileDetailsShimmer').style.display = 'none';
       document.getElementById('profileDetailsContent').style.display = 'block';
-      const icons = ['📚', '💰', '👥'];
-      const labels = ['Resources', 'Earnings', 'Sales'];
-      [1, 2, 3].forEach(i => {
-        document.getElementById('statCard' + i).classList.remove('shimmer-active');
-        const icon = document.getElementById('statIcon' + i);
-        icon.classList.remove('shimmer-icon');
-        icon.textContent = icons[i - 1];
-        document.getElementById('statLabel' + i).textContent = labels[i - 1];
-      });
-      document.querySelectorAll('.stat-value, .stat-label').forEach(el => el.classList.remove('shimmer-bar'));
     }
 
     function loadProfile() {
@@ -1101,6 +1041,7 @@
     window.addEventListener('DOMContentLoaded', async function () {
       loadProfile();
       loadProfileStats();
+      loadWiInfo();
 
       // Update sidebar profile + Super Admin button
       const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
@@ -1136,52 +1077,16 @@
       loadRecentResources(null);
 
       const userEmail = currentUser?.email;
-      if (!userEmail) {
-        document.getElementById('totalResources').textContent = '0';
-        document.getElementById('totalEarnings').textContent = '\u20b90';
-        document.getElementById('totalCustomers').textContent = '0';
-        loadRecentResources([]);
-        return;
-      }
+      if (!userEmail) { loadRecentResources([]); return; }
 
       try {
-        // 1. Fetch user's resources directly from Supabase
         const { data: userResources, error: resErr } = await _db
           .from('resources').select('id, title, description, type, price, user_email')
           .eq('user_email', userEmail);
         if (resErr) throw resErr;
-
-        document.getElementById('totalResources').textContent = (userResources || []).length;
-
-        // 2. Fetch completed payments for this user's resources
-        let totalEarnings = 0;
-        let totalSales = 0;
-
-        if (userResources && userResources.length > 0) {
-          const resourceIds = userResources.map(r => r.id);
-          const priceMap = Object.fromEntries(userResources.map(r => [r.id, parseFloat(r.price || 0)]));
-
-          const { data: payments } = await _db
-            .from('payments').select('resource_id, user_id')
-            .eq('status', 'completed')
-            .in('resource_id', resourceIds);
-
-          if (payments && payments.length > 0) {
-            totalEarnings = payments.reduce((s, p) => s + (priceMap[p.resource_id] || 0), 0);
-            totalSales = new Set(payments.map(p => p.user_id)).size;
-          }
-        }
-
-        document.getElementById('totalEarnings').textContent = '\u20b9' + totalEarnings.toFixed(0);
-        document.getElementById('totalCustomers').textContent = totalSales;
-
         loadRecentResources(userResources || []);
-
       } catch (error) {
         console.error('Error loading profile stats:', error);
-        document.getElementById('totalResources').textContent = '0';
-        document.getElementById('totalEarnings').textContent = '\u20b90';
-        document.getElementById('totalCustomers').textContent = '0';
         loadRecentResources([]);
       }
     }
@@ -1258,8 +1163,110 @@
     // Close modal when clicking outside
     window.onclick = function (event) {
       const modal = document.getElementById('editProfileModal');
-      if (event.target === modal) {
-        closeEditProfileModal();
+      if (event.target === modal) closeEditProfileModal();
+      const wiModal = document.getElementById('wiModal');
+      if (event.target === wiModal) closeWiModal();
+    }
+
+    // ── Withdrawal Info (Supabase profiles table) ──
+    const placeholders = { upi: 'Add your UPI ID', bank: 'Add account number', gpay: 'Add GPay number / UPI', paytm: 'Add Paytm number / UPI' };
+
+    function renderWiFields(data) {
+      ['upi','bank','gpay','paytm'].forEach(f => {
+        const el = document.getElementById('wi-' + f);
+        const st = document.getElementById('wi-status-' + f);
+        if (data && data[f]) {
+          el.textContent = data[f];
+          el.classList.remove('wi-empty');
+          if (st) { st.textContent = '\u25cf Active'; st.className = 'wi-status set'; }
+        } else {
+          el.textContent = placeholders[f];
+          el.classList.add('wi-empty');
+          if (st) { st.textContent = '\u25cf Not Set'; st.className = 'wi-status unset'; }
+        }
+      });
+      // IFSC field
+      const ifscEl = document.getElementById('wi-ifsc');
+      if (ifscEl) {
+        if (data?.ifsc) {
+          ifscEl.textContent = data.ifsc;
+          ifscEl.classList.remove('wi-empty');
+        } else {
+          ifscEl.textContent = 'Add IFSC code';
+          ifscEl.classList.add('wi-empty');
+        }
+      }
+    }
+
+    async function loadWiInfo() {
+      try {
+        const uid = currentUser?.id;
+        if (!uid) return;
+        const { data, error } = await _db
+          .from('profiles')
+          .select('wi_upi, wi_bank, wi_ifsc, wi_gpay, wi_paytm')
+          .eq('id', uid)
+          .single();
+        if (error) throw error;
+        renderWiFields({ upi: data?.wi_upi, bank: data?.wi_bank, ifsc: data?.wi_ifsc, gpay: data?.wi_gpay, paytm: data?.wi_paytm });
+      } catch(e) {
+        console.warn('loadWiInfo error:', e);
+        renderWiFields({});
+      }
+    }
+
+    async function openWiModal() {
+      try {
+        const uid = currentUser?.id;
+        if (uid) {
+          const { data } = await _db
+            .from('profiles')
+            .select('wi_upi, wi_bank, wi_ifsc, wi_gpay, wi_paytm')
+            .eq('id', uid)
+            .single();
+          document.getElementById('wi-input-upi').value   = data?.wi_upi   || '';
+          document.getElementById('wi-input-bank').value  = data?.wi_bank  || '';
+          document.getElementById('wi-input-ifsc').value  = data?.wi_ifsc  || '';
+          document.getElementById('wi-input-gpay').value  = data?.wi_gpay  || '';
+          document.getElementById('wi-input-paytm').value = data?.wi_paytm || '';
+        }
+      } catch(e) {}
+      document.getElementById('wiModal').style.display = 'flex';
+    }
+
+    function closeWiModal() {
+      document.getElementById('wiModal').style.display = 'none';
+    }
+
+    async function saveWiInfo() {
+      const btn = document.querySelector('.wi-save-btn');
+      const uid = currentUser?.id;
+      if (!uid) { alert('Not logged in'); return; }
+
+      const payload = {
+        wi_upi:   document.getElementById('wi-input-upi').value.trim(),
+        wi_bank:  document.getElementById('wi-input-bank').value.trim(),
+        wi_ifsc:  document.getElementById('wi-input-ifsc').value.trim().toUpperCase(),
+        wi_gpay:  document.getElementById('wi-input-gpay').value.trim(),
+        wi_paytm: document.getElementById('wi-input-paytm').value.trim(),
+      };
+
+      btn.textContent = '⏳ Saving...';
+      btn.disabled = true;
+
+      try {
+        const { error } = await _db
+          .from('profiles')
+          .upsert({ id: uid, ...payload }, { onConflict: 'id' });
+        if (error) throw error;
+        renderWiFields({ upi: payload.wi_upi, bank: payload.wi_bank, ifsc: payload.wi_ifsc, gpay: payload.wi_gpay, paytm: payload.wi_paytm });
+        closeWiModal();
+      } catch(e) {
+        console.error('saveWiInfo error:', e);
+        alert('Failed to save: ' + (e.message || e));
+      } finally {
+        btn.textContent = '\uD83D\uDCBE Save Withdrawal Info';
+        btn.disabled = false;
       }
     }
 

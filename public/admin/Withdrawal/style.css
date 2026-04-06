@@ -28,14 +28,23 @@ body {
   background: linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%);
   box-shadow: 4px 0 30px rgba(0,0,0,0.1);
   padding: 30px 0;
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
   height: 100vh;
   display: flex;
   flex-direction: column;
   overflow-y: auto;
+  overflow-x: hidden;
   border-right: 2px solid rgba(59,130,246,0.2);
+  z-index: 100;
+  scrollbar-width: thin;
+  scrollbar-color: #c7d2fe transparent;
 }
+
+.sidebar::-webkit-scrollbar { width: 4px; }
+.sidebar::-webkit-scrollbar-track { background: transparent; }
+.sidebar::-webkit-scrollbar-thumb { background: #c7d2fe; border-radius: 4px; }
 
 .sidebar h2 {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -103,6 +112,9 @@ body {
   padding: 40px;
   background: rgba(255,255,255,0.8);
   backdrop-filter: blur(10px);
+  margin-left: 260px;
+  min-height: 100vh;
+  overflow-y: auto;
 }
 
 /* ── Sidebar user section ── */

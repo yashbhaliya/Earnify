@@ -583,7 +583,10 @@
 
     <!-- ── Withdrawal Form ── -->
     <div class="w-card" id="withdrawalForm" style="display:none;">
-      <div class="w-card-title"><span>📝</span> New Withdrawal Request</div>
+      <div class="w-card-title" style="justify-content:space-between;">
+        <span style="display:flex;align-items:center;gap:10px;"><span>📝</span> New Withdrawal Request</span>
+        <a href="../Profile/" style="display:inline-flex;align-items:center;gap:6px;padding:7px 14px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border-radius:10px;font-size:12px;font-weight:700;text-decoration:none;white-space:nowrap;transition:opacity .2s;" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">💳 Withdrawal Info</a>
+      </div>
       <form onsubmit="submitWithdrawal(event)">
 
         <div class="form-group" style="margin-bottom:16px;">
@@ -804,6 +807,34 @@
       return data;
     }
 
+    // Save payment details to profiles table if not already stored
+    async function saveWiInfoFromWithdrawal(user, method, account) {
+      if (!user?.id) return;
+      const update = {};
+      if (method === 'upi'   && account && !_wiInfo.upi)   update.wi_upi   = account;
+      if (method === 'gpay'  && account && !_wiInfo.gpay)  update.wi_gpay  = account;
+      if (method === 'paytm' && account && !_wiInfo.paytm) update.wi_paytm = account;
+      if (method === 'bank') {
+        const acVal   = document.getElementById('bank_account').value.trim();
+        const ifscVal = document.getElementById('bank_ifsc').value.trim().toUpperCase();
+        if (acVal   && !_wiInfo.bank) update.wi_bank = acVal;
+        if (ifscVal && !_wiInfo.ifsc) update.wi_ifsc = ifscVal;
+      }
+      if (!Object.keys(update).length) return; // nothing new to save
+      try {
+        await _supaAdmin.from('profiles').upsert({ id: user.id, ...update }, { onConflict: 'id' });
+        // update local cache
+        Object.assign(_wiInfo, {
+          upi:   update.wi_upi   ?? _wiInfo.upi,
+          bank:  update.wi_bank  ?? _wiInfo.bank,
+          ifsc:  update.wi_ifsc  ?? _wiInfo.ifsc,
+          gpay:  update.wi_gpay  ?? _wiInfo.gpay,
+          paytm: update.wi_paytm ?? _wiInfo.paytm,
+        });
+        showToast('💳 Payment info saved to your profile!');
+      } catch(e) { console.warn('saveWiInfoFromWithdrawal:', e); }
+    }
+
     function showToast(msg, type = 'success') {
       const t = document.getElementById('toast');
       t.textContent = msg;
@@ -831,14 +862,36 @@
       el.classList.add('active');
       const val = el.dataset.val;
       document.getElementById('paymentMethod').value = val;
-      // show/hide dynamic fields
       ['upi','bank','paytm','gpay'].forEach(m => {
         document.getElementById('fields-' + m).style.display = (m === val) ? '' : 'none';
       });
+      autoFillMethod(val);
     }
 
     const PLATFORM_FEE = 0.05;
     let _availableBalance = 0;
+    let _wiInfo = {}; // cached withdrawal info from profiles
+
+    async function loadWiInfo(userId) {
+      try {
+        const { data } = await _supaAdmin
+          .from('profiles')
+          .select('wi_upi, wi_bank, wi_ifsc, wi_gpay, wi_paytm')
+          .eq('id', userId)
+          .single();
+        if (data) _wiInfo = { upi: data.wi_upi||'', bank: data.wi_bank||'', ifsc: data.wi_ifsc||'', gpay: data.wi_gpay||'', paytm: data.wi_paytm||'' };
+      } catch(e) { console.warn('loadWiInfo:', e); }
+    }
+
+    function autoFillMethod(method) {
+      if (method === 'upi'   && _wiInfo.upi)   document.getElementById('upi_id').value    = _wiInfo.upi;
+      if (method === 'gpay'  && _wiInfo.gpay)  document.getElementById('gpay_id').value   = _wiInfo.gpay;
+      if (method === 'paytm' && _wiInfo.paytm) document.getElementById('paytm_id').value  = _wiInfo.paytm;
+      if (method === 'bank') {
+        if (_wiInfo.bank) document.getElementById('bank_account').value = _wiInfo.bank;
+        if (_wiInfo.ifsc) document.getElementById('bank_ifsc').value    = _wiInfo.ifsc;
+      }
+    }
 
     function updateAmountPreview() {
       const amt    = parseFloat(document.getElementById('withdrawAmount').value);
@@ -880,8 +933,11 @@
           loadEarnings(user.email),
           _supaAdmin.from('withdrawals').select('amount, status').eq('user_email', user.email)
         ]);
-        const wdList = wdResult.data || [];
 
+        if (user.id) await loadWiInfo(user.id);
+        autoFillMethod('upi'); // auto-fill default method on load
+
+        const wdList = wdResult.data || [];
         const approved = wdList.filter(w => w.status === 'approved' || w.status === 'completed');
         const pending  = wdList.filter(w => w.status === 'pending');
         const totalWithdrawnGross = approved.reduce((s, w) => s + parseFloat(w.amount || 0), 0);
@@ -1079,7 +1135,10 @@
       btn.textContent = '⏳ Submitting...';
       btn.disabled = true;
       try {
+        const user = await getCurrentUser();
         await submitWithdrawalDirect(_pendingPayload);
+        // Save payment info to profile if first time
+        await saveWiInfoFromWithdrawal(user, _pendingPayload.method, _pendingPayload.account);
         closeConfirm();
         showToast('✅ Withdrawal request submitted!');
         document.querySelector('#withdrawalForm form').reset();
@@ -1088,6 +1147,7 @@
         ['upi','bank','paytm','gpay'].forEach(m => {
           document.getElementById('fields-' + m).style.display = (m === 'upi') ? '' : 'none';
         });
+        autoFillMethod('upi');
         renderHistory();
         await loadStats();
         document.getElementById('amountPreview').style.display = 'none';
