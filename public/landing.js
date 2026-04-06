@@ -400,8 +400,16 @@ function filterResources(type) {
   displayResources(filtered, window._cachedPurchases || []);
 }
 
-function viewDetails(id) { window.location.href = `Detail/?id=${id}`; }
-function buyResource(id)  { window.location.href = `Detail/?id=${id}`; }
+function toSlug(title) {
+  return title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+}
+
+function viewDetails(id) {
+  const r = allResources.find(r => r.id == id);
+  if (r) window.location.href = `Detail/?title=${toSlug(r.title)}`;
+  else window.location.href = `Detail/?id=${id}`;
+}
+function buyResource(id) { viewDetails(id); }
 
 async function handleEmailVerification() {
   const params = new URLSearchParams(window.location.search);
