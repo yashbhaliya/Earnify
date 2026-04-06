@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 
 <head>
@@ -18,7 +18,7 @@
       padding: 0 10px;
     }
 
-    /* ── SIDEBAR EXACT MATCH WITH PROFILE PAGE ── */
+    /* â”€â”€ SIDEBAR EXACT MATCH WITH PROFILE PAGE â”€â”€ */
     .sidebar {
       padding: 30px 0 !important;
     }
@@ -65,8 +65,9 @@
       transform: translateY(-2px) !important;
       opacity: 0.88 !important;
     }
+   
 
-    /* ── SIDEBAR USER SECTION ── */
+    /* â”€â”€ SIDEBAR USER SECTION â”€â”€ */
     .sidebar-user {
       display: none;
       margin-top: auto !important;
@@ -117,7 +118,7 @@
       text-overflow: ellipsis !important;
     }
     .admin-panel-btn {
-      display: flex !important;
+      display: none !important;
       align-items: center !important;
       justify-content: center !important;
       gap: 8px !important;
@@ -136,7 +137,7 @@
       margin: 0 !important;
     }
     .sb-logout {
-      display: flex !important;
+      display: none !important;
       align-items: center !important;
       justify-content: center !important;
       gap: 8px !important;
@@ -183,11 +184,11 @@
       <h2>Earnify Admin</h2>
       <button class="sidebar-close-btn" onclick="toggleSidebar()">&times;</button>
     </div>
-    <a href="../Resources/" class="nav-link active-link">📚 Resources</a>
-    <a href="../Statistics/" class="nav-link">📈 Statistics</a>
-    <a href="../Profile/" class="nav-link">👤 Profile</a>
-    <a href="../Withdrawal/" class="nav-link">💸 Withdrawal</a>
-    <a href="/" class="nav-link nav-link-divider">🏠 Main Site</a>
+    <a href="../Resources/" class="nav-link active-link">ðŸ“š Resources</a>
+    <a href="../Statistics/" class="nav-link">ðŸ“ˆ Statistics</a>
+    <a href="../Profile/" class="nav-link">ðŸ‘¤ Profile</a>
+    <a href="../Withdrawal/" class="nav-link">ðŸ’¸ Withdrawal</a>
+    <a href="/" class="nav-link nav-link-divider">ðŸ  Main Site</a>
     
 
     <!-- User Profile Section -->
@@ -199,7 +200,7 @@
           <div class="user-email" id="sidebarUserEmail">user@email.com</div>
         </div>
       </div>
-      <a onclick="logout()" class="sb-logout">🚪 Logout</a>
+      <a onclick="logout()" class="sb-logout">ðŸšª Logout</a>
     </div>
   </div>
 
@@ -328,7 +329,7 @@
           </div>
         <div class="resource-grid" id="allGrid">
           <div class="empty-state">
-            <div class="empty-icon">📦</div>
+            <div class="empty-icon">ðŸ“¦</div>
             <h3>No Resources Yet</h3>
             <p>Click the buttons above to add your first resource!</p>
           </div>
@@ -556,7 +557,7 @@
   <!-- Delete Confirm Modal -->
   <div id="deleteModal" style="display:none;position:fixed;inset:0;background:rgba(15,23,42,0.55);backdrop-filter:blur(4px);z-index:3000;align-items:center;justify-content:center;">
     <div style="background:#fff;border-radius:20px;padding:32px 28px;width:90%;max-width:400px;box-shadow:0 24px 60px rgba(0,0,0,0.22);text-align:center;">
-      <div style="width:60px;height:60px;background:#fef2f2;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:1.6rem;">🗑️</div>
+      <div style="width:60px;height:60px;background:#fef2f2;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:1.6rem;">ðŸ—‘ï¸</div>
       <h3 style="font-size:1.1rem;font-weight:800;color:#0f172a;margin:0 0 8px;">Delete Resource?</h3>
       <p style="font-size:0.88rem;color:#64748b;margin:0 0 24px;line-height:1.6;">This action cannot be undone. The resource will be permanently removed.</p>
       <div style="display:flex;gap:10px;justify-content:center;">
@@ -569,8 +570,8 @@
   <!-- Undo Toast -->
   <div id="undoToast" style="display:none;position:fixed;bottom:28px;left:50%;transform:translateX(-50%);z-index:4000;background:#1e293b;border-radius:14px;padding:14px 20px;box-shadow:0 8px 32px rgba(0,0,0,0.25);flex-direction:column;gap:10px;min-width:280px;max-width:360px;">
     <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
-      <span style="font-size:0.88rem;font-weight:600;color:#fff;">🗑️ Resource deleted</span>
-      <button onclick="undoDelete()" style="padding:7px 18px;border-radius:8px;border:none;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;font-size:0.82rem;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap;">↩ Undo</button>
+      <span style="font-size:0.88rem;font-weight:600;color:#fff;">ðŸ—‘ï¸ Resource deleted</span>
+      <button onclick="undoDelete()" style="padding:7px 18px;border-radius:8px;border:none;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;font-size:0.82rem;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap;">â†© Undo</button>
     </div>
     <div style="height:3px;background:rgba(255,255,255,0.15);border-radius:2px;overflow:hidden;">
       <div id="undoBar" style="height:100%;width:100%;background:linear-gradient(135deg,#667eea,#764ba2);border-radius:2px;"></div>
@@ -614,41 +615,32 @@
         if (sidebarUser.querySelector('.admin-panel-btn')) return;
         const logoutLink = sidebarUser.querySelector('.sb-logout');
         const adminBtn = document.createElement('a');
-        adminBtn.textContent = '\uD83D\uDEE1\uFE0F Super Admin Panel';
+        adminBtn.textContent = String.fromCodePoint(0x1F6E1) + ' Super Admin Panel';
         adminBtn.className = 'admin-panel-btn';
         adminBtn.href = '/earnify-admin/Dashboard/';
         sidebarUser.insertBefore(adminBtn, logoutLink);
       }
 
-      // Method 1: Check role from profiles table
+      // Check 1: known super admin emails
+      const superAdminEmails = ['hardikkotadiya90@gmail.com'];
+      if (superAdminEmails.includes(currentUser.email)) {
+        addSuperAdminBtn();
+        return;
+      }
+
+      // Check 2: profiles table
       try {
         const { data } = await supabaseClient
-          .from('profiles')
-          .select('role')
-          .eq('id', currentUser.id)
-          .single();
+          .from('profiles').select('role').eq('email', currentUser.email).single();
         if (data?.role === 'super_admin') { addSuperAdminBtn(); return; }
       } catch(e) {}
 
-      // Method 2: Check from Supabase auth session user_metadata
+      // Check 3: Supabase auth session metadata
       try {
         const { data: { user } } = await supabaseClient.auth.getUser();
-        if (user?.user_metadata?.role === 'super_admin' ||
-            user?.app_metadata?.role === 'super_admin') {
+        if (user?.app_metadata?.role === 'super_admin' ||
+            user?.user_metadata?.role === 'super_admin') {
           addSuperAdminBtn(); return;
-        }
-      } catch(e) {}
-
-      // Method 3: Check adminToken JWT for role claim
-      try {
-        const token = localStorage.getItem('adminToken');
-        if (token) {
-          const payload = JSON.parse(atob(token.split('.')[1]));
-          if (payload?.user_metadata?.role === 'super_admin' ||
-              payload?.app_metadata?.role === 'super_admin' ||
-              payload?.role === 'super_admin') {
-            addSuperAdminBtn(); return;
-          }
         }
       } catch(e) {}
     })();
