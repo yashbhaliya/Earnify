@@ -179,6 +179,113 @@
       transform: translateY(-2px) !important;
       box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3) !important;
     }
+
+    /* ── Purchased filter strip ── */
+    .pr-filter-strip {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      padding-bottom: 2px;
+    }
+    .pr-filter-strip::-webkit-scrollbar { display: none; }
+    .pr-filter {
+      padding: 8px 16px;
+      border-radius: 50px;
+      border: 2px solid #e2e8f0;
+      background: #fff;
+      color: #64748b;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: all 0.18s;
+    }
+    .pr-filter.active,
+    .pr-filter:hover {
+      background: linear-gradient(135deg,#667eea,#764ba2);
+      color: #fff;
+      border-color: #667eea;
+    }
+    .pr-card {
+      background: #fff;
+      border-radius: 14px;
+      padding: 16px 18px;
+      border: 1px solid #e8edf5;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      transition: box-shadow 0.2s;
+    }
+    .pr-card:hover { box-shadow: 0 4px 16px rgba(102,126,234,0.12); }
+    .pr-icon {
+      width: 46px; height: 46px; border-radius: 12px; flex-shrink: 0;
+      background: linear-gradient(135deg,rgba(102,126,234,0.12),rgba(118,75,162,0.12));
+      display: flex; align-items: center; justify-content: center; font-size: 22px;
+    }
+    .pr-info { flex: 1; min-width: 0; }
+    .pr-title {
+      font-size: 14px; font-weight: 700; color: #1e293b;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .pr-meta { font-size: 12px; color: #94a3b8; margin-top: 3px; }
+    .pr-right {
+      display: flex; align-items: center; gap: 12px; flex-shrink: 0;
+    }
+    .pr-price { font-size: 15px; font-weight: 800; color: #667eea; white-space: nowrap; }
+    .pr-dl-btn {
+      padding: 7px 14px;
+      background: linear-gradient(135deg,#667eea,#764ba2);
+      color: #fff; border: none; border-radius: 8px;
+      font-size: 12px; font-weight: 700; cursor: pointer;
+      text-decoration: none; white-space: nowrap; display: inline-block;
+    }
+    .pr-no-file { font-size: 12px; color: #cbd5e1; }
+
+    /* ── Skeleton shimmer ── */
+    @keyframes pr-shimmer {
+      0%   { background-position: -400px 0; }
+      100% { background-position:  400px 0; }
+    }
+    .pr-sk {
+      background: linear-gradient(90deg,#f0f0f0 25%,#e8e8e8 50%,#f0f0f0 75%);
+      background-size: 400px 100%;
+      animation: pr-shimmer 1.4s infinite linear;
+      border-radius: 6px;
+      display: block;
+    }
+    .pr-sk-card {
+      background: #fff;
+      border-radius: 14px;
+      padding: 16px 18px;
+      border: 1px solid #e8edf5;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .pr-sk-icon  { width:46px; height:46px; border-radius:12px; flex-shrink:0; }
+    .pr-sk-body  { flex:1; display:flex; flex-direction:column; gap:9px; }
+    .pr-sk-title { height:13px; width:52%; }
+    .pr-sk-meta  { height:10px; width:32%; }
+    .pr-sk-right { display:flex; align-items:center; gap:10px; flex-shrink:0; }
+    .pr-sk-price { height:15px; width:42px; }
+    .pr-sk-btn   { height:30px; width:78px; border-radius:8px; }
+
+    /* Mobile: stack price + download below title */
+    @media (max-width: 520px) {
+      .pr-card { flex-wrap: wrap; gap: 10px; }
+      .pr-info { width: calc(100% - 60px); }
+      .pr-title { white-space: normal; }
+      .pr-right {
+        width: 100%; justify-content: space-between;
+        padding-top: 8px; border-top: 1px solid #f1f5f9;
+      }
+      .pr-dl-btn { flex: 1; text-align: center; padding: 9px 10px; font-size: 13px; }
+    }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -556,17 +663,17 @@
 
     <!-- Purchased Resources Section -->
     <div id="purchasedSection" style="display:none;padding-bottom:30px;">
-      <div class="dash-section-head" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:20px;">
-        <h2 style="font-size:18px;font-weight:700;color:#1e293b;">🛒 My Purchased Resources</h2>
-        <div style="display:flex;gap:8px;flex-wrap:wrap;">
-          <button class="pr-filter" onclick="filterPurchased('all',this)" style="padding:7px 16px;border-radius:8px;border:2px solid #667eea;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;">All</button>
-          <button class="pr-filter" onclick="filterPurchased('pdf',this)" style="padding:7px 16px;border-radius:8px;border:2px solid #e2e8f0;background:#fff;color:#64748b;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;">📄 PDF</button>
-          <button class="pr-filter" onclick="filterPurchased('excel',this)" style="padding:7px 16px;border-radius:8px;border:2px solid #e2e8f0;background:#fff;color:#64748b;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;">📊 Excel</button>
-          <button class="pr-filter" onclick="filterPurchased('exam',this)" style="padding:7px 16px;border-radius:8px;border:2px solid #e2e8f0;background:#fff;color:#64748b;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;">📝 Exam</button>
-          <button class="pr-filter" onclick="filterPurchased('freelance',this)" style="padding:7px 16px;border-radius:8px;border:2px solid #e2e8f0;background:#fff;color:#64748b;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;">💼 Services</button>
+      <div class="dash-section-head" style="margin-bottom:16px;">
+        <h2 style="font-size:18px;font-weight:700;color:#1e293b;margin-bottom:14px;">🛒 My Purchased Resources</h2>
+        <div class="pr-filter-strip">
+          <button class="pr-filter active" onclick="filterPurchased('all',this)">All</button>
+          <button class="pr-filter" onclick="filterPurchased('pdf',this)">📄 PDF</button>
+          <button class="pr-filter" onclick="filterPurchased('excel',this)">📊 Excel</button>
+          <button class="pr-filter" onclick="filterPurchased('exam',this)">📝 Exam</button>
+          <button class="pr-filter" onclick="filterPurchased('freelance',this)">💼 Services</button>
         </div>
       </div>
-      <div id="purchasedGrid" style="display:grid;gap:16px;"></div>
+      <div id="purchasedGrid" style="display:grid;gap:16px;margin-top:16px;"></div>
     </div>
 
   </div>
@@ -837,8 +944,7 @@
     }
 
     async function loadPurchased() {
-      const grid = document.getElementById('purchasedGrid');
-      grid.innerHTML = '<div style="padding:40px;text-align:center;color:#94a3b8;font-size:14px;">Loading...</div>';
+      showPrSkeleton();
       try {
         const cu = JSON.parse(localStorage.getItem('currentUser') || '{}');
         let userId = cu.id;
@@ -859,16 +965,30 @@
       renderPurchased(_allPurchased);
     }
 
+    function showPrSkeleton() {
+      const grid = document.getElementById('purchasedGrid');
+      const skCard = `
+        <div class="pr-sk-card">
+          <span class="pr-sk pr-sk-icon"></span>
+          <div class="pr-sk-body">
+            <span class="pr-sk pr-sk-title"></span>
+            <span class="pr-sk pr-sk-meta"></span>
+          </div>
+          <div class="pr-sk-right">
+            <span class="pr-sk pr-sk-price"></span>
+            <span class="pr-sk pr-sk-btn"></span>
+          </div>
+        </div>`;
+      grid.innerHTML = skCard + skCard + skCard;
+    }
+
     function filterPurchased(type, btn) {
-      document.querySelectorAll('.pr-filter').forEach(b => {
-        b.style.background = '#fff';
-        b.style.color = '#64748b';
-        b.style.borderColor = '#e2e8f0';
-      });
-      btn.style.background = 'linear-gradient(135deg,#667eea,#764ba2)';
-      btn.style.color = '#fff';
-      btn.style.borderColor = '#667eea';
-      renderPurchased(type === 'all' ? _allPurchased : _allPurchased.filter(p => p.resources?.type === type));
+      document.querySelectorAll('.pr-filter').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      showPrSkeleton();
+      setTimeout(() => {
+        renderPurchased(type === 'all' ? _allPurchased : _allPurchased.filter(p => p.resources?.type === type));
+      }, 300);
     }
 
     function renderPurchased(list) {
@@ -880,17 +1000,23 @@
       }
       const icons = { pdf: '📄', excel: '📊', exam: '📝', freelance: '💼' };
       grid.innerHTML = valid.map(p => {
-        const r = p.resources;
+        const r    = p.resources;
         const icon = icons[r.type] || '📦';
         const date = new Date(p.created_at).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
-        return `<div style="background:#fff;border-radius:14px;padding:18px 20px;border:1px solid #e8edf5;display:flex;align-items:center;gap:16px;box-shadow:0 2px 8px rgba(0,0,0,0.04);">
-          <div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,rgba(102,126,234,0.12),rgba(118,75,162,0.12));display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">${icon}</div>
-          <div style="flex:1;min-width:0;">
-            <div style="font-size:14px;font-weight:700;color:#1e293b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${r.title || 'Resource'}</div>
-            <div style="font-size:12px;color:#94a3b8;margin-top:3px;">${(r.type || '').toUpperCase()} &nbsp;•&nbsp; ${date}</div>
+        const dlBtn = r.fileurl
+          ? `<a href="${r.fileurl}" target="_blank" download class="pr-dl-btn">&#8595; Download</a>`
+          : `<span class="pr-no-file">No file</span>`;
+        return `
+        <div class="pr-card">
+          <div class="pr-icon">${icon}</div>
+          <div class="pr-info">
+            <div class="pr-title">${r.title || 'Resource'}</div>
+            <div class="pr-meta">${(r.type || '').toUpperCase()} &nbsp;•&nbsp; ${date}</div>
           </div>
-          <div style="font-size:15px;font-weight:800;color:#667eea;white-space:nowrap;">&#8377;${r.price || '—'}</div>
-          ${r.fileurl ? `<a href="${r.fileurl}" target="_blank" download style="padding:7px 14px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border:none;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;text-decoration:none;white-space:nowrap;">↓ Download</a>` : '<span style="font-size:12px;color:#cbd5e1;">No file</span>'}
+          <div class="pr-right">
+            <div class="pr-price">&#8377;${r.price || '—'}</div>
+            ${dlBtn}
+          </div>
         </div>`;
       }).join('');
     }
