@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -14,27 +14,27 @@
 
 <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
 
-<!-- SIDEBAR — matches Dashboard/Statistic/Payments style -->
+<!-- SIDEBAR â€” matches Dashboard/Statistic/Payments style -->
 <div class="sidebar" id="sidebar">
   <div class="sidebar-brand">
-    <h2><span>💰</span><span class="brand-text">Earnify Admin</span></h2>
+    <h2><span>ðŸ’°</span><span class="brand-text">Earnify Admin</span></h2>
     <p>Platform Management</p>
   </div>
 
   <a href="/earnify-admin/Dashboard/" class="nav-link">
-    <span class="nav-icon">🏠</span> Dashboard
+    <span class="nav-icon">ðŸ </span> Dashboard
   </a>
   <a href="/earnify-admin/statistic/" class="nav-link">
-    <span class="nav-icon">📈</span> Statistics
+    <span class="nav-icon">ðŸ“ˆ</span> Statistics
   </a>
   <a href="/earnify-admin/payments/" class="nav-link">
-    <span class="nav-icon">💳</span> Payment Requests
+    <span class="nav-icon">ðŸ’³</span> Payment Requests
   </a>
   <a href="/earnify-admin/Blog/" class="nav-link active">
-    <span class="nav-icon">✍️</span> Blog
+    <span class="nav-icon">âœï¸</span> Blog
   </a>
   <a href="https://earnify-gamma.vercel.app/admin/Resources/" class="nav-link" style="border-top:1px solid #e2e8f0;padding-top:10px;margin-top:10px;color:#667eea;font-weight:600">
-    <span class="nav-icon">←</span> Back
+    <span class="nav-icon">â†</span> Back
   </a>
 
   <div class="sidebar-footer">
@@ -45,7 +45,7 @@
         <div class="admin-role">Super Admin</div>
       </div>
     </div>
-    <button class="logout-btn" onclick="logout()">🚪 Logout</button>
+    <button class="logout-btn" onclick="logout()">ðŸšª Logout</button>
   </div>
 </div>
 
@@ -59,12 +59,12 @@
         <span></span><span></span><span></span>
       </button>
       <div>
-        <h1>✍️ Blog Manager</h1>
+        <h1>âœï¸ Blog Manager</h1>
         <p>Create, edit and manage your blog posts</p>
       </div>
     </div>
     <div class="header-meta">
-      <button class="refresh-btn" onclick="loadBlogs()">🔄 Refresh</button>
+      <button class="refresh-btn" onclick="loadBlogs()">ðŸ”„ Refresh</button>
     </div>
   </div>
 
@@ -75,12 +75,12 @@
         <h3>All Posts</h3>
         <span class="blog-count" id="blogCount">0 posts</span>
       </div>
-      <button class="add-blog-btn" onclick="openAddModal()">➕ Add Blog Post</button>
+      <button class="add-blog-btn" onclick="openAddModal()">âž• Add Blog Post</button>
     </div>
 
     <div class="blog-grid" id="blogGrid">
       <div class="empty-state">
-        <div class="empty-icon">✍️</div>
+        <div class="empty-icon">âœï¸</div>
         <h3>No Blog Posts Yet</h3>
         <p>Click "Add Blog Post" to create your first post!</p>
       </div>
@@ -99,12 +99,12 @@
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
         Back
       </button>
-      <div class="editor-topbar-title" id="modalTitle">✍️ New Blog Post</div>
+      <div class="editor-topbar-title" id="modalTitle">âœï¸ New Blog Post</div>
     </div>
     <div class="editor-topbar-right">
       <span class="editor-autosave" id="editorStatus">Draft</span>
       <button type="button" class="editor-cancel-btn" onclick="closeBlogModal()">Cancel</button>
-      <button type="button" class="editor-publish-btn" id="publishBtn" onclick="submitBlogForm()">🚀 Publish Post</button>
+      <button type="button" class="editor-publish-btn" id="publishBtn" onclick="submitBlogForm()">ðŸš€ Publish Post</button>
     </div>
   </div>
 
@@ -174,8 +174,8 @@
           </div>
           <div class="rte-divider"></div>
           <div class="rte-group">
-            <button type="button" class="rte-btn" onclick="rteLink()" title="Insert Link">🔗 Link</button>
-            <button type="button" class="rte-btn" onclick="rteClear()" title="Clear Format">✕ Clear</button>
+            <button type="button" class="rte-btn" onclick="rteLink()" title="Insert Link">ðŸ”— Link</button>
+            <button type="button" class="rte-btn" onclick="rteClear()" title="Clear Format">âœ• Clear</button>
           </div>
           <div class="rte-divider"></div>
           <div class="rte-group">
@@ -206,7 +206,7 @@
     <div class="editor-sidebar">
 
       <div class="editor-sidebar-card">
-        <div class="editor-sidebar-card-title">📋 Post Settings</div>
+        <div class="editor-sidebar-card-title">ðŸ“‹ Post Settings</div>
 
         <div class="editor-setting-group">
           <label class="editor-label">Category</label>
@@ -219,12 +219,12 @@
           <span class="editor-setting-hint" id="imgHint">Paste an image URL or click the cover to upload</span>
           <!-- Upload error popup -->
           <div class="upload-error-popup" id="uploadErrorPopup">
-            <div class="upload-error-icon">⚠️</div>
+            <div class="upload-error-icon">âš ï¸</div>
             <div class="upload-error-body">
               <div class="upload-error-title">Upload Failed</div>
               <div class="upload-error-msg" id="uploadErrorMsg">Could not upload image.</div>
               <div class="upload-error-actions">
-                <button onclick="document.getElementById('coverFileInput').click()" class="upload-error-retry">🔄 Retry</button>
+                <button onclick="document.getElementById('coverFileInput').click()" class="upload-error-retry">ðŸ”„ Retry</button>
                 <button onclick="closeUploadError()" class="upload-error-close">Dismiss</button>
               </div>
             </div>
@@ -233,20 +233,20 @@
 
         <div class="editor-setting-group">
           <label class="editor-label">Status</label>
-          <div class="editor-status-badge" id="statusBadge">📝 Draft</div>
+          <div class="editor-status-badge" id="statusBadge">ðŸ“ Draft</div>
         </div>
 
         <div class="editor-setting-group">
           <label class="editor-checkbox-label">
             <input type="checkbox" id="blogMainArticle">
-            <span class="editor-checkbox-text">⭐ Main Article</span>
+            <span class="editor-checkbox-text">â­ Main Article</span>
           </label>
           <span class="editor-setting-hint">Pin this post as the main featured article</span>
         </div>
       </div>
 
       <div class="editor-sidebar-card">
-        <div class="editor-sidebar-card-title">💡 Tips</div>
+        <div class="editor-sidebar-card-title">ðŸ’¡ Tips</div>
         <ul class="editor-tips">
           <li>Use a clear, catchy title</li>
           <li>Add a cover image URL for visual appeal</li>
@@ -272,7 +272,7 @@
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
         Back
       </button>
-      <div class="editor-topbar-title">👁️ View Post</div>
+      <div class="editor-topbar-title">ðŸ‘ï¸ View Post</div>
     </div>
     <div class="editor-topbar-right">
       <span id="viewBlogCategory" class="blog-category"></span>
@@ -295,8 +295,8 @@
 <div id="linkModal" class="link-modal-overlay" onclick="if(event.target===this)closeLinkModal()">
   <div class="link-modal-box">
     <div class="link-modal-header">
-      <span>🔗 Insert Link</span>
-      <button class="link-modal-close" onclick="closeLinkModal()">✕</button>
+      <span>ðŸ”— Insert Link</span>
+      <button class="link-modal-close" onclick="closeLinkModal()">âœ•</button>
     </div>
     <div class="link-modal-body">
       <div class="link-modal-field">
@@ -329,7 +329,7 @@
 <!-- Delete Confirm Modal -->
 <div id="blogDeleteModal" style="display:none;position:fixed;inset:0;background:rgba(15,23,42,0.55);backdrop-filter:blur(4px);z-index:3000;align-items:center;justify-content:center;">
   <div style="background:#fff;border-radius:20px;padding:32px 28px;width:90%;max-width:400px;box-shadow:0 24px 60px rgba(0,0,0,0.22);text-align:center;">
-    <div style="width:60px;height:60px;background:#fef2f2;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:1.6rem;">🗑️</div>
+    <div style="width:60px;height:60px;background:#fef2f2;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:1.6rem;">ðŸ—‘ï¸</div>
     <h3 style="font-size:1.1rem;font-weight:800;color:#0f172a;margin:0 0 8px;">Delete Post?</h3>
     <p style="font-size:0.88rem;color:#64748b;margin:0 0 24px;line-height:1.6;">This post will be permanently deleted. You can undo within 5 seconds.</p>
     <div style="display:flex;gap:10px;">
@@ -342,8 +342,8 @@
 <!-- Undo Toast -->
 <div id="undoPostToast" style="display:none;position:fixed;bottom:28px;left:50%;transform:translateX(-50%);z-index:4000;background:#1e293b;border-radius:14px;padding:14px 20px;box-shadow:0 8px 32px rgba(0,0,0,0.25);flex-direction:column;gap:10px;min-width:280px;max-width:360px;">
   <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
-    <span style="font-size:0.88rem;font-weight:600;color:#fff;">🗑️ Post deleted</span>
-    <button onclick="undoDeletePost()" style="padding:7px 18px;border-radius:8px;border:none;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;font-size:0.82rem;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap;">↩ Undo</button>
+    <span style="font-size:0.88rem;font-weight:600;color:#fff;">ðŸ—‘ï¸ Post deleted</span>
+    <button onclick="undoDeletePost()" style="padding:7px 18px;border-radius:8px;border:none;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;font-size:0.82rem;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap;">â†© Undo</button>
   </div>
   <div style="height:3px;background:rgba(255,255,255,0.15);border-radius:2px;overflow:hidden;">
     <div id="undoPostBar" style="height:100%;width:100%;background:linear-gradient(135deg,#667eea,#764ba2);border-radius:2px;"></div>
@@ -377,7 +377,7 @@
   function logout() {
     localStorage.clear();
     sessionStorage.clear();
-    window.location.href = '/earnify-admin/Dashboard/';
+    window.location.href = '/';
   }
 </script>
 </body>
