@@ -8,11 +8,11 @@ const API_CONFIG = {
   // Base URL for API calls
   get baseURL() {
     if (this.isLocal) {
-      return 'http://localhost:5000';
-    } else {
-      // Use current domain for production (Vercel)
-      return window.location.origin;
+      return window.location.port === '5500'
+        ? 'https://earnify-gamma.vercel.app'
+        : 'http://localhost:5000';
     }
+    return window.location.origin;
   },
   
   // API endpoints
