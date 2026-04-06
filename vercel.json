@@ -70,14 +70,14 @@
     },
     {
       "src": "/(.*\\.js)$",
-      "dest": "/$1",
+      "dest": "/public/$1",
       "headers": {
         "Content-Type": "application/javascript"
       }
     },
     {
       "src": "/(.*\\.css)$",
-      "dest": "/$1",
+      "dest": "/public/$1",
       "headers": {
         "Content-Type": "text/css"
       }
