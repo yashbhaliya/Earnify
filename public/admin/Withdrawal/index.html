@@ -724,47 +724,84 @@
 
   <div class="toast" id="toast"></div>
 
+  <!-- Admin Mobile Bottom Nav -->
+  <nav class="admin-mob-nav">
+    <a href="../Resources/" class="amn-item">
+      <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+      <span>Resources</span>
+    </a>
+    <a href="../Statistics/" class="amn-item">
+      <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      <span>Statistics</span>
+    </a>
+    <a href="/" class="amn-item amn-home">
+      <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <span>Home</span>
+    </a>
+    <a href="../Profile/" class="amn-item">
+      <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span>Profile</span>
+    </a>
+    <a href="../Withdrawal/" class="amn-item active">
+      <svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      <span>Withdrawal</span>
+    </a>
+  </nav>
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="../api-config.js"></script>
   <script src="auth-guard.js"></script>
   <script>
     const SUPA_URL = 'https://emnrgsgerfjvndexomro.supabase.co';
-    const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVtbnJnc2dlcmZqdm5kZXhvbXJvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI0MjAyMTAsImV4cCI6MjA4Nzk5NjIxMH0.uXr8lipxLbB4D_5JwQkpLzc-HudQw23tOFBfV4C6hqY';
-    const _supa = window.supabase.createClient(SUPA_URL, SUPA_KEY);
+    const SUPA_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVtbnJnc2dlcmZqdm5kZXhvbXJvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI0MjAyMTAsImV4cCI6MjA4Nzk5NjIxMH0.uXr8lipxLbB4D_5JwQkpLzc-HudQw23tOFBfV4C6hqY';
+    const SUPA_SVC  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVtbnJnc2dlcmZqdm5kZXhvbXJvIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3MjQyMDIxMCwiZXhwIjoyMDg3OTk2MjEwfQ.mr4k_GsJ14CC1mqvEZgf9cTaNiLMlnj_sZxFjJud67k';
+
+    // anon client for auth session, service client bypasses RLS for reads
+    const _supa     = window.supabase.createClient(SUPA_URL, SUPA_ANON);
+    const _supaAdmin = window.supabase.createClient(SUPA_URL, SUPA_SVC, {
+      auth: { persistSession: false, autoRefreshToken: false }
+    });
 
     async function getCurrentUser() {
-      const { data: { user } } = await _supa.auth.getUser();
-      if (user && user.email) return user;
+      // 1. Live Supabase session (most reliable)
+      try {
+        const { data: { user } } = await _supa.auth.getUser();
+        if (user?.email) return user;
+      } catch(e) {}
+      // 2. JWT stored by auth-guard
       const token = localStorage.getItem('adminToken');
       if (token) {
         try {
-          const payload = JSON.parse(atob(token.split('.')[1]));
-          if (payload.email) return { email: payload.email, id: payload.sub || payload.id };
+          const p = JSON.parse(atob(token.split('.')[1].replace(/-/g,'+').replace(/_/g,'/')));
+          if (p?.email) return { email: p.email, id: p.sub || p.id };
         } catch(e) {}
       }
-      const cu = localStorage.getItem('currentUser');
-      if (cu) { try { const u = JSON.parse(cu); if (u.email) return u; } catch(e) {} }
+      // 3. currentUser object stored by auth-guard
+      try {
+        const cu = JSON.parse(localStorage.getItem('currentUser') || '{}');
+        if (cu?.email) return cu;
+      } catch(e) {}
       return null;
     }
 
-    async function apiFetch(endpoint) {
-      const token = localStorage.getItem('adminToken');
-      const res = await fetch(API_CONFIG.getURL(endpoint), {
-        headers: token ? { Authorization: `Bearer ${token}` } : {}
-      });
-      if (!res.ok) throw new Error(`API ${res.status}`);
-      return res.json();
+    // Use service-role client so RLS never blocks earnings/payments reads
+    async function loadEarnings(userEmail) {
+      const { data: userResources } = await _supaAdmin
+        .from('resources').select('id, price').eq('user_email', userEmail);
+      if (!userResources?.length) return 0;
+      const priceMap = Object.fromEntries(userResources.map(r => [r.id, parseFloat(r.price || 0)]));
+      const { data: payments } = await _supaAdmin
+        .from('payments').select('resource_id')
+        .eq('status', 'completed')
+        .in('resource_id', userResources.map(r => r.id));
+      return (payments || []).reduce((s, p) => s + (priceMap[p.resource_id] || 0), 0);
     }
 
-    async function apiPost(endpoint, body) {
-      const token = localStorage.getItem('adminToken');
-      const res = await fetch(API_CONFIG.getURL(endpoint), {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) },
-        body: JSON.stringify(body)
-      });
-      if (!res.ok) { const e = await res.json().catch(() => ({})); throw new Error(e.message || e.error || `API ${res.status}`); }
-      return res.json();
+    async function submitWithdrawalDirect(payload) {
+      const { data, error } = await _supaAdmin.from('withdrawals')
+        .insert([{ ...payload, status: 'pending' }]).select().single();
+      if (error) throw new Error(error.message);
+      return data;
     }
 
     function showToast(msg, type = 'success') {
@@ -837,53 +874,29 @@
     async function loadStats() {
       try {
         const user = await getCurrentUser();
-        console.log('[loadStats] user =>', user);
         if (!user) { console.warn('[loadStats] no user'); return; }
 
-        // Use same backend as Statistics page for earnings
-        const [statsData, withdrawals] = await Promise.all([
-          apiFetch(`${API_CONFIG.endpoints.userStatistics}/${encodeURIComponent(user.email)}`),
-          apiFetch(`${API_CONFIG.endpoints.withdrawals}/${encodeURIComponent(user.email)}`)
+        const [totalGross, wdResult] = await Promise.all([
+          loadEarnings(user.email),
+          _supaAdmin.from('withdrawals').select('amount, status').eq('user_email', user.email)
         ]);
-        console.log('[loadStats] statsData =>', statsData, '| withdrawals =>', withdrawals);
+        const wdList = wdResult.data || [];
 
-        const userStats = Array.isArray(statsData.userStats) ? statsData.userStats : [];
-        // Use totalGross from backend (gross earnings before fees) — same figure as Dashboard
-        const totalGross = parseFloat(statsData.totalGross || 0) ||
-          userStats.reduce((s, u) => s + (parseFloat(u.totalAmount) || 0), 0);
-
-        const WD_FEE = 0.05;
-        const wdList = Array.isArray(withdrawals) ? withdrawals : [];
         const approved = wdList.filter(w => w.status === 'approved' || w.status === 'completed');
         const pending  = wdList.filter(w => w.status === 'pending');
-
-        // Gross withdrawal amounts
         const totalWithdrawnGross = approved.reduce((s, w) => s + parseFloat(w.amount || 0), 0);
         const totalPendingGross   = pending.reduce((s, w)  => s + parseFloat(w.amount || 0), 0);
-
-        // Net amounts (what user receives)
         const totalWithdrawn = totalWithdrawnGross * 0.95;
         const totalPending   = totalPendingGross   * 0.95;
-
-        // Platform fees = 5% from ALL withdrawal requests (approved + pending) — user sees fee on every req
-        const allWdGross   = totalWithdrawnGross + totalPendingGross;
-        const platformFees = allWdGross * 0.05;
-
-        // Available = gross earnings − all withdrawal requests (approved + pending)
-        const available = Math.max(0, totalGross - totalWithdrawnGross - totalPendingGross);
-        _availableBalance = available;
+        const platformFees   = (totalWithdrawnGross + totalPendingGross) * 0.05;
+        const available      = Math.max(0, totalGross - totalWithdrawnGross - totalPendingGross);
+        _availableBalance    = available;
 
         document.getElementById('availableBalance').textContent = `₹${available.toFixed(0)}`;
         document.getElementById('totalEarned').textContent      = `₹${totalGross.toFixed(0)}`;
         document.getElementById('totalWithdrawn').textContent   = `₹${totalWithdrawn.toFixed(0)}`;
         document.getElementById('platformFees').textContent     = `₹${platformFees.toFixed(0)}`;
         document.getElementById('pendingAmount').textContent    = `₹${totalPending.toFixed(0)}`;
-
-        // Update labels to clarify net amounts
-        const wdLabel = document.querySelector('#totalWithdrawn + .hero-stat-lbl');
-        const pdLabel = document.querySelector('#pendingAmount + .hero-stat-lbl');
-        if (wdLabel) wdLabel.textContent = 'Withdrawn (Net)';
-        if (pdLabel) pdLabel.textContent = 'Pending (Net)';
       } catch (e) {
         console.error('loadStats error:', e);
       } finally {
@@ -902,7 +915,7 @@
       let list = [];
       try {
         if (!user) throw new Error('not logged in');
-        const { data, error } = await _supa
+        const { data, error } = await _supaAdmin
           .from('withdrawals')
           .select('*')
           .eq('user_email', user.email)
@@ -1036,7 +1049,7 @@
 
       const fee       = +(amount * PLATFORM_FEE).toFixed(2);
       const netAmount = +(amount - fee).toFixed(2);
-      _pendingPayload = { user_email: user.email, amount, method, account, note };
+      _pendingPayload = { user_email: user.email, amount: parseFloat(amount), method, account, note };
 
       const methodLabels = { upi: '🔗 UPI', bank: '🏦 Bank Transfer', paytm: '💙 Paytm', gpay: '💚 GPay' };
       const row = (k, v, color) => `<div style="display:flex;justify-content:space-between;font-size:14px;padding:5px 0;">
@@ -1066,7 +1079,7 @@
       btn.textContent = '⏳ Submitting...';
       btn.disabled = true;
       try {
-        await apiPost(API_CONFIG.endpoints.withdrawals, _pendingPayload);
+        await submitWithdrawalDirect(_pendingPayload);
         closeConfirm();
         showToast('✅ Withdrawal request submitted!');
         document.querySelector('#withdrawalForm form').reset();
