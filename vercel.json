@@ -76,23 +76,36 @@
       }
     },
     {
-      "src": "/(.*\\.css)$",
-      "dest": "/public/$1",
-      "headers": {
-        "Content-Type": "text/css"
-      }
-    },
-    {
       "src": "/admin/Resources/?$",
       "dest": "/public/admin/Resources/index.html"
+    },
+    {
+      "src": "/admin/Resources/(.*)",
+      "dest": "/public/admin/Resources/$1"
     },
     {
       "src": "/admin/Statistics/?$",
       "dest": "/public/admin/Statistics/index.html"
     },
     {
+      "src": "/admin/Statistics/(.*)",
+      "dest": "/public/admin/Statistics/$1"
+    },
+    {
       "src": "/admin/Profile/?$",
       "dest": "/public/admin/Profile/index.html"
+    },
+    {
+      "src": "/admin/Profile/(.*)",
+      "dest": "/public/admin/Profile/$1"
+    },
+    {
+      "src": "/admin/Withdrawal/?$",
+      "dest": "/public/admin/Withdrawal/index.html"
+    },
+    {
+      "src": "/admin/Withdrawal/(.*)",
+      "dest": "/public/admin/Withdrawal/$1"
     },
     {
       "src": "/admin/(.*)",
