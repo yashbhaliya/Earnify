@@ -1543,7 +1543,7 @@ footer {
 .hamburger {
   width: 25px;
   height: 3px;
-  background: #2563EB;
+  background: linear-gradient(135deg, #667eea, #764ba2);
   border-radius: 3px;
   transition: all 0.3s ease;
 }

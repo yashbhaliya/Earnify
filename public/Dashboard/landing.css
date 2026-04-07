@@ -103,7 +103,7 @@ body {
 .hamburger {
   width: 24px;
   height: 3px;
-  background: #2563eb;
+  background: linear-gradient(135deg, #667eea, #764ba2);
   border-radius: 3px;
   transition: all 0.3s ease;
   display: block;
