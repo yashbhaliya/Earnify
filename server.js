@@ -21,8 +21,8 @@ app.use(cors({
   credentials: true
 }));
 app.use(express.json());
-app.use('/admin', express.static(path.join(__dirname, 'public/admin')));
-app.use('/earnify-admin', express.static(path.join(__dirname, 'earnify-admin')));
+app.use('/admin', express.static(path.join(__dirname, 'public/admin'), { index: 'index.html' }));
+app.use('/earnify-admin', express.static(path.join(__dirname, 'earnify-admin'), { index: 'index.html' }));
 
 const upload = multer({ storage: multer.memoryStorage() });
 
@@ -1054,6 +1054,35 @@ app.get("/admin/purchases", (req, res) => {
 
 app.get("/admin/settings", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "admin", "settings.html"));
+});
+
+// Admin sub-page routes (capital folder names)
+app.get("/admin/Resources", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "admin", "Resources", "index.html"));
+});
+app.get("/admin/Resources/", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "admin", "Resources", "index.html"));
+});
+
+app.get("/admin/Statistics", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "admin", "Statistics", "index.html"));
+});
+app.get("/admin/Statistics/", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "admin", "Statistics", "index.html"));
+});
+
+app.get("/admin/Profile", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "admin", "Profile", "index.html"));
+});
+app.get("/admin/Profile/", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "admin", "Profile", "index.html"));
+});
+
+app.get("/admin/Withdrawal", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "admin", "Withdrawal", "index.html"));
+});
+app.get("/admin/Withdrawal/", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "admin", "Withdrawal", "index.html"));
 });
 
 // User routes

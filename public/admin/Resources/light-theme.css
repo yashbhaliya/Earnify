@@ -49,6 +49,28 @@ body.light-mode .res-card {
   border: 1px solid #e2e8f0;
 }
 
+body.dark-mode .res-card {
+  background: #161b22 !important;
+  border: 1px solid #30363d !important;
+}
+
+body.dark-mode .res-card:hover {
+  border-color: #7c6af7 !important;
+  box-shadow: 0 4px 20px rgba(124, 106, 247, 0.15) !important;
+}
+
+body.dark-mode .res-card-title {
+  color: #e6edf3 !important;
+}
+
+body.dark-mode .res-card-desc {
+  color: #8b949e !important;
+}
+
+body.dark-mode .res-card-price {
+  color: #3fb950 !important;
+}
+
 body.light-mode .sidebar-user {
   background: #ffffff;
   border-top: 1.5px solid #e2e8f0;
@@ -56,6 +78,36 @@ body.light-mode .sidebar-user {
 
 body.light-mode .page-header {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+body.dark-mode .page-header {
+  background: linear-gradient(135deg, #7c6af7 0%, #5b4fcf 100%) !important;
+}
+
+body.dark-mode .header-text h1 {
+  color: #ffffff !important;
+}
+
+body.dark-mode .header-text .subtitle {
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+/* View Toggle Buttons */
+body.dark-mode #btnAllResources {
+  background: linear-gradient(135deg, #7c6af7, #5b4fcf) !important;
+  border-color: #7c6af7 !important;
+  color: #fff !important;
+}
+
+body.dark-mode #btnPurchases {
+  background: #161b22 !important;
+  border-color: #30363d !important;
+  color: #8b949e !important;
+}
+
+body.dark-mode #btnPurchases:hover {
+  border-color: #7c6af7 !important;
+  color: #a78bfa !important;
 }
 
 body.light-mode .custom-select {
@@ -265,6 +317,49 @@ body.dark-mode .dropdown div:hover {
 body.dark-mode .section-title h2 { color: #e6edf3 !important; }
 body.dark-mode .resource-count {
   background: linear-gradient(135deg, #7c6af7 0%, #5b4fcf 100%) !important;
+}
+
+/* Section header */
+body.dark-mode .section-header {
+  background: #161b22 !important;
+  border-color: #30363d !important;
+}
+
+/* View toggle buttons */
+body.dark-mode .view-btn {
+  background: #161b22 !important;
+  color: #8b949e !important;
+  border-color: #30363d !important;
+}
+body.dark-mode .view-btn:hover {
+  border-color: #7c6af7 !important;
+  color: #a78bfa !important;
+}
+body.dark-mode .view-btn.active {
+  background: linear-gradient(135deg, #7c6af7, #5b4fcf) !important;
+  color: #fff !important;
+  border-color: transparent !important;
+}
+
+/* Add buttons group */
+body.dark-mode .add-buttons-group {
+  background: #161b22 !important;
+  border-color: #30363d !important;
+}
+
+body.dark-mode .add-btn {
+  background: #1c2333 !important;
+  color: #8b949e !important;
+  border-color: #30363d !important;
+}
+body.dark-mode .add-btn:hover {
+  border-color: #7c6af7 !important;
+  color: #a78bfa !important;
+}
+
+/* Resource section */
+body.dark-mode .resource-section {
+  background: #0d1117 !important;
 }
 
 /* Purchased section */

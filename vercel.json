@@ -76,6 +76,13 @@
       }
     },
     {
+      "src": "/(.*\\.css)$",
+      "dest": "/public/$1",
+      "headers": {
+        "Content-Type": "text/css"
+      }
+    },
+    {
       "src": "/admin/Resources/?$",
       "dest": "/public/admin/Resources/index.html"
     },
