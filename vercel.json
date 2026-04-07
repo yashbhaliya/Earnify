@@ -6,8 +6,8 @@
     "SITE_URL": "https://earnify-gamma.vercel.app",
     "SUPABASE_URL": "https://emnrgsgerfjvndexomro.supabase.co",
     "SUPABASE_SERVICE_ROLE_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVtbnJnc2dlcmZqdm5kZXhvbXJvIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3MjQyMDIxMCwiZXhwIjoyMDg3OTk2MjEwfQ.mr4k_GsJ14CC1mqvEZgf9cTaNiLMlnj_sZxFjJud67k",
-    "RAZORPAY_KEY_ID": "rzp_test_S1gSQmdix2Benc",
-    "RAZORPAY_KEY_SECRET": "fkYyNgIgiG4IXBAAwAdgHWQk"
+    "RAZORPAY_KEY_ID": "rzp_test_SSITbj2voJfP8y",
+    "RAZORPAY_KEY_SECRET": "QcL16W8G083kjQZZ2d0KRipT"
   },
   "builds": [
     {
