@@ -126,6 +126,10 @@ function initializeDateFilters() {
   }
 }
 
+function getDoughnutBorderColor() {
+  return document.body.classList.contains('dark-mode') ? '#161b22' : '#fff';
+}
+
 function renderResourceChart(limit = 10) {
   const canvas  = document.getElementById('resourceDonutChart');
   const emptyEl = document.getElementById('resourceDonutEmpty');
@@ -159,8 +163,8 @@ function renderResourceChart(limit = 10) {
 
   const limitNum = (limit === 'all' || isNaN(Number(limit))) ? sorted.length : Math.min(Number(limit), sorted.length);
   const top = sorted.slice(0, limitNum);
+  // No Others grouping — use full sorted list for chart
   const others = sorted.slice(limitNum);
-  if (others.length) top.push({ name: 'Others', revenue: others.reduce((s,r)=>s+r.revenue,0), purchases: others.reduce((s,r)=>s+r.purchases,0) });
 
   const PALETTE = ['#667eea','#10b981','#f59e0b','#f5576c','#06b6d4','#8b5cf6','#ec4899','#14b8a6','#f97316','#84cc16','#94a3b8'];
   const labels = top.map(r => r.name);
@@ -168,20 +172,50 @@ function renderResourceChart(limit = 10) {
   const colors = top.map((_, i) => PALETTE[i % PALETTE.length]);
   const total  = values.reduce((s,v) => s+v, 0);
 
+  // Store ALL resources (full sorted list) for popup — no grouping
+  window._allLegendData = sorted.map((r, i) => ({
+    name: r.name,
+    revenue: r.revenue,
+    purchases: r.purchases,
+    color: PALETTE[i % PALETTE.length]
+  }));
+  window._legendTotal = sorted.reduce((s, r) => s + r.revenue, 0);
+
   _barChart = new Chart(canvas.getContext('2d'), {
     type: 'doughnut',
-    data: { labels, datasets: [{ data: values, backgroundColor: colors, borderWidth: 3, borderColor: '#fff', hoverOffset: 10 }] },
+    data: { labels, datasets: [{ data: values, backgroundColor: colors, borderWidth: 2, borderColor: getDoughnutBorderColor(), hoverOffset: 0, offset: 0 }] },
     options: { cutout:'70%', responsive:true, maintainAspectRatio:true,
-      plugins:{ legend:{display:false}, tooltip:{callbacks:{label:c=>{ const r=top[c.dataIndex]; const pct=total>0?((r.revenue/total)*100).toFixed(1):0; return ` ${fmt(r.revenue)} (${pct}%) • ${r.purchases} sales`; }}} }
+      animation: { animateRotate: true, animateScale: false },
+      plugins:{
+        legend:{display:false},
+        tooltip:{callbacks:{label:c=>{ const r=top[c.dataIndex]; const pct=total>0?((r.revenue/total)*100).toFixed(1):0; return ` ${fmt(r.revenue)} (${pct}%) • ${r.purchases} sales`; }}}
+      },
+      elements: { arc: { hoverOffset: 0 } }
     }
   });
 
   if (center) center.innerHTML = `${fmt(total)}<br><span style="font-size:10px;color:#94a3b8;font-weight:500;">Total Revenue</span>`;
-  if (legend) legend.innerHTML = top.map((r,i) => {
-    const pct = total > 0 ? ((r.revenue/total)*100).toFixed(1) : 0;
-    const lbl = r.name.length > 22 ? r.name.substring(0,22)+'…' : r.name;
-    return `<div class="legend-item"><span class="legend-label"><span class="legend-dot" style="background:${colors[i]}"></span>${lbl}</span><span class="legend-val">${fmt(r.revenue)} <span style="font-size:10px;color:#94a3b8;font-weight:500;">${pct}%</span></span></div>`;
-  }).join('');
+
+  if (legend) {
+    const PREVIEW = 5;
+    const isDark = document.body.classList.contains('dark-mode');
+    const allData = window._allLegendData;
+    const grandTotal = window._legendTotal;
+
+    const makeRow = (r) => {
+      const pct = grandTotal > 0 ? ((r.revenue / grandTotal) * 100).toFixed(1) : 0;
+      const lbl = r.name.length > 22 ? r.name.substring(0, 22) + '\u2026' : r.name;
+      return `<div class="legend-item"><span class="legend-label"><span class="legend-dot" style="background:${r.color}"></span>${lbl}</span><span class="legend-val">${fmt(r.revenue)} <span style="font-size:10px;color:#94a3b8;font-weight:500;">${pct}%</span></span></div>`;
+    };
+
+    const previewRows = allData.slice(0, PREVIEW).map(makeRow).join('');
+
+    const showAllBtn = allData.length > PREVIEW
+      ? `<button onclick="openAllLegendPopup()" style="display:flex;align-items:center;justify-content:center;gap:5px;width:100%;margin-top:8px;padding:7px 12px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;transition:all 0.2s;background:${isDark ? '#1c2333' : '#f1f5f9'};border:1.5px solid ${isDark ? '#30363d' : '#e2e8f0'};color:${isDark ? '#a78bfa' : '#667eea'};">&#9660; Show all ${allData.length} resources</button>`
+      : '';
+
+    legend.innerHTML = previewRows + showAllBtn;
+  }
 }
 
 function filterResourceChart() {
@@ -199,9 +233,11 @@ function renderCharts(available, totalGross, totalWithdrawn, platformFees, total
     const colors = ['#667eea','#10b981','#f59e0b','#f5576c'];
     _donutChart = new Chart(donutCtx, {
       type: 'doughnut',
-      data: { labels, datasets: [{ data: values, backgroundColor: colors, borderWidth: 3, borderColor: '#fff', hoverOffset: 8 }] },
+      data: { labels, datasets: [{ data: values, backgroundColor: colors, borderWidth: 2, borderColor: getDoughnutBorderColor(), hoverOffset: 0, offset: 0 }] },
       options: { cutout:'72%', responsive:true, maintainAspectRatio:true,
-        plugins:{ legend:{display:false}, tooltip:{callbacks:{label:c=>` ${c.label}: ${fmt(c.raw)}`}} }
+        animation: { animateRotate: true, animateScale: false },
+        plugins:{ legend:{display:false}, tooltip:{callbacks:{label:c=>` ${c.label}: ${fmt(c.raw)}`}} },
+        elements: { arc: { hoverOffset: 0 } }
       }
     });
     const center = document.getElementById('donutCenter');
@@ -449,6 +485,42 @@ function closeRejectReasonModal() {
 
 function closeDetailsModal() {
   document.getElementById('detailsModal').classList.remove('active');
+}
+
+function openAllLegendPopup() {
+  const data = window._allLegendData || [];
+  const grandTotal = window._legendTotal || 0;
+  if (!data.length) return;
+  const isDark = document.body.classList.contains('dark-mode');
+  const divider   = isDark ? '#21293d' : '#f1f5f9';
+  const textMuted = isDark ? '#8b949e' : '#64748b';
+  const textMain  = isDark ? '#e6edf3' : '#1e293b';
+
+  const rows = data.map((r, i) => {
+    const pct = grandTotal > 0 ? ((r.revenue / grandTotal) * 100).toFixed(1) : 0;
+    const lbl = r.name.length > 30 ? r.name.substring(0, 30) + '\u2026' : r.name;
+    return '<div style="display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid ' + divider + ';gap:10px;">'
+      + '<span style="display:flex;align-items:center;gap:8px;font-size:13px;font-weight:500;color:' + textMuted + ';min-width:0;overflow:hidden;">'
+      + '<span style="font-size:11px;font-weight:700;color:' + textMuted + ';flex-shrink:0;min-width:20px;">' + (i + 1) + '.</span>'
+      + '<span style="width:9px;height:9px;border-radius:50%;background:' + r.color + ';flex-shrink:0;"></span>'
+      + '<span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">' + lbl + '</span></span>'
+      + '<span style="display:flex;align-items:center;gap:8px;flex-shrink:0;">'
+      + '<span style="font-size:13px;font-weight:700;color:' + textMain + ';">' + fmt(r.revenue) + '</span>'
+      + '<span style="font-size:10px;color:' + textMuted + ';min-width:34px;text-align:right;">' + pct + '%</span>'
+      + '<span style="font-size:10px;color:' + textMuted + ';">' + r.purchases + ' sale' + (r.purchases !== 1 ? 's' : '') + '</span>'
+      + '</span></div>';
+  }).join('');
+
+  document.getElementById('allLegendPopupCount').textContent = data.length + ' Resources';
+  document.getElementById('allLegendPopupTotal').textContent = fmt(grandTotal);
+  document.getElementById('allLegendPopupList').innerHTML = rows;
+  document.getElementById('allLegendPopup').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeAllLegendPopup() {
+  document.getElementById('allLegendPopup').classList.remove('active');
+  document.body.style.overflow = '';
 }
 
 document.getElementById('detailsModal')?.addEventListener('click', e => {

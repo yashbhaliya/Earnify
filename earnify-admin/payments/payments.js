@@ -135,7 +135,7 @@
           </div>
           <div class="payment-details">
             <div class="detail-item"><div class="detail-label">Gross Amount</div><div class="detail-value">${fmt(gross)}</div></div>
-            <div class="detail-item"><div class="detail-label">Platform Fee (5%)</div><div class="detail-value" style="color:#ef4444">${fmt(fee)}</div></div>
+            <div class="detail-item"><div class="detail-label">Platform Fee (5%)</div><div class="detail-value fee-red">${fmt(fee)}</div></div>
             <div class="detail-item"><div class="detail-label">Request Date</div><div class="detail-value">${fmtDate(p.created_at)}</div></div>
             <div class="detail-item"><div class="detail-label">Method</div><div class="detail-value">${method}</div></div>
           </div>
@@ -159,12 +159,12 @@
       <div class="modal-detail-item"><div class="modal-detail-label">User Email</div><div class="modal-detail-value">${p.user_email || '—'}</div></div>
       <div class="modal-detail-item"><div class="modal-detail-label">Request ID</div><div class="modal-detail-value">${p.id}</div></div>
       <div class="modal-detail-item"><div class="modal-detail-label">Gross Amount</div><div class="modal-detail-value">${fmt(gross)}</div></div>
-      <div class="modal-detail-item"><div class="modal-detail-label">Platform Fee (5%)</div><div class="modal-detail-value" style="color:#ef4444">${fmt(fee)}</div></div>
+      <div class="modal-detail-item"><div class="modal-detail-label">Platform Fee (5%)</div><div class="modal-detail-value fee-red">${fmt(fee)}</div></div>
       <div class="modal-detail-item full"><div class="modal-detail-label">Net Amount</div><div class="modal-detail-value highlight">${fmt(net)}</div></div>
       <div class="modal-detail-item"><div class="modal-detail-label">Method</div><div class="modal-detail-value">${(p.method || '—').toUpperCase()}</div></div>
       <div class="modal-detail-item"><div class="modal-detail-label">Request Date</div><div class="modal-detail-value">${fmtDate(p.created_at)}</div></div>
-      <div class="modal-detail-item full"><div class="modal-detail-label">Account Details</div><div class="modal-detail-value" style="font-size:14px;white-space:pre-line">${p.account || '—'}</div></div>
-      ${p.note ? `<div class="modal-detail-item full"><div class="modal-detail-label">Note</div><div class="modal-detail-value" style="font-size:14px">${p.note}</div></div>` : ''}`;
+      <div class="modal-detail-item full"><div class="modal-detail-label">Account Details</div><div class="modal-detail-value account-val">${p.account || '—'}</div></div>
+      ${p.note ? `<div class="modal-detail-item full"><div class="modal-detail-label">Note</div><div class="modal-detail-value note-val">${p.note}</div></div>` : ''}`;
     document.getElementById('confirmModal').classList.add('show');
     document.body.style.overflow = 'hidden';
   };

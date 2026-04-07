@@ -1014,56 +1014,153 @@
 
     /* Extra small — 375px and below */
     @media (max-width: 390px) {
-      .stat-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 7px;
-      }
+      .stat-grid { grid-template-columns: repeat(2, 1fr); gap: 7px; }
+      .stat-card { padding: 10px 8px; gap: 7px; }
+      .stat-icon { width: 32px; height: 32px; font-size: 14px; border-radius: 8px; }
+      .stat-value { font-size: 16px; }
+      .stat-label { font-size: 9px; }
+      .stat-sub { font-size: 9px; }
+      .page-header h1 { font-size: 14px; }
+      .mobile-email { font-size: 12px; }
+      .mobile-amount { font-size: 13px; }
+      .table-header h3 { font-size: 13px; }
+      .main { padding: 10px 8px 80px; }
+    }
 
-      .stat-card {
-        padding: 10px 8px;
-        gap: 7px;
-      }
+    /* ══ DARK MODE ══ */
+    .dark-toggle {
+      display: flex; align-items: center; justify-content: center;
+      width: 36px; height: 36px; border-radius: 50%;
+      border: 1.5px solid rgba(255,255,255,0.4);
+      background: rgba(255,255,255,0.18);
+      color: #fff; font-size: 16px; cursor: pointer;
+      transition: all 0.25s; flex-shrink: 0; font-family: inherit;
+    }
+    .dark-toggle:hover { background: rgba(255,255,255,0.3); transform: rotate(20deg) scale(1.1); }
 
-      .stat-icon {
-        width: 32px;
-        height: 32px;
-        font-size: 14px;
-        border-radius: 8px;
-      }
+    body.dark-mode { background: #0d1117 !important; color: #e6edf3 !important; }
 
-      .stat-value {
-        font-size: 16px;
-      }
+    body.dark-mode .sidebar {
+      background: linear-gradient(180deg,#161b22 0%,#0d1117 100%) !important;
+      border-right-color: #30363d !important;
+    }
+    body.dark-mode .sidebar-brand { border-bottom-color: #30363d !important; }
+    body.dark-mode .sidebar-brand p { color: #484f58 !important; }
+    body.dark-mode .nav-link { color: #8b949e !important; }
+    body.dark-mode .nav-link:hover,
+    body.dark-mode .nav-link.active {
+      background: rgba(124,106,247,0.1) !important;
+      border-left-color: #7c6af7 !important;
+      color: #a78bfa !important;
+    }
+    body.dark-mode .sidebar-footer { border-top-color: #30363d !important; }
+    body.dark-mode .admin-badge { background: rgba(124,106,247,0.1) !important; }
+    body.dark-mode .admin-name { color: #e6edf3 !important; }
+    body.dark-mode .admin-role { color: #484f58 !important; }
+    body.dark-mode .logout-btn {
+      background: #161b22 !important; color: #f87171 !important; border-color: #f87171 !important;
+    }
+    body.dark-mode .logout-btn:hover { background: rgba(248,113,113,0.1) !important; }
 
-      .stat-label {
-        font-size: 9px;
-      }
+    body.dark-mode .main { background: #0d1117 !important; }
 
-      .stat-sub {
-        font-size: 9px;
-      }
+    /* stat cards */
+    body.dark-mode .stat-card {
+      background: #161b22 !important; border-color: #30363d !important;
+    }
+    body.dark-mode .stat-value { color: #e6edf3 !important; }
+    body.dark-mode .stat-label { color: #484f58 !important; }
+    body.dark-mode .stat-sub   { color: #8b949e !important; }
+    body.dark-mode .stat-card:hover .stat-value { color: #a78bfa !important; }
 
-      .page-header h1 {
-        font-size: 14px;
-      }
+    /* shimmer dark */
+    body.dark-mode .shimmer {
+      background: linear-gradient(90deg,#1c2333 25%,#21293d 50%,#1c2333 75%) !important;
+      background-size: 400% 100% !important;
+    }
+    body.dark-mode .stat-card.is-shimmer .stat-icon {
+      background: linear-gradient(90deg,#1c2333 25%,#21293d 50%,#1c2333 75%) !important;
+      background-size: 400% 100% !important;
+    }
+    body.dark-mode .table-shimmer-cell {
+      background: linear-gradient(90deg,#1c2333 25%,#21293d 50%,#1c2333 75%) !important;
+      background-size: 400% 100% !important;
+    }
+    body.dark-mode .table-shimmer-row td { background: #161b22 !important; border-bottom-color: #21293d !important; }
 
-      .mobile-email {
-        font-size: 12px;
-      }
+    /* table card */
+    body.dark-mode .table-card { background: #161b22 !important; border-color: #30363d !important; }
+    body.dark-mode .table-header { border-bottom-color: #30363d !important; }
+    body.dark-mode .table-header h3 { color: #e6edf3 !important; }
+    body.dark-mode .record-count { color: #484f58 !important; }
 
-      .mobile-amount {
-        font-size: 13px;
-      }
+    /* search & filter */
+    body.dark-mode .search-box {
+      background: #1c2333 !important; border-color: #30363d !important;
+    }
+    body.dark-mode .search-box input { color: #e6edf3 !important; }
+    body.dark-mode .search-box input::placeholder { color: #484f58 !important; }
+    body.dark-mode .filter-btn {
+      background: #1c2333 !important; border-color: #30363d !important; color: #8b949e !important;
+    }
+    body.dark-mode .filter-btn:hover,
+    body.dark-mode .filter-btn:focus { border-color: #7c6af7 !important; color: #a78bfa !important; }
+    body.dark-mode select.filter-btn option { background: #1c2333; color: #e6edf3; }
 
-      .table-header h3 {
-        font-size: 13px;
-      }
+    /* table rows */
+    body.dark-mode td {
+      color: #8b949e !important;
+      border-bottom-color: #21293d !important;
+      border-right-color: #30363d !important;
+      background: #161b22 !important;
+    }
+    body.dark-mode tbody tr:hover td { background: #1c2333 !important; }
 
-      .main {
-        padding: 10px 8px 80px;
-      }
+    /* inline colored td text */
+    body.dark-mode td[style*="color:#1e293b"] { color: #e6edf3 !important; }
+    body.dark-mode td[style*="color:#10b981"] { color: #3fb950 !important; }
+    body.dark-mode td[style*="color:#94a3b8"] { color: #484f58 !important; }
+
+    /* badges */
+    body.dark-mode .badge-completed { background: rgba(6,95,70,0.15) !important; color: #86efac !important; }
+    body.dark-mode .badge-pending   { background: rgba(180,83,9,0.15) !important; color: #fcd34d !important; }
+    body.dark-mode .badge-failed    { background: rgba(153,27,27,0.15) !important; color: #fca5a5 !important; }
+
+    /* empty state */
+    body.dark-mode .empty-state { color: #484f58 !important; }
+    body.dark-mode .empty-state p { color: #484f58 !important; }
+
+    /* mobile rows */
+    body.dark-mode .mobile-table-row { border-bottom-color: #30363d !important; }
+    body.dark-mode .mobile-email  { color: #e6edf3 !important; }
+    body.dark-mode .mobile-resource { color: #8b949e !important; }
+    body.dark-mode .mobile-amount { color: #a78bfa !important; }
+
+    /* modal */
+    body.dark-mode .modal-content {
+      background: #161b22 !important;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6) !important;
+    }
+    body.dark-mode .modal-header { border-bottom-color: #30363d !important; }
+    body.dark-mode .modal-title  { color: #e6edf3 !important; }
+    body.dark-mode .modal-close  { background: #1c2333 !important; color: #8b949e !important; }
+    body.dark-mode .modal-close:hover { background: rgba(248,113,113,0.15) !important; color: #f87171 !important; }
+    body.dark-mode .detail-label { color: #484f58 !important; }
+    body.dark-mode .detail-value { color: #e6edf3 !important; }
+    body.dark-mode .detail-value.amount { color: #a78bfa !important; }
+    body.dark-mode .detail-value[style*="color:#64748b"] { color: #484f58 !important; }
+
+    /* smooth transitions */
+    body.dark-mode, body.dark-mode * {
+      transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease !important;
     }
   </style>
+  <script>
+    (function(){
+      const s = localStorage.getItem('earnify_dark_mode');
+      if(s === null || s === '1') document.documentElement.style.background = '#0d1117';
+    })();
+  </script>
 </head>
 
 <body>
@@ -1123,6 +1220,7 @@
         </div>
       </div>
       <div class="header-meta">
+        <button class="dark-toggle" id="darkToggleBtn" onclick="toggleDarkMode()" title="Toggle dark mode">🌙</button>
         <button class="refresh-btn" onclick="loadStats()">🔄 Refresh</button>
       </div>
     </div>
@@ -1247,6 +1345,23 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="statistic.js"></script>
+  <script>
+    const DARK_KEY = 'earnify_dark_mode';
+    function applyDark(dark) {
+      document.body.classList.toggle('dark-mode', dark);
+      const btn = document.getElementById('darkToggleBtn');
+      if (btn) btn.textContent = dark ? '☀️' : '🌙';
+    }
+    function toggleDarkMode() {
+      const isDark = !document.body.classList.contains('dark-mode');
+      localStorage.setItem(DARK_KEY, isDark ? '1' : '0');
+      applyDark(isDark);
+    }
+    (function(){
+      const saved = localStorage.getItem(DARK_KEY);
+      applyDark(saved === null ? true : saved === '1');
+    })();
+  </script>
 </body>
 
 </html>
