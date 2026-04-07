@@ -1,6 +1,7 @@
 const DARK_KEY = 'earnify_dark_mode';
 
 function applyAdminDark(dark) {
+  document.documentElement.classList.toggle('dark-mode', dark);
   if (!document.body) return;
   document.body.classList.toggle('dark-mode', dark);
   document.querySelectorAll('.admin-dark-btn, .theme-toggle-btn').forEach(btn => {

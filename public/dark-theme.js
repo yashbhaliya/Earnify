@@ -1,6 +1,7 @@
 const DARK_KEY = 'earnify_dark_mode';
 
 function applyDarkMode(dark) {
+  document.documentElement.classList.toggle('dark-mode', dark);
   document.body.classList.toggle('dark-mode', dark);
   document.querySelectorAll('.theme-toggle-btn').forEach(btn => {
     btn.textContent = dark ? '☀️' : '🌙';

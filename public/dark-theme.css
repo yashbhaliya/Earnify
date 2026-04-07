@@ -42,7 +42,8 @@ body.dark-mode .theme-toggle-btn {
 }
 
 /* ── Base ── */
-body.dark-mode {
+body.dark-mode,
+html.dark-mode body {
   background: #0d1117 !important;
   color: #e6edf3 !important;
 }
