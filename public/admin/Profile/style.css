@@ -51,25 +51,9 @@ body {
   height: 100vh;
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: hidden;
   border-right: 2px solid rgba(59, 130, 246, 0.2);
   z-index: 100;
-  scrollbar-width: thin;
-  scrollbar-color: #c7d2fe transparent;
-}
-
-.sidebar::-webkit-scrollbar {
-  width: 4px;
-}
-
-.sidebar::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.sidebar::-webkit-scrollbar-thumb {
-  background: #c7d2fe;
-  border-radius: 4px;
 }
 
 .sidebar h2 {
@@ -3270,7 +3254,6 @@ body.light-mode #viewContent span {
     gap: 10px !important;
     padding-bottom: 10px !important;
     -webkit-overflow-scrolling: touch !important;
-    scrollbar-width: thin;
   }
 
   .add-buttons-group::-webkit-scrollbar {
@@ -3305,7 +3288,6 @@ body.light-mode #viewContent span {
     gap: 8px !important;
     padding: 12px !important;
     -webkit-overflow-scrolling: touch !important;
-    scrollbar-width: thin;
   }
 
   .resource-tabs::-webkit-scrollbar {
@@ -4309,21 +4291,6 @@ body.dark-mode .success-message {
   overflow-x: hidden;
   border-right: 2px solid rgba(59, 130, 246, 0.2);
   z-index: 100;
-  scrollbar-width: thin;
-  scrollbar-color: #c7d2fe transparent;
-}
-
-.sidebar::-webkit-scrollbar {
-  width: 4px;
-}
-
-.sidebar::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.sidebar::-webkit-scrollbar-thumb {
-  background: #c7d2fe;
-  border-radius: 4px;
 }
 
 .sidebar h2 {
@@ -7524,7 +7491,6 @@ body.light-mode #viewContent span {
     gap: 10px !important;
     padding-bottom: 10px !important;
     -webkit-overflow-scrolling: touch !important;
-    scrollbar-width: thin;
   }
 
   .add-buttons-group::-webkit-scrollbar {
@@ -7559,7 +7525,6 @@ body.light-mode #viewContent span {
     gap: 8px !important;
     padding: 12px !important;
     -webkit-overflow-scrolling: touch !important;
-    scrollbar-width: thin;
   }
 
   .resource-tabs::-webkit-scrollbar {

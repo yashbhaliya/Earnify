@@ -39,25 +39,9 @@ body {
   height: 100vh;
   display: flex;
   flex-direction: column;
-  overflow-y: hidden;
-  overflow-x: hidden;
+  overflow: hidden;
   border-right: 2px solid rgba(59, 130, 246, 0.2);
   z-index: 100;
-  scrollbar-width: thin;
-  scrollbar-color: #c7d2fe transparent;
-}
-
-.sidebar::-webkit-scrollbar {
-  width: 4px;
-}
-
-.sidebar::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.sidebar::-webkit-scrollbar-thumb {
-  background: #c7d2fe;
-  border-radius: 4px;
 }
 
 .sidebar h2 {
