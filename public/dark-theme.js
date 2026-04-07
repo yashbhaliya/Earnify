@@ -16,6 +16,6 @@ function toggleDarkMode() {
 
 (function () {
   const stored = localStorage.getItem(DARK_KEY);
-  // Default to dark mode if no preference saved yet
-  applyDarkMode(stored === null ? true : stored === '1');
+  // Default to light mode if no preference saved yet
+  applyDarkMode(stored === null ? false : stored === '1');
 })();

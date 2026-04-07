@@ -24,8 +24,8 @@ function toggleDarkMode() {
 // Apply immediately to body (prevents flash)
 (function () {
   const saved = localStorage.getItem(DARK_KEY);
-  const isDark = saved === null ? true : saved === '1';
-  if (saved === null) localStorage.setItem(DARK_KEY, '1');
+  const isDark = saved === null ? false : saved === '1';
+  if (saved === null) localStorage.setItem(DARK_KEY, '0');
   if (document.body) {
     document.body.classList.toggle('dark-mode', isDark);
   }
