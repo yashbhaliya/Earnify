@@ -14,19 +14,6 @@
   <link rel="stylesheet" href="./light-theme.css">
   <link rel="stylesheet" href="./mobile-responsive.css">
   <link rel="stylesheet" href="../admin-bottom-nav.css">
-  
-  <script>
-    // Prevent white flash — apply dark class before any CSS paints
-    (function(){
-      if((localStorage.getItem('earnify_dark_mode')||'1')==='1'){
-        document.documentElement.classList.add('dark-mode-pre');
-      }
-    })();
-  </script>
-  <style>
-    /* Applied before body renders to prevent flash */
-    .dark-mode-pre body, html.dark-mode-pre body { background: #0d1117 !important; }
-  </style>
   <style>
     .resource-container {
       max-width: 1400px;
