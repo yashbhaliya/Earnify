@@ -12,6 +12,8 @@
   <link rel="stylesheet" href="light-theme.css">
   <link rel="stylesheet" href="mobile-responsive.css">
   <link rel="stylesheet" href="../admin-bottom-nav.css">
+  <link rel="stylesheet" href="../admin-dark.css">
+  <script>(function(){if((localStorage.getItem('earnify_dark_mode')||'1')==='1'){document.documentElement.style.background='#0d1117';}})();</script>
   <style>
     .sidebar-header {
       display: flex;
@@ -874,6 +876,8 @@
     }
   </style>
 
+  <script src="../admin-dark.js"></script>
+
   <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
 
   <div class="sidebar">
@@ -913,6 +917,7 @@
           <div class="hamburger"></div>
         </button>
         <h2>My Profile</h2>
+        <button class="admin-dark-btn" onclick="toggleAdminDark()" title="Toggle dark mode" style="margin-left:auto;">🌙</button>
       </div>
 
       <div class="profile-page-header">
@@ -923,6 +928,7 @@
             <div class="hamburger"></div>
           </button>
           <h1>My Profile</h1>
+          <button class="admin-dark-btn" onclick="toggleAdminDark()" title="Toggle dark mode" style="margin-left:auto;">🌙</button>
         </div>
         <p style="display: flex;">Manage your account information and settings</p>
       </div>

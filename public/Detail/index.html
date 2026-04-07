@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="../auth-modal.css">
   <link rel="stylesheet" href="details.css">
+  <link rel="stylesheet" href="../dark-theme.css">
 </head>
 <body>
   <nav class="navbar">
@@ -27,6 +28,7 @@
         <a href="../Dashboard/">Dashboard</a>
         <button id="loginBtn" class="admin-btn" onclick="showLoginModal()">Login</button>
         <button id="signupBtn" class="admin-btn" onclick="showSignupModal()">Sign Up</button>
+        <button class="theme-toggle-btn" onclick="toggleDarkMode()" title="Toggle dark mode">🌙</button>
         <div id="userMenu" class="user-menu" style="display:none;">
           <button class="user-menu-btn" onclick="toggleUserDropdown()">
             <span class="user-avatar">👤</span>
@@ -253,5 +255,6 @@
   <script src="../toast.js"></script>
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   <script src="detail.js"></script>
+  <script src="../dark-theme.js"></script>
 </body>
 </html>

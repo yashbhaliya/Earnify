@@ -1817,7 +1817,7 @@ footer {
     min-height: 44px;
     display: inline-flex;
     align-items: center;
-    justify-content: center;
+    /* justify-content: center; */
   }
 
   .nav-links a {

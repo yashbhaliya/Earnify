@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 
 <head>
@@ -13,6 +13,19 @@
   <link rel="stylesheet" href="./light-theme.css">
   <link rel="stylesheet" href="./mobile-responsive.css">
   <link rel="stylesheet" href="../admin-bottom-nav.css">
+  <link rel="stylesheet" href="../admin-dark.css">
+  <script>
+    // Prevent white flash — apply dark class before any CSS paints
+    (function(){
+      if((localStorage.getItem('earnify_dark_mode')||'1')==='1'){
+        document.documentElement.classList.add('dark-mode-pre');
+      }
+    })();
+  </script>
+  <style>
+    /* Applied before body renders to prevent flash */
+    .dark-mode-pre body, html.dark-mode-pre body { background: #0d1117 !important; }
+  </style>
   <style>
     .resource-container {
       max-width: 1400px;
@@ -36,22 +49,22 @@
     }
 
     .sidebar a:not(.sb-logout):not(.admin-panel-btn):hover {
-      background: linear-gradient(90deg, rgba(59, 130, 246, 0.08), rgba(59, 130, 246, 0.04)) !important;
+      /* background: linear-gradient(90deg, rgba(59, 130, 246, 0.08), rgba(59, 130, 246, 0.04)) !important; */
       border-left-color: #93c5fd !important;
-      color: #2563eb !important;
+      /* color: #2563eb !important; */
       transform: translateX(4px) !important;
     }
 
     .sidebar a.active-link {
-      background: linear-gradient(90deg, rgba(102, 126, 234, 0.15), rgba(118, 75, 162, 0.06)) !important;
+      /* background: linear-gradient(90deg, rgba(102, 126, 234, 0.15), rgba(118, 75, 162, 0.06)) !important; */
       border-left-color: #667eea !important;
-      color: #667eea !important;
+      /* color: #667eea !important; */
       font-weight: 700 !important;
     }
 
     .sidebar a.active-link:not(.sb-logout):not(.admin-panel-btn):hover {
-      background: linear-gradient(90deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.1)) !important;
-      color: #764ba2 !important;
+      /* background: linear-gradient(90deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.1)) !important; */
+      /* color: #764ba2 !important; */
       transform: translateX(4px) !important;
     }
 
@@ -70,7 +83,7 @@
     }
 
     .admin-panel-btn:hover {
-      background: linear-gradient(135deg, #667eea, #764ba2) !important;
+      background: rgb(102, 126, 234) !important;
       color: #fff !important;
       transform: translateY(-2px) !important;
       opacity: 0.88 !important;
@@ -292,14 +305,8 @@
 
 </head>
 
-<body class="light-mode">
-  <script>
-    // Prevent style flash on page load - apply saved styles immediately
-    (function () {
-      const savedTheme = localStorage.getItem('theme') || 'light-mode';
-      document.body.className = savedTheme;
-    })();
-  </script>
+<body>
+  <script src="../admin-dark.js"></script>
 
   <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
 
@@ -386,6 +393,7 @@
           <h1>Resources</h1>
           <p class="subtitle">Manage your PDF notes, Excel templates, Exam materials, and Freelance services</p>
         </div>
+        <button class="admin-dark-btn" onclick="toggleAdminDark()" title="Toggle dark mode">🌙</button>
       </div>
     </div>
 
@@ -809,7 +817,7 @@
             const adminBtn = document.createElement('a');
             adminBtn.textContent = '🛡️ Super Admin Panel';
             adminBtn.className = 'admin-panel-btn';
-            adminBtn.style.cssText = 'display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:12px 16px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border:none;border-radius:10px;font-weight:700;font-size:14px;cursor:pointer;text-decoration:none;text-align:center;box-sizing:border-box;';
+            adminBtn.style.cssText = 'display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:12px 16px;background:rgb(102, 126, 234) !important;color:#fff;border:none;border-radius:10px;font-weight:700;font-size:14px;cursor:pointer;text-decoration:none;text-align:center;box-sizing:border-box;';
             adminBtn.onclick = () => { window.location.href = '/earnify-admin/Dashboard/'; };
             sidebarUser.insertBefore(adminBtn, logoutLink);
           }
@@ -893,31 +901,7 @@
       setView(savedView, true);
     })();
 
-    // Save theme preference to prevent auto-change on refresh
-    function saveTheme() {
-      const currentTheme = document.body.className;
-      localStorage.setItem('theme', currentTheme);
-    }
 
-    // Monitor for any class changes and save them
-    const observer = new MutationObserver(function (mutations) {
-      mutations.forEach(function (mutation) {
-        if (mutation.attributeName === 'class') {
-          saveTheme();
-        }
-      });
-    });
-
-    observer.observe(document.body, {
-      attributes: true,
-      attributeFilter: ['class']
-    });
-
-    // Ensure theme persists on page load
-    window.addEventListener('DOMContentLoaded', function () {
-      const savedTheme = localStorage.getItem('theme') || 'light-mode';
-      document.body.className = savedTheme;
-    });
 
     /* ── View Switcher ── */
     let _allPurchased = [];

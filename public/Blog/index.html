@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="../landing.css">
   <link rel="stylesheet" href="../auth-modal.css">
   <link rel="stylesheet" href="./blog.css">
+  <link rel="stylesheet" href="../dark-theme.css">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
  
 </head>
@@ -37,6 +38,7 @@
         <a href="../Dashboard/" onclick="goToDashboard(event)">Dashboard</a>
         <button id="loginBtn" class="admin-btn" onclick="showLoginModal()">Login</button>
         <button id="signupBtn" class="admin-btn" onclick="showSignupModal()">Sign Up</button>
+        <button class="theme-toggle-btn" onclick="toggleDarkMode()" title="Toggle dark mode">🌙</button>
         <div id="userMenu" class="user-menu" style="display:none;">
           <button class="user-menu-btn" onclick="toggleUserDropdown()">
             <span class="user-avatar">👤</span>
@@ -307,6 +309,7 @@
   <script src="../api-config.js"></script>
   <script src="../toast.js"></script>
   <script src="../landing.js"></script>
+  <script src="../dark-theme.js"></script>
   <script>
     const SUPABASE_URL = 'https://emnrgsgerfjvndexomro.supabase.co';
     const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVtbnJnc2dlcmZqdm5kZXhvbXJvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI0MjAyMTAsImV4cCI6MjA4Nzk5NjIxMH0.uXr8lipxLbB4D_5JwQkpLzc-HudQw23tOFBfV4C6hqY';

@@ -9,6 +9,8 @@
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="../mobile-responsive.css">
   <link rel="stylesheet" href="../admin-bottom-nav.css">
+  <link rel="stylesheet" href="../admin-dark.css">
+  <script>(function(){if((localStorage.getItem('earnify_dark_mode')||'1')==='1'){document.documentElement.style.background='#0d1117';}})();</script>
   <style>
     .sidebar-header {
       display: flex;
@@ -442,7 +444,8 @@
     }
   </style>
 </head>
-<body class="light-mode">
+<body>
+<script src="../admin-dark.js"></script>
 
   <button class="mobile-menu-toggle" onclick="toggleSidebar()">
     <div class="hamburger"></div>
@@ -494,7 +497,10 @@
             <div class="hero-sub">Ready to withdraw to your account</div>
           </div>
         </div>
-        <button class="hero-cta" onclick="scrollToForm()">💸 Request Withdrawal</button>
+        <div style="display:flex;align-items:center;gap:12px;">
+          <button class="admin-dark-btn" onclick="toggleAdminDark()" title="Toggle dark mode">🌙</button>
+          <button class="hero-cta" onclick="scrollToForm()">💸 Request Withdrawal</button>
+        </div>
       </div>
       <div class="hero-stats">
         <div class="hero-stat-item">

@@ -243,3 +243,66 @@ html, body {
     .stat-icon { width: 40px !important; height: 40px !important; font-size: 22px !important; }
     .stat-value { font-size: 20px !important; }
 }
+
+/* --- Dark Mode Mobile --- */
+@media (max-width: 768px) {
+    body.dark-mode .main {
+        background: #0d1117 !important;
+    }
+
+    body.dark-mode .sidebar {
+        background: linear-gradient(180deg, #161b22 0%, #0d1117 100%) !important;
+    }
+
+    body.dark-mode .sidebar h2 {
+        color: #a78bfa !important;
+    }
+
+    body.dark-mode .sidebar a {
+        /* color: #8b949e !important; */
+    }
+
+    body.dark-mode .mobile-menu-toggle {
+        background: #7c6af7;
+    }
+
+    body.dark-mode .sidebar-overlay {
+        background: rgba(0, 0, 0, 0.7);
+    }
+
+    body.dark-mode .resource-tabs {
+        background: #161b22 !important;
+    }
+
+    body.dark-mode .tab-btn {
+        background: #1c2333 !important;
+        color: #8b949e !important;
+    }
+
+    body.dark-mode .profile-card {
+        background: #161b22 !important;
+        border-color: #30363d !important;
+    }
+
+    body.dark-mode .stat-card {
+        background: #161b22 !important;
+        border-color: #30363d !important;
+    }
+
+    body.dark-mode .profile-page-header {
+        background: linear-gradient(135deg, #7c6af7 0%, #5b4fcf 100%) !important;
+    }
+
+    body.dark-mode .mobile-profile-header {
+        background: linear-gradient(135deg, #7c6af7, #5b4fcf) !important;
+    }
+
+    body.dark-mode .hero-banner {
+        background: linear-gradient(135deg, #7c6af7 0%, #5b4fcf 100%) !important;
+    }
+
+    body.dark-mode .w-card {
+        background: #161b22 !important;
+        border-color: #30363d !important;
+    }
+}

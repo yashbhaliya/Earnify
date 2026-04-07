@@ -340,12 +340,16 @@ async function handlePurchase() {
     });
     const order = await orderRes.json();
 
+    const isDark = document.body.classList.contains('dark-mode');
     const options = {
       key, amount: order.amount, currency: order.currency,
       name: 'Earnify', description: currentResource.title, order_id: order.id,
       handler: async r => { await verifyPayment(r); },
       prefill: { name: currentUser?.user_metadata?.name, email: currentUser?.email },
-      theme: { color: '#667eea' },
+      theme: {
+        color: isDark ? '#a78bfa' : '#667eea',
+        backdrop_color: isDark ? 'rgba(13,17,23,0.85)' : 'rgba(0,0,0,0.6)'
+      },
       modal: { ondismiss: () => { btn.disabled = false; btn.innerHTML = '<i class="fas fa-shopping-cart"></i> Buy Now'; } }
     };
     new Razorpay(options).open();

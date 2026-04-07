@@ -9,6 +9,8 @@
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="mobile-responsive.css">
   <link rel="stylesheet" href="../admin-bottom-nav.css">
+  <link rel="stylesheet" href="../admin-dark.css">
+  <script>(function(){if((localStorage.getItem('earnify_dark_mode')||'1')==='1'){document.documentElement.style.background='#0d1117';}})();</script>
   <style>
     .sidebar-header {
       display: flex;
@@ -958,6 +960,7 @@
   </style>
 </head>
 <body>
+<script src="../admin-dark.js"></script>
 
 <button class="mobile-menu-toggle" onclick="toggleSidebar()">
   <div class="hamburger"></div>
@@ -1050,6 +1053,7 @@
           </button>
           <h1 style="margin:0;">Sales Statistics</h1>
         </div>
+        <button class="admin-dark-btn" onclick="toggleAdminDark()" title="Toggle dark mode">🌙</button>
         <a href="../Withdrawal/" style="display:inline-flex; align-items:center; gap:8px; padding:12px 22px; background:rgba(255,255,255,.18); backdrop-filter:blur(10px); border:1.5px solid rgba(255,255,255,.4); color:#fff; border-radius:12px; font-size:14px; font-weight:700; text-decoration:none; transition:all .25s; white-space:nowrap;" onmouseover="this.style.background='rgba(255,255,255,.3)'" onmouseout="this.style.background='rgba(255,255,255,.18)'">💸 Request Withdrawal</a>
       </div>
       <p class="subtitle">Track sales performance and customer insights for your resources</p>
