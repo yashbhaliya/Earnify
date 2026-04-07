@@ -93,7 +93,7 @@ body.dark-mode .search-box input:focus {
 
 /* ── Hero ── */
 body.dark-mode .hero-gradient {
-  background: url('/file/dark.png') center/cover no-repeat !important;
+  background: url('/file/dark-hero.png') center/cover no-repeat !important;
 }
 
 body.dark-mode .hero-left h1 {
