@@ -31,27 +31,41 @@
       border-bottom: 2px solid rgba(59, 130, 246, 0.2) !important;
     }
 
-    .sidebar a:not(.sb-logout):not(.admin-panel-btn) {
-      border-left: 3px solid transparent !important;
-      margin: 2px 12px 2px 0 !important;
+    /* ── Sidebar nav links base ── */
+    .sidebar a.nav-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #64748b;
+      padding: 12px 20px 12px 26px;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 14px;
+      border-left: 3px solid transparent;
+      margin: 2px 12px 2px 0;
+      transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
     }
 
-    .sidebar a:not(.sb-logout):not(.admin-panel-btn):hover {
+    /* ── Hover: all non-active links ── */
+    .sidebar a.nav-link:not(.active-link):hover {
       background: linear-gradient(90deg, rgba(59, 130, 246, 0.08) 0%, rgba(59, 130, 246, 0.04) 100%) !important;
       border-left-color: #93c5fd !important;
       color: #2563eb !important;
       transform: translateX(4px) !important;
     }
 
-    .sidebar a.active-link {
+    /* ── Active link ── */
+    .sidebar a.nav-link.active-link {
       background: linear-gradient(90deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.06) 100%) !important;
       border-left-color: #667eea !important;
       color: #667eea !important;
       font-weight: 700 !important;
     }
 
-    .sidebar a.active-link:not(.sb-logout):not(.admin-panel-btn):hover {
+    /* ── Active link hover ── */
+    .sidebar a.nav-link.active-link:hover {
       background: linear-gradient(90deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.1) 100%) !important;
+      border-left-color: #667eea !important;
       color: #764ba2 !important;
       transform: translateX(4px) !important;
     }
