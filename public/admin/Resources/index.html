@@ -2,13 +2,14 @@
 <html>
 
 <head>
-  <script>!function(){var s=sessionStorage.getItem('earnify_dark_mode');if(s==='1'){document.documentElement.classList.add('dark-mode');}}();</script>
+  <script>!function(){var s=sessionStorage.getItem('earnify_dark_mode');if(s==='1'){document.documentElement.classList.add('dark-mode');var st=document.createElement('style');st.textContent='html.dark-mode,html.dark-mode body{background:#0d1117!important;color:#e6edf3!important;}html.dark-mode .sidebar{background:linear-gradient(180deg,#161b22 0%,#0d1117 100%)!important;}html.dark-mode .main{background:#0d1117!important;}';document.head.appendChild(st);}}();</script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Resources - Earnify Admin</title>
   <link rel="icon" href="/file/logo1.jpeg" type="image/jpeg">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
     rel="stylesheet">
+  <link rel="stylesheet" href="/admin/dark-theme.css">
   <link rel="stylesheet" href="./style.css">
   <link rel="stylesheet" href="./site-view.css">
   <link rel="stylesheet" href="./light-theme.css">
@@ -304,8 +305,6 @@
     }
   </style> 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-  <link rel="stylesheet" href="/admin/dark-theme.css">
 </head>
 
 <body>
@@ -1009,7 +1008,6 @@
     }
   </script>
 
-  
   <script src="/admin/dark-theme.js"></script>
 </body>
 
