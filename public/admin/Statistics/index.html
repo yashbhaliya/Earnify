@@ -1326,33 +1326,7 @@
       document.getElementById('sidebarUserEmail').textContent = email;
       document.getElementById('sidebarAvatar').textContent    = name.charAt(0).toUpperCase();
 
-      // Super Admin button — same logic as Profile page
-      try {
-        const SUPA_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVtbnJnc2dlcmZqdm5kZXhvbXJvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI0MjAyMTAsImV4cCI6MjA4Nzk5NjIxMH0.uXr8lipxLbB4D_5JwQkpLzc-HudQw23tOFBfV4C6hqY';
-        const _sc = window.supabase.createClient(SUPA_URL, SUPA_ANON, {
-          auth: { storageKey: 'earnify-stats-anon', persistSession: false, autoRefreshToken: false }
-        });
-        // Get userId from currentUser or decode from adminToken
-        let userId = cu.id;
-        if (!userId) {
-          const token = localStorage.getItem('adminToken');
-          if (token) userId = _decodeJwt(token)?.sub;
-        }
-        if (userId) {
-          const { data } = await _sc.from('profiles').select('role').eq('id', userId).single();
-          if (data?.role === 'super_admin') {
-            const logoutLink = sidebarUser.querySelector('.logout-link');
-            if (logoutLink) {
-              const adminBtn = document.createElement('a');
-              adminBtn.textContent = '🛡️ Super Admin Panel';
-              adminBtn.className = 'logout-link';
-              adminBtn.style.cssText = 'background:#667eea!important;color:#fff!important;border-color:#667eea!important;margin-bottom:8px;display:block;text-align:center;cursor:pointer;';
-              adminBtn.onclick = () => { window.location.href = '/earnify-admin/Dashboard/'; };
-              sidebarUser.insertBefore(adminBtn, logoutLink);
-            }
-          }
-        }
-      } catch(e) { console.warn('[Stats] role check failed:', e.message); }
+      // Super Admin button injected by super-admin-btn.js
     }
     loadStatistics();
   })();
@@ -1526,7 +1500,7 @@
               return `
               <tr>
                 <td><div class="customer-info"><div class="customer-details"><div class="customer-email">${esc(stats.email)}</div></div></div></td>
-                <td class="col-quantity"><span style="font-size:13px;color:#475569;font-weight:500;">${date}</span></td>
+                <td class="col-quantity"><span style="font-size:13px;color:white;font-weight:500;">${date}</span></td>
                 <td><span class="amount-value">₹${parseFloat(stats.totalAmount).toFixed(0)}</span></td>
                 <td class="col-resources"><div class="resources-list"><span class="resource-tag">${esc(resource)}</span></div></td>
                 <td class="col-eye"><button class="eye-btn" onclick="openCustomerDetail('${userId}')" title="View Details"><span>View</span></button></td>
@@ -1962,5 +1936,6 @@
 </script>
 
  <script src="/admin/dark-theme.js"></script>
+ <script src="./super-admin-btn.js"></script>
 </body>
 </html>

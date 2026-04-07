@@ -20,7 +20,8 @@
     body {
       font-family: 'Inter', sans-serif;
       background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-      min-height: 100vh;
+      height: 100vh;
+      overflow: hidden;
       display: flex;
     }
 
@@ -36,7 +37,7 @@
       height: 100vh;
       display: flex;
       flex-direction: column;
-      overflow-y: auto;
+      overflow: hidden;
       z-index: 100;
       transition: transform 0.3s ease;
     }
@@ -217,7 +218,7 @@
       margin-left: 260px;
       padding: 32px 36px;
       overflow-y: auto;
-      min-height: 100vh;
+      height: 100vh;
     }
 
     /* ── Page Header ── */
@@ -847,6 +848,7 @@
       .main {
         margin-left: 0;
         padding: 16px 14px;
+        height: 100vh;
       }
 
       .stats-grid {

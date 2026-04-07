@@ -217,7 +217,7 @@ body.dark-mode, html.dark-mode body .filter-tabs {
 }
 
 body.dark-mode, html.dark-mode body .filter-btn {
-  color: #8b949e !important;
+  color: white!important;
 }
 
 body.dark-mode, html.dark-mode body .filter-btn:hover {
