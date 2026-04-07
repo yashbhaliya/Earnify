@@ -13,21 +13,21 @@ function applyAdminDark(dark) {
 function toggleAdminDark() {
   if (!document.body) return;
   const isDark = !document.body.classList.contains('dark-mode');
-  localStorage.setItem(DARK_KEY, isDark ? '1' : '0');
+  sessionStorage.setItem(DARK_KEY, isDark ? '1' : '0');
   applyAdminDark(isDark);
 }
 
-// Alias for compatibility with theme-toggle-btn class
 function toggleDarkMode() {
   toggleAdminDark();
 }
 
 // Apply immediately to body (prevents flash)
 (function () {
-  const saved = localStorage.getItem(DARK_KEY);
+  // Always light on new tab — sessionStorage clears on new tab
+  const saved = sessionStorage.getItem(DARK_KEY);
   const isDark = saved === '1';
-  if (saved === null) localStorage.setItem(DARK_KEY, '0');
   if (document.body) {
+    document.documentElement.classList.toggle('dark-mode', isDark);
     document.body.classList.toggle('dark-mode', isDark);
   }
 })();

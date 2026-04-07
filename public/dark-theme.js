@@ -11,12 +11,12 @@ function applyDarkMode(dark) {
 
 function toggleDarkMode() {
   const isDark = !document.body.classList.contains('dark-mode');
-  localStorage.setItem(DARK_KEY, isDark ? '1' : '0');
+  sessionStorage.setItem(DARK_KEY, isDark ? '1' : '0');
   applyDarkMode(isDark);
 }
 
 (function () {
-  const stored = localStorage.getItem(DARK_KEY);
-  if (stored === null) localStorage.setItem(DARK_KEY, '0');
+  // Always light on new tab — sessionStorage clears on new tab
+  const stored = sessionStorage.getItem(DARK_KEY);
   applyDarkMode(stored === '1');
 })();
