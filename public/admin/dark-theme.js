@@ -3,10 +3,16 @@ const DARK_KEY = 'earnify_dark_mode';
 function applyDarkMode(dark) {
   document.documentElement.classList.toggle('dark-mode', dark);
   document.body.classList.toggle('dark-mode', dark);
+
+  // Sync header emoji button
   document.querySelectorAll('.theme-toggle-btn').forEach(btn => {
     btn.textContent = dark ? '☀️' : '🌙';
     btn.title = dark ? 'Switch to light mode' : 'Switch to dark mode';
   });
+
+  // Sync sidebar neumorphic knob
+  const knob = document.getElementById('sbNmKnob');
+  if (knob) knob.textContent = dark ? '🌙' : '☀️';
 }
 
 function toggleDarkMode() {
@@ -16,7 +22,6 @@ function toggleDarkMode() {
 }
 
 (function () {
-  // Always light on new tab — sessionStorage clears on new tab
   const stored = sessionStorage.getItem(DARK_KEY);
   applyDarkMode(stored === '1');
 })();

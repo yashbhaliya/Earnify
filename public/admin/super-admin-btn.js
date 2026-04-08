@@ -44,7 +44,7 @@
       const btn = document.createElement('a');
       btn.textContent = '🛡️ Super Admin Panel';
       btn.className = 'super-admin-btn logout-link';
-      btn.style.cssText = 'background:#667eea!important;border-radius:10px;color:#fff!important;border-color:#667eea!important;margin-bottom:8px;display:block;text-align:center;cursor:pointer;text-decoration:none;';
+      btn.style.cssText = 'background:#667eea!important;border-radius:10px;color:#fff!important;border-color:#667eea!important;display:block;text-align:center;cursor:pointer;text-decoration:none;';
       btn.onclick = function(e) { e.preventDefault(); window.location.href = getDashboardURL(); };
 
       if (logoutLink) sidebarUser.insertBefore(btn, logoutLink);

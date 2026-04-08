@@ -1500,7 +1500,7 @@
               return `
               <tr>
                 <td><div class="customer-info"><div class="customer-details"><div class="customer-email">${esc(stats.email)}</div></div></div></td>
-                <td class="col-quantity"><span style="font-size:13px;color:white;font-weight:500;">${date}</span></td>
+                <td class="col-quantity"><span class="date-badge">${date}</span></td>
                 <td><span class="amount-value">₹${parseFloat(stats.totalAmount).toFixed(0)}</span></td>
                 <td class="col-resources"><div class="resources-list"><span class="resource-tag">${esc(resource)}</span></div></td>
                 <td class="col-eye"><button class="eye-btn" onclick="openCustomerDetail('${userId}')" title="View Details"><span>View</span></button></td>
@@ -1936,6 +1936,6 @@
 </script>
 
  <script src="/admin/dark-theme.js"></script>
- <script src="./super-admin-btn.js"></script>
+ <script src="/admin/super-admin-btn.js"></script>
 </body>
 </html>
