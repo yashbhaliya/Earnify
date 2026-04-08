@@ -399,7 +399,7 @@ body.dark-mode, html.dark-mode body .detail-sheet { background: #161b22 !importa
 body.dark-mode, html.dark-mode body .detail-sheet-handle { background: #30363d !important; }
 body.dark-mode, html.dark-mode body .detail-sheet h3 { color: #e6edf3 !important; }
 body.dark-mode, html.dark-mode body .detail-row { border-bottom-color: #30363d !important; }
-body.dark-mode, html.dark-mode body .detail-label { color: #484f58 !important; }
+body.dark-mode, html.dark-mode body .detail-label { color: #8b949e !important; }
 body.dark-mode, html.dark-mode body .detail-value { color: #e6edf3 !important; }
 body.dark-mode, html.dark-mode body .resource-tag { background: #1c2333 !important; color: #a78bfa !important; }
 body.dark-mode, html.dark-mode body .eye-btn { background: #1c2333 !important; border-color: #7c6af7 !important; }

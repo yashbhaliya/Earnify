@@ -6412,3 +6412,23 @@ body.dark-mode .success-message {
   background: rgba(16, 185, 129, 0.1) !important;
   color: #86efac !important;
 }
+
+
+/* ── Date badge in customer table ── */
+.date-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  background: linear-gradient(135deg, rgba(102,126,234,0.12), rgba(118,75,162,0.12));
+  color: #667eea;
+  border: 1px solid rgba(102,126,234,0.2);
+  white-space: nowrap;
+}
+
+body.dark-mode .date-badge {
+  background: rgba(124,106,247,0.15) !important;
+  color: #a78bfa !important;
+  border-color: rgba(124,106,247,0.25) !important;
+}

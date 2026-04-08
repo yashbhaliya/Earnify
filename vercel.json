@@ -29,6 +29,10 @@
       "dest": "/server.js"
     },
     {
+      "src": "/earnify-admin/Dashboard/index.html",
+      "dest": "/earnify-admin/Dashboard/index.html"
+    },
+    {
       "src": "/earnify-admin/Dashboard/?$",
       "dest": "/earnify-admin/Dashboard/index.html"
     },

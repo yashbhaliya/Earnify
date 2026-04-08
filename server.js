@@ -21,8 +21,19 @@ app.use(cors({
   credentials: true
 }));
 app.use(express.json());
-app.use('/admin', express.static(path.join(__dirname, 'public/admin'), { index: 'index.html' }));
-app.use('/earnify-admin', express.static(path.join(__dirname, 'earnify-admin'), { index: 'index.html' }));
+// admin pages (public/admin)
+app.use('/admin', express.static(path.join(__dirname, 'public', 'admin'), { index: 'index.html' }));
+
+// earnify-admin pages — explicit routes cover all URL variants
+['Dashboard','statistic','payments','Blog'].forEach(folder => {
+  const file = path.join(__dirname, 'earnify-admin', folder, 'index.html');
+  app.get(`/earnify-admin/${folder}`,            (req, res) => res.sendFile(file));
+  app.get(`/earnify-admin/${folder}/`,           (req, res) => res.sendFile(file));
+  app.get(`/earnify-admin/${folder}/index.html`, (req, res) => res.sendFile(file));
+});
+
+// earnify-admin static assets (js, css, images)
+app.use('/earnify-admin', express.static(path.join(__dirname, 'earnify-admin')));
 
 const upload = multer({ storage: multer.memoryStorage() });
 

@@ -13,7 +13,6 @@
   <link rel="stylesheet" href="mobile-responsive.css">
   <link rel="stylesheet" href="/admin/admin-bottom-nav.css">
   <link rel="stylesheet" href="/admin/admin-dark.css">
-  <link rel="stylesheet" href="/admin/dark-theme.css">
   <script>!function(){var s=sessionStorage.getItem('earnify_dark_mode');if(s==='1'){document.documentElement.classList.add('dark-mode');}}();</script>
   <style>
     .sidebar-header {
@@ -1290,23 +1289,7 @@
         document.getElementById('sidebarUserEmail').textContent = currentUser.email;
         document.getElementById('sidebarAvatar').textContent = userName.charAt(0).toUpperCase();
 
-        try {
-          const SUPA_URL = 'https://emnrgsgerfjvndexomro.supabase.co';
-          const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVtbnJnc2dlcmZqdm5kZXhvbXJvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI0MjAyMTAsImV4cCI6MjA4Nzk5NjIxMH0.uXr8lipxLbB4D_5JwQkpLzc-HudQw23tOFBfV4C6hqY';
-          const _sc = window.supabase.createClient(SUPA_URL, SUPA_KEY);
-          const { data } = await _sc.from('profiles').select('role').eq('id', currentUser.id).single();
-          if (data?.role === 'super_admin') {
-            const logoutLink = sidebarUser.querySelector('.logout-link');
-            if (logoutLink) {
-              const adminBtn = document.createElement('a');
-              adminBtn.textContent = '🛡️ Super Admin Panel';
-              adminBtn.className = 'logout-link';
-              adminBtn.style.cssText = 'background:#667eea!important;color:#fff!important;border-color:#667eea!important;margin-bottom:8px;display:block;text-align:center;cursor:pointer;';
-              adminBtn.onclick = () => { window.location.href = '/earnify-admin/Dashboard/'; };
-              sidebarUser.insertBefore(adminBtn, logoutLink);
-            }
-          }
-        } catch (e) { console.warn('Role check failed', e); }
+        // Super Admin button injected by super-admin-btn.js
       }
     });
 
@@ -1559,7 +1542,8 @@
   </script>
 
  
-  <script src="/admin/dark-theme.js"></script>
+  <script src="../../dark-theme.js"></script>
+  <script src="../super-admin-btn.js"></script>
 </body>
 
 </html>

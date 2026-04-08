@@ -4,6 +4,11 @@ function applyAdminDark(dark) {
   document.documentElement.classList.toggle('dark-mode', dark);
   if (!document.body) return;
   document.body.classList.toggle('dark-mode', dark);
+
+  document.querySelectorAll('.nm-toggle-knob').forEach(knob => {
+    knob.textContent = dark ? '🌙' : '☀️';
+  });
+
   document.querySelectorAll('.admin-dark-btn, .theme-toggle-btn').forEach(btn => {
     btn.textContent = dark ? '☀️' : '🌙';
     btn.title = dark ? 'Switch to light mode' : 'Switch to dark mode';
@@ -17,13 +22,9 @@ function toggleAdminDark() {
   applyAdminDark(isDark);
 }
 
-function toggleDarkMode() {
-  toggleAdminDark();
-}
+function toggleDarkMode() { toggleAdminDark(); }
 
-// Apply immediately to body (prevents flash)
 (function () {
-  // Always light on new tab — sessionStorage clears on new tab
   const saved = sessionStorage.getItem(DARK_KEY);
   const isDark = saved === '1';
   if (document.body) {
@@ -32,12 +33,8 @@ function toggleDarkMode() {
   }
 })();
 
-// Update button icons once DOM is ready
 document.addEventListener('DOMContentLoaded', function () {
   if (!document.body) return;
   const isDark = document.body.classList.contains('dark-mode');
-  document.querySelectorAll('.admin-dark-btn, .theme-toggle-btn').forEach(btn => {
-    btn.textContent = isDark ? '☀️' : '🌙';
-    btn.title = isDark ? 'Switch to light mode' : 'Switch to dark mode';
-  });
+  applyAdminDark(isDark);
 });
