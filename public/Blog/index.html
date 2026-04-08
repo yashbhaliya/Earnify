@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <script>!function(){var s=sessionStorage.getItem('earnify_dark_mode');if(s==='1'){document.documentElement.classList.add('dark-mode');}}();</script>
+  <script>!function(){var s=localStorage.getItem('earnify_dark_mode');var d=s==='1';document.documentElement.classList.toggle('dark-mode',d);if(document.body)document.body.classList.toggle('dark-mode',d);document.documentElement.style.background=d?'#0d1117':'';document.addEventListener('DOMContentLoaded',function(){document.body.classList.toggle('dark-mode',d);});}();</script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Blog - Earnify</title>
@@ -12,7 +12,19 @@
   <link rel="stylesheet" href="../auth-modal.css">
   <link rel="stylesheet" href="./blog.css">
   <link rel="stylesheet" href="../dark-theme.css">
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    #navNmWrap{display:flex;align-items:center;}
+    .sb-nm-toggle{position:relative;width:80px;height:32px;border-radius:50px;border:none;cursor:pointer;padding:0;flex-shrink:0;font-family:inherit;background:#f0f2f5;box-shadow:4px 4px 8px #b8bec7,-4px -4px 8px #ffffff;transition:background .4s,box-shadow .4s;outline:none;}
+    body.dark-mode .sb-nm-toggle{background:#1e2535;box-shadow:4px 4px 8px #0d1117,-3px -3px 7px #2d3a4a;}
+    .sb-nm-knob{position:absolute;top:4px;left:4px;width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#ffffff,#e8ecf0);box-shadow:2px 2px 5px #b8bec7,-1px -1px 4px #ffffff;pointer-events:none;transition:left .4s cubic-bezier(.4,0,.2,1),background .4s,box-shadow .4s;z-index:2;}
+    body.dark-mode .sb-nm-knob{left:52px;background:linear-gradient(135deg,#3a4a5c,#2d3748);box-shadow:2px 2px 5px #0d1117,-1px -1px 4px #3a4a5c;}
+    .sb-nm-label{position:absolute;top:50%;transform:translateY(-50%);font-size:9px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;pointer-events:none;z-index:1;transition:opacity .3s;white-space:nowrap;}
+    .sb-nm-label-light{right:9px;color:#94a3b8;opacity:1;}
+    .sb-nm-label-dark{left:9px;color:#a78bfa;opacity:0;}
+    body.dark-mode .sb-nm-label-light{opacity:0;}
+    body.dark-mode .sb-nm-label-dark{opacity:1;}
+    @media(max-width:768px){#navNmWrap{display:none!important;}}
+  </style>
  
 </head>
 <body>
@@ -39,7 +51,7 @@
         <a href="../Dashboard/" onclick="goToDashboard(event)">Dashboard</a>
         <button id="loginBtn" class="admin-btn" onclick="showLoginModal()">Login</button>
         <button id="signupBtn" class="admin-btn" onclick="showSignupModal()">Sign Up</button>
-        <button class="theme-toggle-btn" onclick="toggleDarkMode()" title="Toggle dark mode">🌙</button>
+        <div id="navNmWrap" style="display:flex;align-items:center;"><button class="sb-nm-toggle" id="sbNmToggle" onclick="toggleDarkMode()" title="Toggle dark/light mode"><span class="sb-nm-knob" id="sbNmKnob"></span><span class="sb-nm-label sb-nm-label-light">LIGHT</span><span class="sb-nm-label sb-nm-label-dark">DARK</span></button></div>
         <div id="userMenu" class="user-menu" style="display:none;">
           <button class="user-menu-btn" onclick="toggleUserDropdown()">
             <span class="user-avatar">👤</span>

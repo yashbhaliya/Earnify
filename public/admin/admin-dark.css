@@ -1193,7 +1193,7 @@ html.dark-mode body .row .price {
 body.dark-mode,
 html.dark-mode body .btn-view  { background: #161b22 !important; }
 body.dark-mode,
-html.dark-mode body .btn-edit  { background: #161b22 !important; }
+/* html.dark-mode body .btn-edit  { background: #161b22 !important; } */
 body.dark-mode,
 html.dark-mode body .btn-delete{ background: #161b22 !important; }
 
