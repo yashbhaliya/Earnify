@@ -284,6 +284,16 @@
     body.dark-mode .sb-nm-label-light { opacity: 0; }
     body.dark-mode .sb-nm-label-dark  { opacity: 1; }
     @media (max-width: 768px) { #navNmWrap { display: none; } }
+    /* Mobile navbar toggle */
+    #mobileNmToggle {
+      display: none;
+    }
+    @media (max-width: 768px) {
+      #mobileNmToggle {
+        display: flex;
+        align-items: center;
+      }
+    }
   </style>
 </head>
 
@@ -294,11 +304,20 @@
         <a href="./" style="text-decoration: none; color: inherit;">
           <h1 class="logo">💰 <b> Earnify</b></h1>
         </a>
-        <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
-          <span class="hamburger"></span>
-          <span class="hamburger"></span>
-          <span class="hamburger"></span>
-        </button>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div id="mobileNmToggle">
+            <button class="sb-nm-toggle" id="mobileNmBtn" onclick="toggleDarkMode()" title="Toggle dark/light mode">
+              <span class="sb-nm-knob" id="mobileNmKnob" style="display:flex;align-items:center;justify-content:center;font-size:14px;line-height:1;">🌙</span>
+              <span class="sb-nm-label sb-nm-label-light">LIGHT</span>
+              <span class="sb-nm-label sb-nm-label-dark">DARK</span>
+            </button>
+          </div>
+          <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+            <span class="hamburger"></span>
+            <span class="hamburger"></span>
+            <span class="hamburger"></span>
+          </button>
+        </div>
       </div>
       <div class="search-box">
         <input type="text" id="searchInput" placeholder="🔍 Search resources by title, type, description..."
@@ -1030,7 +1049,6 @@
   <script src="landing.js"></script>
   <script src="dark-theme.js"></script>
   <script>
-    
     const supabaseUrl = 'https://emnrgsgerfjvndexomro.supabase.co';
     const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVtbnJnc2dlcmZqdm5kZXhvbXJvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI0MjAyMTAsImV4cCI6MjA4Nzk5NjIxMH0.uXr8lipxLbB4D_5JwQkpLzc-HudQw23tOFBfV4C6hqY';
     const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);

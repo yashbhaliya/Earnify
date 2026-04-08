@@ -11,6 +11,8 @@ function applyDarkMode(dark) {
   // update neumorphic knob emoji
   const knob = document.getElementById('sbNmKnob');
   if (knob) knob.textContent = dark ? '🌙' : '☀️';
+  const mobileKnob = document.getElementById('mobileNmKnob');
+  if (mobileKnob) mobileKnob.textContent = dark ? '☀️' : '🌙';
 }
 
 function toggleDarkMode() {
