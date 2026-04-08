@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <script>!function(){var s=localStorage.getItem('earnify_dark_mode');if(s==='1'){document.documentElement.classList.add('dark-mode');var st=document.createElement('style');st.textContent='html.dark-mode,html.dark-mode body{background:#0d1117!important;color:#e6edf3!important;}html.dark-mode .sidebar{background:linear-gradient(180deg,#161b22 0%,#0d1117 100%)!important;}html.dark-mode .main{background:#0d1117!important;}';document.head.appendChild(st);}}();</script>
+  <script>!function(){var d=localStorage.getItem("earnify_dark_mode")==="1";var h=document.documentElement;h.classList.toggle("dark-mode",d);h.classList.toggle("light-mode",!d);}();</script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Resources - Earnify Admin</title>
@@ -15,6 +15,7 @@
   <link rel="stylesheet" href="./light-theme.css">
   <link rel="stylesheet" href="./mobile-responsive.css">
   <link rel="stylesheet" href="/admin/admin-bottom-nav.css">
+  <script src="/admin/dark-theme.js"></script>
    <style>
     .resource-container {
       max-width: 1400px;
@@ -412,7 +413,7 @@
     <div class="sb-nm-wrap">
       <span class="sb-nm-wrap-label">Theme</span>
       <button class="sb-nm-toggle" id="sbNmToggle" onclick="toggleDarkMode()" title="Toggle dark/light mode">
-        <span class="sb-nm-knob" id="sbNmKnob">☀️</span>
+        <span class="sb-nm-knob" id="sbNmKnob"></span>
         <span class="sb-nm-label sb-nm-label-light">LIGHT</span>
         <span class="sb-nm-label sb-nm-label-dark">DARK</span>
       </button>
@@ -985,23 +986,27 @@
     let _allPurchased = [];
 
     function switchView(view) {
-      const btnRes      = document.getElementById('btnAllResources');
-      const btnPur      = document.getElementById('btnPurchases');
+      const btnRes       = document.getElementById('btnAllResources');
+      const btnPur       = document.getElementById('btnPurchases');
       const purchasedSec = document.getElementById('purchasedSection');
       const tabContents  = document.querySelectorAll('.tab-content');
+      const isDark       = document.body.classList.contains('dark-mode');
+      const inactiveStyle = isDark
+        ? 'padding:10px 22px;border-radius:10px;border:2px solid #30363d;background:#161b22;color:#8b949e;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;'
+        : 'padding:10px 22px;border-radius:10px;border:2px solid #e2e8f0;background:#fff;color:#64748b;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;';
+      const activeStyle  = 'padding:10px 22px;border-radius:10px;border:2px solid #667eea;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;';
 
       if (view === 'resources') {
-        tabContents.forEach(t => {
-          t.style.display = t.classList.contains('active') ? 'block' : 'none';
-        });
+        // Remove inline display overrides — let CSS classes control visibility
+        tabContents.forEach(t => t.style.display = '');
         purchasedSec.style.display = 'none';
-        btnRes.style.cssText = 'padding:10px 22px;border-radius:10px;border:2px solid #667eea;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;';
-        btnPur.style.cssText = 'padding:10px 22px;border-radius:10px;border:2px solid #e2e8f0;background:#fff;color:#64748b;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;';
+        btnRes.style.cssText = activeStyle;
+        btnPur.style.cssText = inactiveStyle;
       } else {
         tabContents.forEach(t => t.style.display = 'none');
         purchasedSec.style.display = 'block';
-        btnPur.style.cssText = 'padding:10px 22px;border-radius:10px;border:2px solid #667eea;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;';
-        btnRes.style.cssText = 'padding:10px 22px;border-radius:10px;border:2px solid #e2e8f0;background:#fff;color:#64748b;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;';
+        btnPur.style.cssText = activeStyle;
+        btnRes.style.cssText = inactiveStyle;
         loadPurchased();
       }
     }
@@ -1085,8 +1090,6 @@
     }
   </script>
 
-  <script src="/admin/dark-theme.js"></script>
-  <script src="/admin/super-admin-btn.js"></script>
 </body>
 
 </html>

@@ -1,3 +1,18 @@
+/* ══ INSTANT DARK — applied via html.dark-mode before <body> exists ══ */
+html.dark-mode { background: #0d1117; color-scheme: dark; }
+html.light-mode { background: #f8fafc; color-scheme: light; }
+
+html.dark-mode body,
+html.dark-mode .main        { background: #0d1117 !important; color: #e6edf3 !important; }
+html.dark-mode .sidebar     { background: linear-gradient(180deg,#161b22 0%,#0d1117 100%) !important; border-right-color: #30363d !important; }
+html.dark-mode .sidebar-header { border-bottom-color: #30363d !important; }
+html.dark-mode .sb-nm-toggle { background: #1e2535 !important; box-shadow: 4px 4px 8px #0d1117,-3px -3px 7px #2d3a4a !important; }
+html.dark-mode .sb-nm-knob  { left: 52px !important; background: #2d3748 !important; box-shadow: 2px 2px 5px #0d1117,-1px -1px 4px #3a4a5c !important; }
+html.dark-mode .sb-nm-label-light { opacity: 0 !important; }
+html.dark-mode .sb-nm-label-dark  { opacity: 1 !important; }
+html.dark-mode .sb-nm-wrap-label  { color: #8b949e !important; }
+html.dark-mode .sb-nm-wrap        { border-top-color: #30363d !important; }
+
 /* ================================================
    Earnify Admin - Resources Page Light Theme
    ================================================ */
@@ -465,6 +480,32 @@ body.dark-mode .sb-logout {
 body.dark-mode .sb-logout:hover {
   background: rgba(248,113,113,0.15) !important;
   color: #fca5a5 !important;
+}
+
+/* ================================================
+   DARK MODE — SHIMMER / SKELETON
+   ================================================ */
+body.dark-mode .skeleton-row.row {
+  background: #161b22 !important;
+  border-color: #30363d !important;
+  box-shadow: none !important;
+}
+body.dark-mode .sk-row-icon,
+body.dark-mode .sk-row-title,
+body.dark-mode .sk-row-desc,
+body.dark-mode .sk-row-price,
+body.dark-mode .sk-row-btn,
+body.dark-mode .custom-select-skeleton,
+body.dark-mode .custom-select-skeleton .sk-icon,
+body.dark-mode .custom-select-skeleton .sk-text,
+body.dark-mode .custom-select-skeleton .sk-arrow {
+  background: linear-gradient(90deg, #1c2333 25%, #2d3748 50%, #1c2333 75%) !important;
+  background-size: 200% 100% !important;
+  animation: skeleton-loading 1.5s infinite !important;
+}
+body.dark-mode .custom-select-skeleton {
+  background: #1c2333 !important;
+  border-color: #30363d !important;
 }
 
 /* ================================================
