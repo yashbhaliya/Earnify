@@ -957,6 +957,22 @@
     @media (min-width: 769px) {
       .page-header-toggle { display: none !important; }
 
+    /* ── Neumorphic Theme Toggle ── */
+    .sb-nm-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 20px 8px 26px;
+      border-top: 1px solid #e2e8f0;
+      /* margin-bottom: 4px; */
+    }
+    body.dark-mode .sb-nm-wrap { border-bottom-color: #30363d; }
+    .sb-nm-wrap-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: #64748b;
+    }
+    body.dark-mode .sb-nm-wrap-label { color: #8b949e; }
     .sb-nm-toggle
     {      position: relative;
       width: 80px;
@@ -1045,6 +1061,14 @@
   <a href="/admin/Statistics/" onclick="closeMobileSidebar()" class="nav-link active-link">📈 Statistics</a>
   <a href="/admin/Profile/" onclick="closeMobileSidebar()" class="nav-link">👤 Profile</a>
   <a href="/admin/Withdrawal/" onclick="closeMobileSidebar()" class="nav-link">💸 Withdrawal</a>
+  <!-- Neumorphic Theme Toggle -->
+  <div class="sb-nm-wrap">
+<button class="sb-nm-toggle" id="sbNmToggle" onclick="toggleDarkMode()" title="Toggle dark/light mode">
+      <span class="sb-nm-knob" id="sbNmKnob">☀️</span>
+      <span class="sb-nm-label sb-nm-label-light">LIGHT</span>
+      <span class="sb-nm-label sb-nm-label-dark">DARK</span>
+    </button>
+  </div>
   <a href="/" class="nav-link nav-link-divider" onclick="closeMobileSidebar()">🏠 Main Site</a>
   <a onclick="logout()" class="nav-link nav-link-logout"><span>🚪</span> Logout</a>
 
