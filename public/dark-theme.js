@@ -10,18 +10,19 @@ function applyDarkMode(dark) {
   });
   // update neumorphic knob emoji
   const knob = document.getElementById('sbNmKnob');
-  if (knob) knob.textContent = dark ? '🌙' : '☀️';
+  if (knob) knob.textContent = dark ? '☀️' : '🌙';
   const mobileKnob = document.getElementById('mobileNmKnob');
   if (mobileKnob) mobileKnob.textContent = dark ? '☀️' : '🌙';
 }
 
 function toggleDarkMode() {
-  const isDark = !document.body.classList.contains('dark-mode');
+  const stored = localStorage.getItem(DARK_KEY);
+  const isDark = stored === null ? false : stored !== '1';
   localStorage.setItem(DARK_KEY, isDark ? '1' : '0');
   applyDarkMode(isDark);
 }
 
-// Apply immediately on script load — before DOMContentLoaded
+// Apply immediately on script load
 (function () {
   const stored = localStorage.getItem(DARK_KEY);
   applyDarkMode(stored === '1');

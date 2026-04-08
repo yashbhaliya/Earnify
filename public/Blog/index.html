@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <script>!function(){var s=localStorage.getItem('earnify_dark_mode');var d=s==='1';document.documentElement.classList.toggle('dark-mode',d);if(document.body)document.body.classList.toggle('dark-mode',d);document.documentElement.style.background=d?'#0d1117':'';document.addEventListener('DOMContentLoaded',function(){document.body.classList.toggle('dark-mode',d);});}();</script>
@@ -29,12 +29,12 @@
 </head>
 <body>
 
-  <!-- ── NAVBAR (same as index.html) ── -->
+  <!-- -- NAVBAR (same as index.html) -- -->
   <nav class="navbar">
     <div class="container">
       <div class="nav-header">
         <a href="../" style="text-decoration:none;color:inherit;">
-          <h1 class="logo">💰 <span class="logo-text">Earnify</span></h1>
+          <h1 class="logo">?? <span class="logo-text">Earnify</span></h1>
         </a>
         <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
           <span class="hamburger"></span>
@@ -51,12 +51,12 @@
         <a href="../Dashboard/" onclick="goToDashboard(event)">Dashboard</a>
         <button id="loginBtn" class="admin-btn" onclick="showLoginModal()">Login</button>
         <button id="signupBtn" class="admin-btn" onclick="showSignupModal()">Sign Up</button>
-        <div id="navNmWrap" style="display:flex;align-items:center;"><button class="sb-nm-toggle" id="sbNmToggle" onclick="toggleDarkMode()" title="Toggle dark/light mode"><span class="sb-nm-knob" id="sbNmKnob">☀️</span><span class="sb-nm-label sb-nm-label-light">LIGHT</span><span class="sb-nm-label sb-nm-label-dark">DARK</span></button></div>
+        <div id="navNmWrap" style="display:flex;align-items:center;"><button class="sb-nm-toggle" id="sbNmToggle" onclick="toggleDarkMode()" title="Toggle dark/light mode"><span class="sb-nm-knob" id="sbNmKnob">??</span><span class="sb-nm-label sb-nm-label-light">LIGHT</span><span class="sb-nm-label sb-nm-label-dark">DARK</span></button></div>
         <div id="userMenu" class="user-menu" style="display:none;">
           <button class="user-menu-btn" onclick="toggleUserDropdown()">
-            <span class="user-avatar">👤</span>
+            <span class="user-avatar">??</span>
             <span id="userName">User</span>
-            <span style="font-size:10px;">▼</span>
+            <span style="font-size:10px;">?</span>
           </button>
           <div id="userDropdown" class="user-dropdown">
             <div class="user-dropdown-header">
@@ -79,37 +79,37 @@
     <!-- Mobile Sidebar -->
     <div class="mobile-sidebar" id="mobileSidebar">
       <div class="mobile-sidebar-header">
-        <h2>💰 Earnify</h2>
+        <h2>?? Earnify</h2>
         <button class="close-sidebar" onclick="toggleMobileMenu()">&times;</button>
       </div>
       <div class="mobile-sidebar-content">
-        <a href="../" onclick="toggleMobileMenu()">🏠 Home</a>
-        <a href="../#resources" onclick="toggleMobileMenu()">📚 Resources</a>
-        <a href="../About/" onclick="toggleMobileMenu()">ℹ️ About</a>
-        <a href="../Blog/" onclick="toggleMobileMenu()">✍️ Blog</a>
-        <a href="../Dashboard/" onclick="toggleMobileMenu(); goToDashboard(event)">📊 Dashboard</a>
+        <a href="../" onclick="toggleMobileMenu()">?? Home</a>
+        <a href="../#resources" onclick="toggleMobileMenu()">?? Resources</a>
+        <a href="../About/" onclick="toggleMobileMenu()">?? About</a>
+        <a href="../Blog/" onclick="toggleMobileMenu()">?? Blog</a>
+        <a href="../Dashboard/" onclick="toggleMobileMenu(); goToDashboard(event)">?? Dashboard</a>
         <div class="mobile-sidebar-divider"></div>
-        <button id="mobileLoginBtn" class="mobile-sidebar-btn" onclick="showLoginModal(); toggleMobileMenu();">🔐 Login</button>
-        <button id="mobileSignupBtn" class="mobile-sidebar-btn" onclick="showSignupModal(); toggleMobileMenu();">✨ Sign Up</button>
+        <button id="mobileLoginBtn" class="mobile-sidebar-btn" onclick="showLoginModal(); toggleMobileMenu();">?? Login</button>
+        <button id="mobileSignupBtn" class="mobile-sidebar-btn" onclick="showSignupModal(); toggleMobileMenu();">? Sign Up</button>
         <div id="mobileUserMenu" class="mobile-user-section" style="display:none;">
           <div class="mobile-user-info">
-            <div class="mobile-user-avatar">👤</div>
+            <div class="mobile-user-avatar">??</div>
             <div>
               <div class="mobile-user-name" id="mobileUserName">User</div>
               <div class="mobile-user-email" id="mobileUserEmail">user@email.com</div>
             </div>
           </div>
-          <a href="../admin/Statistics/" onclick="toggleMobileMenu()">📈 My Statistics</a>
-          <a href="../admin/Profile/" onclick="toggleMobileMenu()">👤 View Profile</a>
-          <a href="../admin/Resources/" onclick="toggleMobileMenu()">➕ Add Resources</a>
-          <a onclick="logout(); toggleMobileMenu();">🚪 Logout</a>
+          <a href="../admin/Statistics/" onclick="toggleMobileMenu()">?? My Statistics</a>
+          <a href="../admin/Profile/" onclick="toggleMobileMenu()">?? View Profile</a>
+          <a href="../admin/Resources/" onclick="toggleMobileMenu()">? Add Resources</a>
+          <a onclick="logout(); toggleMobileMenu();">?? Logout</a>
         </div>
       </div>
     </div>
     <div class="mobile-sidebar-overlay" id="mobileSidebarOverlay" onclick="toggleMobileMenu()"></div>
   </nav>
 
-  <!-- ── BLOG CONTENT ── -->
+  <!-- -- BLOG CONTENT -- -->
   <div class="blog-page">
 
     <!-- Hero Banner -->
@@ -142,12 +142,12 @@
     </div>
   </div>
 
-  <!-- ── FOOTER (same as index.html) ── -->
+  <!-- -- FOOTER (same as index.html) -- -->
   <footer>
     <div class="container">
       <div class="footer-grid">
         <div class="footer-col">
-          <h3 class="footer-logo"><a href="/" class="footer-logo-link">💰 <span class="footer-logo-text">Earnify</span></a></h3>
+          <h3 class="footer-logo"><a href="/" class="footer-logo-link">?? <span class="footer-logo-text">Earnify</span></a></h3>
           <p class="footer-desc">Your trusted learning marketplace for premium study materials, templates, and professional services. Learn, grow, and earn with us.</p>
         </div>
         <div class="footer-col">
@@ -163,8 +163,8 @@
         </div>
         <div class="footer-col">
           <h4>Contact Info</h4>
-          <p class="footer-contact">📧 support@earnify.com</p>
-          <p class="footer-contact">📞 +11 60464 53263</p>
+          <p class="footer-contact">?? support@earnify.com</p>
+          <p class="footer-contact">?? +11 60464 53263</p>
           <div class="social-icons">
             <a title="Facebook"><i class="fab fa-facebook"></i></a>
             <a title="Instagram"><i class="fab fa-instagram"></i></a>
@@ -178,7 +178,7 @@
     </div>
   </footer>
 
-  <!-- ── READ MODAL ── -->
+  <!-- -- READ MODAL -- -->
   <div id="readModal" class="read-modal" onclick="if(event.target===this)closeRead()">
     <div class="read-modal-content">
       <div class="read-modal-topbar">
@@ -215,22 +215,22 @@
           <div id="amErr" class="am-msg error"></div>
           <div id="amOk" class="am-msg success"></div>
           <div id="amLoginForm">
-            <div class="am-header"><h2>Welcome back 👋</h2></div>
+            <div class="am-header"><h2>Welcome back ??</h2></div>
             <form onsubmit="handleLogin(event)">
               <div class="am-input-group"><label>Email</label><input class="am-input" type="email" id="loginEmail" placeholder="you@example.com" required></div>
               <div class="am-input-group"><label>Password</label><input class="am-input" type="password" id="loginPassword" placeholder="Enter your password" required></div>
-              <button type="submit" class="am-submit-btn">🚀 Log In</button>
+              <button type="submit" class="am-submit-btn">?? Log In</button>
             </form>
             <p class="am-switch">New? <a onclick="_amTab('signup')">Create account</a></p>
           </div>
           <div id="amSignupForm" style="display:none;">
-            <div class="am-header"><h2>Join Earnify 🎉</h2></div>
+            <div class="am-header"><h2>Join Earnify ??</h2></div>
             <form onsubmit="handleSignup(event)">
               <div class="am-input-group"><label>Full Name</label><input class="am-input" type="text" id="signupName" placeholder="Your name" required></div>
               <div class="am-input-group"><label>Email</label><input class="am-input" type="email" id="signupEmail" placeholder="you@example.com" required></div>
               <div class="am-input-group"><label>Password</label><input class="am-input" type="password" id="signupPassword" placeholder="Min 6 characters" required></div>
               <div class="am-input-group"><label>Confirm Password</label><input class="am-input" type="password" id="signupConfirmPassword" placeholder="Re-enter password" required></div>
-              <button type="submit" class="am-submit-btn">✨ Create Account</button>
+              <button type="submit" class="am-submit-btn">? Create Account</button>
             </form>
             <p class="am-switch">Have account? <a onclick="_amTab('login')">Log in</a></p>
           </div>
@@ -240,7 +240,7 @@
   </div>
   <div id="signupModal" style="display:none;"></div>
 
-  <!-- ── Mobile Bottom Nav ── -->
+  <!-- -- Mobile Bottom Nav -- -->
   <nav class="mob-nav">
     <a href="../" class="mob-nav-item">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
@@ -307,16 +307,27 @@
       width: 4px; height: 4px; border-radius: 50%; background: #667eea;
     }
     .mob-nav-add {
-      flex: 0 0 56px; margin: -14px 6px 0;
+      flex: 0 0 52px;
+      width: 52px;
+      height: 52px;
+      margin: 0 6px;
       background: linear-gradient(135deg, #667eea, #764ba2);
-      border-radius: 16px; color: #fff !important;
-      box-shadow: 0 6px 18px rgba(102,126,234,0.40);
-      height: 56px; align-self: flex-start; padding: 6px 4px;
+      border-radius: 14px;
+      color: #fff !important;
+      box-shadow: 0 4px 14px rgba(102,126,234,0.40);
+      padding: 6px 4px;
+      align-self: center;
     }
     .mob-nav-add svg { stroke: #fff !important; width: 24px; height: 24px; }
     .mob-nav-add span { font-size: 10px; color: #fff; }
     .mob-nav-add:hover { opacity: 0.9; color: #fff !important; }
     .mob-nav-add.active::after { display: none; }
+    body.dark-mode .mob-nav{background:#0d1117!important;border-top-color:#30363d!important;box-shadow:0 -4px 20px rgba(0,0,0,.5)!important;display:flex!important;}
+    body.dark-mode .mob-nav-item{color:#484f58!important;}
+    body.dark-mode .mob-nav-item svg{stroke:#484f58!important;}
+    body.dark-mode .mob-nav-item.active,body.dark-mode .mob-nav-item:hover{color:#a78bfa!important;}
+    body.dark-mode .mob-nav-item.active svg,body.dark-mode .mob-nav-item:hover svg{stroke:#a78bfa!important;}
+    body.dark-mode .mob-nav-item.active::after{background:#a78bfa!important;}
   </style>
 
   <script src="../api-config.js"></script>
@@ -346,11 +357,11 @@
             <h3 class="blog-card-title">${b.title}</h3>
             <p class="blog-card-excerpt">${getExcerpt(b)}</p>
             <div class="blog-card-footer-meta">
-              <span class="blog-card-date">📅 ${fmtDate(b.created_at)}</span>
+              <span class="blog-card-date">?? ${fmtDate(b.created_at)}</span>
               <span class="blog-card-author">By: Earnify Admin</span>
             </div>
             <div class="blog-card-footer">
-              <button class="blog-card-read" onclick="event.stopPropagation();openRead(${b.id})">Read More →</button>
+              <button class="blog-card-read" onclick="event.stopPropagation();openRead(${b.id})">Read More ?</button>
             </div>
           </div>
         </div>`;
@@ -387,7 +398,7 @@
       const gridWrap = document.getElementById('gridWrap');
       const fromPost = new URLSearchParams(window.location.search).get('from') === 'post';
 
-      // Coming back from a post OR cache exists — render instantly, no skeleton, no fetch
+      // Coming back from a post OR cache exists � render instantly, no skeleton, no fetch
       try {
         const c = JSON.parse(sessionStorage.getItem('earnify_blog_v1'));
         if (c && Date.now() - c.ts < 300000) {
@@ -398,7 +409,7 @@
         }
       } catch(e) {}
 
-      // No cache — skeletons already visible in HTML, just fetch
+      // No cache � skeletons already visible in HTML, just fetch
       const { data: blogs, error } = await supabaseClient
         .from('blogs')
         .select('*')
@@ -437,10 +448,10 @@
                     <div class="hero-slide-bottom">
                       <div class="hero-slide-left">
                         <span class="hero-slide-label">Main Article</span>
-                        <span class="hero-slide-date">📅 ${fmtDate(b.created_at)}</span>
+                        <span class="hero-slide-date">?? ${fmtDate(b.created_at)}</span>
                       </div>
                       <div class="hero-slide-right">
-                        <span class="hero-slide-author">✍️ Earnify Admin</span>
+                        <span class="hero-slide-author">?? Earnify Admin</span>
                         <button class="hero-slide-btn" onclick="event.stopPropagation();openRead(${b.id})">Read More &rarr;</button>
                       </div>
                     </div>
