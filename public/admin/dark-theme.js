@@ -1,27 +1,29 @@
-const DARK_KEY = 'earnify_dark_mode';
+if (typeof window.__darkThemeLoaded === 'undefined') {
+  window.__darkThemeLoaded = true;
 
-function applyDarkMode(dark) {
-  document.documentElement.classList.toggle('dark-mode', dark);
-  document.body.classList.toggle('dark-mode', dark);
+  const DARK_KEY = 'earnify_dark_mode';
 
-  // Sync header emoji button
-  document.querySelectorAll('.theme-toggle-btn').forEach(btn => {
-    btn.textContent = dark ? '☀️' : '🌙';
-    btn.title = dark ? 'Switch to light mode' : 'Switch to dark mode';
-  });
+  function applyDarkMode(dark) {
+    document.documentElement.classList.toggle('dark-mode', dark);
+    document.body.classList.toggle('dark-mode', dark);
 
-  // Sync sidebar neumorphic knob icon
-  const knob = document.getElementById('sbNmKnob');
-  if (knob) knob.textContent = dark ? '🌙' : '☀️';
+    document.querySelectorAll('.theme-toggle-btn').forEach(btn => {
+      btn.textContent = dark ? '☀️' : '🌙';
+      btn.title = dark ? 'Switch to light mode' : 'Switch to dark mode';
+    });
+
+    const knob = document.getElementById('sbNmKnob');
+    if (knob) knob.textContent = dark ? '🌙' : '☀️';
+  }
+
+  window.toggleDarkMode = function () {
+    const isDark = !document.body.classList.contains('dark-mode');
+    localStorage.setItem(DARK_KEY, isDark ? '1' : '0');
+    applyDarkMode(isDark);
+  };
+
+  (function () {
+    const stored = localStorage.getItem(DARK_KEY);
+    applyDarkMode(stored === '1');
+  })();
 }
-
-function toggleDarkMode() {
-  const isDark = !document.body.classList.contains('dark-mode');
-  sessionStorage.setItem(DARK_KEY, isDark ? '1' : '0');
-  applyDarkMode(isDark);
-}
-
-(function () {
-  const stored = sessionStorage.getItem(DARK_KEY);
-  applyDarkMode(stored === '1');
-})();

@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="../mobile-responsive.css">
   <link rel="stylesheet" href="../admin-bottom-nav.css">
   <link rel="stylesheet" href="../admin-dark.css">
-  <script>!function(){var s=sessionStorage.getItem('earnify_dark_mode');if(s==='1'){document.documentElement.classList.add('dark-mode');}}();</script>
+  <script>!function(){var s=localStorage.getItem('earnify_dark_mode');if(s==='1'){document.documentElement.classList.add('dark-mode');}}();</script>
   <style>
     .sidebar-header {
       display: flex;
@@ -1258,7 +1258,11 @@
       const user = await getCurrentUser();
       if (!user) return;
       const sidebarUser = document.getElementById('sidebarUser');
-      if (sidebarUser) sidebarUser.style.display = 'block';
+      if (sidebarUser) {
+        sidebarUser.style.display = 'flex';
+        sidebarUser.style.flexDirection = 'column';
+        sidebarUser.style.gap = '5px';
+      }
       const userName = user.user_metadata?.name || user.user_metadata?.full_name || user.name || user.email.split('@')[0];
       const userEmail = user.email;
       const sidebarUserName = document.getElementById('sidebarUserName');
@@ -1276,7 +1280,7 @@
       renderHistory();
     });
   </script>
-  <script src="../dark-theme.js"></script>
+  <script src="/admin/dark-theme.js"></script>
   <script src="../super-admin-btn.js"></script>
 </body>
 </html>

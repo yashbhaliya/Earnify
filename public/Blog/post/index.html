@@ -13,6 +13,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     .post-page { max-width: 1200px; margin: 0 auto; padding: 40px 24px 80px; }
+    body.dark-mode { background: #0d1117 !important; }
     .post-back {
       display: inline-flex; align-items: center; gap: 6px;
       padding: 8px 16px; background: #f1f5f9; border: none;
@@ -80,6 +81,16 @@
       animation: post-shimmer 1.4s infinite linear;
       border-radius: 8px;
     }
+    body.dark-mode .post-skel-back,
+    body.dark-mode .post-skel-img,
+    body.dark-mode .post-skel-category,
+    body.dark-mode .post-skel-title,
+    body.dark-mode .post-skel-meta,
+    body.dark-mode .post-skel-line {
+      background: linear-gradient(90deg, #1c2333 25%, #21293d 50%, #1c2333 75%);
+      background-size: 600px 100%;
+      animation: post-shimmer 1.4s infinite linear;
+    }
     .post-skel-back    { width: 110px; height: 34px; border-radius: 8px; margin-bottom: 32px; }
     .post-skel-img     { width: 100%; height: 300px; border-radius: 16px; margin-bottom: 32px; }
     .post-skel-category{ width: 80px; height: 22px; border-radius: 6px; margin-bottom: 16px; }
@@ -89,6 +100,28 @@
     .post-skel-line    { width: 100%; height: 16px; border-radius: 6px; margin-bottom: 12px; }
     .post-skel-line-short { width: 65%; }
     .post-skel-line-mid   { width: 80%; }
+
+    /* ── Dark mode post styles ── */
+    body.dark-mode .post-page  { background: #0d1117; }
+    body.dark-mode .post-back  { background: #161b22 !important; color: #8b949e !important; border: 1px solid #30363d; }
+    body.dark-mode .post-back:hover { background: #1c2333 !important; color: #e6edf3 !important; }
+    body.dark-mode .post-category { background: rgba(124,106,247,0.15) !important; color: #a78bfa !important; }
+    body.dark-mode .post-title { color: #e6edf3 !important; }
+    body.dark-mode .post-meta  { color: #484f58 !important; border-bottom-color: #30363d !important; }
+    body.dark-mode .post-content { color: #c9d1d9 !important; }
+    body.dark-mode .post-content h1,
+    body.dark-mode .post-content h2,
+    body.dark-mode .post-content h3 { color: #e6edf3 !important; }
+    body.dark-mode .post-content a  { color: #a78bfa !important; }
+    body.dark-mode .post-content strong,
+    body.dark-mode .post-content b  { color: #e6edf3 !important; }
+    body.dark-mode .post-content blockquote {
+      background: #161b22 !important;
+      border-left-color: #7c6af7 !important;
+      color: #8b949e !important;
+    }
+    body.dark-mode .post-cover { border: 1px solid #30363d; }
+
     @media (max-width: 768px) {
       .post-page { padding: 24px 16px 60px; }
       .post-title { font-size: 26px; }

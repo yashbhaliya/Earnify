@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="mobile-responsive.css">
   <link rel="stylesheet" href="/admin/admin-bottom-nav.css">
   <link rel="stylesheet" href="/admin/admin-dark.css">
-  <script>!function(){var s=sessionStorage.getItem('earnify_dark_mode');if(s==='1'){document.documentElement.classList.add('dark-mode');}}();</script>
+  <script>!function(){var s=localStorage.getItem('earnify_dark_mode');if(s==='1'){document.documentElement.classList.add('dark-mode');}}();</script>
   <style>
     .sidebar-header {
       display: flex;
@@ -1369,7 +1369,11 @@
       const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
       const sidebarUser = document.getElementById('sidebarUser');
       if (currentUser.email) {
-        if (sidebarUser) sidebarUser.style.display = 'block';
+        if (sidebarUser) {
+          sidebarUser.style.display = 'flex';
+          sidebarUser.style.flexDirection = 'column';
+          sidebarUser.style.gap = '5px';
+        }
         const userName = currentUser.user_metadata?.name || currentUser.email.split('@')[0] || 'User';
         document.getElementById('sidebarUserName').textContent = userName;
         document.getElementById('sidebarUserEmail').textContent = currentUser.email;
@@ -1628,7 +1632,7 @@
   </script>
 
  
-  <script src="../../dark-theme.js"></script>
+  <script src="/admin/dark-theme.js"></script>
   <script src="../super-admin-btn.js"></script>
 </body>
 

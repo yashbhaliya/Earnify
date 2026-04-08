@@ -22,6 +22,7 @@
   function getDashboardURL() {
     const port = location.port;
     if (port === '5500') return '/earnify-admin/Dashboard/index.html';
+    if (port === '5000') return '/earnify-admin/Dashboard/index.html';
     return '/earnify-admin/Dashboard/';
   }
 
@@ -44,7 +45,7 @@
       const btn = document.createElement('a');
       btn.textContent = '🛡️ Super Admin Panel';
       btn.className = 'super-admin-btn logout-link';
-      btn.style.cssText = 'background:#667eea!important;border-radius:10px;color:#fff!important;border-color:#667eea!important;display:block;text-align:center;cursor:pointer;text-decoration:none;';
+      btn.style.cssText = 'background:#667eea!important;border-radius:10px;color:#fff!important;border-color:#667eea!important;display:block;text-align:center;cursor:pointer;text-decoration:none;gap:5px';
       btn.onclick = function(e) { e.preventDefault(); window.location.href = getDashboardURL(); };
 
       if (logoutLink) sidebarUser.insertBefore(btn, logoutLink);
