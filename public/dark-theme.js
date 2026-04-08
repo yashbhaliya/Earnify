@@ -8,6 +8,9 @@ function applyDarkMode(dark) {
     btn.textContent = dark ? '☀️' : '🌙';
     btn.title = dark ? 'Switch to light mode' : 'Switch to dark mode';
   });
+  // update neumorphic knob emoji
+  const knob = document.getElementById('sbNmKnob');
+  if (knob) knob.textContent = dark ? '🌙' : '☀️';
 }
 
 function toggleDarkMode() {
