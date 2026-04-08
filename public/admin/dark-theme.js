@@ -10,7 +10,7 @@ function applyDarkMode(dark) {
     btn.title = dark ? 'Switch to light mode' : 'Switch to dark mode';
   });
 
-  // Sync sidebar neumorphic knob
+  // Sync sidebar neumorphic knob icon
   const knob = document.getElementById('sbNmKnob');
   if (knob) knob.textContent = dark ? '🌙' : '☀️';
 }

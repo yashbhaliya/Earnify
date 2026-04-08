@@ -442,6 +442,81 @@
     @media (min-width: 769px) {
       .page-header-toggle { display: none !important; }
     }
+
+    /* ── Neumorphic Theme Toggle ── */
+    .sb-nm-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 20px 8px 26px;
+      border-top: 1px solid #e2e8f0;
+      /* margin-bottom: 4px; */
+    }
+    body.dark-mode .sb-nm-wrap { border-bottom-color: #30363d; }
+    .sb-nm-wrap-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: #64748b;
+    }
+    body.dark-mode .sb-nm-wrap-label { color: #8b949e; }
+     .sb-nm-toggle {
+      position: relative;
+      width: 80px;
+      height: 32px;
+      border-radius: 50px;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      flex-shrink: 0;
+      font-family: inherit;
+      background: white;
+      box-shadow: 4px 4px 8px #b8bec7, -4px -4px 8px #ffffff;
+      transition: background 0.4s, box-shadow 0.4s;
+    }
+    body.dark-mode .sb-nm-toggle {
+      background: #1e2535;
+      box-shadow: 4px 4px 8px #0d1117, -3px -3px 7px #2d3a4a;
+    }
+    .sb-nm-knob {
+      position: absolute;
+      top: 4px;
+      left: 4px;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #ffffff;
+      box-shadow: 2px 2px 5px #b8bec7, -1px -1px 4px #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      line-height: 1;
+      pointer-events: none;
+      transition: left 0.4s cubic-bezier(.4,0,.2,1), background 0.4s, box-shadow 0.4s;
+      z-index: 2;
+    }
+    body.dark-mode .sb-nm-knob {
+      left: 52px;
+      background: #2d3748;
+      box-shadow: 2px 2px 5px #0d1117, -1px -1px 4px #3a4a5c;
+    }
+    .sb-nm-label {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      pointer-events: none;
+      z-index: 1;
+      transition: opacity 0.3s;
+      white-space: nowrap;
+    }
+    .sb-nm-label-light { right: 9px; color: #64748b; opacity: 1; }
+    .sb-nm-label-dark  { left: 9px;  color: #a78bfa; opacity: 0; }
+    body.dark-mode .sb-nm-label-light { opacity: 0; }
+    body.dark-mode .sb-nm-label-dark  { opacity: 1; }
   </style>
   <link rel="stylesheet" href="../dark-theme.css">
 </head>
@@ -464,8 +539,19 @@
     <a href="/admin/Statistics/" class="nav-link">📈 Statistics</a>
     <a href="/admin/Profile/" class="nav-link">👤 Profile</a>
     <a href="/admin/Withdrawal/" class="nav-link active-link">💸 Withdrawal</a>
+    <!-- Neumorphic Theme Toggle -->
+    <div class="sb-nm-wrap">
+      <span class="sb-nm-wrap-label">Theme</span>
+      <button class="sb-nm-toggle" id="sbNmToggle" onclick="toggleDarkMode()" title="Toggle dark/light mode">
+        <span class="sb-nm-knob" id="sbNmKnob">☀️</span>
+        <span class="sb-nm-label sb-nm-label-light">LIGHT</span>
+        <span class="sb-nm-label sb-nm-label-dark">DARK</span>
+      </button>
+    </div>
     <a href="/" class="nav-link nav-link-divider">🏠 Main Site</a>
     <a onclick="logout()" class="nav-link nav-link-logout"><span>🚪</span> Logout</a>
+
+    
 
     <!-- User Profile Section -->
     <div class="sidebar-user" id="sidebarUser" style="display: none;">
