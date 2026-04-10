@@ -841,3 +841,56 @@
   .skel-hero { height: 260px; margin-bottom: 24px; }
   .skel-card-img { height: 170px; }
 }
+
+/* ══════════════════════════════════════════
+   DARK MODE — instant via html.dark-mode
+   ══════════════════════════════════════════ */
+html.dark-mode body,
+body.dark-mode {
+  background: #0d1117 !important;
+  color: #e6edf3 !important;
+  transition: none !important;
+}
+html.dark-mode .blog-page,
+html.dark-mode .gridWrap,
+body.dark-mode .blog-page,
+body.dark-mode .gridWrap {
+  background: #0d1117 !important;
+  transition: none !important;
+}
+
+/* Blog cards */
+html.dark-mode .blog-card,
+body.dark-mode .blog-card {
+  background: #161b22 !important;
+  border-color: #30363d !important;
+  transition: none !important;
+}
+html.dark-mode .blog-card:hover,
+body.dark-mode .blog-card:hover { border-color: #7c6af7 !important; }
+html.dark-mode .blog-card-title,
+body.dark-mode .blog-card-title { color: #e6edf3 !important; }
+html.dark-mode .blog-card-excerpt,
+body.dark-mode .blog-card-excerpt { color: #8b949e !important; }
+html.dark-mode .blog-card-date,
+html.dark-mode .blog-card-author,
+body.dark-mode .blog-card-date,
+body.dark-mode .blog-card-author { color: #484f58 !important; }
+
+/* Skeleton shimmer — dark-correct */
+html.dark-mode .skel-hero,
+html.dark-mode .skel-card-img,
+html.dark-mode .skel-line,
+body.dark-mode .skel-hero,
+body.dark-mode .skel-card-img,
+body.dark-mode .skel-line {
+  background: linear-gradient(90deg, #1c2333 25%, #21293d 50%, #1c2333 75%) !important;
+  background-size: 600px 100% !important;
+  transition: none !important;
+}
+html.dark-mode .skel-card,
+body.dark-mode .skel-card {
+  background: #161b22 !important;
+  border-color: #30363d !important;
+  transition: none !important;
+}

@@ -53,6 +53,7 @@ html.dark-mode body {
 
 /* ── Navbar ── */
 body.dark-mode .navbar,
+html.dark-mode .navbar,
 html.dark-mode body .navbar {
   background: rgba(13, 17, 23, 0.98) !important;
   border-bottom: 1px solid #30363d !important;
@@ -316,11 +317,13 @@ html.dark-mode body .skeleton-card {
 body.dark-mode,
 html.dark-mode body .sk {
   background: #1c2333 !important;
+  transition: none !important;
 }
 
 body.dark-mode,
 html.dark-mode body .sk::after {
   background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.04) 50%, transparent 100%) !important;
+  transition: none !important;
 }
 
 /* ── Pagination ── */
@@ -843,11 +846,11 @@ html.dark-mode body .am-security {
 
 /* ── Smooth transitions (exclude background on load to prevent flash) ── */
 body,
-body * {
+body *:not(.sk):not(.sk::after):not(.blog-shimmer-img):not(.blog-shimmer-line) {
   transition: border-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
 }
 body.dark-mode-ready,
-body.dark-mode-ready * {
+body.dark-mode-ready *:not(.sk):not(.blog-shimmer-img):not(.blog-shimmer-line) {
   transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
 }
 
@@ -2133,224 +2136,7 @@ html.dark-mode body .user-dropdown a:hover {
 /* ══════════════════════════════════════════
    DETAIL PAGE
    ══════════════════════════════════════════ */
-body.dark-mode,
-html.dark-mode body .details-wrapper {
-  background: #0d1117 !important;
-}
-
-/* Breadcrumb */
-body.dark-mode,
-html.dark-mode body .breadcrumb {
-  color: #8b949e !important;
-}
-
-body.dark-mode,
-html.dark-mode body .breadcrumb a {
-  color: #a78bfa !important;
-}
-
-body.dark-mode,
-html.dark-mode body .breadcrumb span {
-  color: #484f58 !important;
-}
-
-/* Resource header card */
-body.dark-mode,
-html.dark-mode body .resource-header-card {
-  background: #161b22 !important;
-  border-color: #30363d !important;
-  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.35) !important;
-}
-
-body.dark-mode,
-html.dark-mode body .resource-header-card h1 {
-  color: #e6edf3 !important;
-}
-
-body.dark-mode,
-html.dark-mode body .description {
-  color: #8b949e !important;
-}
-
-body.dark-mode,
-html.dark-mode body .resource-meta-row {
-  border-top-color: #30363d !important;
-}
-
-body.dark-mode,
-html.dark-mode body .resource-meta-item {
-  color: #8b949e !important;
-}
-
-body.dark-mode,
-html.dark-mode body .resource-meta-item i {
-  color: #a78bfa !important;
-}
-
-body.dark-mode,
-html.dark-mode body .resource-meta-item strong {
-  color: #e6edf3 !important;
-}
-
-/* Included card */
-body.dark-mode,
-html.dark-mode body .included-card {
-  background: #161b22 !important;
-  border-color: #30363d !important;
-  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.35) !important;
-}
-
-body.dark-mode,
-html.dark-mode body .card-heading {
-  color: #e6edf3 !important;
-}
-
-body.dark-mode,
-html.dark-mode body .card-heading i {
-  color: #a78bfa !important;
-}
-
-body.dark-mode,
-html.dark-mode body .included-item {
-  background: #1c2333 !important;
-  border-color: #30363d !important;
-  color: #8b949e !important;
-}
-
-body.dark-mode,
-html.dark-mode body .included-item:hover {
-  border-color: #7c6af7 !important;
-  box-shadow: 0 3px 10px rgba(124, 106, 247, 0.12) !important;
-}
-
-body.dark-mode,
-html.dark-mode body .included-item i {
-  color: #3fb950 !important;
-}
-
-/* Why card */
-body.dark-mode,
-html.dark-mode body .why-card {
-  background: rgba(124, 106, 247, 0.06) !important;
-  border-color: rgba(124, 106, 247, 0.25) !important;
-}
-
-body.dark-mode,
-html.dark-mode body .why-item {
-  color: #8b949e !important;
-}
-
-body.dark-mode,
-html.dark-mode body .why-item i {
-  color: #a78bfa !important;
-}
-
-body.dark-mode,
-html.dark-mode body .why-item strong {
-  color: #e6edf3 !important;
-}
-
-/* Purchase card */
-body.dark-mode,
-html.dark-mode body .purchase-card {
-  background: #161b22 !important;
-  border-color: #30363d !important;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4) !important;
-}
-
-body.dark-mode,
-html.dark-mode body .price-section {
-  border-bottom-color: #30363d !important;
-}
-
-body.dark-mode,
-html.dark-mode body .price-label {
-  color: #484f58 !important;
-}
-
-body.dark-mode,
-html.dark-mode body .info-item {
-  color: #8b949e !important;
-  border-bottom-color: #1c2333 !important;
-}
-
-body.dark-mode,
-html.dark-mode body .info-item i {
-  color: #3fb950 !important;
-}
-
-/* Trust card */
-body.dark-mode,
-html.dark-mode body .trust-card {
-  background: #161b22 !important;
-  border-color: #30363d !important;
-}
-
-body.dark-mode,
-html.dark-mode body .trust-card-title {
-  color: #484f58 !important;
-}
-
-body.dark-mode,
-html.dark-mode body .trust-badge {
-  background: #1c2333 !important;
-  border-color: #30363d !important;
-  color: #8b949e !important;
-}
-
-body.dark-mode,
-html.dark-mode body .trust-badge.green i {
-  color: #3fb950 !important;
-}
-
-body.dark-mode,
-html.dark-mode body .trust-badge.blue i {
-  color: #60a5fa !important;
-}
-
-body.dark-mode,
-html.dark-mode body .trust-badge.amber i {
-  color: #fbbf24 !important;
-}
-
-body.dark-mode,
-html.dark-mode body .trust-badge.purple i {
-  color: #a78bfa !important;
-}
-
-/* Contact section */
-body.dark-mode,
-html.dark-mode body .detail-contact-section {
-  background: #161b22 !important;
-  border-color: #30363d !important;
-  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.35) !important;
-}
-
-body.dark-mode,
-html.dark-mode body .detail-contact-left h3 {
-  color: #e6edf3 !important;
-}
-
-body.dark-mode,
-html.dark-mode body .detail-contact-left p {
-  color: #8b949e !important;
-}
-
-/* Shimmer */
-body.dark-mode,
-html.dark-mode body .shimmer-element {
-  background: #1c2333 !important;
-}
-
-body.dark-mode,
-html.dark-mode body .shimmer-element::after {
-  background: linear-gradient(90deg, transparent, rgba(124, 106, 247, 0.07), transparent) !important;
-}
-
-body.dark-mode,
-html.dark-mode body .shimmer-features {
-  background: #1c2333 !important;
-}
+/* Detail page dark styles are in Detail/details.css for instant flash-free rendering */
 
 /* ══════════════════════════════════════════
    QUICK LINK PAGES — HERO DARK IMAGE SWAP
