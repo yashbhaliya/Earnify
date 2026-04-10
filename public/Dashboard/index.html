@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <script>!function(){var d=localStorage.getItem('earnify_dark_mode')==='1';document.documentElement.classList.toggle('dark-mode',d);document.addEventListener('DOMContentLoaded',function(){document.body.classList.toggle('dark-mode',d);});}();</script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script>!function () { var d = localStorage.getItem('earnify_dark_mode') === '1'; document.documentElement.classList.toggle('dark-mode', d); document.addEventListener('DOMContentLoaded', function () { document.body.classList.toggle('dark-mode', d); }); }();</script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
   <meta charset="UTF-8">
   <title>Dashboard - Earnify</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,50 +14,102 @@
   <link rel="stylesheet" href="dashboard.css">
   <link rel="stylesheet" href="../dark-theme.css">
   <style>
-    #navNmWrap { display:flex; align-items:center; }
+    #navNmWrap {
+      display: flex;
+      align-items: center;
+    }
+
     .sb-nm-toggle {
-      position:relative; width:80px; height:32px; border-radius:50px;
-      border:none; cursor:pointer; padding:0; flex-shrink:0;
-      font-family:inherit; background:#f0f2f5;
-      box-shadow:4px 4px 8px #b8bec7,-4px -4px 8px #ffffff;
-      transition:background .4s,box-shadow .4s; outline:none;
+      position: relative;
+      width: 80px;
+      height: 32px;
+      border-radius: 50px;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      flex-shrink: 0;
+      font-family: inherit;
+      background: #f0f2f5;
+      box-shadow: 4px 4px 8px #b8bec7, -4px -4px 8px #ffffff;
+      transition: background .4s, box-shadow .4s;
+      outline: none;
     }
+
     body.dark-mode .sb-nm-toggle {
-      background:#1e2535;
-      box-shadow:4px 4px 8px #0d1117,-3px -3px 7px #2d3a4a;
+      background: #1e2535;
+      box-shadow: 4px 4px 8px #0d1117, -3px -3px 7px #2d3a4a;
     }
+
     .sb-nm-knob {
-      position:absolute; top:4px; left:4px; width:24px; height:24px;
-      border-radius:50%; background:linear-gradient(135deg,#ffffff,#e8ecf0);
-      box-shadow:2px 2px 5px #b8bec7,-1px -1px 4px #ffffff;
-      pointer-events:none;
-      transition:left .4s cubic-bezier(.4,0,.2,1),background .4s,box-shadow .4s;
-      z-index:2;
+      position: absolute;
+      top: 4px;
+      left: 4px;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ffffff, #e8ecf0);
+      box-shadow: 2px 2px 5px #b8bec7, -1px -1px 4px #ffffff;
+      pointer-events: none;
+      transition: left .4s cubic-bezier(.4, 0, .2, 1), background .4s, box-shadow .4s;
+      z-index: 2;
     }
+
     body.dark-mode .sb-nm-knob {
-      left:52px;
-      background:linear-gradient(135deg,#3a4a5c,#2d3748);
-      box-shadow:2px 2px 5px #0d1117,-1px -1px 4px #3a4a5c;
+      left: 52px;
+      background: linear-gradient(135deg, #3a4a5c, #2d3748);
+      box-shadow: 2px 2px 5px #0d1117, -1px -1px 4px #3a4a5c;
     }
+
     .sb-nm-label {
-      position:absolute; top:50%; transform:translateY(-50%);
-      font-size:9px; font-weight:800; letter-spacing:.6px;
-      text-transform:uppercase; pointer-events:none;
-      z-index:1; transition:opacity .3s; white-space:nowrap;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: .6px;
+      text-transform: uppercase;
+      pointer-events: none;
+      z-index: 1;
+      transition: opacity .3s;
+      white-space: nowrap;
     }
-    .sb-nm-label-light { right:9px; color:#94a3b8; opacity:1; }
-    .sb-nm-label-dark  { left:9px;  color:#a78bfa; opacity:0; }
-    body.dark-mode .sb-nm-label-light { opacity:0; }
-    body.dark-mode .sb-nm-label-dark  { opacity:1; }
-    @media (max-width:768px) { #navNmWrap { display:none; } }
+
+    .sb-nm-label-light {
+      right: 9px;
+      color: #94a3b8;
+      opacity: 1;
+    }
+
+    .sb-nm-label-dark {
+      left: 9px;
+      color: #a78bfa;
+      opacity: 0;
+    }
+
+    body.dark-mode .sb-nm-label-light {
+      opacity: 0;
+    }
+
+    body.dark-mode .sb-nm-label-dark {
+      opacity: 1;
+    }
+
+    @media (max-width:768px) {
+      #navNmWrap {
+        display: none;
+      }
+    }
   </style>
 </head>
+
 <body>
 
   <nav class="navbar">
     <div class="container">
       <div class="nav-header">
-        <a href="../" style="text-decoration:none;color:inherit;"><h1 class="logo">💰 <span class="logo-text">Earnify</span></h1></a>
+        <a href="../" style="text-decoration:none;color:inherit;">
+          <h1 class="logo">💰 <span class="logo-text">Earnify</span></h1>
+        </a>
         <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
           <span class="hamburger"></span><span class="hamburger"></span><span class="hamburger"></span>
         </button>
@@ -86,7 +140,7 @@
               <div class="email" id="userEmail">user@email.com</div>
             </div>
             <a href="../admin/Resources/"><span>➕</span> Add Resources</a>
-              <a href="../admin/Statistics/"><span>📊</span> View Statistics</a>
+            <a href="../admin/Statistics/"><span>📊</span> View Statistics</a>
             <a href="../admin/Profile/"><span>👤</span> View Profile</a>
             <a onclick="logout()"><span>🚪</span> Logout</a>
           </div>
@@ -130,8 +184,10 @@
           <p>All your purchased resources are here — download anytime.</p>
         </div>
         <div class="dash-banner-actions">
-          <a href="../#resources" class="dash-action-btn primary"><i class="fas fa-shopping-bag"></i> Browse Resources</a>
-          <a href="../admin/Resources/" class="dash-action-btn secondary"><i class="fas fa-plus"></i> Sell a Resource</a>
+          <a href="../#resources" class="dash-action-btn primary"><i class="fas fa-shopping-bag"></i> Browse
+            Resources</a>
+          <a href="../admin/Resources/" class="dash-action-btn secondary"><i class="fas fa-plus"></i> Sell a
+            Resource</a>
         </div>
       </div>
     </div>
@@ -140,10 +196,30 @@
 
       <!-- Stats -->
       <div class="dash-stats" id="dashStats">
-        <div class="stat-card"><div class="shimmer-wrap" style="width:100%"><div class="sh sh-title"></div><div class="sh sh-badge"></div></div></div>
-        <div class="stat-card"><div class="shimmer-wrap" style="width:100%"><div class="sh sh-title"></div><div class="sh sh-badge"></div></div></div>
-        <div class="stat-card"><div class="shimmer-wrap" style="width:100%"><div class="sh sh-title"></div><div class="sh sh-badge"></div></div></div>
-        <div class="stat-card"><div class="shimmer-wrap" style="width:100%"><div class="sh sh-title"></div><div class="sh sh-badge"></div></div></div>
+        <div class="stat-card">
+          <div class="shimmer-wrap" style="width:100%">
+            <div class="sh sh-title"></div>
+            <div class="sh sh-badge"></div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="shimmer-wrap" style="width:100%">
+            <div class="sh sh-title"></div>
+            <div class="sh sh-badge"></div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="shimmer-wrap" style="width:100%">
+            <div class="sh sh-title"></div>
+            <div class="sh sh-badge"></div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="shimmer-wrap" style="width:100%">
+            <div class="sh sh-title"></div>
+            <div class="sh sh-badge"></div>
+          </div>
+        </div>
       </div>
 
       <!-- Section head + filters -->
@@ -187,8 +263,10 @@
     <div class="container">
       <div class="footer-grid">
         <div class="footer-col">
-          <h3 class="footer-logo"><a href="../" class="footer-logo-link">💰 <span class="footer-logo-text">Earnify</span></a></h3>
-          <p class="footer-desc">Your trusted learning marketplace for premium study materials, templates, and professional services.</p>
+          <h3 class="footer-logo"><a href="../" class="footer-logo-link">💰 <span
+                class="footer-logo-text">Earnify</span></a></h3>
+          <p class="footer-desc">Your trusted learning marketplace for premium study materials, templates, and
+            professional services.</p>
         </div>
         <div class="footer-col">
           <h4>Quick Links</h4>
@@ -212,7 +290,9 @@
           </div>
         </div>
       </div>
-      <div class="footer-bottom"><p>&copy; 2024 Earnify. All rights reserved.</p></div>
+      <div class="footer-bottom">
+        <p>&copy; 2024 Earnify. All rights reserved.</p>
+      </div>
     </div>
   </footer>
 
@@ -229,115 +309,108 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="../dark-theme.js"></script>
 
-  <nav class="mob-nav">
-    <a href="../" class="mob-nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>Home</span></a>
-    <a href="../#resources" class="mob-nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg><span>Resources</span></a>
-    <a href="../admin/Resources/" class="mob-nav-item mob-nav-add"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg><span>Add</span></a>
-    <a href="../Blog/" class="mob-nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg><span>Blog</span></a>
-    <a href="../Dashboard/" class="mob-nav-item active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg><span>Dashboard</span></a>
-  </nav>
-  <style>.mob-nav{display:none;position:fixed;bottom:0;left:0;right:0;height:64px;background:#fff;border-top:1px solid #e8edf5;box-shadow:0 -4px 20px rgba(0,0,0,0.08);z-index:999;align-items:stretch;justify-content:space-around;padding:0 4px;padding-bottom:env(safe-area-inset-bottom);}@media(max-width:768px){.mob-nav{display:flex;}body{padding-bottom:64px;}}.mob-nav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;text-decoration:none;color:#94a3b8;font-size:10px;font-weight:600;font-family:'Inter',sans-serif;transition:color .18s;padding:6px 2px;position:relative;}.mob-nav-item svg{width:22px;height:22px;stroke:currentColor;transition:stroke .18s;}.mob-nav-item.active,.mob-nav-item:hover{color:#667eea;}.mob-nav-item.active svg,.mob-nav-item:hover svg{stroke:#667eea;}.mob-nav-item.active::after{content:'';position:absolute;top:6px;width:4px;height:4px;border-radius:50%;background:#667eea;}.mob-nav-add{flex:0 0 52px;width:52px;height:52px;margin:0 6px;background:linear-gradient(135deg,#667eea,#764ba2);border-radius:14px;color:#fff!important;box-shadow:0 4px 14px rgba(102,126,234,.4);padding:6px 4px;align-self:center;}.mob-nav-add svg{stroke:#fff!important;width:24px;height:24px;}.mob-nav-add span{font-size:10px;color:#fff;}.mob-nav-add:hover{opacity:.9;color:#fff!important;}.mob-nav-add.active::after{display:none;}</style>
+
 </body>
-  <script>
-    // Resolve user from currentUser or adminToken JWT or Supabase auth
-    function _jwtPay(t) { try { return JSON.parse(atob(t.split('.')[1].replace(/-/g,'+').replace(/_/g,'/'))); } catch(e){return null;} }
-    let currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
-    if (!currentUser) {
-      const tok = localStorage.getItem('adminToken');
-      if (tok) { const p = _jwtPay(tok); if (p?.email) currentUser = { email: p.email, id: p.sub, user_metadata: {} }; }
-    }
-    // If still no user, try Supabase session (async — will be resolved in loadPurchases)
-    if (!currentUser) {
-      supabaseClient.auth.getUser().then(({ data: { user } }) => {
-        if (user) {
-          currentUser = user;
-          const dName  = user.user_metadata?.name || user.email?.split('@')[0] || 'there';
-          const dEmail = user.email || '';
-          document.getElementById('bannerName').textContent      = dName;
-          document.getElementById('userName').textContent        = dName;
-          document.getElementById('userDisplayName').textContent = dName;
-          document.getElementById('userEmail').textContent       = dEmail;
-          document.getElementById('mobileUserName').textContent  = dName;
-          document.getElementById('mobileUserEmail').textContent = dEmail;
-          loadPurchases();
-        } else {
-          window.location.href = '../';
-        }
-      });
-    }
-
-    const dName = currentUser?.user_metadata?.name || currentUser?.email?.split('@')[0] || 'there';
-    const dEmail = currentUser?.email || '';
-    if (currentUser) {
-      document.getElementById('bannerName').textContent      = dName;
-      document.getElementById('userName').textContent        = dName;
-      document.getElementById('userDisplayName').textContent = dName;
-      document.getElementById('userEmail').textContent       = dEmail;
-      document.getElementById('mobileUserName').textContent  = dName;
-      document.getElementById('mobileUserEmail').textContent = dEmail;
-      loadPurchases();
-    }
-
-    let allPurchases = [];
-    const typeIcons = { pdf:'📄', excel:'📊', exam:'📝', freelance:'💼' };
-    const tc = t => ['pdf','excel','exam','freelance'].includes(t) ? t : 'default';
-
-    /* ── Search ── */
-    function searchPurchases() {
-      const q = document.getElementById('searchInput').value.toLowerCase();
-      renderPurchases(q ? allPurchases.filter(p => {
-        const r = p.resources;
-        return r && (r.title?.toLowerCase().includes(q) || r.type?.toLowerCase().includes(q) ||
-          p.payment_id?.toLowerCase().includes(q) || p.order_id?.toLowerCase().includes(q));
-      }) : allPurchases);
-    }
-
-    /* ── Filter ── */
-    function filterPurchases(type, btn) {
-      document.querySelectorAll('.dash-filter-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      document.querySelector('.dash-filter-select').value = type;
-      renderPurchases(type === 'all' ? allPurchases : allPurchases.filter(p => p.resources?.type === type));
-    }
-
-    function filterBySelect(type) {
-      const btn = [...document.querySelectorAll('.dash-filter-btn')].find(b =>
-        b.getAttribute('onclick').includes(`'${type}'`));
-      document.querySelectorAll('.dash-filter-btn').forEach(b => b.classList.remove('active'));
-      if (btn) btn.classList.add('active');
-      renderPurchases(type === 'all' ? allPurchases : allPurchases.filter(p => p.resources?.type === type));
-    }
-
-    /* ── Load ── */
-    async function loadPurchases() {
-      showShimmer();
-      try {
-        // Get real user ID from Supabase auth (most reliable)
-        let userId = currentUser?.id;
-        if (!userId || userId === 'undefined') {
-          const { data: { user } } = await supabaseClient.auth.getUser();
-          userId = user?.id;
-          if (userId && currentUser) currentUser.id = userId;
-        }
-        if (!userId) throw new Error('User ID not found');
-        const res = await fetch(API_CONFIG.getURL(`${API_CONFIG.endpoints.payments}/${userId}`));
-        allPurchases = res.ok ? await res.json() : [];
-      } catch(e) {
-        console.error('[Dashboard] loadPurchases error =>', e);
-        allPurchases = [];
+<script>
+  // Resolve user from currentUser or adminToken JWT or Supabase auth
+  function _jwtPay(t) { try { return JSON.parse(atob(t.split('.')[1].replace(/-/g, '+').replace(/_/g, '/'))); } catch (e) { return null; } }
+  let currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+  if (!currentUser) {
+    const tok = localStorage.getItem('adminToken');
+    if (tok) { const p = _jwtPay(tok); if (p?.email) currentUser = { email: p.email, id: p.sub, user_metadata: {} }; }
+  }
+  // If still no user, try Supabase session (async — will be resolved in loadPurchases)
+  if (!currentUser) {
+    supabaseClient.auth.getUser().then(({ data: { user } }) => {
+      if (user) {
+        currentUser = user;
+        const dName = user.user_metadata?.name || user.email?.split('@')[0] || 'there';
+        const dEmail = user.email || '';
+        document.getElementById('bannerName').textContent = dName;
+        document.getElementById('userName').textContent = dName;
+        document.getElementById('userDisplayName').textContent = dName;
+        document.getElementById('userEmail').textContent = dEmail;
+        document.getElementById('mobileUserName').textContent = dName;
+        document.getElementById('mobileUserEmail').textContent = dEmail;
+        loadPurchases();
+      } else {
+        window.location.href = '../';
       }
-      hideShimmer();
-      renderStats(allPurchases);
-      renderPurchases(allPurchases);
-    }
+    });
+  }
 
-    /* ── Stats ── */
-    function renderStats(list) {
-      const total  = list.length;
-      const spent  = list.reduce((s,p) => s + parseFloat(p.resources?.price || 0), 0);
-      const types  = [...new Set(list.map(p => p.resources?.type).filter(Boolean))].length;
-      const latest = list.length ? new Date(list[0].created_at).toLocaleDateString('en-IN',{day:'numeric',month:'short'}) : '—';
-      document.getElementById('dashStats').innerHTML = `
+  const dName = currentUser?.user_metadata?.name || currentUser?.email?.split('@')[0] || 'there';
+  const dEmail = currentUser?.email || '';
+  if (currentUser) {
+    document.getElementById('bannerName').textContent = dName;
+    document.getElementById('userName').textContent = dName;
+    document.getElementById('userDisplayName').textContent = dName;
+    document.getElementById('userEmail').textContent = dEmail;
+    document.getElementById('mobileUserName').textContent = dName;
+    document.getElementById('mobileUserEmail').textContent = dEmail;
+    loadPurchases();
+  }
+
+  let allPurchases = [];
+  const typeIcons = { pdf: '📄', excel: '📊', exam: '📝', freelance: '💼' };
+  const tc = t => ['pdf', 'excel', 'exam', 'freelance'].includes(t) ? t : 'default';
+
+  /* ── Search ── */
+  function searchPurchases() {
+    const q = document.getElementById('searchInput').value.toLowerCase();
+    renderPurchases(q ? allPurchases.filter(p => {
+      const r = p.resources;
+      return r && (r.title?.toLowerCase().includes(q) || r.type?.toLowerCase().includes(q) ||
+        p.payment_id?.toLowerCase().includes(q) || p.order_id?.toLowerCase().includes(q));
+    }) : allPurchases);
+  }
+
+  /* ── Filter ── */
+  function filterPurchases(type, btn) {
+    document.querySelectorAll('.dash-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelector('.dash-filter-select').value = type;
+    renderPurchases(type === 'all' ? allPurchases : allPurchases.filter(p => p.resources?.type === type));
+  }
+
+  function filterBySelect(type) {
+    const btn = [...document.querySelectorAll('.dash-filter-btn')].find(b =>
+      b.getAttribute('onclick').includes(`'${type}'`));
+    document.querySelectorAll('.dash-filter-btn').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    renderPurchases(type === 'all' ? allPurchases : allPurchases.filter(p => p.resources?.type === type));
+  }
+
+  /* ── Load ── */
+  async function loadPurchases() {
+    showShimmer();
+    try {
+      // Get real user ID from Supabase auth (most reliable)
+      let userId = currentUser?.id;
+      if (!userId || userId === 'undefined') {
+        const { data: { user } } = await supabaseClient.auth.getUser();
+        userId = user?.id;
+        if (userId && currentUser) currentUser.id = userId;
+      }
+      if (!userId) throw new Error('User ID not found');
+      const res = await fetch(API_CONFIG.getURL(`${API_CONFIG.endpoints.payments}/${userId}`));
+      allPurchases = res.ok ? await res.json() : [];
+    } catch (e) {
+      console.error('[Dashboard] loadPurchases error =>', e);
+      allPurchases = [];
+    }
+    hideShimmer();
+    renderStats(allPurchases);
+    renderPurchases(allPurchases);
+  }
+
+  /* ── Stats ── */
+  function renderStats(list) {
+    const total = list.length;
+    const spent = list.reduce((s, p) => s + parseFloat(p.resources?.price || 0), 0);
+    const types = [...new Set(list.map(p => p.resources?.type).filter(Boolean))].length;
+    const latest = list.length ? new Date(list[0].created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }) : '—';
+    document.getElementById('dashStats').innerHTML = `
         <div class="stat-card">
           <div class="stat-icon purple"><i class="fas fa-box-open"></i></div>
           <div><div class="stat-num">${total}</div><div class="stat-label">Total Purchases</div></div>
@@ -354,13 +427,13 @@
           <div class="stat-icon amber"><i class="fas fa-calendar-check"></i></div>
           <div><div class="stat-num">${latest}</div><div class="stat-label">Last Purchase</div></div>
         </div>`;
-    }
+  }
 
-    /* ── Shimmer ── */
-    function showShimmer() {
-      const wrap = document.querySelector('.dash-filter-select-wrap');
-      if (wrap) wrap.style.visibility = 'hidden';
-      const skRow = () => `
+  /* ── Shimmer ── */
+  function showShimmer() {
+    const wrap = document.querySelector('.dash-filter-select-wrap');
+    if (wrap) wrap.style.visibility = 'hidden';
+    const skRow = () => `
         <tr class="shimmer-row">
           <td>
             <div class="td-resource">
@@ -380,7 +453,7 @@
             </div>
           </td>
         </tr>`;
-      document.getElementById('purchases').innerHTML = `
+    document.getElementById('purchases').innerHTML = `
         <div class="shimmer-wrap">
           <table class="purchases-table">
             <thead><tr>
@@ -392,35 +465,35 @@
             <tbody>${skRow()}${skRow()}${skRow()}${skRow()}</tbody>
           </table>
         </div>`;
-    }
+  }
 
-    function hideShimmer() {
-      const wrap = document.querySelector('.dash-filter-select-wrap');
-      if (wrap) wrap.style.visibility = '';
-    }
+  function hideShimmer() {
+    const wrap = document.querySelector('.dash-filter-select-wrap');
+    if (wrap) wrap.style.visibility = '';
+  }
 
-    /* ── Render Table ── */
-    function renderPurchases(list) {
-      const container = document.getElementById('purchases');
-      const valid = list.filter(p => p.resources && !p.resources.hidden_from_users);
+  /* ── Render Table ── */
+  function renderPurchases(list) {
+    const container = document.getElementById('purchases');
+    const valid = list.filter(p => p.resources && !p.resources.hidden_from_users);
 
-      if (!valid.length) {
-        container.innerHTML = `
+    if (!valid.length) {
+      container.innerHTML = `
           <div class="empty-state">
             <div class="empty-icon">🛒</div>
             <h2>No Purchases Yet</h2>
             <p>You haven't made any purchases. Browse our resources to get started!</p>
             <a href="../#resources" class="empty-cta"><i class="fas fa-shopping-bag"></i> Browse Resources</a>
           </div>`;
-        return;
-      }
+      return;
+    }
 
-      const rows = valid.map((p, i) => {
-        const r    = p.resources;
-        const cls  = tc(r.type);
-        const icon = typeIcons[r.type] || '📦';
-        const date = new Date(p.created_at).toLocaleDateString('en-IN',{year:'numeric',month:'short',day:'numeric'});
-        return `
+    const rows = valid.map((p, i) => {
+      const r = p.resources;
+      const cls = tc(r.type);
+      const icon = typeIcons[r.type] || '📦';
+      const date = new Date(p.created_at).toLocaleDateString('en-IN', { year: 'numeric', month: 'short', day: 'numeric' });
+      return `
           <tr>
             <td>
               <div class="td-resource">
@@ -436,15 +509,15 @@
             <td>
               <div class="td-actions">
                 ${r.fileurl
-                  ? `<a href="${r.fileurl}" target="_blank" download class="pc-btn download"><i class="fas fa-download"></i> Download</a>`
-                  : `<button disabled class="pc-btn download"><i class="fas fa-download"></i> Download</button>`}
+          ? `<a href="${r.fileurl}" target="_blank" download class="pc-btn download"><i class="fas fa-download"></i> Download</a>`
+          : `<button disabled class="pc-btn download"><i class="fas fa-download"></i> Download</button>`}
                 <button onclick="openModal(${i})" class="pc-btn view"><i class="fas fa-eye"></i> View</button>
               </div>
             </td>
           </tr>`;
-      }).join('');
+    }).join('');
 
-      container.innerHTML = `
+    container.innerHTML = `
         <table class="purchases-table">
           <thead><tr>
             <th><i class="fas fa-box"></i> Resource</th>
@@ -455,20 +528,20 @@
           <tbody>${rows}</tbody>
         </table>`;
 
-      window._purchaseList = valid;
-    }
+    window._purchaseList = valid;
+  }
 
-    /* ── Modal ── */
-    function openModal(index) {
-      const p    = window._purchaseList[index];
-      const r    = p.resources;
-      const cls  = tc(r.type);
-      const icon = typeIcons[r.type] || '📦';
-      const date = new Date(p.created_at).toLocaleDateString('en-IN',{year:'numeric',month:'long',day:'numeric'});
-      const status = (p.status || 'completed').toLowerCase();
-      const safeTitle = (r.title||'Resource').replace(/'/g,"\\'").replace(/"/g,'&quot;');
+  /* ── Modal ── */
+  function openModal(index) {
+    const p = window._purchaseList[index];
+    const r = p.resources;
+    const cls = tc(r.type);
+    const icon = typeIcons[r.type] || '📦';
+    const date = new Date(p.created_at).toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' });
+    const status = (p.status || 'completed').toLowerCase();
+    const safeTitle = (r.title || 'Resource').replace(/'/g, "\\'").replace(/"/g, '&quot;');
 
-      document.getElementById('detailModalBody').innerHTML = `
+    document.getElementById('detailModalBody').innerHTML = `
         <div class="dm-header">
           <div class="dm-icon ${cls}">${icon}</div>
           <div class="dm-title-wrap">
@@ -502,59 +575,60 @@
         </div>
 
         <div class="dm-actions">
-          <button onclick="downloadReceipt('${p.payment_id}','${p.order_id}','${safeTitle}','${r.price||0}')" class="pc-btn receipt">
+          <button onclick="downloadReceipt('${p.payment_id}','${p.order_id}','${safeTitle}','${r.price || 0}')" class="pc-btn receipt">
             <i class="fas fa-file-invoice"></i> Download Receipt
           </button>
           ${r.fileurl
-            ? `<a href="${r.fileurl}" target="_blank" download class="pc-btn download"><i class="fas fa-download"></i> Download File</a>`
-            : `<button disabled class="pc-btn download"><i class="fas fa-download"></i> No File</button>`}
+        ? `<a href="${r.fileurl}" target="_blank" download class="pc-btn download"><i class="fas fa-download"></i> Download File</a>`
+        : `<button disabled class="pc-btn download"><i class="fas fa-download"></i> No File</button>`}
           <a href="../Detail/?id=${r.id}" class="pc-btn view"><i class="fas fa-external-link-alt"></i> Full Details Page</a>
         </div>
       `;
-      document.getElementById('detailOverlay').classList.add('open');
-      document.body.style.overflow = 'hidden';
-    }
+    document.getElementById('detailOverlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
 
-    function closeModal() {
-      document.getElementById('detailOverlay').classList.remove('open');
-      document.body.style.overflow = '';
-    }
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+  function closeModal() {
+    document.getElementById('detailOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
-    /* ── Logout ── */
-    function logout() {
-      ['currentUser','userLoggedIn','adminToken'].forEach(k => localStorage.removeItem(k));
-      window.location.href = '../';
-    }
+  /* ── Logout ── */
+  function logout() {
+    ['currentUser', 'userLoggedIn', 'adminToken'].forEach(k => localStorage.removeItem(k));
+    window.location.href = '../';
+  }
 
-    /* ── Receipt PDF ── */
-    function downloadReceipt(paymentId, orderId, title, price) {
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF();
-      doc.setFontSize(22); doc.setTextColor(102,126,234);
-      doc.text('EARNIFY', 105, 22, { align:'center' });
-      doc.setFontSize(13); doc.setTextColor(80,80,80);
-      doc.text('Payment Receipt', 105, 31, { align:'center' });
-      doc.setDrawColor(102,126,234); doc.setLineWidth(0.6); doc.line(20,36,190,36);
-      const row = (label, val, y, color) => {
-        doc.setFontSize(11); doc.setFont(undefined,'normal'); doc.setTextColor(120,120,120);
-        doc.text(label, 22, y);
-        doc.setFont(undefined,'bold');
-        if (color) doc.setTextColor(...color); else doc.setTextColor(40,40,40);
-        doc.text(String(val), 75, y);
-      };
-      row('Resource',    title,          52);
-      row('Price',       '₹'+price,      63,  [16,185,129]);
-      row('Payment ID',  paymentId,      74);
-      row('Order ID',    orderId,        85);
-      row('Date',        new Date().toLocaleDateString('en-IN',{year:'numeric',month:'long',day:'numeric'}), 96);
-      row('Status',      'COMPLETED',    107, [16,185,129]);
-      doc.setFontSize(9); doc.setTextColor(160,160,160); doc.setFont(undefined,'normal');
-      doc.text('Thank you for your purchase! — www.earnify.com', 105, 280, { align:'center' });
-      doc.save(`Earnify_Receipt_${paymentId}.pdf`);
-    }
+  /* ── Receipt PDF ── */
+  function downloadReceipt(paymentId, orderId, title, price) {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    doc.setFontSize(22); doc.setTextColor(102, 126, 234);
+    doc.text('EARNIFY', 105, 22, { align: 'center' });
+    doc.setFontSize(13); doc.setTextColor(80, 80, 80);
+    doc.text('Payment Receipt', 105, 31, { align: 'center' });
+    doc.setDrawColor(102, 126, 234); doc.setLineWidth(0.6); doc.line(20, 36, 190, 36);
+    const row = (label, val, y, color) => {
+      doc.setFontSize(11); doc.setFont(undefined, 'normal'); doc.setTextColor(120, 120, 120);
+      doc.text(label, 22, y);
+      doc.setFont(undefined, 'bold');
+      if (color) doc.setTextColor(...color); else doc.setTextColor(40, 40, 40);
+      doc.text(String(val), 75, y);
+    };
+    row('Resource', title, 52);
+    row('Price', '₹' + price, 63, [16, 185, 129]);
+    row('Payment ID', paymentId, 74);
+    row('Order ID', orderId, 85);
+    row('Date', new Date().toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' }), 96);
+    row('Status', 'COMPLETED', 107, [16, 185, 129]);
+    doc.setFontSize(9); doc.setTextColor(160, 160, 160); doc.setFont(undefined, 'normal');
+    doc.text('Thank you for your purchase! — www.earnify.com', 105, 280, { align: 'center' });
+    doc.save(`Earnify_Receipt_${paymentId}.pdf`);
+  }
 
-    loadPurchases();
-  </script>
+  loadPurchases();
+</script>
 </body>
+
 </html>

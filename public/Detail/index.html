@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <script>!function(){var d=localStorage.getItem('earnify_dark_mode')==='1';document.documentElement.classList.toggle('dark-mode',d);document.addEventListener('DOMContentLoaded',function(){document.body.classList.toggle('dark-mode',d);});}();</script>
- <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script>!function () { var d = localStorage.getItem('earnify_dark_mode') === '1'; document.documentElement.classList.toggle('dark-mode', d); document.addEventListener('DOMContentLoaded', function () { document.body.classList.toggle('dark-mode', d); }); }();</script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Resource Details - Earnify</title>
@@ -12,24 +14,106 @@
   <link rel="stylesheet" href="details.css">
   <link rel="stylesheet" href="../dark-theme.css">
   <style>
-    #navNmWrap{display:flex;align-items:center;}
-    .sb-nm-toggle{position:relative;width:80px;height:32px;border-radius:50px;border:none;cursor:pointer;padding:0;flex-shrink:0;font-family:inherit;background:#f0f2f5;box-shadow:4px 4px 8px #b8bec7,-4px -4px 8px #ffffff;transition:background .4s,box-shadow .4s;outline:none;}
-    body.dark-mode .sb-nm-toggle{background:#1e2535;box-shadow:4px 4px 8px #0d1117,-3px -3px 7px #2d3a4a;}
-    .sb-nm-knob{position:absolute;top:4px;left:4px;width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#ffffff,#e8ecf0);box-shadow:2px 2px 5px #b8bec7,-1px -1px 4px #ffffff;pointer-events:none;display:flex;align-items:center;justify-content:center;font-size:13px;line-height:1;transition:left .4s cubic-bezier(.4,0,.2,1),background .4s,box-shadow .4s;z-index:2;}
-    body.dark-mode .sb-nm-knob{left:52px;background:linear-gradient(135deg,#3a4a5c,#2d3748);box-shadow:2px 2px 5px #0d1117,-1px -1px 4px #3a4a5c;}
-    .sb-nm-label{position:absolute;top:50%;transform:translateY(-50%);font-size:9px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;pointer-events:none;z-index:1;transition:opacity .3s;white-space:nowrap;}
-    .sb-nm-label-light{right:9px;color:#94a3b8;opacity:1;}
-    .sb-nm-label-dark{left:9px;color:#a78bfa;opacity:0;}
-    body.dark-mode .sb-nm-label-light{opacity:0;}
-    body.dark-mode .sb-nm-label-dark{opacity:1;}
-    @media(max-width:768px){#navNmWrap{display:none!important;}}
+    #navNmWrap {
+      display: flex;
+      align-items: center;
+    }
+
+    .sb-nm-toggle {
+      position: relative;
+      width: 80px;
+      height: 32px;
+      border-radius: 50px;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      flex-shrink: 0;
+      font-family: inherit;
+      background: #f0f2f5;
+      box-shadow: 4px 4px 8px #b8bec7, -4px -4px 8px #ffffff;
+      transition: background .4s, box-shadow .4s;
+      outline: none;
+    }
+
+    body.dark-mode .sb-nm-toggle {
+      background: #1e2535;
+      box-shadow: 4px 4px 8px #0d1117, -3px -3px 7px #2d3a4a;
+    }
+
+    .sb-nm-knob {
+      position: absolute;
+      top: 4px;
+      left: 4px;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ffffff, #e8ecf0);
+      box-shadow: 2px 2px 5px #b8bec7, -1px -1px 4px #ffffff;
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      line-height: 1;
+      transition: left .4s cubic-bezier(.4, 0, .2, 1), background .4s, box-shadow .4s;
+      z-index: 2;
+    }
+
+    body.dark-mode .sb-nm-knob {
+      left: 52px;
+      background: linear-gradient(135deg, #3a4a5c, #2d3748);
+      box-shadow: 2px 2px 5px #0d1117, -1px -1px 4px #3a4a5c;
+    }
+
+    .sb-nm-label {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: .6px;
+      text-transform: uppercase;
+      pointer-events: none;
+      z-index: 1;
+      transition: opacity .3s;
+      white-space: nowrap;
+    }
+
+    .sb-nm-label-light {
+      right: 9px;
+      color: #94a3b8;
+      opacity: 1;
+    }
+
+    .sb-nm-label-dark {
+      left: 9px;
+      color: #a78bfa;
+      opacity: 0;
+    }
+
+    body.dark-mode .sb-nm-label-light {
+      opacity: 0;
+    }
+
+    body.dark-mode .sb-nm-label-dark {
+      opacity: 1;
+    }
+
+    @media(max-width:768px) {
+      #navNmWrap {
+        display: none !important;
+      }
+    }
   </style>
 </head>
+
 <body>
   <nav class="navbar">
     <div class="container">
       <div class="nav-header">
-        <a href="../" style="text-decoration: none; color: inherit;"><h1 class="logo">💰 <span class="logo-grad">Earnify</span></h1></a>
+        <a href="../" style="text-decoration: none; color: inherit;">
+          <h1 class="logo">💰 <span class="logo-grad">Earnify</span></h1>
+        </a>
         <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
           <span class="hamburger"></span>
           <span class="hamburger"></span>
@@ -42,7 +126,10 @@
         <a href="../Dashboard/">Dashboard</a>
         <button id="loginBtn" class="admin-btn" onclick="showLoginModal()">Login</button>
         <button id="signupBtn" class="admin-btn" onclick="showSignupModal()">Sign Up</button>
-        <div id="navNmWrap" style="display:flex;align-items:center;"><button class="sb-nm-toggle" id="sbNmToggle" onclick="toggleDarkMode()" title="Toggle dark/light mode"><span class="sb-nm-knob" id="sbNmKnob">☀️</span><span class="sb-nm-label sb-nm-label-light">LIGHT</span><span class="sb-nm-label sb-nm-label-dark">DARK</span></button></div>
+        <div id="navNmWrap" style="display:flex;align-items:center;"><button class="sb-nm-toggle" id="sbNmToggle"
+            onclick="toggleDarkMode()" title="Toggle dark/light mode"><span class="sb-nm-knob"
+              id="sbNmKnob">☀️</span><span class="sb-nm-label sb-nm-label-light">LIGHT</span><span
+              class="sb-nm-label sb-nm-label-dark">DARK</span></button></div>
         <div id="userMenu" class="user-menu" style="display:none;">
           <button class="user-menu-btn" onclick="toggleUserDropdown()">
             <span class="user-avatar">👤</span>
@@ -61,7 +148,7 @@
         </div>
       </div>
     </div>
-    
+
     <!-- Mobile Sidebar -->
     <div class="mobile-sidebar" id="mobileSidebar">
       <div class="mobile-sidebar-header">
@@ -73,8 +160,10 @@
         <a href="../#resources" onclick="toggleMobileMenu()">📚 Resources</a>
         <a href="../Dashboard/" onclick="toggleMobileMenu()">📊 Dashboard</a>
         <div class="mobile-sidebar-divider"></div>
-        <button id="mobileLoginBtn" class="mobile-sidebar-btn" onclick="showLoginModal(); toggleMobileMenu();">🔐 Login</button>
-        <button id="mobileSignupBtn" class="mobile-sidebar-btn" onclick="showSignupModal(); toggleMobileMenu();">✨ Sign Up</button>
+        <button id="mobileLoginBtn" class="mobile-sidebar-btn" onclick="showLoginModal(); toggleMobileMenu();">🔐
+          Login</button>
+        <button id="mobileSignupBtn" class="mobile-sidebar-btn" onclick="showSignupModal(); toggleMobileMenu();">✨ Sign
+          Up</button>
         <div id="mobileUserMenu" class="mobile-user-section" style="display:none;">
           <div class="mobile-user-info">
             <div class="mobile-user-avatar">👤</div>
@@ -143,16 +232,37 @@
           </div>
 
           <div class="am-stats">
-            <div class="am-stat"><div class="am-stat-num">500+</div><div class="am-stat-lbl">Resources</div></div>
-            <div class="am-stat"><div class="am-stat-num">1,200+</div><div class="am-stat-lbl">Buyers</div></div>
-            <div class="am-stat"><div class="am-stat-num">5%</div><div class="am-stat-lbl">Fee Only</div></div>
+            <div class="am-stat">
+              <div class="am-stat-num">500+</div>
+              <div class="am-stat-lbl">Resources</div>
+            </div>
+            <div class="am-stat">
+              <div class="am-stat-num">1,200+</div>
+              <div class="am-stat-lbl">Buyers</div>
+            </div>
+            <div class="am-stat">
+              <div class="am-stat-num">5%</div>
+              <div class="am-stat-lbl">Fee Only</div>
+            </div>
           </div>
 
           <div class="am-features">
-            <div class="am-feature"><div class="am-feature-icon">✅</div><div class="am-feature-text"><strong>Free to list your resources</strong></div></div>
-            <div class="am-feature"><div class="am-feature-icon">⚡</div><div class="am-feature-text"><strong>Instant access after purchase</strong></div></div>
-            <div class="am-feature"><div class="am-feature-icon">🔒</div><div class="am-feature-text"><strong>Secure payments via Razorpay</strong></div></div>
-            <div class="am-feature"><div class="am-feature-icon">💸</div><div class="am-feature-text"><strong>Only 5% fee on withdrawal</strong></div></div>
+            <div class="am-feature">
+              <div class="am-feature-icon">✅</div>
+              <div class="am-feature-text"><strong>Free to list your resources</strong></div>
+            </div>
+            <div class="am-feature">
+              <div class="am-feature-icon">⚡</div>
+              <div class="am-feature-text"><strong>Instant access after purchase</strong></div>
+            </div>
+            <div class="am-feature">
+              <div class="am-feature-icon">🔒</div>
+              <div class="am-feature-text"><strong>Secure payments via Razorpay</strong></div>
+            </div>
+            <div class="am-feature">
+              <div class="am-feature-icon">💸</div>
+              <div class="am-feature-text"><strong>Only 5% fee on withdrawal</strong></div>
+            </div>
           </div>
 
           <div class="am-testimonial">
@@ -184,7 +294,7 @@
           </div>
 
           <div id="amErr" class="am-msg error"></div>
-          <div id="amOk"  class="am-msg success"></div>
+          <div id="amOk" class="am-msg success"></div>
 
           <!-- Login -->
           <div id="amLoginForm">
@@ -195,7 +305,8 @@
             <form onsubmit="handleLogin(event)">
               <div class="am-input-group">
                 <label>Email Address</label>
-                <input class="am-input" type="email" id="loginEmail" placeholder="you@example.com" required autocomplete="email">
+                <input class="am-input" type="email" id="loginEmail" placeholder="you@example.com" required
+                  autocomplete="email">
               </div>
               <div class="am-input-group">
                 <div class="am-label-row">
@@ -203,10 +314,21 @@
                   <a href="#" class="am-forgot">Forgot password?</a>
                 </div>
                 <div class="am-pw-wrap">
-                  <input class="am-input" type="password" id="loginPassword" placeholder="Enter your password" required autocomplete="current-password">
+                  <input class="am-input" type="password" id="loginPassword" placeholder="Enter your password" required
+                    autocomplete="current-password">
                   <button type="button" class="am-toggle-pass" onclick="_amTogglePw('loginPassword',this)">
-                    <svg class="eye-on" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                    <svg class="eye-off" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                    <svg class="eye-on" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                      fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                      <circle cx="12" cy="12" r="3" />
+                    </svg>
+                    <svg class="eye-off" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                      fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                      style="display:none">
+                      <path
+                        d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19" />
+                      <line x1="1" y1="1" x2="23" y2="23" />
+                    </svg>
                   </button>
                 </div>
               </div>
@@ -224,25 +346,39 @@
             <form onsubmit="handleSignup(event)">
               <div class="am-input-group">
                 <label>Full Name</label>
-                <input class="am-input" type="text" id="signupName" placeholder="Your full name" required autocomplete="name">
+                <input class="am-input" type="text" id="signupName" placeholder="Your full name" required
+                  autocomplete="name">
               </div>
               <div class="am-input-group">
                 <label>Email Address</label>
-                <input class="am-input" type="email" id="signupEmail" placeholder="you@example.com" required autocomplete="email">
+                <input class="am-input" type="email" id="signupEmail" placeholder="you@example.com" required
+                  autocomplete="email">
               </div>
               <div class="am-input-group">
                 <label>Password</label>
                 <div class="am-pw-wrap">
-                  <input class="am-input" type="password" id="signupPassword" placeholder="Min 6 characters" required autocomplete="new-password">
+                  <input class="am-input" type="password" id="signupPassword" placeholder="Min 6 characters" required
+                    autocomplete="new-password">
                   <button type="button" class="am-toggle-pass" onclick="_amTogglePw('signupPassword',this)">
-                    <svg class="eye-on" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                    <svg class="eye-off" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                    <svg class="eye-on" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                      fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                      <circle cx="12" cy="12" r="3" />
+                    </svg>
+                    <svg class="eye-off" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                      fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                      style="display:none">
+                      <path
+                        d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19" />
+                      <line x1="1" y1="1" x2="23" y2="23" />
+                    </svg>
                   </button>
                 </div>
               </div>
               <div class="am-input-group">
                 <label>Confirm Password</label>
-                <input class="am-input" type="password" id="signupConfirmPassword" placeholder="Re-enter your password" required autocomplete="new-password">
+                <input class="am-input" type="password" id="signupConfirmPassword" placeholder="Re-enter your password"
+                  required autocomplete="new-password">
               </div>
               <button type="submit" class="am-submit-btn">✨ Create Free Account</button>
             </form>
@@ -271,13 +407,6 @@
   <script src="detail.js"></script>
   <script src="../dark-theme.js"></script>
 
-  <nav class="mob-nav">
-    <a href="../" class="mob-nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>Home</span></a>
-    <a href="../#resources" class="mob-nav-item active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg><span>Resources</span></a>
-    <a href="../admin/Resources/" class="mob-nav-item mob-nav-add"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg><span>Add</span></a>
-    <a href="../Blog/" class="mob-nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg><span>Blog</span></a>
-    <a href="../Dashboard/" class="mob-nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg><span>Dashboard</span></a>
-  </nav>
-  <style>.mob-nav{display:none;position:fixed;bottom:0;left:0;right:0;height:64px;background:#fff;border-top:1px solid #e8edf5;box-shadow:0 -4px 20px rgba(0,0,0,0.08);z-index:999;align-items:stretch;justify-content:space-around;padding:0 4px;padding-bottom:env(safe-area-inset-bottom);}@media(max-width:768px){.mob-nav{display:flex;}body{padding-bottom:64px;}}.mob-nav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;text-decoration:none;color:#94a3b8;font-size:10px;font-weight:600;font-family:'Inter',sans-serif;transition:color .18s;padding:6px 2px;position:relative;}.mob-nav-item svg{width:22px;height:22px;stroke:currentColor;transition:stroke .18s;}.mob-nav-item.active,.mob-nav-item:hover{color:#667eea;}.mob-nav-item.active svg,.mob-nav-item:hover svg{stroke:#667eea;}.mob-nav-item.active::after{content:'';position:absolute;top:6px;width:4px;height:4px;border-radius:50%;background:#667eea;}.mob-nav-add{flex:0 0 52px;width:52px;height:52px;margin:0 6px;background:linear-gradient(135deg,#667eea,#764ba2);border-radius:14px;color:#fff!important;box-shadow:0 4px 14px rgba(102,126,234,.4);padding:6px 4px;align-self:center;}.mob-nav-add svg{stroke:#fff!important;width:24px;height:24px;}.mob-nav-add span{font-size:10px;color:#fff;}.mob-nav-add:hover{opacity:.9;color:#fff!important;}.mob-nav-add.active::after{display:none;}</style>
 </body>
+
 </html>

@@ -1,224 +1,267 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-  <script>!function(){var d=localStorage.getItem('earnify_dark_mode')==='1';document.documentElement.classList.toggle('dark-mode',d);document.addEventListener('DOMContentLoaded',function(){document.body.classList.toggle('dark-mode',d);});}();</script>
+  <script>!function () { var d = localStorage.getItem('earnify_dark_mode') === '1'; document.documentElement.classList.toggle('dark-mode', d); document.addEventListener('DOMContentLoaded', function () { document.body.classList.toggle('dark-mode', d); }); }();</script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Earnify - Your Learning Marketplace</title>
-   <link rel="icon" href="/file/logo1.jpeg" type="image/jpeg">
+  <link rel="icon" href="/file/logo1.jpeg" type="image/jpeg">
 
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="landing.css">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     /* HERO BACKGROUND */
-.hero-wrapper {
-  margin-top: 10px;
-}
-.hero-gradient {
-  position: relative;
-  width: 100%;
-  background: url('/file/hero.png') center/cover no-repeat;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-}
+    .hero-wrapper {
+      margin-top: 10px;
+    }
 
-/* GRID */
-.hero-section {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  align-items: center;
-  max-width: 1200px;
-  width: 100%;
-  padding: 4rem 2rem;
-  gap: 2rem;
-}
+    .hero-gradient {
+      position: relative;
+      width: 100%;
+      background: url('/file/hero.png') center/cover no-repeat;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
 
-/* RIGHT SIDE */
-.hero-right {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+    /* GRID */
+    .hero-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      max-width: 1200px;
+      width: 100%;
+      padding: 4rem 2rem;
+      gap: 2rem;
+    }
 
-/* MAIN CARD */
-.hero-main-card {
-  position: relative;
-  z-index: 10;
-  width: 300px;
-  background: #fff;
-  border-radius: 20px;
-  padding: 18px;
-  box-shadow: 0 20px 50px rgba(0,0,0,0.15);
-}
+    /* RIGHT SIDE */
+    .hero-right {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 
-.hero-main-card img {
-  width: 100%;
-  height: 170px;
-  object-fit: cover;
-  border-radius: 12px;
-}
+    /* MAIN CARD */
+    .hero-main-card {
+      position: relative;
+      z-index: 10;
+      width: 300px;
+      background: #fff;
+      border-radius: 20px;
+      padding: 18px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+    }
 
-/* GLOW */
-.hero-glow {
-  position: absolute;
-  width: 350px;
-  height: 350px;
-  background: rgba(102,126,234,0.2);
-  filter: blur(80px);
-  border-radius: 50%;
-  z-index: 0;
-}
+    .hero-main-card img {
+      width: 100%;
+      height: 170px;
+      object-fit: cover;
+      border-radius: 12px;
+    }
 
-/* FLOAT CARDS BASE */
-.float-card {
-  position: absolute;
-  background: rgba(255,255,255,0.95);
-  backdrop-filter: blur(10px);
-  padding: 10px 14px;
-  border-radius: 14px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.12);
-  font-size: 13px;
-  z-index: 20;
-}
+    /* GLOW */
+    .hero-glow {
+      position: absolute;
+      width: 350px;
+      height: 350px;
+      background: rgba(102, 126, 234, 0.2);
+      filter: blur(80px);
+      border-radius: 50%;
+      z-index: 0;
+    }
 
-/* ICON */
-.float-icon {
-  width: 34px;
-  height: 34px;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+    /* FLOAT CARDS BASE */
+    .float-card {
+      position: absolute;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      padding: 10px 14px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+      font-size: 13px;
+      z-index: 20;
+    }
 
-/* PERFECT POSITIONS (MATCH IMAGE) */
-.fc-pdf {
-  top: -40px;
-  left: 40px;
-  animation: float1 3s ease-in-out infinite;
-}
+    /* ICON */
+    .float-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-.fc-free {
-  top: 30%;
-  left: -60px;
-  transform: translateY(-50%);
-  animation: float2 4s ease-in-out infinite;
-}
+    /* PERFECT POSITIONS (MATCH IMAGE) */
+    .fc-pdf {
+      top: -40px;
+      left: 40px;
+      animation: float1 3s ease-in-out infinite;
+    }
 
-.fc-exam {
-  bottom: -30px;
-  left: 10px;
-  animation: float3 3.5s ease-in-out infinite;
-}
+    .fc-free {
+      top: 30%;
+      left: -60px;
+      transform: translateY(-50%);
+      animation: float2 4s ease-in-out infinite;
+    }
 
-.fc-excel {
-  bottom: -30px;
-  right: -30px;
-  animation: float4 3s ease-in-out infinite;
-}
+    .fc-exam {
+      bottom: -30px;
+      left: 10px;
+      animation: float3 3.5s ease-in-out infinite;
+    }
 
-/* ANIMATIONS */
-@keyframes float1 {
-  0%,100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
-}
+    .fc-excel {
+      bottom: -30px;
+      right: -30px;
+      animation: float4 3s ease-in-out infinite;
+    }
 
-@keyframes float2 {
-  0%,100% { transform: translateY(-50%); }
-  50% { transform: translateY(calc(-50% - 12px)); }
-}
+    /* ANIMATIONS */
+    @keyframes float1 {
 
-@keyframes float3 {
-  0%,100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
-}
+      0%,
+      100% {
+        transform: translateY(0);
+      }
 
-@keyframes float4 {
-  0%,100% { transform: translateY(0); }
-  50% { transform: translateY(-12px); }
-}
+      50% {
+        transform: translateY(-10px);
+      }
+    }
 
-@keyframes btnFloat1 {
-  0%,100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
-}
+    @keyframes float2 {
 
-@keyframes btnFloat2 {
-  0%,100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
-}
+      0%,
+      100% {
+        transform: translateY(-50%);
+      }
 
-.btn-group a:first-child {
-  animation: btnFloat1 3s ease-in-out infinite;
-}
+      50% {
+        transform: translateY(calc(-50% - 12px));
+      }
+    }
 
-.btn-group a:last-child {
-  animation: btnFloat2 3.5s ease-in-out infinite 0.4s;
-}
+    @keyframes float3 {
 
-.skill-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  opacity: 0.85;
-}
+      0%,
+      100% {
+        transform: translateY(0);
+      }
 
-/* RESPONSIVE */
-@media (max-width: 900px) {
-  .hero-section {
-    grid-template-columns: 1fr;
-    text-align: center;
-    padding: 15px 20px;
-  }
+      50% {
+        transform: translateY(-8px);
+      }
+    }
 
-  .hero-right {
-    display: none;
-  }
+    @keyframes float4 {
 
-  .fc-pdf,
-  .fc-free,
-  .fc-exam,
-  .fc-excel {
-    display: none;
-  }
+      0%,
+      100% {
+        transform: translateY(0);
+      }
 
-  .hero-left {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
+      50% {
+        transform: translateY(-12px);
+      }
+    }
 
-  .hero-left h1 {
-    font-size: clamp(1.8rem, 7vw, 2.5rem) !important;
-    text-align: center;
-  }
+    @keyframes btnFloat1 {
 
-  .hero-left p {
-    font-size: 1rem !important;
-    text-align: center;
-    max-width: 100% !important;
-  }
+      0%,
+      100% {
+        transform: translateY(0);
+      }
 
-  .btn-group {
-    justify-content: center !important;
-  }
+      50% {
+        transform: translateY(-8px);
+      }
+    }
 
-  .skill-tags {
-    justify-content: center !important;
-    display: none !important;
-  }
-}
+    @keyframes btnFloat2 {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-8px);
+      }
+    }
+
+    .btn-group a:first-child {
+      animation: btnFloat1 3s ease-in-out infinite;
+    }
+
+    .btn-group a:last-child {
+      animation: btnFloat2 3.5s ease-in-out infinite 0.4s;
+    }
+
+    .skill-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      opacity: 0.85;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      .hero-section {
+        grid-template-columns: 1fr;
+        text-align: center;
+        padding: 15px 20px;
+      }
+
+      .hero-right {
+        display: none;
+      }
+
+      .fc-pdf,
+      .fc-free,
+      .fc-exam,
+      .fc-excel {
+        display: none;
+      }
+
+      .hero-left {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .hero-left h1 {
+        font-size: clamp(1.8rem, 7vw, 2.5rem) !important;
+        text-align: center;
+      }
+
+      .hero-left p {
+        font-size: 1rem !important;
+        text-align: center;
+        max-width: 100% !important;
+      }
+
+      .btn-group {
+        justify-content: center !important;
+      }
+
+      .skill-tags {
+        justify-content: center !important;
+        display: none !important;
+      }
+    }
   </style>
   <link rel="stylesheet" href="auth-modal.css">
   <link rel="stylesheet" href="./Blog/blog.css">
@@ -229,6 +272,7 @@
       display: flex;
       align-items: center;
     }
+
     .sb-nm-toggle {
       position: relative;
       width: 80px;
@@ -244,10 +288,12 @@
       transition: background 0.4s, box-shadow 0.4s;
       outline: none;
     }
+
     body.dark-mode .sb-nm-toggle {
       background: #1e2535;
       box-shadow: 4px 4px 8px #0d1117, -3px -3px 7px #2d3a4a;
     }
+
     .sb-nm-knob {
       position: absolute;
       top: 4px;
@@ -258,14 +304,16 @@
       background: linear-gradient(135deg, #ffffff, #e8ecf0);
       box-shadow: 2px 2px 5px #b8bec7, -1px -1px 4px #ffffff;
       pointer-events: none;
-      transition: left 0.4s cubic-bezier(.4,0,.2,1), background 0.4s, box-shadow 0.4s;
+      transition: left 0.4s cubic-bezier(.4, 0, .2, 1), background 0.4s, box-shadow 0.4s;
       z-index: 2;
     }
+
     body.dark-mode .sb-nm-knob {
       left: 52px;
       background: linear-gradient(135deg, #3a4a5c, #2d3748);
       box-shadow: 2px 2px 5px #0d1117, -1px -1px 4px #3a4a5c;
     }
+
     .sb-nm-label {
       position: absolute;
       top: 50%;
@@ -279,15 +327,38 @@
       transition: opacity 0.3s;
       white-space: nowrap;
     }
-    .sb-nm-label-light { right: 9px; color: #94a3b8; opacity: 1; }
-    .sb-nm-label-dark  { left: 9px;  color: #a78bfa; opacity: 0; }
-    body.dark-mode .sb-nm-label-light { opacity: 0; }
-    body.dark-mode .sb-nm-label-dark  { opacity: 1; }
-    @media (max-width: 768px) { #navNmWrap { display: none; } }
+
+    .sb-nm-label-light {
+      right: 9px;
+      color: #94a3b8;
+      opacity: 1;
+    }
+
+    .sb-nm-label-dark {
+      left: 9px;
+      color: #a78bfa;
+      opacity: 0;
+    }
+
+    body.dark-mode .sb-nm-label-light {
+      opacity: 0;
+    }
+
+    body.dark-mode .sb-nm-label-dark {
+      opacity: 1;
+    }
+
+    @media (max-width: 768px) {
+      #navNmWrap {
+        display: none;
+      }
+    }
+
     /* Mobile navbar toggle */
     #mobileNmToggle {
       display: none;
     }
+
     @media (max-width: 768px) {
       #mobileNmToggle {
         display: flex;
@@ -307,7 +378,8 @@
         <div style="display:flex;align-items:center;gap:10px;">
           <div id="mobileNmToggle">
             <button class="sb-nm-toggle" id="mobileNmBtn" onclick="toggleDarkMode()" title="Toggle dark/light mode">
-              <span class="sb-nm-knob" id="mobileNmKnob" style="display:flex;align-items:center;justify-content:center;font-size:14px;line-height:1;">🌙</span>
+              <span class="sb-nm-knob" id="mobileNmKnob"
+                style="display:flex;align-items:center;justify-content:center;font-size:14px;line-height:1;">🌙</span>
               <span class="sb-nm-label sb-nm-label-light">LIGHT</span>
               <span class="sb-nm-label sb-nm-label-dark">DARK</span>
             </button>
@@ -400,107 +472,141 @@
   </nav>
 
   <div class="hero-wrapper">
-  <main class="hero-gradient">
-    <div class="hero-section">
+    <main class="hero-gradient">
+      <div class="hero-section">
 
-      <!-- LEFT: Text Content -->
-      <div class="hero-left">
-        <h1 class="font-headline font-extrabold tracking-tight text-on-surface leading-tight mb-6"
+        <!-- LEFT: Text Content -->
+        <div class="hero-left">
+          <h1 class="font-headline font-extrabold tracking-tight text-on-surface leading-tight mb-6"
             style="font-size: clamp(2.2rem, 4.5vw, 4rem);">
-          Turn Skills into
-          <span style="background:linear-gradient(135deg,#667eea,#764ba2);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Income</span>
-          <span class="material-symbols-outlined text-tertiary align-middle" style="font-size:clamp(1.8rem,3.5vw,3rem);font-variation-settings:'FILL' 1;">rocket_launch</span>
-        </h1>
-        <p style="font-size:1.15rem;color:#555;max-width:480px;line-height:1.75;margin-bottom:15px;">
-          Access premium study materials, templates, and freelance opportunities — all in one platform.
-        </p>
-        <div class="btn-group" style="display:flex;flex-wrap:wrap;gap:1rem;margin-bottom:15px;">
-          <a href="#resources" style="text-decoration:none;display:inline-block;padding:0.9rem 2rem;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border-radius:50px;font-weight:700;font-size:1rem;box-shadow:0 8px 24px rgba(102,126,234,0.35);">Explore Resources</a>
-          <a href="#categories" style="text-decoration:none;display:inline-block;padding:0.9rem 2rem;background:white;color:#667eea;border-radius:50px;font-weight:700;font-size:1rem;box-shadow:0 4px 14px rgba(102,126,234,0.15);">Browse Categories</a>
+            Turn Skills into
+            <span
+              style="background:linear-gradient(135deg,#667eea,#764ba2);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Income</span>
+            <span class="material-symbols-outlined text-tertiary align-middle"
+              style="font-size:clamp(1.8rem,3.5vw,3rem);font-variation-settings:'FILL' 1;">rocket_launch</span>
+          </h1>
+          <p style="font-size:1.15rem;color:#555;max-width:480px;line-height:1.75;margin-bottom:15px;">
+            Access premium study materials, templates, and freelance opportunities — all in one platform.
+          </p>
+          <div class="btn-group" style="display:flex;flex-wrap:wrap;gap:1rem;margin-bottom:15px;">
+            <a href="#resources"
+              style="text-decoration:none;display:inline-block;padding:0.9rem 2rem;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border-radius:50px;font-weight:700;font-size:1rem;box-shadow:0 8px 24px rgba(102,126,234,0.35);">Explore
+              Resources</a>
+            <a href="#categories"
+              style="text-decoration:none;display:inline-block;padding:0.9rem 2rem;background:white;color:#667eea;border-radius:50px;font-weight:700;font-size:1rem;box-shadow:0 4px 14px rgba(102,126,234,0.15);">Browse
+              Categories</a>
+          </div>
+          <div class="skill-tags" style="flex-wrap:wrap;gap:0.75rem;opacity:0.85;">
+            <span class="glass-card"
+              style="padding:0.45rem 1.1rem;border-radius:50px;font-size:0.85rem;font-weight:600;display:flex;align-items:center;gap:6px;">
+              <svg xmlns="http://www.w3.org/2000/svg" height="15px" viewBox="0 -960 960 960" width="15px" fill="#667eea"
+                style="vertical-align:middle;">
+                <path
+                  d="M621.5-338.5Q680-397 680-480t-58.5-141.5Q563-680 480-680t-141.5 58.5Q280-563 280-480t58.5 141.5Q397-280 480-280t141.5-58.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Z" />
+              </svg> Design
+            </span>
+            <span class="glass-card"
+              style="padding:0.45rem 1.1rem;border-radius:50px;font-size:0.85rem;font-weight:600;display:flex;align-items:center;gap:6px;">
+              <svg xmlns="http://www.w3.org/2000/svg" height="15px" viewBox="0 -960 960 960" width="15px" fill="#667eea"
+                style="vertical-align:middle;">
+                <path
+                  d="M621.5-338.5Q680-397 680-480t-58.5-141.5Q563-680 480-680t-141.5 58.5Q280-563 280-480t58.5 141.5Q397-280 480-280t141.5-58.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Z" />
+              </svg> Marketing
+            </span>
+            <span class="glass-card"
+              style="padding:0.45rem 1.1rem;border-radius:50px;font-size:0.85rem;font-weight:600;display:flex;align-items:center;gap:6px;">
+              <svg xmlns="http://www.w3.org/2000/svg" height="15px" viewBox="0 -960 960 960" width="15px" fill="#667eea"
+                style="vertical-align:middle;">
+                <path
+                  d="M621.5-338.5Q680-397 680-480t-58.5-141.5Q563-680 480-680t-141.5 58.5Q280-563 280-480t58.5 141.5Q397-280 480-280t141.5-58.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Z" />
+              </svg> Finance
+            </span>
+            <span class="glass-card"
+              style="padding:0.45rem 1.1rem;border-radius:50px;font-size:0.85rem;font-weight:600;display:flex;align-items:center;gap:6px;">
+              <svg xmlns="http://www.w3.org/2000/svg" height="15px" viewBox="0 -960 960 960" width="15px" fill="#667eea"
+                style="vertical-align:middle;">
+                <path
+                  d="M621.5-338.5Q680-397 680-480t-58.5-141.5Q563-680 480-680t-141.5 58.5Q280-563 280-480t58.5 141.5Q397-280 480-280t141.5-58.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Z" />
+              </svg> Freelance
+            </span>
+          </div>
         </div>
-        <div class="skill-tags" style="flex-wrap:wrap;gap:0.75rem;opacity:0.85;">
-          <span class="glass-card" style="padding:0.45rem 1.1rem;border-radius:50px;font-size:0.85rem;font-weight:600;display:flex;align-items:center;gap:6px;">
-            <svg xmlns="http://www.w3.org/2000/svg" height="15px" viewBox="0 -960 960 960" width="15px" fill="#667eea" style="vertical-align:middle;"><path d="M621.5-338.5Q680-397 680-480t-58.5-141.5Q563-680 480-680t-141.5 58.5Q280-563 280-480t58.5 141.5Q397-280 480-280t141.5-58.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Z"/></svg> Design
-          </span>
-          <span class="glass-card" style="padding:0.45rem 1.1rem;border-radius:50px;font-size:0.85rem;font-weight:600;display:flex;align-items:center;gap:6px;">
-            <svg xmlns="http://www.w3.org/2000/svg" height="15px" viewBox="0 -960 960 960" width="15px" fill="#667eea" style="vertical-align:middle;"><path d="M621.5-338.5Q680-397 680-480t-58.5-141.5Q563-680 480-680t-141.5 58.5Q280-563 280-480t58.5 141.5Q397-280 480-280t141.5-58.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Z"/></svg> Marketing
-          </span>
-          <span class="glass-card" style="padding:0.45rem 1.1rem;border-radius:50px;font-size:0.85rem;font-weight:600;display:flex;align-items:center;gap:6px;">
-            <svg xmlns="http://www.w3.org/2000/svg" height="15px" viewBox="0 -960 960 960" width="15px" fill="#667eea" style="vertical-align:middle;"><path d="M621.5-338.5Q680-397 680-480t-58.5-141.5Q563-680 480-680t-141.5 58.5Q280-563 280-480t58.5 141.5Q397-280 480-280t141.5-58.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Z"/></svg> Finance
-          </span>
-          <span class="glass-card" style="padding:0.45rem 1.1rem;border-radius:50px;font-size:0.85rem;font-weight:600;display:flex;align-items:center;gap:6px;">
-            <svg xmlns="http://www.w3.org/2000/svg" height="15px" viewBox="0 -960 960 960" width="15px" fill="#667eea" style="vertical-align:middle;"><path d="M621.5-338.5Q680-397 680-480t-58.5-141.5Q563-680 480-680t-141.5 58.5Q280-563 280-480t58.5 141.5Q397-280 480-280t141.5-58.5ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Z"/></svg> Freelance
-          </span>
+
+        <!-- RIGHT: Illustration -->
+        <div class="hero-right">
+          <div class="hero-glow"></div>
+
+          <!-- Main Card -->
+          <div class="hero-main-card">
+            <img
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuDkqaJvszpiaXddFEVP5emc5cocBcJdmJWNiG-FdQKdVGkGKw4RrzYv0AUZ3LIZ7-tU7vbH7f_TT7Z2lgBW58ZhKmcnXn_4JeTRBouH8ao5O1sls6rDUTb8N3drRWV29QztSslkDkfqX6v-7gcBIQwpsU6sihFPHxaN3Nw-R1ShUU91vVrb6cCnXvrhzB1Rnilz0vU9_D3G_xJaZG7oN2vqw_tKjlV1uBOsfhGfa_QVjaqjWPh6BB3pNJtrDIFWjommd8E4aczegnrh"
+              alt="UI/UX Design Masterclass" class="card-img" />
+            <h3 style="font-weight:700;font-size:1.05rem;margin-bottom:0.5rem;color:#1a1a2e;">UI/UX Design Masterclass
+            </h3>
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:1rem;">
+              <span style="color:#f59e0b;font-size:0.85rem;letter-spacing:1px;">★★★★</span><span
+                style="color:#d1d5db;font-size:0.85rem;">★</span>
+              <span style="font-size:0.75rem;color:#888;font-weight:500;">(4.5)</span>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;">
+              <span style="font-size:1.3rem;font-weight:900;color:#1a1a2e;">&#8377;1299</span>
+              <a href="#resources"
+                style="text-decoration:none;padding:0.5rem 1.2rem;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border-radius:10px;font-size:0.8rem;font-weight:700;box-shadow:0 4px 14px rgba(102,126,234,0.3);">BUY
+                NOW</a>
+            </div>
+          </div>
+
+          <!-- Floating Card: PDF Notes -->
+          <div class="float-card fc-pdf">
+            <div class="float-icon" style="background:rgba(254,226,226,0.5);">
+              <span class="material-symbols-outlined text-error"
+                style="font-size:20px;font-variation-settings:'FILL' 1;">description</span>
+            </div>
+            <div>
+              <p style="font-size:0.78rem;font-weight:700;margin:0;color:#1a1a2e;">PDF Notes</p>
+              <p style="font-size:0.68rem;color:#888;margin:0;">240+ Pages</p>
+            </div>
+          </div>
+
+          <!-- Floating Card: Exam Prep -->
+          <div class="glass-card float-card fc-exam">
+            <div class="float-icon" style="background:rgba(219,234,254,0.5);">
+              <span class="material-symbols-outlined text-primary"
+                style="font-size:20px;font-variation-settings:'FILL' 1;">work</span>
+            </div>
+            <div>
+              <p style="font-size:0.78rem;font-weight:700;margin:0;color:#1a1a2e;">Exam Prep</p>
+              <p style="font-size:0.68rem;color:#888;margin:0;">Expert Guide</p>
+            </div>
+          </div>
+
+          <!-- Floating Card: Excel Templates -->
+          <div class="glass-card float-card fc-excel">
+            <div class="float-icon" style="background:rgba(220,252,231,0.6);">
+              <span class="material-symbols-outlined text-emerald-600"
+                style="font-size:20px;font-variation-settings:'FILL' 1;">table_chart</span>
+            </div>
+            <div>
+              <p style="font-size:0.78rem;font-weight:700;margin:0;color:#1a1a2e;">Excel Templates</p>
+              <p style="font-size:0.68rem;color:#888;margin:0;">Automated</p>
+            </div>
+          </div>
+
+          <!-- Floating Card: Freelance Services -->
+          <div class="glass-card float-card fc-free">
+            <div class="float-icon" style="background:rgba(237,233,254,0.5);">
+              <span class="material-symbols-outlined text-tertiary"
+                style="font-size:20px;font-variation-settings:'FILL' 1;">business_center</span>
+            </div>
+            <div>
+              <p style="font-size:0.78rem;font-weight:700;margin:0;color:#1a1a2e;">Freelance</p>
+              <p style="font-size:0.68rem;color:#888;margin:0;">New Projects</p>
+            </div>
+          </div>
+
         </div>
       </div>
-
-      <!-- RIGHT: Illustration -->
-      <div class="hero-right">
-        <div class="hero-glow"></div>
-
-        <!-- Main Card -->
-        <div class="hero-main-card">
-          <img
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDkqaJvszpiaXddFEVP5emc5cocBcJdmJWNiG-FdQKdVGkGKw4RrzYv0AUZ3LIZ7-tU7vbH7f_TT7Z2lgBW58ZhKmcnXn_4JeTRBouH8ao5O1sls6rDUTb8N3drRWV29QztSslkDkfqX6v-7gcBIQwpsU6sihFPHxaN3Nw-R1ShUU91vVrb6cCnXvrhzB1Rnilz0vU9_D3G_xJaZG7oN2vqw_tKjlV1uBOsfhGfa_QVjaqjWPh6BB3pNJtrDIFWjommd8E4aczegnrh"
-            alt="UI/UX Design Masterclass" class="card-img" />
-          <h3 style="font-weight:700;font-size:1.05rem;margin-bottom:0.5rem;color:#1a1a2e;">UI/UX Design Masterclass</h3>
-          <div style="display:flex;align-items:center;gap:6px;margin-bottom:1rem;">
-            <span style="color:#f59e0b;font-size:0.85rem;letter-spacing:1px;">★★★★</span><span style="color:#d1d5db;font-size:0.85rem;">★</span>
-            <span style="font-size:0.75rem;color:#888;font-weight:500;">(4.5)</span>
-          </div>
-          <div style="display:flex;align-items:center;justify-content:space-between;">
-            <span style="font-size:1.3rem;font-weight:900;color:#1a1a2e;">&#8377;1299</span>
-            <a href="#resources" style="text-decoration:none;padding:0.5rem 1.2rem;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border-radius:10px;font-size:0.8rem;font-weight:700;box-shadow:0 4px 14px rgba(102,126,234,0.3);">BUY NOW</a>
-          </div>
-        </div>
-
-        <!-- Floating Card: PDF Notes -->
-        <div class="float-card fc-pdf">
-          <div class="float-icon" style="background:rgba(254,226,226,0.5);">
-            <span class="material-symbols-outlined text-error" style="font-size:20px;font-variation-settings:'FILL' 1;">description</span>
-          </div>
-          <div>
-            <p style="font-size:0.78rem;font-weight:700;margin:0;color:#1a1a2e;">PDF Notes</p>
-            <p style="font-size:0.68rem;color:#888;margin:0;">240+ Pages</p>
-          </div>
-        </div>
-
-        <!-- Floating Card: Exam Prep -->
-        <div class="glass-card float-card fc-exam">
-          <div class="float-icon" style="background:rgba(219,234,254,0.5);">
-            <span class="material-symbols-outlined text-primary" style="font-size:20px;font-variation-settings:'FILL' 1;">work</span>
-          </div>
-          <div>
-            <p style="font-size:0.78rem;font-weight:700;margin:0;color:#1a1a2e;">Exam Prep</p>
-            <p style="font-size:0.68rem;color:#888;margin:0;">Expert Guide</p>
-          </div>
-        </div>
-
-        <!-- Floating Card: Excel Templates -->
-        <div class="glass-card float-card fc-excel">
-          <div class="float-icon" style="background:rgba(220,252,231,0.6);">
-            <span class="material-symbols-outlined text-emerald-600" style="font-size:20px;font-variation-settings:'FILL' 1;">table_chart</span>
-          </div>
-          <div>
-            <p style="font-size:0.78rem;font-weight:700;margin:0;color:#1a1a2e;">Excel Templates</p>
-            <p style="font-size:0.68rem;color:#888;margin:0;">Automated</p>
-          </div>
-        </div>
-
-        <!-- Floating Card: Freelance Services -->
-        <div class="glass-card float-card fc-free">
-          <div class="float-icon" style="background:rgba(237,233,254,0.5);">
-            <span class="material-symbols-outlined text-tertiary" style="font-size:20px;font-variation-settings:'FILL' 1;">business_center</span>
-          </div>
-          <div>
-            <p style="font-size:0.78rem;font-weight:700;margin:0;color:#1a1a2e;">Freelance</p>
-            <p style="font-size:0.68rem;color:#888;margin:0;">New Projects</p>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </main>
+    </main>
   </div>
 
   <!-- ── Stats Bar ── -->
@@ -539,25 +645,29 @@
           <div class="step-num">1</div>
           <div class="step-icon">📝</div>
           <h3>Create an Account</h3>
-          <p>Sign up for free in seconds. No subscription, no upfront cost — just create your account and you're ready.</p>
+          <p>Sign up for free in seconds. No subscription, no upfront cost — just create your account and you're ready.
+          </p>
         </div>
         <div class="step-card">
           <div class="step-num">2</div>
           <div class="step-icon">📤</div>
           <h3>List or Browse</h3>
-          <p>Sellers upload their resources and set their own price. Buyers browse by category and find exactly what they need.</p>
+          <p>Sellers upload their resources and set their own price. Buyers browse by category and find exactly what
+            they need.</p>
         </div>
         <div class="step-card">
           <div class="step-num">3</div>
           <div class="step-icon">💳</div>
           <h3>Secure Payment</h3>
-          <p>All payments are processed through Razorpay — RBI-regulated and fully secure. Buyers get instant access after purchase.</p>
+          <p>All payments are processed through Razorpay — RBI-regulated and fully secure. Buyers get instant access
+            after purchase.</p>
         </div>
         <div class="step-card">
           <div class="step-num">4</div>
           <div class="step-icon">💸</div>
           <h3>Withdraw Earnings</h3>
-          <p>Sellers request withdrawals anytime. A flat 5% platform fee applies — no hidden charges, no monthly fees.</p>
+          <p>Sellers request withdrawals anytime. A flat 5% platform fee applies — no hidden charges, no monthly fees.
+          </p>
         </div>
       </div>
     </div>
@@ -572,22 +682,26 @@
       </div>
       <div class="categories-grid">
         <a href="#resources" onclick="filterResources('pdf')" class="cat-card">
-          <div class="cat-icon" style="background:linear-gradient(135deg,#fee2e2,#fecaca);"><img src="/file/pdf.jpg" alt="PDF" style="width:38px;height:38px;object-fit:contain;border-radius:8px;"></div>
+          <div class="cat-icon" style="background:linear-gradient(135deg,#fee2e2,#fecaca);"><img src="/file/pdf.jpg"
+              alt="PDF" style="width:38px;height:38px;object-fit:contain;border-radius:8px;"></div>
           <h3>PDF Notes</h3>
           <p>Study materials &amp; lecture notes</p>
         </a>
         <a href="#resources" onclick="filterResources('excel')" class="cat-card">
-          <div class="cat-icon" style="background:linear-gradient(135deg,#dcfce7,#bbf7d0);"><img src="/file/excel.jpg" alt="Excel" style="width:38px;height:38px;object-fit:contain;border-radius:8px;"></div>
+          <div class="cat-icon" style="background:linear-gradient(135deg,#dcfce7,#bbf7d0);"><img src="/file/excel.jpg"
+              alt="Excel" style="width:38px;height:38px;object-fit:contain;border-radius:8px;"></div>
           <h3>Excel Templates</h3>
           <p>Ready-to-use spreadsheets</p>
         </a>
         <a href="#resources" onclick="filterResources('exam')" class="cat-card">
-          <div class="cat-icon" style="background:linear-gradient(135deg,#dbeafe,#bfdbfe);"><img src="/file/exam.jpg" alt="Exam" style="width:38px;height:38px;object-fit:contain;border-radius:8px;"></div>
+          <div class="cat-icon" style="background:linear-gradient(135deg,#dbeafe,#bfdbfe);"><img src="/file/exam.jpg"
+              alt="Exam" style="width:38px;height:38px;object-fit:contain;border-radius:8px;"></div>
           <h3>Exam Prep</h3>
           <p>Practice papers &amp; guides</p>
         </a>
         <a href="#resources" onclick="filterResources('freelance')" class="cat-card">
-          <div class="cat-icon" style="background:linear-gradient(135deg,#ede9fe,#ddd6fe);"><img src="/file/service.jpg" alt="Services" style="width:38px;height:38px;object-fit:contain;border-radius:8px;"></div>
+          <div class="cat-icon" style="background:linear-gradient(135deg,#ede9fe,#ddd6fe);"><img src="/file/service.jpg"
+              alt="Services" style="width:38px;height:38px;object-fit:contain;border-radius:8px;"></div>
           <h3>Freelance Services</h3>
           <p>Expert help &amp; consulting</p>
         </a>
@@ -601,7 +715,8 @@
       <div class="cta-box">
         <div class="cta-content">
           <h2>Start Earning from Your Knowledge</h2>
-          <p>Upload your study notes, templates, or offer a service. Set your own price, reach thousands of buyers, and withdraw your earnings anytime with just a 5% platform fee.</p>
+          <p>Upload your study notes, templates, or offer a service. Set your own price, reach thousands of buyers, and
+            withdraw your earnings anytime with just a 5% platform fee.</p>
           <div class="cta-points">
             <span>✅ Free to list</span>
             <span>✅ You set the price</span>
@@ -638,14 +753,19 @@
     <div class="container">
       <div class="section-header" style="margin-bottom:28px;">
         <h2>Available <span class="grad-text">Resources</span></h2>
-        <p>Browse premium study materials, templates, exam prep, and freelance services — all verified and ready to use</p>
+        <p>Browse premium study materials, templates, exam prep, and freelance services — all verified and ready to use
+        </p>
       </div>
       <div class="filter-tabs">
         <button class="filter-btn active" onclick="filterResources('all')">All</button>
-        <button class="filter-btn" onclick="filterResources('pdf')"><img src="/file/pdf.jpg" alt="PDF"> PDF Notes</button>
-        <button class="filter-btn" onclick="filterResources('excel')"><img src="/file/excel.jpg" alt="Excel"> Excel</button>
-        <button class="filter-btn" onclick="filterResources('exam')"><img src="/file/exam.jpg" alt="Exam"> Exam Prep</button>
-        <button class="filter-btn" onclick="filterResources('freelance')"><img src="/file/service.jpg" alt="Services"> Services</button>
+        <button class="filter-btn" onclick="filterResources('pdf')"><img src="/file/pdf.jpg" alt="PDF"> PDF
+          Notes</button>
+        <button class="filter-btn" onclick="filterResources('excel')"><img src="/file/excel.jpg" alt="Excel">
+          Excel</button>
+        <button class="filter-btn" onclick="filterResources('exam')"><img src="/file/exam.jpg" alt="Exam"> Exam
+          Prep</button>
+        <button class="filter-btn" onclick="filterResources('freelance')"><img src="/file/service.jpg" alt="Services">
+          Services</button>
       </div>
       <div id="resourcesGrid" class="resources-grid"></div>
       <div class="pagination"></div>
@@ -660,22 +780,83 @@
         <p>Tips, guides, and insights to help you learn and earn smarter</p>
       </div>
       <div id="homeBlogGrid" class="blog-grid" style="max-width:1200px;margin:0 auto;">
-        <div class="blog-card" style="pointer-events:none;"><div class="blog-card-img blog-shimmer-img"></div><div class="blog-card-body"><div class="blog-shimmer-line" style="width:60%;height:14px;"></div><div class="blog-shimmer-line" style="width:100%;height:12px;margin-top:8px;"></div><div class="blog-shimmer-line" style="width:80%;height:12px;"></div></div></div>
-        <div class="blog-card" style="pointer-events:none;"><div class="blog-card-img blog-shimmer-img"></div><div class="blog-card-body"><div class="blog-shimmer-line" style="width:60%;height:14px;"></div><div class="blog-shimmer-line" style="width:100%;height:12px;margin-top:8px;"></div><div class="blog-shimmer-line" style="width:80%;height:12px;"></div></div></div>
-        <div class="blog-card" style="pointer-events:none;"><div class="blog-card-img blog-shimmer-img"></div><div class="blog-card-body"><div class="blog-shimmer-line" style="width:60%;height:14px;"></div><div class="blog-shimmer-line" style="width:100%;height:12px;margin-top:8px;"></div><div class="blog-shimmer-line" style="width:80%;height:12px;"></div></div></div>
+        <div class="blog-card" style="pointer-events:none;">
+          <div class="blog-card-img blog-shimmer-img"></div>
+          <div class="blog-card-body">
+            <div class="blog-shimmer-line" style="width:60%;height:14px;"></div>
+            <div class="blog-shimmer-line" style="width:100%;height:12px;margin-top:8px;"></div>
+            <div class="blog-shimmer-line" style="width:80%;height:12px;"></div>
+          </div>
+        </div>
+        <div class="blog-card" style="pointer-events:none;">
+          <div class="blog-card-img blog-shimmer-img"></div>
+          <div class="blog-card-body">
+            <div class="blog-shimmer-line" style="width:60%;height:14px;"></div>
+            <div class="blog-shimmer-line" style="width:100%;height:12px;margin-top:8px;"></div>
+            <div class="blog-shimmer-line" style="width:80%;height:12px;"></div>
+          </div>
+        </div>
+        <div class="blog-card" style="pointer-events:none;">
+          <div class="blog-card-img blog-shimmer-img"></div>
+          <div class="blog-card-body">
+            <div class="blog-shimmer-line" style="width:60%;height:14px;"></div>
+            <div class="blog-shimmer-line" style="width:100%;height:12px;margin-top:8px;"></div>
+            <div class="blog-shimmer-line" style="width:80%;height:12px;"></div>
+          </div>
+        </div>
       </div>
       <div style="text-align:center;margin-top:36px;">
-        <a href="./Blog/" style="display:inline-flex;align-items:center;gap:8px;padding:12px 32px;background:linear-gradient(135deg,#667eea,#764ba2);color:white;border-radius:50px;font-weight:700;font-size:15px;text-decoration:none;box-shadow:0 6px 20px rgba(102,126,234,0.3);">View All Posts &rarr;</a>
+        <a href="./Blog/"
+          style="display:inline-flex;align-items:center;gap:8px;padding:12px 32px;background:linear-gradient(135deg,#667eea,#764ba2);color:white;border-radius:50px;font-weight:700;font-size:15px;text-decoration:none;box-shadow:0 6px 20px rgba(102,126,234,0.3);">View
+          All Posts &rarr;</a>
       </div>
     </div>
   </section>
   <style>
-    .blog-home-section .blog-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:28px; }
-    .blog-shimmer-img { background:linear-gradient(90deg,#f0f0f0 25%,#e8e8e8 50%,#f0f0f0 75%); background-size:400% 100%; animation:bhs 1.4s infinite linear; }
-    .blog-shimmer-line { border-radius:6px; background:linear-gradient(90deg,#f0f0f0 25%,#e8e8e8 50%,#f0f0f0 75%); background-size:400% 100%; animation:bhs 1.4s infinite linear; }
-    @keyframes bhs { 0%{background-position:100% 0} 100%{background-position:-100% 0} }
-    @media (max-width:1024px) { .blog-home-section .blog-grid { grid-template-columns:repeat(2,1fr); } }
-    @media (max-width:768px)  { .blog-home-section .blog-grid { grid-template-columns:1fr; } #homeBlogGrid .blog-card:nth-child(n+2) { display:none !important; } }
+    .blog-home-section .blog-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+    }
+
+    .blog-shimmer-img {
+      background: linear-gradient(90deg, #f0f0f0 25%, #e8e8e8 50%, #f0f0f0 75%);
+      background-size: 400% 100%;
+      animation: bhs 1.4s infinite linear;
+    }
+
+    .blog-shimmer-line {
+      border-radius: 6px;
+      background: linear-gradient(90deg, #f0f0f0 25%, #e8e8e8 50%, #f0f0f0 75%);
+      background-size: 400% 100%;
+      animation: bhs 1.4s infinite linear;
+    }
+
+    @keyframes bhs {
+      0% {
+        background-position: 100% 0
+      }
+
+      100% {
+        background-position: -100% 0
+      }
+    }
+
+    @media (max-width:1024px) {
+      .blog-home-section .blog-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width:768px) {
+      .blog-home-section .blog-grid {
+        grid-template-columns: 1fr;
+      }
+
+      #homeBlogGrid .blog-card:nth-child(n+2) {
+        display: none !important;
+      }
+    }
   </style>
 
 
@@ -725,27 +906,33 @@
       <div class="faq-grid">
         <div class="faq-item-home">
           <div class="faq-q">💳 How do I pay for a resource?</div>
-          <div class="faq-a">All payments are processed securely through Razorpay. You can pay via credit/debit card, UPI, net banking, or digital wallets. You get instant access after payment.</div>
+          <div class="faq-a">All payments are processed securely through Razorpay. You can pay via credit/debit card,
+            UPI, net banking, or digital wallets. You get instant access after payment.</div>
         </div>
         <div class="faq-item-home">
           <div class="faq-q">📥 How do I access my purchased resource?</div>
-          <div class="faq-a">After purchase, go to your Dashboard. All purchased resources are listed there and available for download immediately.</div>
+          <div class="faq-a">After purchase, go to your Dashboard. All purchased resources are listed there and
+            available for download immediately.</div>
         </div>
         <div class="faq-item-home">
           <div class="faq-q">💼 How do I sell my resources?</div>
-          <div class="faq-a">Sign up, go to Add Resources, upload your file, set a price, and publish. Your resource goes live after a quick review. No listing fees — ever.</div>
+          <div class="faq-a">Sign up, go to Add Resources, upload your file, set a price, and publish. Your resource
+            goes live after a quick review. No listing fees — ever.</div>
         </div>
         <div class="faq-item-home">
           <div class="faq-q">💸 How does withdrawal work?</div>
-          <div class="faq-a">Request a withdrawal anytime from your Withdrawal page. A flat 5% platform fee is deducted. For example, withdraw ₹1,000 and receive ₹950 net — no other charges.</div>
+          <div class="faq-a">Request a withdrawal anytime from your Withdrawal page. A flat 5% platform fee is deducted.
+            For example, withdraw ₹1,000 and receive ₹950 net — no other charges.</div>
         </div>
         <div class="faq-item-home">
           <div class="faq-q">🔄 Can I get a refund?</div>
-          <div class="faq-a">Digital resources are generally non-refundable once accessed. However, we review refund requests for defective or misrepresented products on a case-by-case basis.</div>
+          <div class="faq-a">Digital resources are generally non-refundable once accessed. However, we review refund
+            requests for defective or misrepresented products on a case-by-case basis.</div>
         </div>
         <div class="faq-item-home">
           <div class="faq-q">🛡️ Is my data safe?</div>
-          <div class="faq-a">Yes. Your account data is stored securely via Supabase with encryption. Payment data is handled exclusively by Razorpay — we never store your card or bank details.</div>
+          <div class="faq-a">Yes. Your account data is stored securely via Supabase with encryption. Payment data is
+            handled exclusively by Razorpay — we never store your card or bank details.</div>
         </div>
       </div>
     </div>
@@ -755,7 +942,8 @@
     <div class="container">
       <div class="footer-grid">
         <div class="footer-col">
-          <h3 class="footer-logo"><a href="./" class="footer-logo-link">💰 <span class="footer-logo-text">Earnify</span></a></h3>
+          <h3 class="footer-logo"><a href="./" class="footer-logo-link">💰 <span
+                class="footer-logo-text">Earnify</span></a></h3>
           <p class="footer-desc">Your trusted learning marketplace for premium study materials, templates, and
             professional services. Learn, grow, and earn with us.</p>
         </div>
@@ -787,6 +975,7 @@
     </div>
   </footer>
 
+
   <!-- Auth Modal -->
   <div id="loginModal" class="auth-modal-overlay">
     <div class="auth-modal-box">
@@ -805,16 +994,37 @@
           </div>
 
           <div class="am-stats">
-            <div class="am-stat"><div class="am-stat-num">500+</div><div class="am-stat-lbl">Resources</div></div>
-            <div class="am-stat"><div class="am-stat-num">1,200+</div><div class="am-stat-lbl">Buyers</div></div>
-            <div class="am-stat"><div class="am-stat-num">5%</div><div class="am-stat-lbl">Fee Only</div></div>
+            <div class="am-stat">
+              <div class="am-stat-num">500+</div>
+              <div class="am-stat-lbl">Resources</div>
+            </div>
+            <div class="am-stat">
+              <div class="am-stat-num">1,200+</div>
+              <div class="am-stat-lbl">Buyers</div>
+            </div>
+            <div class="am-stat">
+              <div class="am-stat-num">5%</div>
+              <div class="am-stat-lbl">Fee Only</div>
+            </div>
           </div>
 
           <div class="am-features">
-            <div class="am-feature"><div class="am-feature-icon">✅</div><div class="am-feature-text"><strong>Free to list your resources</strong></div></div>
-            <div class="am-feature"><div class="am-feature-icon">⚡</div><div class="am-feature-text"><strong>Instant access after purchase</strong></div></div>
-            <div class="am-feature"><div class="am-feature-icon">🔒</div><div class="am-feature-text"><strong>Secure payments via Razorpay</strong></div></div>
-            <div class="am-feature"><div class="am-feature-icon">💸</div><div class="am-feature-text"><strong>Only 5% fee on withdrawal</strong></div></div>
+            <div class="am-feature">
+              <div class="am-feature-icon">✅</div>
+              <div class="am-feature-text"><strong>Free to list your resources</strong></div>
+            </div>
+            <div class="am-feature">
+              <div class="am-feature-icon">⚡</div>
+              <div class="am-feature-text"><strong>Instant access after purchase</strong></div>
+            </div>
+            <div class="am-feature">
+              <div class="am-feature-icon">🔒</div>
+              <div class="am-feature-text"><strong>Secure payments via Razorpay</strong></div>
+            </div>
+            <div class="am-feature">
+              <div class="am-feature-icon">💸</div>
+              <div class="am-feature-text"><strong>Only 5% fee on withdrawal</strong></div>
+            </div>
           </div>
 
           <div class="am-testimonial">
@@ -846,7 +1056,7 @@
           </div>
 
           <div id="amErr" class="am-msg error"></div>
-          <div id="amOk"  class="am-msg success"></div>
+          <div id="amOk" class="am-msg success"></div>
 
           <!-- Login -->
           <div id="amLoginForm">
@@ -857,7 +1067,8 @@
             <form onsubmit="handleLogin(event)">
               <div class="am-input-group">
                 <label>Email Address</label>
-                <input class="am-input" type="email" id="loginEmail" placeholder="you@example.com" required autocomplete="email">
+                <input class="am-input" type="email" id="loginEmail" placeholder="you@example.com" required
+                  autocomplete="email">
               </div>
               <div class="am-input-group">
                 <div class="am-label-row">
@@ -865,10 +1076,21 @@
                   <a href="#" class="am-forgot">Forgot password?</a>
                 </div>
                 <div class="am-pw-wrap">
-                  <input class="am-input" type="password" id="loginPassword" placeholder="Enter your password" required autocomplete="current-password">
+                  <input class="am-input" type="password" id="loginPassword" placeholder="Enter your password" required
+                    autocomplete="current-password">
                   <button type="button" class="am-toggle-pass" onclick="_amTogglePw('loginPassword',this)">
-                    <svg class="eye-on" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                    <svg class="eye-off" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                    <svg class="eye-on" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                      fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                      <circle cx="12" cy="12" r="3" />
+                    </svg>
+                    <svg class="eye-off" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                      fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                      style="display:none">
+                      <path
+                        d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19" />
+                      <line x1="1" y1="1" x2="23" y2="23" />
+                    </svg>
                   </button>
                 </div>
               </div>
@@ -886,25 +1108,39 @@
             <form onsubmit="handleSignup(event)">
               <div class="am-input-group">
                 <label>Full Name</label>
-                <input class="am-input" type="text" id="signupName" placeholder="Your full name" required autocomplete="name">
+                <input class="am-input" type="text" id="signupName" placeholder="Your full name" required
+                  autocomplete="name">
               </div>
               <div class="am-input-group">
                 <label>Email Address</label>
-                <input class="am-input" type="email" id="signupEmail" placeholder="you@example.com" required autocomplete="email">
+                <input class="am-input" type="email" id="signupEmail" placeholder="you@example.com" required
+                  autocomplete="email">
               </div>
               <div class="am-input-group">
                 <label>Password</label>
                 <div class="am-pw-wrap">
-                  <input class="am-input" type="password" id="signupPassword" placeholder="Min 6 characters" required autocomplete="new-password">
+                  <input class="am-input" type="password" id="signupPassword" placeholder="Min 6 characters" required
+                    autocomplete="new-password">
                   <button type="button" class="am-toggle-pass" onclick="_amTogglePw('signupPassword',this)">
-                    <svg class="eye-on" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                    <svg class="eye-off" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                    <svg class="eye-on" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                      fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                      <circle cx="12" cy="12" r="3" />
+                    </svg>
+                    <svg class="eye-off" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                      fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                      style="display:none">
+                      <path
+                        d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19" />
+                      <line x1="1" y1="1" x2="23" y2="23" />
+                    </svg>
                   </button>
                 </div>
               </div>
               <div class="am-input-group">
                 <label>Confirm Password</label>
-                <input class="am-input" type="password" id="signupConfirmPassword" placeholder="Re-enter your password" required autocomplete="new-password">
+                <input class="am-input" type="password" id="signupConfirmPassword" placeholder="Re-enter your password"
+                  required autocomplete="new-password">
               </div>
               <button type="submit" class="am-submit-btn">✨ Create Free Account</button>
             </form>
@@ -918,131 +1154,62 @@
     </div>
   </div>
   <div id="signupModal" style="display:none;"></div>
+  <nav class="mob-nav">
 
-  <!-- ── Mobile Bottom Nav ── -->
-  <nav class="mob-nav" id="mobNav">
-    <a href="./" class="mob-nav-item" id="mnHome">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    <a href="/" class="mob-nav-item" data-nav="home">
+      <svg viewBox="0 0 24 24">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+        <polyline points="9 22 9 12 15 12 15 22" />
+      </svg>
       <span>Home</span>
     </a>
-    <a href="#resources" class="mob-nav-item" id="mnResources" onclick="closeMobNav()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+
+    <a href="/#resources" class="mob-nav-item" data-nav="resources">
+      <svg viewBox="0 0 24 24">
+        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15" />
+      </svg>
       <span>Resources</span>
     </a>
-    <a href="./admin/Resources/" class="mob-nav-item mob-nav-add" id="mnAdd">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-      <span>Add</span>
-    </a>
-    <a href="./Blog/" class="mob-nav-item" id="mnBlog">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+
+    <button class="mob-nav-add" id="addBtn">
+      <svg viewBox="0 0 24 24">
+        <line x1="12" y1="5" x2="12" y2="19" />
+        <line x1="5" y1="12" x2="19" y2="12" />
+      </svg>
+    </button>
+
+    <a href="/Blog/" class="mob-nav-item" data-nav="blog">
+      <svg viewBox="0 0 24 24">
+        <path d="M12 20h9" />
+        <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4z" />
+      </svg>
       <span>Blog</span>
     </a>
-    <a href="./admin/Resources/" class="mob-nav-item" id="mnDash" onclick="goToDashboard(event)">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+
+    <a href="/admin/" class="mob-nav-item" data-nav="dashboard">
+      <svg viewBox="0 0 24 24">
+        <rect x="3" y="3" width="7" height="7" />
+        <rect x="14" y="3" width="7" height="7" />
+        <rect x="3" y="14" width="7" height="7" />
+        <rect x="14" y="14" width="7" height="7" />
+      </svg>
       <span>Dashboard</span>
     </a>
+
   </nav>
 
-  <!-- <style>
-    .mob-nav {
-      display: none;
-      position: fixed;
-      bottom: 0; left: 0; right: 0;
-      height: 64px;
-      background: #fff;
-      border-top: 1px solid #e8edf5;
-      box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
-      z-index: 9999;
-      align-items: center;
-      justify-content: space-around;
-      padding: 0 4px;
-      padding-bottom: env(safe-area-inset-bottom);
-    }
-    @media (max-width: 768px) {
-      .mob-nav { display: flex; }
-      body { padding-bottom: 64px; }
-      body.dark-mode { padding-bottom: 64px; }
-      body.dark-mode .mob-nav,
-      html.dark-mode body .mob-nav {
-        background: #0d1117;
-        border-top-color: #30363d;
-        box-shadow: 0 -4px 20px rgba(0,0,0,0.6);
-        position: fixed;
-        bottom: 0; left: 0; right: 0;
-        z-index: 9999;
-        display: flex;
-      }
-    }
-    .mob-nav-item {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 3px;
-      text-decoration: none;
-      color: #94a3b8;
-      font-size: 10px;
-      font-weight: 600;
-      font-family: 'Inter', sans-serif;
-      transition: color 0.18s;
-      padding: 6px 2px;
-      position: relative;
-      height: 64px;
-    }
-    .mob-nav-item svg {
-      width: 22px; height: 22px;
-      stroke: currentColor;
-      transition: stroke 0.18s;
-    }
-    .mob-nav-item.active, .mob-nav-item:hover { color: #667eea; }
-    .mob-nav-item.active svg, .mob-nav-item:hover svg { stroke: #667eea; }
-    .mob-nav-item.active::after {
-      content: ''; position: absolute; top: 6px;
-      width: 4px; height: 4px; border-radius: 50%; background: #667eea;
-    }
-    .mob-nav-add {
-      flex: 0 0 52px;
-      width: 52px;
-      height: 52px;
-      margin: 0 6px;
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      border-radius: 14px;
-      color: #fff !important;
-      box-shadow: 0 4px 14px rgba(102,126,234,0.40);
-      padding: 6px 4px;
-      align-self: center;
-    }
-    .mob-nav-add svg { stroke: #fff !important; width: 24px; height: 24px; }
-    .mob-nav-add span { font-size: 10px; color: #fff; }
-    .mob-nav-add:hover { opacity: 0.9; color: #fff !important; }
-    .mob-nav-add.active::after { display: none; }
-    /* Dark mode */
-    body.dark-mode .mob-nav {
-      background: #0d1117 !important;
-      border-top-color: #30363d !important;
-      box-shadow: 0 -4px 20px rgba(0,0,0,0.5) !important;
-    
-    }
-    body.dark-mode .mob-nav-item { color: #484f58 !important; }
-    body.dark-mode .mob-nav-item svg { stroke: #484f58 !important; }
-    body.dark-mode .mob-nav-item.active,
-    body.dark-mode .mob-nav-item:hover { color: #a78bfa !important; }
-    body.dark-mode .mob-nav-item.active svg,
-    body.dark-mode .mob-nav-item:hover svg { stroke: #a78bfa !important; }
-    body.dark-mode .mob-nav-item.active::after { background: #a78bfa !important; }
-  </style> -->
 
   <script>
     // Set active nav item based on current path
-    (function() {
+    (function () {
       const path = location.pathname;
       const map = {
-        mnHome:      ['/public/', '/public/index.html', '/'],
+        mnHome: ['/public/', '/public/index.html', '/'],
         mnResources: [],
-        mnAdd:       ['/public/admin/Resources/', '/admin/Resources/'],
-        mnBlog:      ['/public/Blog/', '/Blog/'],
-        mnDash:      ['/public/Dashboard/', '/Dashboard/']
+        mnAdd: ['/public/admin/Resources/', '/admin/Resources/'],
+        mnBlog: ['/public/Blog/', '/Blog/'],
+        mnDash: ['/public/Dashboard/', '/Dashboard/']
       };
       Object.entries(map).forEach(([id, paths]) => {
         if (paths.some(p => path === p || path.startsWith(p))) {
@@ -1054,7 +1221,7 @@
         document.getElementById('mnHome')?.classList.add('active');
       }
     })();
-    function closeMobNav() {}
+    function closeMobNav() { }
   </script>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -1073,12 +1240,12 @@
       const SUPA_URL = 'https://emnrgsgerfjvndexomro.supabase.co';
       const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVtbnJnc2dlcmZqdm5kZXhvbXJvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI0MjAyMTAsImV4cCI6MjA4Nzk5NjIxMH0.uXr8lipxLbB4D_5JwQkpLzc-HudQw23tOFBfV4C6hqY';
       const grid = document.getElementById('homeBlogGrid');
-      function fmtDate(d) { return new Date(d).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}); }
-      function getExcerpt(b) { const t=document.createElement('div'); t.innerHTML=b.excerpt||b.content||''; return (t.innerText||t.textContent||'').trim().substring(0,150); }
+      function fmtDate(d) { return new Date(d).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }); }
+      function getExcerpt(b) { const t = document.createElement('div'); t.innerHTML = b.excerpt || b.content || ''; return (t.innerText || t.textContent || '').trim().substring(0, 150); }
       function cardHtml(b) {
-        const slug = (b.slug||b.title.toLowerCase().replace(/[^\w\s-]/g,'').replace(/\s+/g,'-').replace(/-+/g,'-').trim());
+        const slug = (b.slug || b.title.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-').trim());
         return `<div class="blog-card" onclick="window.location.href='./Blog/post/?permalink=${slug}'" style="cursor:pointer;">
-          <div class="blog-card-img">${b.image_url?`<img src="${b.image_url}" alt="" loading="lazy">`:''}${b.category?`<span class="blog-card-category">${b.category}</span>`:''}</div>
+          <div class="blog-card-img">${b.image_url ? `<img src="${b.image_url}" alt="" loading="lazy">` : ''}${b.category ? `<span class="blog-card-category">${b.category}</span>` : ''}</div>
           <div class="blog-card-body">
             <h3 class="blog-card-title">${b.title}</h3>
             <p class="blog-card-excerpt">${getExcerpt(b)}</p>
@@ -1088,11 +1255,11 @@
         </div>`;
       }
       try {
-        const res = await fetch(`${SUPA_URL}/rest/v1/blogs?select=*&is_published=eq.true&order=created_at.desc&limit=3`,{headers:{apikey:SUPA_KEY,Authorization:`Bearer ${SUPA_KEY}`}});
+        const res = await fetch(`${SUPA_URL}/rest/v1/blogs?select=*&is_published=eq.true&order=created_at.desc&limit=3`, { headers: { apikey: SUPA_KEY, Authorization: `Bearer ${SUPA_KEY}` } });
         const posts = res.ok ? await res.json() : [];
-        if (!posts.length) { grid.innerHTML=`<div style="grid-column:1/-1;text-align:center;padding:50px 20px;color:#94a3b8;"><div style="font-size:48px;margin-bottom:12px;">&#9997;&#65039;</div><p style="font-size:15px;font-weight:600;">No blog posts yet. Check back soon!</p></div>`; return; }
+        if (!posts.length) { grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:50px 20px;color:#94a3b8;"><div style="font-size:48px;margin-bottom:12px;">&#9997;&#65039;</div><p style="font-size:15px;font-weight:600;">No blog posts yet. Check back soon!</p></div>`; return; }
         grid.innerHTML = posts.map(cardHtml).join('');
-      } catch(e) { grid.innerHTML=`<div style="grid-column:1/-1;text-align:center;padding:40px;color:#94a3b8;">Could not load blog posts.</div>`; }
+      } catch (e) { grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:40px;color:#94a3b8;">Could not load blog posts.</div>`; }
     })();
 
 
