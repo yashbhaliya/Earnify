@@ -764,6 +764,7 @@
     @keyframes shimmerSlide {
       0%   { background-position: -400px 0; }
       100% { background-position:  400px 0; }
+    }
     /* Dark mode shimmer overrides */
     html.dark-mode .shimmer-stat-card,
     body.dark-mode .shimmer-stat-card {
@@ -809,7 +810,6 @@
     body.dark-mode .shimmer-profile-badge-line {
       background: linear-gradient(90deg,#1c2333 25%,#21293d 50%,#1c2333 75%) !important;
       background-size: 800px 100% !important;
-    }
     }
 
     /* ── Mobile ── */
@@ -1002,6 +1002,7 @@
     }
     @media (min-width: 769px) {
       .page-header-toggle { display: none !important; }
+    }
 
     /* ── Neumorphic Theme Toggle ── */
     .sb-nm-wrap {
@@ -1405,6 +1406,30 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- Mobile Bottom Nav -->
+  <nav class="admin-mob-nav">
+    <a href="/admin/Resources/" class="amn-item">
+      <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+      <span>Resources</span>
+    </a>
+    <a href="/admin/Statistics/" class="amn-item active">
+      <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      <span>Statistics</span>
+    </a>
+    <a href="/" class="amn-item amn-home">
+      <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <span>Home</span>
+    </a>
+    <a href="/admin/Profile/" class="amn-item">
+      <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span>Profile</span>
+    </a>
+    <a href="/admin/Withdrawal/" class="amn-item">
+      <svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      <span>Withdraw</span>
+    </a>
+  </nav>
+
 <script src="/admin/api-config.js"></script>
 <script src="/admin/auth-guard.js"></script>
 <script src="/admin/toast.js"></script>

@@ -91,3 +91,17 @@
 .amn-home:hover { opacity: 0.9; color: #fff !important; transform: translateY(-1px); }
 .amn-home.active::after { display: none; }
 .amn-home.active { color: #fff !important; }
+
+/* Dark mode */
+body.dark-mode .admin-mob-nav {
+  background: #0d1117 !important;
+  border-top-color: #30363d !important;
+  box-shadow: 0 -4px 24px rgba(0,0,0,0.5) !important;
+}
+body.dark-mode .amn-item { color: #484f58 !important; }
+body.dark-mode .amn-item svg { stroke: #484f58 !important; }
+body.dark-mode .amn-item.active,
+body.dark-mode .amn-item:hover { color: #a78bfa !important; }
+body.dark-mode .amn-item.active svg,
+body.dark-mode .amn-item:hover svg { stroke: #a78bfa !important; }
+body.dark-mode .amn-item.active::after { background: #a78bfa !important; }
