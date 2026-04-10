@@ -532,48 +532,197 @@ body.dark-mode,
 html.dark-mode body .mobile-user-email {
   color: #8b949e !important;
 }
+/* ─────────────────────────────────────────
+   MOBILE BOTTOM NAV - BASE
+   ───────────────────────────────────────── */
 
-/* ── Mobile Bottom Nav ── */
-body.dark-mode .mob-nav,
-html.dark-mode body .mob-nav {
-  background: #0d1117 !important;
-  border-top-color: #30363d !important;
-  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.5) !important;
-  position: fixed !important;
-  bottom: 0 !important;
-  left: 0 !important;
-  right: 0 !important;
-  z-index: 9999 !important;
-  display: flex !important;
+.mob-nav {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  background: #ffffff;
+  border-top: 1px solid #e8edf5;
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+  z-index: 999999;
+
+  align-items: center;
+  justify-content: space-around;
+  padding: 0 4px;
+  padding-bottom: env(safe-area-inset-bottom);
+
+  /* 🔥 SCROLL FIX */
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
 }
 
-body.dark-mode .mob-nav-item,
-html.dark-mode body .mob-nav-item {
-  color: #484f58 !important;
+/* Show only on mobile */
+@media (max-width: 768px) {
+  .mob-nav {
+    display: flex;
+  }
+
+  body {
+    padding-bottom: 70px; /* prevent content overlap */
+  }
 }
 
-body.dark-mode .mob-nav-item svg,
-html.dark-mode body .mob-nav-item svg {
-  stroke: #484f58 !important;
+/* ─────────────────────────────────────────
+   NAV ITEMS
+   ───────────────────────────────────────── */
+
+.mob-nav-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+
+  text-decoration: none;
+  color: #94a3b8;
+  font-size: 10px;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+
+  padding: 6px 2px;
+  position: relative;
+  height: 64px;
+
+  transition: all 0.2s ease;
 }
 
+.mob-nav-item svg {
+  width: 22px;
+  height: 22px;
+  stroke: currentColor;
+  transition: all 0.2s ease;
+}
+
+/* Active + Hover */
+.mob-nav-item.active,
+.mob-nav-item:hover {
+  color: #667eea;
+}
+
+.mob-nav-item.active svg,
+.mob-nav-item:hover svg {
+  stroke: #667eea;
+}
+
+/* Active dot */
+.mob-nav-item.active::after {
+  content: '';
+  position: absolute;
+  top: 5px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #667eea;
+}
+
+/* ─────────────────────────────────────────
+   ADD BUTTON (CENTER)
+   ───────────────────────────────────────── */
+
+.mob-nav-add {
+  flex: 0 0 52px;
+  width: 52px;
+  height: 52px;
+  margin: 0 6px;
+
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  border-radius: 14px;
+
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(102,126,234,0.40);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  transform: translateY(-8px); /* lift effect */
+}
+
+.mob-nav-add svg {
+  stroke: #fff;
+  width: 24px;
+  height: 24px;
+}
+
+.mob-nav-add span {
+  font-size: 10px;
+  color: #fff;
+}
+
+.mob-nav-add:hover {
+  opacity: 0.9;
+}
+
+.mob-nav-add.active::after {
+  display: none;
+}
+
+/* ─────────────────────────────────────────
+   DARK MODE 🌙
+   ───────────────────────────────────────── */
+
+body.dark-mode .mob-nav {
+  background: #0d1117;
+  border-top: 1px solid #30363d;
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.6);
+
+  /* optional glass effect */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* Default text/icon */
+body.dark-mode .mob-nav-item {
+  color: #8b949e;
+}
+
+body.dark-mode .mob-nav-item svg {
+  stroke: #8b949e;
+}
+
+/* Active */
 body.dark-mode .mob-nav-item.active,
-body.dark-mode .mob-nav-item:hover,
-html.dark-mode body .mob-nav-item.active,
-html.dark-mode body .mob-nav-item:hover {
-  color: #a78bfa !important;
+body.dark-mode .mob-nav-item:hover {
+  color: #a78bfa;
 }
 
 body.dark-mode .mob-nav-item.active svg,
-body.dark-mode .mob-nav-item:hover svg,
-html.dark-mode body .mob-nav-item.active svg,
-html.dark-mode body .mob-nav-item:hover svg {
-  stroke: #a78bfa !important;
+body.dark-mode .mob-nav-item:hover svg {
+  stroke: #a78bfa;
 }
 
-body.dark-mode .mob-nav-item.active::after,
-html.dark-mode body .mob-nav-item.active::after {
-  background: #a78bfa !important;
+/* Active dot */
+body.dark-mode .mob-nav-item.active::after {
+  background: #a78bfa;
+}
+
+/* Add button (dark mode tweak) */
+body.dark-mode .mob-nav-add {
+  background: linear-gradient(135deg, #7c3aed, #6d28d9);
+  box-shadow: 0 4px 16px rgba(124,58,237,0.5);
+}
+
+/* ─────────────────────────────────────────
+   EXTRA MOBILE FIX (NO JUMP ON SCROLL)
+   ───────────────────────────────────────── */
+
+html, body {
+  height: 100%;
+}
+
+@supports (height: 100dvh) {
+  body {
+    min-height: 100dvh;
+  }
 }
 
 /* ── Auth Modal ── */

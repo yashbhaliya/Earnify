@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="../mobile-responsive.css">
   <link rel="stylesheet" href="../admin-bottom-nav.css">
   <link rel="stylesheet" href="../admin-dark.css">
-  <script>!function(){var s=localStorage.getItem('earnify_dark_mode');if(s==='1'){document.documentElement.classList.add('dark-mode');}}();</script>
+  <script>!function(){var d=localStorage.getItem("earnify_dark_mode")==="1";document.documentElement.classList.toggle("dark-mode",d);document.addEventListener("DOMContentLoaded",function(){document.body.classList.toggle("dark-mode",d);});}();</script>
   <style>
     .sidebar-header {
       display: flex;
@@ -519,6 +519,7 @@
     body.dark-mode .sb-nm-label-dark  { opacity: 1; }
   </style>
   <link rel="stylesheet" href="../dark-theme.css">
+  <script src="/admin/dark-theme.js"></script>
 </head>
 <body>
 
@@ -1279,7 +1280,7 @@
       renderHistory();
     });
   </script>
-  <script src="/admin/dark-theme.js"></script>
+  
   <script src="../super-admin-btn.js"></script>
 </body>
 </html>

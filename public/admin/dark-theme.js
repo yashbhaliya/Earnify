@@ -4,36 +4,33 @@
   function applyDarkMode(dark) {
     var html = document.documentElement;
     var body = document.body;
-    
+
     html.classList.toggle('dark-mode', dark);
     html.classList.toggle('light-mode', !dark);
     if (body) {
       body.classList.toggle('dark-mode', dark);
       body.classList.toggle('light-mode', !dark);
     }
-    
+
     var knob = document.getElementById('sbNmKnob');
     if (knob) knob.textContent = dark ? '🌙' : '☀️';
     document.querySelectorAll('.theme-toggle-btn').forEach(function (btn) {
       btn.textContent = dark ? '☀️' : '🌙';
       btn.title = dark ? 'Switch to light mode' : 'Switch to dark mode';
     });
-    
-    // Apply dark mode to main section
+
     var main = document.querySelector('.main');
     if (main) {
       main.classList.toggle('dark-mode', dark);
       main.classList.toggle('light-mode', !dark);
     }
-    
-    // Apply dark mode to sidebar
+
     var sidebar = document.querySelector('.sidebar');
     if (sidebar) {
       sidebar.classList.toggle('dark-mode', dark);
       sidebar.classList.toggle('light-mode', !dark);
     }
-    
-    // Handle view toggle buttons
+
     var btnAll = document.getElementById('btnAllResources');
     var btnPur = document.getElementById('btnPurchases');
     if (btnAll || btnPur) {
@@ -53,17 +50,8 @@
     applyDarkMode(isDark);
   };
 
-  // Run immediately
-  var isDark = localStorage.getItem(DARK_KEY) === '1';
-  applyDarkMode(isDark);
-
-  // Run on DOMContentLoaded
+  // Apply once on DOMContentLoaded only
   document.addEventListener('DOMContentLoaded', function () {
-    applyDarkMode(localStorage.getItem(DARK_KEY) === '1');
-  });
-  
-  // Run on load
-  window.addEventListener('load', function () {
     applyDarkMode(localStorage.getItem(DARK_KEY) === '1');
   });
 })();

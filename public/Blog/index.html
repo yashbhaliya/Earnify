@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <script>!function(){var s=localStorage.getItem('earnify_dark_mode');var d=s==='1';document.documentElement.classList.toggle('dark-mode',d);if(document.body)document.body.classList.toggle('dark-mode',d);document.documentElement.style.background=d?'#0d1117':'';document.addEventListener('DOMContentLoaded',function(){document.body.classList.toggle('dark-mode',d);});}();</script>
+  <script>!function(){var d=localStorage.getItem('earnify_dark_mode')==='1';document.documentElement.classList.toggle('dark-mode',d);document.addEventListener('DOMContentLoaded',function(){document.body.classList.toggle('dark-mode',d);});}();</script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Blog - Earnify</title>
@@ -263,7 +263,7 @@
       <span>Dashboard</span>
     </a>
   </nav>
-
+<!-- 
   <style>
     .mob-nav {
       display: none;
@@ -328,7 +328,7 @@
     body.dark-mode .mob-nav-item.active,body.dark-mode .mob-nav-item:hover{color:#a78bfa!important;}
     body.dark-mode .mob-nav-item.active svg,body.dark-mode .mob-nav-item:hover svg{stroke:#a78bfa!important;}
     body.dark-mode .mob-nav-item.active::after{background:#a78bfa!important;}
-  </style>
+  </style> -->
 
   <script src="../api-config.js"></script>
   <script src="../toast.js"></script>
@@ -398,7 +398,7 @@
       const gridWrap = document.getElementById('gridWrap');
       const fromPost = new URLSearchParams(window.location.search).get('from') === 'post';
 
-      // Coming back from a post OR cache exists — render instantly, no skeleton, no fetch
+      // Coming back from a post OR cache exists ï¿½ render instantly, no skeleton, no fetch
       try {
         const c = JSON.parse(sessionStorage.getItem('earnify_blog_v1'));
         if (c && Date.now() - c.ts < 300000) {
@@ -409,7 +409,7 @@
         }
       } catch(e) {}
 
-      // No cache — skeletons already visible in HTML, just fetch
+      // No cache ï¿½ skeletons already visible in HTML, just fetch
       const { data: blogs, error } = await supabaseClient
         .from('blogs')
         .select('*')

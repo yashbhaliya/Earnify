@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-  <script>!function(){var s=localStorage.getItem('earnify_dark_mode');var d=s==='1';document.documentElement.classList.toggle('dark-mode',d);if(document.body)document.body.classList.toggle('dark-mode',d);document.documentElement.style.background=d?'#0d1117':'';document.addEventListener('DOMContentLoaded',function(){document.body.classList.toggle('dark-mode',d);});}();</script>
+  <script>!function(){var d=localStorage.getItem('earnify_dark_mode')==='1';document.documentElement.classList.toggle('dark-mode',d);document.addEventListener('DOMContentLoaded',function(){document.body.classList.toggle('dark-mode',d);});}();</script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Earnify - Your Learning Marketplace</title>
@@ -943,7 +943,7 @@
     </a>
   </nav>
 
-  <style>
+  <!-- <style>
     .mob-nav {
       display: none;
       position: fixed;
@@ -952,7 +952,7 @@
       background: #fff;
       border-top: 1px solid #e8edf5;
       box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
-      z-index: 999;
+      z-index: 9999;
       align-items: center;
       justify-content: space-around;
       padding: 0 4px;
@@ -961,6 +961,17 @@
     @media (max-width: 768px) {
       .mob-nav { display: flex; }
       body { padding-bottom: 64px; }
+      body.dark-mode { padding-bottom: 64px; }
+      body.dark-mode .mob-nav,
+      html.dark-mode body .mob-nav {
+        background: #0d1117;
+        border-top-color: #30363d;
+        box-shadow: 0 -4px 20px rgba(0,0,0,0.6);
+        position: fixed;
+        bottom: 0; left: 0; right: 0;
+        z-index: 9999;
+        display: flex;
+      }
     }
     .mob-nav-item {
       flex: 1;
@@ -1011,12 +1022,7 @@
       background: #0d1117 !important;
       border-top-color: #30363d !important;
       box-shadow: 0 -4px 20px rgba(0,0,0,0.5) !important;
-      position: fixed !important;
-      bottom: 0 !important;
-      left: 0 !important;
-      right: 0 !important;
-      z-index: 9999 !important;
-      display: flex !important;
+    
     }
     body.dark-mode .mob-nav-item { color: #484f58 !important; }
     body.dark-mode .mob-nav-item svg { stroke: #484f58 !important; }
@@ -1025,7 +1031,7 @@
     body.dark-mode .mob-nav-item.active svg,
     body.dark-mode .mob-nav-item:hover svg { stroke: #a78bfa !important; }
     body.dark-mode .mob-nav-item.active::after { background: #a78bfa !important; }
-  </style>
+  </style> -->
 
   <script>
     // Set active nav item based on current path

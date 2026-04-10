@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="mobile-responsive.css">
   <link rel="stylesheet" href="/admin/admin-bottom-nav.css">
   <link rel="stylesheet" href="/admin/admin-dark.css">
-  <script>!function(){var s=localStorage.getItem('earnify_dark_mode');if(s==='1'){document.documentElement.classList.add('dark-mode');}}();</script>
+  <script>!function(){var d=localStorage.getItem("earnify_dark_mode")==="1";document.documentElement.classList.toggle("dark-mode",d);document.addEventListener("DOMContentLoaded",function(){document.body.classList.toggle("dark-mode",d);});}();</script>
   <style>
     .sidebar-header {
       display: flex;
@@ -764,6 +764,52 @@
     @keyframes shimmerSlide {
       0%   { background-position: -400px 0; }
       100% { background-position:  400px 0; }
+    /* Dark mode shimmer overrides */
+    html.dark-mode .shimmer-stat-card,
+    body.dark-mode .shimmer-stat-card {
+      background: #161b22 !important;
+      border-color: #30363d !important;
+    }
+    html.dark-mode .shimmer-stat-icon,
+    body.dark-mode .shimmer-stat-icon,
+    html.dark-mode .shimmer-stat-title,
+    body.dark-mode .shimmer-stat-title,
+    html.dark-mode .shimmer-stat-number,
+    body.dark-mode .shimmer-stat-number,
+    html.dark-mode .shimmer-stat-label,
+    body.dark-mode .shimmer-stat-label {
+      background: linear-gradient(90deg,#1c2333 25%,#21293d 50%,#1c2333 75%) !important;
+      background-size: 400px 100% !important;
+    }
+    html.dark-mode .shimmer-table-cell,
+    body.dark-mode .shimmer-table-cell {
+      background: linear-gradient(90deg,#1c2333 25%,#21293d 50%,#1c2333 75%) !important;
+      background-size: 1000px 100% !important;
+    }
+    html.dark-mode #analyticsShimmer .modern-table thead,
+    body.dark-mode #analyticsShimmer .modern-table thead {
+      background: #1c2333 !important;
+    }
+    html.dark-mode #analyticsShimmer .modern-table tbody tr,
+    body.dark-mode #analyticsShimmer .modern-table tbody tr {
+      background: #161b22 !important;
+    }
+    html.dark-mode .shimmer-profile-card,
+    body.dark-mode .shimmer-profile-card {
+      background: #161b22 !important;
+      border-color: #30363d !important;
+    }
+    html.dark-mode .shimmer-avatar-circle,
+    body.dark-mode .shimmer-avatar-circle,
+    html.dark-mode .shimmer-profile-name-line,
+    body.dark-mode .shimmer-profile-name-line,
+    html.dark-mode .shimmer-profile-email-line,
+    body.dark-mode .shimmer-profile-email-line,
+    html.dark-mode .shimmer-profile-badge-line,
+    body.dark-mode .shimmer-profile-badge-line {
+      background: linear-gradient(90deg,#1c2333 25%,#21293d 50%,#1c2333 75%) !important;
+      background-size: 800px 100% !important;
+    }
     }
 
     /* ── Mobile ── */
@@ -1041,6 +1087,7 @@
     body.dark-mode .sb-nm-label-dark  { opacity: 1 !important; }
   </style>
   <link rel="stylesheet" href="/admin/dark-theme.css">
+  <script src="/admin/dark-theme.js"></script>
 </head>
 <body>
 
@@ -1099,7 +1146,7 @@
       </div>
       <div class="form-group">
         <label>Password</label>
-        <input type="password" id="authLoginPassword" required placeholder="Enter password">
+        <input type="password" id="authLoginPassword" required placeholder="Enter password" autocomplete="current-password">
       </div>
       <button type="submit" class="btn-submit">Login</button>
       <div class="toggle-form">
@@ -1117,11 +1164,11 @@
       </div>
       <div class="form-group">
         <label>Password</label>
-        <input type="password" id="authSignupPassword" required placeholder="Min 6 characters">
+        <input type="password" id="authSignupPassword" required placeholder="Min 6 characters" autocomplete="new-password">
       </div>
       <div class="form-group">
         <label>Confirm Password</label>
-        <input type="password" id="authSignupConfirm" required placeholder="Re-enter password">
+        <input type="password" id="authSignupConfirm" required placeholder="Re-enter password" autocomplete="new-password">
       </div>
       <button type="submit" class="btn-submit">Sign Up</button>
       <div class="toggle-form">
@@ -1361,7 +1408,7 @@
 <script src="/admin/api-config.js"></script>
 <script src="/admin/auth-guard.js"></script>
 <script src="/admin/toast.js"></script>
-<script src="/admin/auth-modal.js"></script>
+<script src="./auth-modal.js"></script>
 <script>
   const SUPA_URL = 'https://emnrgsgerfjvndexomro.supabase.co';
   const SUPA_SVC = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVtbnJnc2dlcmZqdm5kZXhvbXJvIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3MjQyMDIxMCwiZXhwIjoyMDg3OTk2MjEwfQ.mr4k_GsJ14CC1mqvEZgf9cTaNiLMlnj_sZxFjJud67k';
@@ -2027,7 +2074,6 @@
   });
 </script>
 
- <script src="/admin/dark-theme.js"></script>
  <script src="/admin/super-admin-btn.js"></script>
 </body>
 </html>

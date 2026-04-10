@@ -44,8 +44,3 @@ const API_CONFIG = {
 
 // Make it globally available
 window.API_CONFIG = API_CONFIG;
-
-console.log('API Config loaded:', {
-  isLocal: API_CONFIG.isLocal,
-  baseURL: API_CONFIG.baseURL
-});

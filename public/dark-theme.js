@@ -17,7 +17,7 @@ function applyDarkMode(dark) {
 
 function toggleDarkMode() {
   const stored = localStorage.getItem(DARK_KEY);
-  const isDark = stored === null ? false : stored !== '1';
+  const isDark = stored !== '1';
   localStorage.setItem(DARK_KEY, isDark ? '1' : '0');
   applyDarkMode(isDark);
 }
