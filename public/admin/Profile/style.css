@@ -8525,3 +8525,27 @@ body.dark-mode .success-message {
   background: rgba(16, 185, 129, 0.1) !important;
   color: #86efac !important;
 }
+
+
+/* ── Dark mode flash fix: apply bg instantly via html.dark-mode (set before body renders) ── */
+html.dark-mode,
+html.dark-mode body,
+html.dark-mode .main,
+html.dark-mode .sidebar {
+  background: #0d1117 !important;
+}
+html.dark-mode .sidebar {
+  background: linear-gradient(180deg, #161b22 0%, #0d1117 100%) !important;
+}
+
+/* ── Shimmer dark mode fix: use animatable background-position ── */
+@keyframes shimmer-dark {
+  0%   { background-position: -800px 0; }
+  100% { background-position:  800px 0; }
+}
+body.dark-mode .shimmer-gradient,
+html.dark-mode body .shimmer-gradient {
+  background: linear-gradient(90deg, #1c2333 25%, #21293d 50%, #1c2333 75%) !important;
+  background-size: 800px 100% !important;
+  animation: shimmer-dark 1.6s infinite linear !important;
+}

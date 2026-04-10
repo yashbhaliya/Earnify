@@ -2136,3 +2136,509 @@ body.dark-mode,
 html.dark-mode body .shimmer-features {
   background: #1c2333 !important;
 }
+
+
+/* ══════════════════════════════════════════
+   ADMIN RESOURCES PAGE — Dark Mode
+   ══════════════════════════════════════════ */
+
+/* ── Body & layout ── */
+body.dark-mode,
+html.dark-mode body {
+  background: #0d1117 !important;
+}
+
+body.dark-mode .sidebar,
+html.dark-mode body .sidebar {
+  background: linear-gradient(180deg, #161b22 0%, #0d1117 100%) !important;
+  border-right-color: #30363d !important;
+  box-shadow: 4px 0 30px rgba(0,0,0,0.5) !important;
+}
+
+body.dark-mode .sidebar-header,
+html.dark-mode body .sidebar-header {
+  border-bottom-color: #30363d !important;
+}
+
+body.dark-mode .sidebar-close-btn,
+html.dark-mode body .sidebar-close-btn {
+  color: #8b949e !important;
+}
+
+body.dark-mode .sidebar-close-btn:hover,
+html.dark-mode body .sidebar-close-btn:hover {
+  background: #1c2333 !important;
+  color: #f85149 !important;
+}
+
+body.dark-mode .main,
+html.dark-mode body .main {
+  background: #0d1117 !important;
+}
+
+/* ── Sidebar nav links ── */
+body.dark-mode .sidebar a.nav-link,
+html.dark-mode body .sidebar a.nav-link {
+  color: #8b949e !important;
+}
+
+body.dark-mode .sidebar a.nav-link:not(.active-link):hover,
+html.dark-mode body .sidebar a.nav-link:not(.active-link):hover {
+  background: rgba(124,106,247,0.08) !important;
+  border-left-color: #7c6af7 !important;
+  color: #a78bfa !important;
+}
+
+body.dark-mode .sidebar a.nav-link.active-link,
+html.dark-mode body .sidebar a.nav-link.active-link {
+  background: linear-gradient(90deg, rgba(124,106,247,0.18) 0%, rgba(91,79,207,0.07) 100%) !important;
+  border-left-color: #7c6af7 !important;
+  color: #a78bfa !important;
+}
+
+body.dark-mode .sidebar a.nav-link-divider,
+html.dark-mode body .sidebar a.nav-link-divider {
+  border-top-color: #30363d !important;
+}
+
+/* ── Sidebar user section ── */
+body.dark-mode .sidebar-user,
+html.dark-mode body .sidebar-user {
+  background: #161b22 !important;
+  border-top-color: #30363d !important;
+}
+
+body.dark-mode .sidebar-user .user-info,
+html.dark-mode body .sidebar-user .user-info {
+  border-bottom-color: #30363d !important;
+}
+
+body.dark-mode .sidebar-user .user-name,
+html.dark-mode body .sidebar-user .user-name {
+  color: #e6edf3 !important;
+}
+
+body.dark-mode .sidebar-user .user-email,
+html.dark-mode body .sidebar-user .user-email {
+  color: #8b949e !important;
+}
+
+body.dark-mode .sb-logout,
+html.dark-mode body .sb-logout {
+  background: #161b22 !important;
+  border-color: #f85149 !important;
+  color: #f85149 !important;
+}
+
+body.dark-mode .sb-logout:hover,
+html.dark-mode body .sb-logout:hover {
+  background: rgba(248,81,73,0.12) !important;
+}
+
+/* ── Dark/light toggle wrap ── */
+body.dark-mode .sb-nm-wrap,
+html.dark-mode body .sb-nm-wrap {
+  border-top-color: #30363d !important;
+}
+
+body.dark-mode .sb-nm-wrap-label,
+html.dark-mode body .sb-nm-wrap-label {
+  color: #8b949e !important;
+}
+
+/* ── Section title & counts ── */
+body.dark-mode .section-title h2,
+html.dark-mode body .section-title h2 {
+  color: #e6edf3 !important;
+}
+
+body.dark-mode .resource-count,
+html.dark-mode body .resource-count {
+  background: linear-gradient(135deg, #7c6af7, #5b4fcf) !important;
+}
+
+/* ── View toggle buttons ── */
+body.dark-mode .view-btn,
+html.dark-mode body .view-btn {
+  background: #1c2333 !important;
+  border-color: #30363d !important;
+  color: #8b949e !important;
+}
+
+body.dark-mode .view-btn:hover,
+html.dark-mode body .view-btn:hover {
+  border-color: #7c6af7 !important;
+  color: #a78bfa !important;
+}
+
+/* ── Add buttons ── */
+body.dark-mode .pdf-btn,
+html.dark-mode body .pdf-btn {
+  background: #1c2333 !important;
+  border-color: #f85149 !important;
+  color: #f85149 !important;
+}
+
+body.dark-mode .pdf-btn:hover,
+html.dark-mode body .pdf-btn:hover {
+  background: rgba(248,81,73,0.12) !important;
+}
+
+body.dark-mode .excel-btn,
+html.dark-mode body .excel-btn {
+  background: #1c2333 !important;
+  border-color: #3fb950 !important;
+  color: #3fb950 !important;
+}
+
+body.dark-mode .excel-btn:hover,
+html.dark-mode body .excel-btn:hover {
+  background: rgba(63,185,80,0.12) !important;
+}
+
+body.dark-mode .exam-btn,
+html.dark-mode body .exam-btn {
+  background: #1c2333 !important;
+  border-color: #f0883e !important;
+  color: #f0883e !important;
+}
+
+body.dark-mode .exam-btn:hover,
+html.dark-mode body .exam-btn:hover {
+  background: rgba(240,136,62,0.12) !important;
+}
+
+body.dark-mode .freelance-btn,
+html.dark-mode body .freelance-btn {
+  background: #1c2333 !important;
+  border-color: #a78bfa !important;
+  color: #a78bfa !important;
+}
+
+body.dark-mode .freelance-btn:hover,
+html.dark-mode body .freelance-btn:hover {
+  background: rgba(167,139,250,0.12) !important;
+}
+
+/* ── Custom select dropdown ── */
+body.dark-mode .custom-select,
+html.dark-mode body .custom-select {
+  background: #1c2333 !important;
+  border-color: #30363d !important;
+}
+
+body.dark-mode .custom-select span,
+html.dark-mode body .custom-select span {
+  color: #e6edf3 !important;
+}
+
+body.dark-mode .custom-select .arrow,
+html.dark-mode body .custom-select .arrow {
+  color: #484f58 !important;
+}
+
+body.dark-mode .custom-select:hover,
+html.dark-mode body .custom-select:hover {
+  border-color: #7c6af7 !important;
+  background: #21293d !important;
+}
+
+body.dark-mode .dropdown,
+html.dark-mode body .dropdown {
+  background: #161b22 !important;
+  border-color: #30363d !important;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5) !important;
+}
+
+body.dark-mode .dropdown div,
+html.dark-mode body .dropdown div {
+  color: #c9d1d9 !important;
+}
+
+body.dark-mode .dropdown div:hover,
+html.dark-mode body .dropdown div:hover {
+  background: rgba(124,106,247,0.1) !important;
+  color: #a78bfa !important;
+}
+
+/* ── Resource rows ── */
+body.dark-mode .row,
+html.dark-mode body .row {
+  background: #161b22 !important;
+  border-color: #30363d !important;
+  box-shadow: none !important;
+}
+
+body.dark-mode .row:hover,
+html.dark-mode body .row:hover {
+  background: #1c2333 !important;
+  box-shadow: 0 4px 16px rgba(124,106,247,0.12) !important;
+}
+
+body.dark-mode .table-title h4,
+html.dark-mode body .table-title h4 {
+  color: #e6edf3 !important;
+}
+
+body.dark-mode .table-title p,
+html.dark-mode body .table-title p {
+  color: #8b949e !important;
+}
+
+body.dark-mode .table-title .icon img,
+html.dark-mode body .table-title .icon img {
+  border-color: #30363d !important;
+}
+
+body.dark-mode .row .price,
+html.dark-mode body .row .price {
+  color: #a78bfa !important;
+}
+
+body.dark-mode .btn-view,
+html.dark-mode body .btn-view {
+  background: #1c2333 !important;
+  border-color: #388bfd !important;
+  color: #388bfd !important;
+}
+
+body.dark-mode .btn-edit,
+html.dark-mode body .btn-edit {
+  background: #1c2333 !important;
+  border-color: #f0883e !important;
+  color: #f0883e !important;
+}
+
+body.dark-mode .btn-delete,
+html.dark-mode body .btn-delete {
+  background: #1c2333 !important;
+  border-color: #f85149 !important;
+  color: #f85149 !important;
+}
+
+body.dark-mode .btn-view:hover,
+html.dark-mode body .btn-view:hover {
+  background: #388bfd !important;
+  color: #fff !important;
+}
+
+body.dark-mode .btn-edit:hover,
+html.dark-mode body .btn-edit:hover {
+  background: #f0883e !important;
+  color: #fff !important;
+}
+
+body.dark-mode .btn-delete:hover,
+html.dark-mode body .btn-delete:hover {
+  background: #f85149 !important;
+  color: #fff !important;
+}
+
+/* ── Empty state ── */
+body.dark-mode .empty-state h3,
+html.dark-mode body .empty-state h3 {
+  color: #e6edf3 !important;
+}
+
+body.dark-mode .empty-state p,
+html.dark-mode body .empty-state p {
+  color: #8b949e !important;
+}
+
+body.dark-mode .empty-icon,
+html.dark-mode body .empty-icon {
+  background: linear-gradient(135deg, #1c2333, #161b22) !important;
+}
+
+/* ── Modals ── */
+body.dark-mode .modal-content,
+html.dark-mode body .modal-content {
+  background: #161b22 !important;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.6) !important;
+}
+
+body.dark-mode .modal-content .close,
+html.dark-mode body .modal-content .close {
+  background: #1c2333 !important;
+  color: #8b949e !important;
+}
+
+body.dark-mode .modal-content .close:hover,
+html.dark-mode body .modal-content .close:hover {
+  background: rgba(248,81,73,0.15) !important;
+  color: #f85149 !important;
+}
+
+body.dark-mode #resourceForm input,
+body.dark-mode #resourceForm textarea,
+body.dark-mode #editForm input,
+body.dark-mode #editForm textarea,
+html.dark-mode body #resourceForm input,
+html.dark-mode body #resourceForm textarea,
+html.dark-mode body #editForm input,
+html.dark-mode body #editForm textarea {
+  background: #1c2333 !important;
+  border-color: #30363d !important;
+  color: #e6edf3 !important;
+}
+
+body.dark-mode #resourceForm input::placeholder,
+body.dark-mode #resourceForm textarea::placeholder,
+body.dark-mode #editForm input::placeholder,
+body.dark-mode #editForm textarea::placeholder,
+html.dark-mode body #resourceForm input::placeholder,
+html.dark-mode body #resourceForm textarea::placeholder,
+html.dark-mode body #editForm input::placeholder,
+html.dark-mode body #editForm textarea::placeholder {
+  color: #484f58 !important;
+}
+
+body.dark-mode #resourceForm input:focus,
+body.dark-mode #resourceForm textarea:focus,
+body.dark-mode #editForm input:focus,
+body.dark-mode #editForm textarea:focus,
+html.dark-mode body #resourceForm input:focus,
+html.dark-mode body #resourceForm textarea:focus,
+html.dark-mode body #editForm input:focus,
+html.dark-mode body #editForm textarea:focus {
+  border-color: #7c6af7 !important;
+  background: #21293d !important;
+  box-shadow: 0 0 0 4px rgba(124,106,247,0.15) !important;
+}
+
+body.dark-mode .last-file-info,
+html.dark-mode body .last-file-info {
+  background: #1c2333 !important;
+  border-color: #30363d !important;
+  color: #8b949e !important;
+}
+
+body.dark-mode #viewContent p,
+html.dark-mode body #viewContent p {
+  border-bottom-color: #30363d !important;
+  color: #8b949e !important;
+}
+
+body.dark-mode #viewContent strong,
+html.dark-mode body #viewContent strong {
+  color: #e6edf3 !important;
+}
+
+/* ── Auth modal ── */
+body.dark-mode .auth-modal-content,
+html.dark-mode body .auth-modal-content {
+  background: #161b22 !important;
+}
+
+body.dark-mode .auth-modal-content .close,
+html.dark-mode body .auth-modal-content .close {
+  color: #8b949e !important;
+}
+
+body.dark-mode .auth-modal-content p,
+html.dark-mode body .auth-modal-content p {
+  color: #8b949e !important;
+}
+
+body.dark-mode .form-group label,
+html.dark-mode body .form-group label {
+  color: #c9d1d9 !important;
+}
+
+body.dark-mode .form-group input,
+body.dark-mode .form-group textarea,
+html.dark-mode body .form-group input,
+html.dark-mode body .form-group textarea {
+  background: #1c2333 !important;
+  border-color: #30363d !important;
+  color: #e6edf3 !important;
+}
+
+body.dark-mode .form-group input:focus,
+body.dark-mode .form-group textarea:focus,
+html.dark-mode body .form-group input:focus,
+html.dark-mode body .form-group textarea:focus {
+  border-color: #7c6af7 !important;
+  background: #21293d !important;
+  box-shadow: 0 0 0 4px rgba(124,106,247,0.15) !important;
+}
+
+body.dark-mode .toggle-form,
+html.dark-mode body .toggle-form {
+  color: #8b949e !important;
+}
+
+/* ── Delete confirm modal ── */
+body.dark-mode #deleteModal > div,
+html.dark-mode body #deleteModal > div {
+  background: #161b22 !important;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.6) !important;
+}
+
+body.dark-mode #deleteModal h3,
+html.dark-mode body #deleteModal h3 {
+  color: #e6edf3 !important;
+}
+
+body.dark-mode #deleteModal p,
+html.dark-mode body #deleteModal p {
+  color: #8b949e !important;
+}
+
+body.dark-mode #deleteModal button:first-child,
+html.dark-mode body #deleteModal button:first-child {
+  background: #1c2333 !important;
+  border-color: #30363d !important;
+  color: #8b949e !important;
+}
+
+/* ── Skeleton shimmer — dark mode ── */
+body.dark-mode .sk-row-icon,
+body.dark-mode .sk-row-title,
+body.dark-mode .sk-row-desc,
+body.dark-mode .sk-row-price,
+body.dark-mode .sk-row-btn,
+html.dark-mode body .sk-row-icon,
+html.dark-mode body .sk-row-title,
+html.dark-mode body .sk-row-desc,
+html.dark-mode body .sk-row-price,
+html.dark-mode body .sk-row-btn {
+  background: linear-gradient(90deg, #1c2333 25%, #21293d 50%, #1c2333 75%) !important;
+  background-size: 400px 100% !important;
+  animation: sk-dark-shimmer 1.4s infinite linear !important;
+}
+
+body.dark-mode .custom-select-skeleton,
+html.dark-mode body .custom-select-skeleton {
+  background: #1c2333 !important;
+  border-color: #30363d !important;
+}
+
+body.dark-mode .custom-select-skeleton .sk-icon,
+body.dark-mode .custom-select-skeleton .sk-text,
+body.dark-mode .custom-select-skeleton .sk-arrow,
+html.dark-mode body .custom-select-skeleton .sk-icon,
+html.dark-mode body .custom-select-skeleton .sk-text,
+html.dark-mode body .custom-select-skeleton .sk-arrow {
+  background: linear-gradient(90deg, #1c2333 25%, #21293d 50%, #1c2333 75%) !important;
+  background-size: 400px 100% !important;
+  animation: sk-dark-shimmer 1.4s infinite linear !important;
+}
+
+body.dark-mode .skeleton-line,
+html.dark-mode body .skeleton-line {
+  background: linear-gradient(90deg, #1c2333 25%, #21293d 50%, #1c2333 75%) !important;
+  background-size: 400px 100% !important;
+  animation: sk-dark-shimmer 1.4s infinite linear !important;
+}
+
+@keyframes sk-dark-shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position:  400px 0; }
+}
+
+/* ── Purchased resources section ── */
+body.dark-mode .purchased-heading,
+html.dark-mode body .purchased-heading {
+  color: #e6edf3 !important;
+}

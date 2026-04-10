@@ -1,8 +1,9 @@
+(function () {
 const DARK_KEY = 'earnify_dark_mode';
 
 function applyDarkMode(dark) {
   document.documentElement.classList.toggle('dark-mode', dark);
-  document.body.classList.toggle('dark-mode', dark);
+  if (document.body) document.body.classList.toggle('dark-mode', dark);
   // update legacy toggle btn if still present
   document.querySelectorAll('.theme-toggle-btn').forEach(btn => {
     btn.textContent = dark ? '☀️' : '🌙';
@@ -15,12 +16,12 @@ function applyDarkMode(dark) {
   if (mobileKnob) mobileKnob.textContent = dark ? '☀️' : '🌙';
 }
 
-function toggleDarkMode() {
+window.toggleDarkMode = function () {
   const stored = localStorage.getItem(DARK_KEY);
   const isDark = stored !== '1';
   localStorage.setItem(DARK_KEY, isDark ? '1' : '0');
   applyDarkMode(isDark);
-}
+};
 
 // Apply immediately on script load
 (function () {
@@ -33,3 +34,4 @@ document.addEventListener('DOMContentLoaded', function () {
   const stored = localStorage.getItem(DARK_KEY);
   applyDarkMode(stored === '1');
 });
+})();

@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <script></script>
+  <script>!function(){var s=localStorage.getItem('earnify_dark_mode');if(s===null||s==='1'){document.documentElement.classList.add('dark-mode');document.documentElement.style.background='#0d1117';}}();</script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Statistics - Earnify Admin</title>
@@ -413,13 +413,8 @@
     }
 
     @keyframes shimmer-slide {
-      0% {
-        background-position: 100% 0;
-      }
-
-      100% {
-        background-position: -100% 0;
-      }
+      0% { background-position: 100% 0; }
+      100% { background-position: -100% 0; }
     }
 
     .shimmer-value {
@@ -444,10 +439,7 @@
     }
 
     /* Table shimmer */
-    .table-shimmer-row {
-      background: white;
-    }
-
+    .table-shimmer-row { background: white; }
     .table-shimmer-row td {
       padding: 14px 18px !important;
       background: white;
@@ -463,45 +455,27 @@
       display: block;
     }
 
-    .table-shimmer-cell.w-30 {
-      width: 30px;
-    }
-
-    .table-shimmer-cell.w-120 {
-      width: 120px;
-    }
-
-    .table-shimmer-cell.w-80 {
-      width: 80px;
-    }
-
-    .table-shimmer-cell.w-60 {
-      width: 60px;
-    }
+    .table-shimmer-cell.w-30  { width: 30px; }
+    .table-shimmer-cell.w-120 { width: 120px; }
+    .table-shimmer-cell.w-80  { width: 80px; }
+    .table-shimmer-cell.w-60  { width: 60px; }
 
     /* Table header shimmer */
-    thead.is-loading {
-      background: linear-gradient(135deg, #667eea, #764ba2) !important;
-    }
-
+    thead.is-loading { background: linear-gradient(135deg, #667eea, #764ba2) !important; }
     thead.is-loading th {
       color: transparent !important;
       position: relative;
       overflow: hidden;
     }
-
     thead.is-loading th::before {
       content: '';
       position: absolute;
-      top: 50%;
-      left: 50%;
+      top: 50%; left: 50%;
       transform: translate(-50%, -50%);
-      width: 80%;
-      height: 12px;
-      background: rgba(255, 255, 255, 0.3);
+      width: 80%; height: 12px;
       border-radius: 4px;
       animation: shimmer-slide 1.4s infinite linear;
-      background: linear-gradient(90deg, rgba(255, 255, 255, 0.2) 25%, rgba(255, 255, 255, 0.4) 50%, rgba(255, 255, 255, 0.2) 75%);
+      background: linear-gradient(90deg, rgba(255,255,255,0.2) 25%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0.2) 75%);
       background-size: 400% 100%;
     }
 
@@ -1056,7 +1030,7 @@
       border-left-color: #7c6af7 !important;
       color: #a78bfa !important;
     }
-    body.dark-mode .sidebar-footer { border-top-color: #30363d !important; }
+    body.dark-mode .sidebar-footer { border-top-color: #30363d !important; background: transparent !important; }
     body.dark-mode .admin-badge { background: rgba(124,106,247,0.1) !important; }
     body.dark-mode .admin-name { color: #e6edf3 !important; }
     body.dark-mode .admin-role { color: #484f58 !important; }
@@ -1076,23 +1050,24 @@
     body.dark-mode .stat-sub   { color: #8b949e !important; }
     body.dark-mode .stat-card:hover .stat-value { color: #a78bfa !important; }
 
-    /* shimmer dark */
+    /* shimmer dark — single source of truth, html.dark-mode fires before body gets class */
+    html.dark-mode .shimmer,
     body.dark-mode .shimmer {
       background: linear-gradient(90deg,#1c2333 25%,#21293d 50%,#1c2333 75%) !important;
       background-size: 400% 100% !important;
+      animation: shimmer-slide 1.4s infinite linear !important;
     }
+    html.dark-mode .stat-card.is-shimmer .stat-icon,
     body.dark-mode .stat-card.is-shimmer .stat-icon {
       background: linear-gradient(90deg,#1c2333 25%,#21293d 50%,#1c2333 75%) !important;
       background-size: 400% 100% !important;
-    }
-    body.dark-mode .table-shimmer-cell {
-      background: linear-gradient(90deg,#1c2333 25%,#21293d 50%,#1c2333 75%) !important;
-      background-size: 400% 100% !important;
+      animation: shimmer-slide 1.4s infinite linear !important;
     }
     body.dark-mode .table-shimmer-row td { background: #161b22 !important; border-bottom-color: #21293d !important; }
 
     /* table card */
     body.dark-mode .table-card { background: #161b22 !important; border-color: #30363d !important; }
+    body.dark-mode .table-card > div { background: #161b22 !important; }
     body.dark-mode .table-header { border-bottom-color: #30363d !important; }
     body.dark-mode .table-header h3 { color: #e6edf3 !important; }
     body.dark-mode .record-count { color: #484f58 !important; }
@@ -1153,17 +1128,64 @@
     body.dark-mode .detail-value.amount { color: #a78bfa !important; }
     body.dark-mode .detail-value[style*="color:#64748b"] { color: #484f58 !important; }
 
-    /* smooth transitions */
-    body.dark-mode, body.dark-mode * {
-      transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease !important;
+    /* refresh btn dark */
+    body.dark-mode .refresh-btn {
+      background: rgba(255,255,255,0.12) !important;
+      border-color: rgba(255,255,255,0.25) !important;
     }
-  .sb-nm-wrap{display:flex;align-items:center;justify-content:space-between;padding:14px 20px 10px 28px;border-top:1px solid #e2e8f0;margin-top:6px;transition:border-color .3s;}.sb-nm-wrap-label{font-size:12px;font-weight:700;color:#64748b;letter-spacing:.5px;text-transform:uppercase;}.sb-nm-toggle{position:relative;width:82px;height:34px;border-radius:50px;border:none;cursor:pointer;padding:0;flex-shrink:0;font-family:inherit;background:#f0f2f5;box-shadow:5px 5px 10px #c8cdd6,-5px -5px 10px #ffffff;transition:background .4s,box-shadow .4s;outline:none;}.sb-nm-toggle:focus-visible{box-shadow:0 0 0 3px rgba(102,126,234,.35);}.sb-nm-knob{position:absolute;top:5px;left:5px;width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#ffffff,#e8ecf0);box-shadow:2px 2px 6px #b0b8c4,-1px -1px 4px #ffffff;pointer-events:none;transition:left .4s cubic-bezier(.4,0,.2,1),background .4s,box-shadow .4s;z-index:2;}.sb-nm-label{position:absolute;top:50%;transform:translateY(-50%);font-size:9px;font-weight:800;letter-spacing:.7px;text-transform:uppercase;pointer-events:none;z-index:1;transition:opacity .3s;white-space:nowrap;}.sb-nm-label-light{right:10px;color:#94a3b8;opacity:1;}.sb-nm-label-dark{left:10px;color:#a78bfa;opacity:0;}body.dark-mode .sb-nm-wrap{border-top-color:#30363d;}body.dark-mode .sb-nm-wrap-label{color:#8b949e;}body.dark-mode .sb-nm-toggle{background:#1a2030;box-shadow:5px 5px 10px #0a0e17,-4px -4px 9px #263040;}body.dark-mode .sb-nm-knob{left:53px;background:linear-gradient(135deg,#3a4a5c,#2d3748);box-shadow:2px 2px 6px #0a0e17,-1px -1px 4px #3a4a5c;}body.dark-mode .sb-nm-label-light{opacity:0;}body.dark-mode .sb-nm-label-dark{opacity:1;}html.dark-mode,html.dark-mode body{background:#0d1117 !important;}html.dark-mode .sidebar{background:#161b22 !important;}</style>
-  <script>
-    (function(){
-      const s = localStorage.getItem('earnify_dark_mode');
-      if(s === null || s === '1') document.documentElement.style.background = '#0d1117';
-    })();
-  </script>
+    body.dark-mode .refresh-btn:hover { background: rgba(255,255,255,0.2) !important; }
+
+    /* back link dark */
+    body.dark-mode .nav-link[href*="Resources"] {
+      border-top-color: #30363d !important;
+      color: #a78bfa !important;
+    }
+
+    .back-link { color: #667eea; }
+    body.dark-mode .back-link {
+      border-top-color: #30363d !important;
+      color: #a78bfa !important;
+    }
+
+    /* smooth transitions — exclude shimmer/animation elements */
+    body.dark-mode .sidebar,
+    body.dark-mode .main,
+    body.dark-mode .stat-card,
+    body.dark-mode .table-card,
+    body.dark-mode .search-box,
+    body.dark-mode .filter-btn,
+    body.dark-mode .logout-btn,
+    body.dark-mode .modal-content,
+    body.dark-mode .nav-link,
+    body.dark-mode td,
+    body.dark-mode .admin-badge,
+    body.dark-mode .stat-value,
+    body.dark-mode .stat-label,
+    body.dark-mode .stat-sub,
+    body.dark-mode .table-header,
+    body.dark-mode .record-count {
+      transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+    }
+
+    /* ── Neumorphic Dark Mode Toggle ── */
+    .sb-nm-wrap{display:flex;align-items:center;justify-content:space-between;padding:14px 20px 10px 28px;border-top:1px solid #e2e8f0;margin-top:6px;}
+    .sb-nm-toggle{position:relative;width:82px;height:34px;border-radius:50px;border:none;cursor:pointer;padding:0;flex-shrink:0;font-family:inherit;background:#f0f2f5;box-shadow:5px 5px 10px #c8cdd6,-5px -5px 10px #ffffff;transition:background .4s,box-shadow .4s;outline:none;}
+    .sb-nm-knob{position:absolute;top:5px;left:5px;width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#ffffff,#e8ecf0);box-shadow:2px 2px 6px #b0b8c4,-1px -1px 4px #ffffff;pointer-events:none;transition:left .4s cubic-bezier(.4,0,.2,1),background .4s,box-shadow .4s;z-index:2;}
+    .sb-nm-label{position:absolute;top:50%;transform:translateY(-50%);font-size:9px;font-weight:800;letter-spacing:.7px;text-transform:uppercase;pointer-events:none;z-index:1;transition:opacity .3s;white-space:nowrap;}
+    .sb-nm-label-light{right:10px;color:#94a3b8;opacity:1;}
+    .sb-nm-label-dark{left:10px;color:#a78bfa;opacity:0;}
+    body.dark-mode .sb-nm-wrap,
+    html.dark-mode .sb-nm-wrap { border-top-color:#30363d !important; }
+    body.dark-mode .sb-nm-toggle,
+    html.dark-mode .sb-nm-toggle { background:#1a2030 !important; box-shadow:5px 5px 10px #0a0e17,-4px -4px 9px #263040 !important; }
+    body.dark-mode .sb-nm-knob,
+    html.dark-mode .sb-nm-knob { left:53px !important; background:linear-gradient(135deg,#3a4a5c,#2d3748) !important; box-shadow:2px 2px 6px #0a0e17,-1px -1px 4px #3a4a5c !important; }
+    body.dark-mode .sb-nm-label-light,
+    html.dark-mode .sb-nm-label-light { opacity:0 !important; }
+    body.dark-mode .sb-nm-label-dark,
+    html.dark-mode .sb-nm-label-dark { opacity:1 !important; }
+  </style>
+
   <link rel="stylesheet" href="/dark-theme.css">
 </head>
 
@@ -1192,17 +1214,18 @@
     <a href="/earnify-admin/Blog/" class="nav-link">
       <span class="nav-icon">✍️</span> Blog
     </a>
-    <a href="/admin/Resources/" class="nav-link"
-      style="border-top:1px solid #e2e8f0; padding-top:10px; margin-top:10px;  color:#667eea;font-weight:600">
+     <div class="sb-nm-wrap">
+      <button class="sb-nm-toggle" id="sbNmToggle" onclick="toggleDarkMode()" title="Toggle dark/light mode">
+        <span class="sb-nm-knob" id="sbNmKnob"></span>
+        <span class="sb-nm-label sb-nm-label-light">LIGHT</span>
+        <span class="sb-nm-label sb-nm-label-dark">DARK</span>
+      </button>
+    </div>
+    <a href="https://earnify-gamma.vercel.app/admin/Resources/" class="nav-link back-link"
+      style="border-top:1px solid #e2e8f0; padding-top:10px; margin-top:10px; font-weight:600">
       <span class="nav-icon">←</span> Back
     </a>
-    <div class="sb-nm-wrap">
-    <button class="sb-nm-toggle" id="sbNmToggle" onclick="toggleDarkMode()" title="Toggle dark/light mode">
-      <span class="sb-nm-knob" id="sbNmKnob"></span>
-      <span class="sb-nm-label sb-nm-label-light">LIGHT</span>
-      <span class="sb-nm-label sb-nm-label-dark">DARK</span>
-    </button>
-  </div>
+
     <div class="sidebar-footer">
       <div class="admin-badge">
         <div class="admin-avatar" id="adminAvatar">A</div>
@@ -1230,7 +1253,7 @@
         </div>
       </div>
       <div class="header-meta">
-       
+        <button class="dark-toggle" id="darkToggleBtn" onclick="toggleDarkMode()" title="Toggle dark mode">🌙</button>
         <button class="refresh-btn" onclick="loadStats()">🔄 Refresh</button>
       </div>
     </div>
@@ -1239,7 +1262,7 @@
     <div class="stat-grid">
 
       <!-- 1. Total Revenue -->
-      <div class="stat-card">
+      <div class="stat-card is-shimmer">
         <div class="stat-icon">💰</div>
         <div class="stat-body">
           <div class="stat-label">Total Revenue</div>
@@ -1253,7 +1276,7 @@
       </div>
 
       <!-- 2. Total Purchases -->
-      <div class="stat-card">
+      <div class="stat-card is-shimmer">
         <div class="stat-icon">🛒</div>
         <div class="stat-body">
           <div class="stat-label">Total Purchases</div>
@@ -1267,7 +1290,7 @@
       </div>
 
       <!-- 3. Avg Order Value -->
-      <div class="stat-card">
+      <div class="stat-card is-shimmer">
         <div class="stat-icon">📊</div>
         <div class="stat-body">
           <div class="stat-label">Avg Order Value</div>
@@ -1281,7 +1304,7 @@
       </div>
 
       <!-- 4. Unique Buyers -->
-      <div class="stat-card">
+      <div class="stat-card is-shimmer">
         <div class="stat-icon">👥</div>
         <div class="stat-body">
           <div class="stat-label">Unique Buyers</div>
@@ -1354,7 +1377,6 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="statistic.js"></script>
   <script>
     const DARK_KEY = 'earnify_dark_mode';
     function applyDark(dark) {
@@ -1372,6 +1394,7 @@
       applyDark(saved === null ? true : saved === '1');
     })();
   </script>
+  <script src="statistic.js?v=4"></script>
   <script src="/dark-theme.js"></script>
 </body>
 

@@ -413,13 +413,8 @@
     }
 
     @keyframes shimmer-slide {
-      0% {
-        background-position: 100% 0;
-      }
-
-      100% {
-        background-position: -100% 0;
-      }
+      0% { background-position: 100% 0; }
+      100% { background-position: -100% 0; }
     }
 
     .shimmer-value {
@@ -444,10 +439,7 @@
     }
 
     /* Table shimmer */
-    .table-shimmer-row {
-      background: white;
-    }
-
+    .table-shimmer-row { background: white; }
     .table-shimmer-row td {
       padding: 14px 18px !important;
       background: white;
@@ -463,45 +455,27 @@
       display: block;
     }
 
-    .table-shimmer-cell.w-30 {
-      width: 30px;
-    }
-
-    .table-shimmer-cell.w-120 {
-      width: 120px;
-    }
-
-    .table-shimmer-cell.w-80 {
-      width: 80px;
-    }
-
-    .table-shimmer-cell.w-60 {
-      width: 60px;
-    }
+    .table-shimmer-cell.w-30  { width: 30px; }
+    .table-shimmer-cell.w-120 { width: 120px; }
+    .table-shimmer-cell.w-80  { width: 80px; }
+    .table-shimmer-cell.w-60  { width: 60px; }
 
     /* Table header shimmer */
-    thead.is-loading {
-      background: linear-gradient(135deg, #667eea, #764ba2) !important;
-    }
-
+    thead.is-loading { background: linear-gradient(135deg, #667eea, #764ba2) !important; }
     thead.is-loading th {
       color: transparent !important;
       position: relative;
       overflow: hidden;
     }
-
     thead.is-loading th::before {
       content: '';
       position: absolute;
-      top: 50%;
-      left: 50%;
+      top: 50%; left: 50%;
       transform: translate(-50%, -50%);
-      width: 80%;
-      height: 12px;
-      background: rgba(255, 255, 255, 0.3);
+      width: 80%; height: 12px;
       border-radius: 4px;
       animation: shimmer-slide 1.4s infinite linear;
-      background: linear-gradient(90deg, rgba(255, 255, 255, 0.2) 25%, rgba(255, 255, 255, 0.4) 50%, rgba(255, 255, 255, 0.2) 75%);
+      background: linear-gradient(90deg, rgba(255,255,255,0.2) 25%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0.2) 75%);
       background-size: 400% 100%;
     }
 
@@ -1084,12 +1058,27 @@
     body.dark-mode .stat-card.is-shimmer .stat-icon {
       background: linear-gradient(90deg,#1c2333 25%,#21293d 50%,#1c2333 75%) !important;
       background-size: 400% 100% !important;
+      animation: shimmer-slide 1.4s infinite linear !important;
     }
     body.dark-mode .table-shimmer-cell {
       background: linear-gradient(90deg,#1c2333 25%,#21293d 50%,#1c2333 75%) !important;
       background-size: 400% 100% !important;
     }
     body.dark-mode .table-shimmer-row td { background: #161b22 !important; border-bottom-color: #21293d !important; }
+
+    /* shimmer dark — html.dark-mode covers pre-body-class flash */
+    body.dark-mode .shimmer,
+    html.dark-mode .shimmer {
+      background: linear-gradient(90deg,#1c2333 25%,#21293d 50%,#1c2333 75%) !important;
+      background-size: 400% 100% !important;
+      animation: shimmer-slide 1.4s infinite linear !important;
+    }
+    body.dark-mode .stat-card.is-shimmer .stat-icon,
+    html.dark-mode .stat-card.is-shimmer .stat-icon {
+      background: linear-gradient(90deg,#1c2333 25%,#21293d 50%,#1c2333 75%) !important;
+      background-size: 400% 100% !important;
+      animation: shimmer-slide 1.4s infinite linear !important;
+    }
 
     /* table card */
     body.dark-mode .table-card { background: #161b22 !important; border-color: #30363d !important; }
@@ -1153,9 +1142,43 @@
     body.dark-mode .detail-value.amount { color: #a78bfa !important; }
     body.dark-mode .detail-value[style*="color:#64748b"] { color: #484f58 !important; }
 
-    /* smooth transitions */
-    body.dark-mode, body.dark-mode * {
-      transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease !important;
+    /* refresh btn dark */
+    body.dark-mode .refresh-btn {
+      background: rgba(255,255,255,0.12) !important;
+      border-color: rgba(255,255,255,0.25) !important;
+    }
+    body.dark-mode .refresh-btn:hover { background: rgba(255,255,255,0.2) !important; }
+
+    /* back link dark */
+    body.dark-mode .nav-link[href*="Resources"] {
+      border-top-color: #30363d !important;
+      color: #a78bfa !important;
+    }
+
+    .back-link { color: #667eea; }
+    body.dark-mode .back-link {
+      border-top-color: #30363d !important;
+      color: #a78bfa !important;
+    }
+
+    /* smooth transitions — exclude shimmer/animation elements */
+    body.dark-mode .sidebar,
+    body.dark-mode .main,
+    body.dark-mode .stat-card,
+    body.dark-mode .table-card,
+    body.dark-mode .search-box,
+    body.dark-mode .filter-btn,
+    body.dark-mode .logout-btn,
+    body.dark-mode .modal-content,
+    body.dark-mode .nav-link,
+    body.dark-mode td,
+    body.dark-mode .admin-badge,
+    body.dark-mode .stat-value,
+    body.dark-mode .stat-label,
+    body.dark-mode .stat-sub,
+    body.dark-mode .table-header,
+    body.dark-mode .record-count {
+      transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
     }
 
     /* ── Neumorphic Dark Mode Toggle ── */
@@ -1173,8 +1196,12 @@
   </style>
   <script>
     (function(){
-      const s = localStorage.getItem('earnify_dark_mode');
-      if(s === null || s === '1') document.documentElement.style.background = '#0d1117';
+      var s = localStorage.getItem('earnify_dark_mode');
+      var dark = (s === null || s === '1');
+      if (dark) {
+        document.documentElement.style.background = '#0d1117';
+        document.documentElement.classList.add('dark-mode');
+      }
     })();
   </script>
   <link rel="stylesheet" href="/dark-theme.css">
@@ -1212,8 +1239,8 @@
         <span class="sb-nm-label sb-nm-label-dark">DARK</span>
       </button>
     </div>
-    <a href="https://earnify-gamma.vercel.app/admin/Resources/" class="nav-link"
-      style="border-top:1px solid #e2e8f0; padding-top:10px; margin-top:10px;  color:#667eea;font-weight:600">
+    <a href="https://earnify-gamma.vercel.app/admin/Resources/" class="nav-link back-link"
+      style="border-top:1px solid #e2e8f0; padding-top:10px; margin-top:10px; font-weight:600">
       <span class="nav-icon">←</span> Back
     </a>
 
@@ -1368,7 +1395,6 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="statistic.js"></script>
   <script>
     const DARK_KEY = 'earnify_dark_mode';
     function applyDark(dark) {
@@ -1386,6 +1412,7 @@
       applyDark(saved === null ? true : saved === '1');
     })();
   </script>
+  <script src="statistic.js?v=3"></script>
   <script src="/dark-theme.js"></script>
 </body>
 

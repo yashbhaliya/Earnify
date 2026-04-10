@@ -270,6 +270,19 @@ body.sidebar-open {
 /* ══════════════════════════════════════════
    WITHDRAWAL — DARK MODE OVERRIDES
    ══════════════════════════════════════════ */
+
+/* Flash fix: html.dark-mode is set before body renders */
+html.dark-mode,
+html.dark-mode body {
+  background: #0d1117 !important;
+}
+html.dark-mode .sidebar {
+  background: linear-gradient(180deg, #161b22 0%, #0d1117 100%) !important;
+}
+html.dark-mode .main {
+  background: #0d1117 !important;
+}
+
 body.dark-mode {
   background: #0d1117 !important;
   color: #e6edf3 !important;
@@ -485,9 +498,11 @@ body.dark-mode #confirmDetails {
   border-color: #30363d !important;
 }
 
-body.dark-mode .shimmer-dark {
+body.dark-mode .shimmer-dark,
+html.dark-mode body .shimmer-dark {
   background: linear-gradient(90deg, #1c2333 25%, #21293d 50%, #1c2333 75%) !important;
-  background-size: 400px 100% !important;
+  background-size: 600px 100% !important;
+  animation: shimmerSlide 1.4s infinite linear !important;
 }
 
 body.dark-mode .empty-state {
@@ -503,6 +518,9 @@ body.dark-mode .empty-state p {
   color: #8b949e !important;
 }
 
-body.dark-mode .historyShimmer .shimmer-dark {
+body.dark-mode .historyShimmer .shimmer-dark,
+html.dark-mode body .historyShimmer .shimmer-dark {
   background: linear-gradient(90deg, #1c2333 25%, #21293d 50%, #1c2333 75%) !important;
+  background-size: 600px 100% !important;
+  animation: shimmerSlide 1.4s infinite linear !important;
 }

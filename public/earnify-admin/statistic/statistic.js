@@ -5,27 +5,26 @@ console.log('[Statistics] API_BASE =>', API_BASE);
 
 async function apiFetch(path) {
   const url = API_BASE + path;
-  console.log('[apiFetch] GET', url);
   const res = await fetch(url);
-  console.log('[apiFetch] status', res.status, path);
   if (!res.ok) throw new Error(`HTTP ${res.status} - ${path}`);
-  const data = await res.json();
-  console.log('[apiFetch] data', path, data);
-  return data;
+  return res.json();
 }
 
-(async function() {
+function setAdminInfo(email) {
+  const elEmail  = document.getElementById('adminEmail');
+  const elAvatar = document.getElementById('adminAvatar');
+  if (elEmail)  elEmail.textContent  = email;
+  if (elAvatar) elAvatar.textContent = email.charAt(0).toUpperCase();
+}
+
+(async function initAdmin() {
   try {
     const SUPA_URL = 'https://emnrgsgerfjvndexomro.supabase.co';
     const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVtbnJnc2dlcmZqdm5kZXhvbXJvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI0MjAyMTAsImV4cCI6MjA4Nzk5NjIxMH0.uXr8lipxLbB4D_5JwQkpLzc-HudQw23tOFBfV4C6hqY';
     if (typeof window.supabase !== 'undefined') {
       const _supa = window.supabase.createClient(SUPA_URL, SUPA_KEY);
       const { data: { user } } = await _supa.auth.getUser();
-      if (user?.email) {
-        document.getElementById('adminEmail').textContent = user.email;
-        document.getElementById('adminAvatar').textContent = user.email.charAt(0).toUpperCase();
-        return;
-      }
+      if (user?.email) { setAdminInfo(user.email); return; }
     }
   } catch(e) { console.warn('[Statistics] Supabase auth failed =>', e.message); }
 
@@ -33,24 +32,17 @@ async function apiFetch(path) {
   if (token) {
     try {
       const payload = JSON.parse(atob(token.split('.')[1]));
-      const email = payload.email || 'admin@earnify.com';
-      document.getElementById('adminEmail').textContent = email;
-      document.getElementById('adminAvatar').textContent = email.charAt(0).toUpperCase();
+      setAdminInfo(payload.email || 'admin@earnify.com');
       return;
     } catch(e) { console.warn('[Statistics] token decode failed', e); }
   }
 
   try {
     const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
-    if (currentUser.email) {
-      document.getElementById('adminEmail').textContent = currentUser.email;
-      document.getElementById('adminAvatar').textContent = currentUser.email.charAt(0).toUpperCase();
-      return;
-    }
+    if (currentUser.email) { setAdminInfo(currentUser.email); return; }
   } catch(e) { console.warn('[Statistics] currentUser parse failed', e); }
 
-  document.getElementById('adminEmail').textContent = 'Admin';
-  document.getElementById('adminAvatar').textContent = 'A';
+  setAdminInfo('Admin');
 })();
 
 function logout() {
@@ -64,8 +56,10 @@ function toggleSidebar() {
 }
 
 function setCard(id, subId, value, sub) {
-  document.getElementById(id).textContent = value;
-  document.getElementById(subId).textContent = sub;
+  const el = document.getElementById(id);
+  const elSub = document.getElementById(subId);
+  if (el) el.textContent = value;
+  if (elSub) elSub.textContent = sub;
 }
 
 function fmt(n) { return '\u20b9' + Math.round(n || 0).toLocaleString('en-IN'); }
@@ -77,10 +71,15 @@ function fmtDate(d) {
 let allPurchases = [];
 
 async function loadStats() {
-  ['valRevenue','valPurchases','valAvgOrder','valBuyers'].forEach(id =>
-    document.getElementById(id).innerHTML = '<div class="shimmer shimmer-value"></div>');
-  ['subRevenue','subPurchases','subAvgOrder','subBuyers'].forEach(id =>
-    document.getElementById(id).innerHTML = '<div class="shimmer shimmer-sub"></div>');
+  document.querySelectorAll('.stat-card').forEach(c => c.classList.add('is-shimmer'));
+  ['valRevenue','valPurchases','valAvgOrder','valBuyers'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = '<div class="shimmer shimmer-value"></div>';
+  });
+  ['subRevenue','subPurchases','subAvgOrder','subBuyers'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = '<div class="shimmer shimmer-sub"></div>';
+  });
 
   try {
     allPurchases = await apiFetch('/api/admin/purchases');
@@ -90,6 +89,7 @@ async function loadStats() {
     const uniqueBuyers = new Set(allPurchases.map(p => p.buyer_email)).size;
     const avgOrder     = completed.length ? totalRevenue / completed.length : 0;
 
+    document.querySelectorAll('.stat-card').forEach(c => c.classList.remove('is-shimmer'));
     setCard('valRevenue',   'subRevenue',   fmt(totalRevenue),   'From ' + completed.length + ' sales');
     setCard('valPurchases', 'subPurchases', allPurchases.length, completed.length + ' completed');
     setCard('valAvgOrder',  'subAvgOrder',  fmt(avgOrder),       'Per transaction');
@@ -99,21 +99,25 @@ async function loadStats() {
 
   } catch (err) {
     console.error('[Statistics] loadStats error =>', err);
+    document.querySelectorAll('.stat-card').forEach(c => c.classList.remove('is-shimmer'));
     const subIds = ['subRevenue','subPurchases','subAvgOrder','subBuyers'];
     ['valRevenue','valPurchases','valAvgOrder','valBuyers'].forEach((id, i) =>
       setCard(id, subIds[i], '--', 'Error loading'));
-    document.getElementById('purchaseTbody').innerHTML =
-      '<tr><td colspan="6"><div class="empty-state"><div class="empty-icon">\u26a0\ufe0f</div><p>' + err.message + '<br><small>Is the server running at ' + API_BASE + '?</small></p></div></td></tr>';
-    document.getElementById('recordCount').textContent = 'Error';
+    const tbody = document.getElementById('purchaseTbody');
+    if (tbody) tbody.innerHTML = '<tr><td colspan="6"><div class="empty-state"><div class="empty-icon">\u26a0\ufe0f</div><p>' + err.message + '</p></div></td></tr>';
+    const rc = document.getElementById('recordCount');
+    if (rc) rc.textContent = 'Error';
   }
 }
 
 function renderTable(rows) {
   const tbody = document.getElementById('purchaseTbody');
-  document.getElementById('recordCount').textContent = rows.length + ' record' + (rows.length !== 1 ? 's' : '');
+  const rc    = document.getElementById('recordCount');
+  if (!tbody) return;
+  if (rc) rc.textContent = rows.length + ' record' + (rows.length !== 1 ? 's' : '');
 
   if (!rows.length) {
-    tbody.innerHTML = '<tr><td colspan="6"><div class="empty-state"><div class="empty-icon">\ud83d\udced</div><p style="font-size:15px;font-weight:700;color:#1e293b;margin-bottom:6px;">No records found</p><p style="font-size:13px;color:#94a3b8;">Try adjusting your search or filter.</p></div></td></tr>';
+    tbody.innerHTML = '<tr><td colspan="6"><div class="empty-state"><div class="empty-icon">\ud83d\udced</div><p>No records found</p></div></td></tr>';
     return;
   }
 
@@ -158,7 +162,9 @@ function showPurchaseDetails(index) {
   const amount   = parseFloat(purchase.amount || purchase.resource_price || 0);
   const badgeCls = status === 'completed' ? 'badge-completed' : status === 'pending' ? 'badge-pending' : 'badge-failed';
 
-  document.getElementById('modalBody').innerHTML =
+  const mb = document.getElementById('modalBody');
+  if (!mb) return;
+  mb.innerHTML =
     '<div class="detail-row"><div class="detail-label">Buyer Email</div><div class="detail-value">' + (purchase.buyer_email || '--') + '</div></div>'
     + '<div class="detail-row"><div class="detail-label">Resource</div><div class="detail-value">' + (purchase.resource_title || '--') + '</div></div>'
     + '<div class="detail-row"><div class="detail-label">Amount</div><div class="detail-value amount">' + fmt(amount) + '</div></div>'
@@ -186,4 +192,8 @@ function filterTable() {
   renderTable(filtered);
 }
 
-loadStats();
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', loadStats);
+} else {
+  loadStats();
+}
