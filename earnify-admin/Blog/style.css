@@ -240,6 +240,7 @@ body {
   padding: 32px 36px;
   overflow-y: auto;
   height: 100vh;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
 }
 
 /* ── Page Header ── */
@@ -2027,7 +2028,20 @@ body {
 
 body.dark-mode { background: #0d1117 !important; color: #e6edf3 !important; }
 
-/* sidebar */
+html.dark-mode .sidebar { background: linear-gradient(180deg,#161b22 0%,#0d1117 100%) !important; border-right-color: #30363d !important; }
+html.dark-mode .main { background: #0d1117 !important; }
+html.dark-mode body { background: #0d1117 !important; }
+html.dark-mode .logout-btn { background: #161b22 !important; color: #f87171 !important; border-color: #f87171 !important; }
+html.dark-mode .blog-card { background: #161b22 !important; border-color: #30363d !important; }
+html.dark-mode .section-header { border-bottom-color: #30363d !important; }
+html.dark-mode .admin-badge { background: rgba(124,106,247,0.1) !important; }
+html.dark-mode .admin-badge.is-loading .admin-avatar,
+html.dark-mode .admin-badge.is-loading .admin-name,
+html.dark-mode .admin-badge.is-loading .admin-role {
+  background: linear-gradient(90deg,#1c2333 25%,#21293d 50%,#1c2333 75%) !important;
+  background-size: 400% 100% !important;
+  animation: shimmer-slide 1.4s infinite linear !important;
+}
 body.dark-mode .sidebar { background: linear-gradient(180deg,#161b22 0%,#0d1117 100%) !important; border-right-color: #30363d !important; }
 body.dark-mode .sidebar-brand { border-bottom-color: #30363d !important; }
 body.dark-mode .sidebar-brand p { color: #484f58 !important; }
@@ -2049,6 +2063,10 @@ body.dark-mode .admin-badge.is-loading .admin-role {
 
 /* main */
 body.dark-mode .main { background: #0d1117 !important; }
+
+.back-link { color: #667eea; }
+body.dark-mode .back-link { color: #a78bfa !important; border-top-color: #30363d !important; }
+html.dark-mode .back-link { color: #a78bfa !important; border-top-color: #30363d !important; }
 
 /* section header */
 body.dark-mode .section-header { border-bottom-color: #30363d !important; }
@@ -2169,9 +2187,22 @@ body.dark-mode .upload-error-title { color: #f87171 !important; }
 body.dark-mode .upload-error-msg   { color: #fca5a5 !important; }
 body.dark-mode .upload-error-close { background: #1c2333 !important; border-color: #30363d !important; color: #8b949e !important; }
 
-/* smooth transitions */
-body.dark-mode, body.dark-mode * {
-  transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease !important;
+/* smooth transitions — exclude shimmer/animation elements */
+body.dark-mode .sidebar,
+body.dark-mode .main,
+body.dark-mode .blog-card,
+body.dark-mode .blog-editor,
+body.dark-mode .editor-topbar,
+body.dark-mode .editor-main,
+body.dark-mode .editor-sidebar,
+body.dark-mode .editor-sidebar-card,
+body.dark-mode .nav-link,
+body.dark-mode .logout-btn,
+body.dark-mode .admin-badge,
+body.dark-mode .section-header,
+body.dark-mode .link-modal-box,
+body.dark-mode .modal-content {
+  transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
 }
 
 /* ── Blog Status Badge ── */
@@ -2203,8 +2234,13 @@ body.dark-mode, body.dark-mode * {
 .sb-nm-label{position:absolute;top:50%;transform:translateY(-50%);font-size:9px;font-weight:800;letter-spacing:.7px;text-transform:uppercase;pointer-events:none;z-index:1;transition:opacity .3s;white-space:nowrap;}
 .sb-nm-label-light{right:10px;color:#94a3b8;opacity:1;}
 .sb-nm-label-dark{left:10px;color:#a78bfa;opacity:0;}
-body.dark-mode .sb-nm-wrap{border-top-color:#30363d;}
-body.dark-mode .sb-nm-toggle{background:#1a2030;box-shadow:5px 5px 10px #0a0e17,-4px -4px 9px #263040;}
-body.dark-mode .sb-nm-knob{left:53px;background:linear-gradient(135deg,#3a4a5c,#2d3748);box-shadow:2px 2px 6px #0a0e17,-1px -1px 4px #3a4a5c;}
-body.dark-mode .sb-nm-label-light{opacity:0;}
-body.dark-mode .sb-nm-label-dark{opacity:1;}
+html.dark-mode .sb-nm-wrap,
+body.dark-mode .sb-nm-wrap{border-top-color:#30363d !important;}
+html.dark-mode .sb-nm-toggle,
+body.dark-mode .sb-nm-toggle{background:#1a2030 !important;box-shadow:5px 5px 10px #0a0e17,-4px -4px 9px #263040 !important;}
+html.dark-mode .sb-nm-knob,
+body.dark-mode .sb-nm-knob{left:53px !important;background:linear-gradient(135deg,#3a4a5c,#2d3748) !important;box-shadow:2px 2px 6px #0a0e17,-1px -1px 4px #3a4a5c !important;}
+html.dark-mode .sb-nm-label-light,
+body.dark-mode .sb-nm-label-light{opacity:0 !important;}
+html.dark-mode .sb-nm-label-dark,
+body.dark-mode .sb-nm-label-dark{opacity:1 !important;}

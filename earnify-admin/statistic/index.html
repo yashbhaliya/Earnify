@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <script>!function(){var s=sessionStorage.getItem('earnify_dark_mode');if(s==='1'){document.documentElement.classList.add('dark-mode');}}();</script>
+  <script>!function(){var s=localStorage.getItem('earnify_dark_mode');if(s===null||s==='1'){document.documentElement.classList.add('dark-mode');document.documentElement.style.background='#0d1117';}}();</script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Statistics - Earnify Admin</title>
@@ -225,6 +225,7 @@
       padding: 32px 36px;
       overflow-y: auto;
       height: 100vh;
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
     }
 
     /* ── Page Header ── */
@@ -1015,6 +1016,26 @@
     }
     .dark-toggle:hover { background: rgba(255,255,255,0.3); transform: rotate(20deg) scale(1.1); }
 
+    /* html.dark-mode — fires before body gets class, prevents flash */
+    html.dark-mode .sidebar { background: linear-gradient(180deg,#161b22 0%,#0d1117 100%) !important; border-right-color: #30363d !important; }
+    html.dark-mode .main { background: #0d1117 !important; }
+    html.dark-mode .logout-btn { background: #161b22 !important; color: #f87171 !important; border-color: #f87171 !important; }
+    html.dark-mode .admin-badge { background: rgba(124,106,247,0.1) !important; }
+    html.dark-mode .stat-card { background: #161b22 !important; border-color: #30363d !important; }
+    html.dark-mode .stat-card.is-shimmer .stat-icon,
+    html.dark-mode .shimmer {
+      background: linear-gradient(90deg,#1c2333 25%,#21293d 50%,#1c2333 75%) !important;
+      background-size: 400% 100% !important;
+      animation: shimmer-slide 1.4s infinite linear !important;
+    }
+    html.dark-mode .table-card { background: #161b22 !important; border-color: #30363d !important; }
+    html.dark-mode .sb-nm-wrap { border-top-color: #30363d !important; }
+    html.dark-mode .sb-nm-toggle { background: #1a2030 !important; box-shadow: 5px 5px 10px #0a0e17,-4px -4px 9px #263040 !important; }
+    html.dark-mode .sb-nm-knob { left: 53px !important; background: linear-gradient(135deg,#3a4a5c,#2d3748) !important; box-shadow: 2px 2px 6px #0a0e17,-1px -1px 4px #3a4a5c !important; }
+    html.dark-mode .sb-nm-label-light { opacity: 0 !important; }
+    html.dark-mode .sb-nm-label-dark  { opacity: 1 !important; }
+    html.dark-mode .back-link { color: #a78bfa !important; border-top-color: #30363d !important; }
+
     body.dark-mode { background: #0d1117 !important; color: #e6edf3 !important; }
 
     body.dark-mode .sidebar {
@@ -1194,17 +1215,7 @@
     body.dark-mode .sb-nm-label-light{opacity:0;}
     body.dark-mode .sb-nm-label-dark{opacity:1;}
   </style>
-  <script>
-    (function(){
-      var s = localStorage.getItem('earnify_dark_mode');
-      var dark = (s === null || s === '1');
-      if (dark) {
-        document.documentElement.style.background = '#0d1117';
-        document.documentElement.classList.add('dark-mode');
-      }
-    })();
-  </script>
-  <link rel="stylesheet" href="/dark-theme.css">
+
 </head>
 
 <body>
@@ -1280,7 +1291,7 @@
     <div class="stat-grid">
 
       <!-- 1. Total Revenue -->
-      <div class="stat-card">
+      <div class="stat-card is-shimmer">
         <div class="stat-icon">💰</div>
         <div class="stat-body">
           <div class="stat-label">Total Revenue</div>
@@ -1294,7 +1305,7 @@
       </div>
 
       <!-- 2. Total Purchases -->
-      <div class="stat-card">
+      <div class="stat-card is-shimmer">
         <div class="stat-icon">🛒</div>
         <div class="stat-body">
           <div class="stat-label">Total Purchases</div>
@@ -1308,7 +1319,7 @@
       </div>
 
       <!-- 3. Avg Order Value -->
-      <div class="stat-card">
+      <div class="stat-card is-shimmer">
         <div class="stat-icon">📊</div>
         <div class="stat-body">
           <div class="stat-label">Avg Order Value</div>
@@ -1322,7 +1333,7 @@
       </div>
 
       <!-- 4. Unique Buyers -->
-      <div class="stat-card">
+      <div class="stat-card is-shimmer">
         <div class="stat-icon">👥</div>
         <div class="stat-body">
           <div class="stat-label">Unique Buyers</div>
@@ -1412,7 +1423,7 @@
       applyDark(saved === null ? true : saved === '1');
     })();
   </script>
-  <script src="statistic.js?v=3"></script>
+  <script src="statistic.js?v=4"></script>
   <script src="/dark-theme.js"></script>
 </body>
 

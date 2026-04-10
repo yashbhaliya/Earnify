@@ -10,7 +10,7 @@
     rel="stylesheet">
   <link rel="stylesheet" href="./style.css">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script>(function () { const s = localStorage.getItem('earnify_dark_mode'); if (s === null || s === '1') document.documentElement.style.background = '#0d1117'; })();</script>
+  <script>!function(){var s=localStorage.getItem('earnify_dark_mode');if(s===null||s==='1'){document.documentElement.classList.add('dark-mode');document.documentElement.style.background='#0d1117';}}();</script>
   <link rel="stylesheet" href="/dark-theme.css">
 </head>
 
@@ -44,8 +44,8 @@
         <span class="sb-nm-label sb-nm-label-dark">DARK</span>
       </button>
     </div>
-    <a href="https://earnify-gamma.vercel.app/admin/Resources/" class="nav-link"
-      style="border-top:1px solid #e2e8f0;padding-top:10px;margin-top:10px;color:#667eea;font-weight:600">
+    <a href="https://earnify-gamma.vercel.app/admin/Resources/" class="nav-link back-link"
+      style="border-top:1px solid #e2e8f0;padding-top:10px;margin-top:10px;font-weight:600">
       <span class="nav-icon">←</span> Back
     </a>
 

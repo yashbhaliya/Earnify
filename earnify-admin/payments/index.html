@@ -2,13 +2,13 @@
 <html lang="en">
 
 <head>
-  <script>!function(){var s=sessionStorage.getItem('earnify_dark_mode');if(s==='1'){document.documentElement.classList.add('dark-mode');}}();</script>
+  <script>!function(){var s=localStorage.getItem('earnify_dark_mode');if(s===null||s==='1'){document.documentElement.classList.add('dark-mode');document.documentElement.style.background='#0d1117';}}();</script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Payment Requests - Earnify Admin</title>
   <link rel="icon" href="/file/logo1.jpeg" type="image/jpeg">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
-    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/dark-theme.css">
   <style>
     * {
       margin: 0;
@@ -219,6 +219,7 @@
       padding: 32px 36px;
       overflow-y: auto;
       height: 100vh;
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
     }
 
     /* ── Page Header ── */
@@ -1095,9 +1096,23 @@
     }
     body.dark-mode .toast-message { color: #e6edf3 !important; }
 
-    /* smooth transitions */
-    body.dark-mode, body.dark-mode * {
-      transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease !important;
+    .back-link { color: #667eea; }
+    body.dark-mode .back-link { color: #a78bfa !important; border-top-color: #30363d !important; }
+
+    /* smooth transitions — exclude shimmer elements */
+    body.dark-mode .sidebar,
+    body.dark-mode .main,
+    body.dark-mode .stat-card,
+    body.dark-mode .payment-card,
+    body.dark-mode .modal-content,
+    body.dark-mode .nav-link,
+    body.dark-mode .logout-btn,
+    body.dark-mode .admin-badge,
+    body.dark-mode .payment-header,
+    body.dark-mode .payment-details,
+    body.dark-mode .modal-details,
+    body.dark-mode .toast {
+      transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
     }
 
     /* ── Neumorphic Dark Mode Toggle ── */
@@ -1107,6 +1122,23 @@
     .sb-nm-label{position:absolute;top:50%;transform:translateY(-50%);font-size:9px;font-weight:800;letter-spacing:.7px;text-transform:uppercase;pointer-events:none;z-index:1;transition:opacity .3s;white-space:nowrap;}
     .sb-nm-label-light{right:10px;color:#94a3b8;opacity:1;}
     .sb-nm-label-dark{left:10px;color:#a78bfa;opacity:0;}
+    html.dark-mode .logout-btn { background: #161b22 !important; color: #f87171 !important; border-color: #f87171 !important; }
+    html.dark-mode .sidebar { background: linear-gradient(180deg,#161b22 0%,#0d1117 100%) !important; border-right-color: #30363d !important; }
+    html.dark-mode .main { background: #0d1117 !important; }
+    html.dark-mode body { background: #0d1117 !important; }
+    html.dark-mode .sh {
+      background: linear-gradient(90deg,#1c2333 25%,#21293d 50%,#1c2333 75%) !important;
+      background-size: 1200px 100% !important;
+    }
+    html.dark-mode .payment-shimmer { background: #161b22 !important; border-color: #30363d !important; }
+    html.dark-mode .payment-shimmer .ps-details { background: #1c2333 !important; }
+    html.dark-mode .stat-card { background: #161b22 !important; border-color: #30363d !important; }
+    html.dark-mode .stat-card.shimmer-card .stat-icon { background: #1c2333 !important; }
+    html.dark-mode .sb-nm-wrap { border-top-color: #30363d !important; }
+    html.dark-mode .sb-nm-toggle { background: #1a2030 !important; box-shadow: 5px 5px 10px #0a0e17,-4px -4px 9px #263040 !important; }
+    html.dark-mode .sb-nm-knob { left: 53px !important; background: linear-gradient(135deg,#3a4a5c,#2d3748) !important; box-shadow: 2px 2px 6px #0a0e17,-1px -1px 4px #3a4a5c !important; }
+    html.dark-mode .sb-nm-label-light { opacity: 0 !important; }
+    html.dark-mode .sb-nm-label-dark  { opacity: 1 !important; }
     body.dark-mode .sb-nm-wrap{border-top-color:#30363d;}
     body.dark-mode .sb-nm-toggle{background:#1a2030;box-shadow:5px 5px 10px #0a0e17,-4px -4px 9px #263040;}
     body.dark-mode .sb-nm-knob{left:53px;background:linear-gradient(135deg,#3a4a5c,#2d3748);box-shadow:2px 2px 6px #0a0e17,-1px -1px 4px #3a4a5c;}
@@ -1121,13 +1153,7 @@
     body.dark-mode .account-val,
     body.dark-mode .note-val { color: #e6edf3 !important; }
   </style>
-  <script>
-    (function(){
-      const s = localStorage.getItem('earnify_dark_mode');
-      if(s === null || s === '1') document.documentElement.style.background = '#0d1117';
-    })();
-  </script>
-  <link rel="stylesheet" href="/dark-theme.css">
+
 </head>
 
 <body>
@@ -1163,8 +1189,8 @@
         <span class="sb-nm-label sb-nm-label-dark">DARK</span>
       </button>
     </div>
-    <a href="https://earnify-gamma.vercel.app/admin/Resources/" class="nav-link"
-      style="border-top:1px solid #e2e8f0; padding-top:10px; margin-top:10px; color:#667eea;font-weight:600">
+    <a href="https://earnify-gamma.vercel.app/admin/Resources/" class="nav-link back-link"
+      style="border-top:1px solid #e2e8f0; padding-top:10px; margin-top:10px; font-weight:600">
       <span class="nav-icon">←</span> Back
     </a>
 
