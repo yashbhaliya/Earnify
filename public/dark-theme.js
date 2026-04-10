@@ -33,5 +33,11 @@ window.toggleDarkMode = function () {
 document.addEventListener('DOMContentLoaded', function () {
   const stored = localStorage.getItem(DARK_KEY);
   applyDarkMode(stored === '1');
+  // Allow background transitions only after initial paint to prevent flash
+  requestAnimationFrame(function () {
+    requestAnimationFrame(function () {
+      document.body.classList.add('dark-mode-ready');
+    });
+  });
 });
 })();

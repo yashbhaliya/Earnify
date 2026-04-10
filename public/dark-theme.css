@@ -48,14 +48,16 @@ html.dark-mode body,
 html.dark-mode body {
   background: #0d1117 !important;
   color: #e6edf3 !important;
+  transition: none !important;
 }
 
 /* ── Navbar ── */
-body.dark-mode,
+body.dark-mode .navbar,
 html.dark-mode body .navbar {
   background: rgba(13, 17, 23, 0.98) !important;
   border-bottom: 1px solid #30363d !important;
   box-shadow: 0 1px 0 #30363d !important;
+  transition: none !important;
 }
 
 body.dark-mode,
@@ -81,7 +83,6 @@ body.dark-mode,
 html.dark-mode body .admin-btn:hover {
   background: linear-gradient(135deg, #9580ff 0%, #7c6af7 100%) !important;
   box-shadow: 0 4px 16px rgba(124, 106, 247, 0.5) !important;
-  /* transform: translateY(-2px) !important; */
 }
 
 body.dark-mode,
@@ -244,6 +245,7 @@ html.dark-mode body .cta-box {
 body.dark-mode,
 html.dark-mode body .resources-section {
   background: #0d1117 !important;
+  transition: none !important;
 }
 
 body.dark-mode,
@@ -316,6 +318,11 @@ html.dark-mode body .sk {
   background: #1c2333 !important;
 }
 
+body.dark-mode,
+html.dark-mode body .sk::after {
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.04) 50%, transparent 100%) !important;
+}
+
 /* ── Pagination ── */
 body.dark-mode,
 html.dark-mode body .pagination {
@@ -325,7 +332,7 @@ html.dark-mode body .pagination {
 
 body.dark-mode,
 html.dark-mode body .pag-info {
-  color: #484f58 !important;
+  color: #8b949e !important
 }
 
 body.dark-mode,
@@ -834,9 +841,13 @@ html.dark-mode body .am-security {
   color: #8b949e !important;
 }
 
-/* ── Smooth transitions ── */
+/* ── Smooth transitions (exclude background on load to prevent flash) ── */
 body,
 body * {
+  transition: border-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
+}
+body.dark-mode-ready,
+body.dark-mode-ready * {
   transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
 }
 
