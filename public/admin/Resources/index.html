@@ -529,8 +529,8 @@
 
     <!-- View Toggle Buttons -->
     <div style="display:flex;gap:10px;margin-bottom:24px;">
-      <button id="btnAllResources" onclick="switchView('resources')" style="padding:10px 22px;border-radius:10px;border:2px solid #667eea;color:#667eea;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;">📚 All Resources</button>
-      <button id="btnPurchases" onclick="switchView('purchases')" style="padding:10px 22px;border-radius:10px;border:2px solid #e2e8f0;background:#fff;color:#64748b;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;" id="btnPurchases">🛒 Purchased Resources</button>
+      <button id="btnAllResources" onclick="switchView('resources')" style="padding:10px 24px;border-radius:10px;border:none;outline:2.5px solid #667eea;outline-offset:-1px;background:#fff;color:#667eea;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 0 0 1px #764ba2,0 4px 14px rgba(102,126,234,0.2);transition:all .2s;">📚 All Resources</button>
+      <button id="btnPurchases" onclick="switchView('purchases')" style="padding:10px 24px;border-radius:10px;border:2px solid #e2e8f0;background:#f8fafc;color:#64748b;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s;">🛒 Purchased Resources</button>
     </div>
 
 
@@ -1048,10 +1048,10 @@
       const purchasedSec = document.getElementById('purchasedSection');
       const tabContents  = document.querySelectorAll('.tab-content');
       const isDark       = document.body.classList.contains('dark-mode');
-      const darkInactiveStyle = 'padding:10px 22px;border-radius:10px;border:2px solid #30363d;background:#1c2333;color:#8b949e;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;';
-      const darkActiveStyle = 'padding:10px 22px;border-radius:10px;border:2px solid #7c6af7;color:#7c6af7;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;';
-      const lightInactiveStyle = 'padding:10px 22px;border-radius:10px;border:2px solid #e2e8f0;background:#fff;color:#64748b;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;';
-      const lightActiveStyle = 'padding:10px 22px;border-radius:10px;border:2px solid #667eea;color:#667eea;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;';
+      const darkInactiveStyle = 'padding:10px 24px;border-radius:10px;border:2px solid #30363d;background:#1c2333;color:#8b949e;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s;';
+      const darkActiveStyle   = 'padding:10px 24px;border-radius:10px;border:none;outline:2.5px solid #7c6af7;outline-offset:-1px;background:#161b22;color:#a78bfa;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 0 0 1px #5b4fcf,0 4px 14px rgba(124,106,247,0.3);transition:all .2s;';
+      const lightInactiveStyle = 'padding:10px 24px;border-radius:10px;border:2px solid #e2e8f0;background:#f8fafc;color:#64748b;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s;';
+      const lightActiveStyle   = 'padding:10px 24px;border-radius:10px;border:none;outline:2.5px solid #667eea;outline-offset:-1px;background:#fff;color:#667eea;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 0 0 1px #764ba2,0 4px 14px rgba(102,126,234,0.2);transition:all .2s;';
       const activeStyle = isDark ? darkActiveStyle : lightActiveStyle;
       const inactiveStyle = isDark ? darkInactiveStyle : lightInactiveStyle;
 
@@ -1152,12 +1152,7 @@
   <script>
     // Apply initial button styles on page load
     document.addEventListener('DOMContentLoaded', function() {
-      if (document.body.classList.contains('dark-mode')) {
-        const btnRes = document.getElementById('btnAllResources');
-        const btnPur = document.getElementById('btnPurchases');
-        if (btnRes) btnRes.style.cssText = 'padding:10px 22px;border-radius:10px;border:2px solid #7c6af7;color:#7c6af7;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;';
-        if (btnPur) btnPur.style.cssText = 'padding:10px 22px;border-radius:10px;border:2px solid #30363d;background:#1c2333;color:#8b949e;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;';
-      }
+      switchView('resources');
     });
   </script>
 
