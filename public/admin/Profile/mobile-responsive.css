@@ -570,10 +570,6 @@
         color: #a78bfa !important;
     }
 
-    body.dark-mode .stat-label {
-        color: #8b949e !important;
-    }
-
     body.dark-mode .resource-item {
         border-bottom-color: #30363d !important;
     }

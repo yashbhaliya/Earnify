@@ -2017,7 +2017,7 @@ body {
 
 /* ══ DARK MODE ══ */
 .dark-toggle {
-  display: flex; align-items: center; justify-content: center;
+  display: none; align-items: center; justify-content: center;
   width: 36px; height: 36px; border-radius: 50%;
   border: 1.5px solid rgba(255,255,255,0.4);
   background: rgba(255,255,255,0.18);
@@ -2044,7 +2044,6 @@ html.dark-mode .admin-badge.is-loading .admin-role {
 }
 body.dark-mode .sidebar { background: linear-gradient(180deg,#161b22 0%,#0d1117 100%) !important; border-right-color: #30363d !important; }
 body.dark-mode .sidebar-brand { border-bottom-color: #30363d !important; }
-body.dark-mode .sidebar-brand p { color: #484f58 !important; }
 body.dark-mode .nav-link { color: #8b949e !important; }
 body.dark-mode .nav-link:hover,
 body.dark-mode .nav-link.active { background: rgba(124,106,247,0.1) !important; border-left-color: #7c6af7 !important; color: #a78bfa !important; }

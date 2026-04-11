@@ -758,17 +758,12 @@
 
     /* ── Shimmer ── */
     @keyframes shimmer {
-      0% {
-        background-position: -600px 0;
-      }
-
-      100% {
-        background-position: 600px 0;
-      }
+      0%  { background-position: -600px 0; }
+      100% { background-position:  600px 0; }
     }
 
     .sh {
-      background: linear-gradient(90deg, #f1f5f9 25%, #e8edf5 50%, #f1f5f9 75%);
+      background: linear-gradient(90deg, #e8edf5 25%, #dde3ee 50%, #e8edf5 75%);
       background-size: 1200px 100%;
       animation: shimmer 1.4s infinite linear;
       border-radius: 8px;
@@ -777,19 +772,19 @@
 
     /* stat card shimmer */
     .stat-card.shimmer-card .stat-icon {
-      background: #f1f5f9 !important;
+      background: linear-gradient(90deg, #e8edf5 25%, #dde3ee 50%, #e8edf5 75%) !important;
+      background-size: 1200px 100% !important;
+      animation: shimmer 1.4s infinite linear !important;
     }
 
-    .stat-card.shimmer-card .stat-icon span {
-      visibility: hidden;
-    }
+    .stat-card.shimmer-card .stat-icon span { visibility: hidden; }
 
     /* payment card shimmer */
     .payment-shimmer {
       background: white;
       border-radius: 16px;
       padding: 24px;
-      border: 1px solid rgba(0, 0, 0, 0.05);
+      border: 1px solid rgba(0,0,0,0.05);
     }
 
     .payment-shimmer .ps-header {
@@ -977,7 +972,7 @@
 
     /* ══ DARK MODE ══ */
     .dark-toggle {
-      display: flex; align-items: center; justify-content: center;
+      display: none; align-items: center; justify-content: center;
       width: 36px; height: 36px; border-radius: 50%;
       border: 1.5px solid rgba(255,255,255,0.4);
       background: rgba(255,255,255,0.18);
@@ -994,7 +989,6 @@
       border-right-color: #30363d !important;
     }
     body.dark-mode .sidebar-brand { border-bottom-color: #30363d !important; }
-    body.dark-mode .sidebar-brand p { color: #484f58 !important; }
     body.dark-mode .nav-link { color: #8b949e !important; }
     body.dark-mode .nav-link:hover,
     body.dark-mode .nav-link.active {
@@ -1015,22 +1009,33 @@
 
     /* stat cards */
     body.dark-mode .stat-card {
-      background: #161b22 !important; border-color: #30363d !important;
+      background: #161b22 !important;
+      border: 1px solid rgba(124,106,247,0.25) !important;
+      box-shadow: 0 0 0 1px rgba(124,106,247,0.1), 0 4px 20px rgba(0,0,0,0.35) !important;
     }
     body.dark-mode .stat-value { color: #e6edf3 !important; }
-    body.dark-mode .stat-label { color: #484f58 !important; }
     body.dark-mode .stat-sub   { color: #8b949e !important; }
-    body.dark-mode .stat-card.shimmer-card .stat-icon { background: #1c2333 !important; }
+    body.dark-mode .stat-label { color: #484f58 !important; }
+    body.dark-mode .stat-card.shimmer-card .stat-icon {
+      background: linear-gradient(90deg,#1c2333 25%,#252f42 50%,#1c2333 75%) !important;
+      background-size: 1200px 100% !important;
+      animation: shimmer 1.4s infinite linear !important;
+      transition: none !important;
+    }
 
     /* shimmer */
     body.dark-mode .sh {
-      background: linear-gradient(90deg,#1c2333 25%,#21293d 50%,#1c2333 75%) !important;
+      background: linear-gradient(90deg,#1c2333 25%,#252f42 50%,#1c2333 75%) !important;
       background-size: 1200px 100% !important;
+      animation: shimmer 1.4s infinite linear !important;
+      transition: none !important;
     }
 
     /* payment cards */
     body.dark-mode .payment-card {
-      background: #161b22 !important; border-color: #30363d !important;
+      background: #161b22 !important;
+      border: 1px solid rgba(124,106,247,0.25) !important;
+      box-shadow: 0 0 0 1px rgba(124,106,247,0.1), 0 4px 20px rgba(0,0,0,0.35) !important;
     }
     body.dark-mode .payment-card:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.4) !important; }
     body.dark-mode .payment-header { border-bottom-color: #30363d !important; }
@@ -1047,7 +1052,9 @@
 
     /* payment shimmer */
     body.dark-mode .payment-shimmer {
-      background: #161b22 !important; border-color: #30363d !important;
+      background: #161b22 !important;
+      border: 1px solid rgba(124,106,247,0.25) !important;
+      box-shadow: 0 0 0 1px rgba(124,106,247,0.1), 0 4px 20px rgba(0,0,0,0.35) !important;
     }
     body.dark-mode .payment-shimmer .ps-header { border-bottom-color: #30363d !important; }
     body.dark-mode .payment-shimmer .ps-details { background: #1c2333 !important; }
@@ -1127,13 +1134,29 @@
     html.dark-mode .main { background: #0d1117 !important; }
     html.dark-mode body { background: #0d1117 !important; }
     html.dark-mode .sh {
-      background: linear-gradient(90deg,#1c2333 25%,#21293d 50%,#1c2333 75%) !important;
+      background: linear-gradient(90deg,#1c2333 25%,#252f42 50%,#1c2333 75%) !important;
       background-size: 1200px 100% !important;
+      animation: shimmer 1.4s infinite linear !important;
+      transition: none !important;
     }
-    html.dark-mode .payment-shimmer { background: #161b22 !important; border-color: #30363d !important; }
+    html.dark-mode .payment-shimmer {
+      background: #161b22 !important;
+      border: 1px solid rgba(124,106,247,0.25) !important;
+      box-shadow: 0 0 0 1px rgba(124,106,247,0.1), 0 4px 20px rgba(0,0,0,0.35) !important;
+    }
+    html.dark-mode .payment-shimmer .ps-header { border-bottom-color: #30363d !important; }
     html.dark-mode .payment-shimmer .ps-details { background: #1c2333 !important; }
-    html.dark-mode .stat-card { background: #161b22 !important; border-color: #30363d !important; }
-    html.dark-mode .stat-card.shimmer-card .stat-icon { background: #1c2333 !important; }
+    html.dark-mode .stat-card {
+      background: #161b22 !important;
+      border: 1px solid rgba(124,106,247,0.25) !important;
+      box-shadow: 0 0 0 1px rgba(124,106,247,0.1), 0 4px 20px rgba(0,0,0,0.35) !important;
+    }
+    html.dark-mode .stat-card.shimmer-card .stat-icon {
+      background: linear-gradient(90deg,#1c2333 25%,#252f42 50%,#1c2333 75%) !important;
+      background-size: 1200px 100% !important;
+      animation: shimmer 1.4s infinite linear !important;
+      transition: none !important;
+    }
     html.dark-mode .sb-nm-wrap { border-top-color: #30363d !important; }
     html.dark-mode .sb-nm-toggle { background: #1a2030 !important; box-shadow: 5px 5px 10px #0a0e17,-4px -4px 9px #263040 !important; }
     html.dark-mode .sb-nm-knob { left: 53px !important; background: linear-gradient(135deg,#3a4a5c,#2d3748) !important; box-shadow: 2px 2px 6px #0a0e17,-1px -1px 4px #3a4a5c !important; }

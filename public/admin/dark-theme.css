@@ -1758,10 +1758,6 @@ html.dark-mode body .empty-state p {
   color: #8b949e !important;
 }
 
-body.dark-mode,
-html.dark-mode body .empty-icon {
-  background: rgba(124, 106, 247, 0.12) !important;
-}
 
 /* Detail modal */
 body.dark-mode,

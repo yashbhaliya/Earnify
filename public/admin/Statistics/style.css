@@ -2981,10 +2981,7 @@ html.dark-mode body .stat-number {
   -webkit-text-fill-color: transparent !important;
   background-clip: text !important;
 }
-body.dark-mode .stat-label,
-html.dark-mode body .stat-label {
-  color: #8b949e !important;
-}
+
 body.dark-mode .stat-icon,
 html.dark-mode body .stat-icon {
   background: #1c2333 !important;
@@ -3324,11 +3321,7 @@ body.dark-mode .stat-number {
   background-clip: unset !important;
   color: #e6edf3 !important;
 }
-html.dark-mode .stat-label,
-body.dark-mode .stat-label {
-  color: #8b949e !important;
-}
-html.dark-mode .stat-icon,
+.dark-mode .stat-icon,
 body.dark-mode .stat-icon {
   border-color: #30363d !important;
 }

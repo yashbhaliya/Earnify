@@ -1007,7 +1007,7 @@
 
     /* ══ DARK MODE ══ */
     .dark-toggle {
-      display: flex; align-items: center; justify-content: center;
+      display: none; align-items: center; justify-content: center;
       width: 36px; height: 36px; border-radius: 50%;
       border: 1.5px solid rgba(255,255,255,0.4);
       background: rgba(255,255,255,0.18);
@@ -1021,14 +1021,33 @@
     html.dark-mode .main { background: #0d1117 !important; }
     html.dark-mode .logout-btn { background: #161b22 !important; color: #f87171 !important; border-color: #f87171 !important; }
     html.dark-mode .admin-badge { background: rgba(124,106,247,0.1) !important; }
-    html.dark-mode .stat-card { background: #161b22 !important; border-color: #30363d !important; }
+    html.dark-mode .stat-card {
+      background: #161b22 !important;
+      border: 1px solid rgba(124,106,247,0.25) !important;
+      box-shadow: 0 0 0 1px rgba(124,106,247,0.1), 0 4px 20px rgba(0,0,0,0.35) !important;
+    }
+    html.dark-mode .stat-card.is-shimmer .stat-label { color: transparent !important; }
     html.dark-mode .stat-card.is-shimmer .stat-icon,
     html.dark-mode .shimmer {
-      background: linear-gradient(90deg,#1c2333 25%,#21293d 50%,#1c2333 75%) !important;
+      background: linear-gradient(90deg,#1c2333 25%,#252f42 50%,#1c2333 75%) !important;
       background-size: 400% 100% !important;
       animation: shimmer-slide 1.4s infinite linear !important;
     }
-    html.dark-mode .table-card { background: #161b22 !important; border-color: #30363d !important; }
+    html.dark-mode .table-card {
+      background: #161b22 !important;
+      border: 1px solid rgba(124,106,247,0.25) !important;
+      box-shadow: 0 0 0 1px rgba(124,106,247,0.1), 0 4px 20px rgba(0,0,0,0.35) !important;
+    }
+    html.dark-mode .table-shimmer-row td { background: #161b22 !important; border-bottom-color: #21293d !important; border-right-color: #2d3748 !important; }
+    html.dark-mode .table-shimmer-cell {
+      background: linear-gradient(90deg,#1c2333 25%,#252f42 50%,#1c2333 75%) !important;
+      background-size: 400% 100% !important;
+      animation: shimmer-slide 1.4s infinite linear !important;
+    }
+    html.dark-mode .search-box { background: #1c2333 !important; border-color: #30363d !important; }
+    html.dark-mode .search-box input { color: #e6edf3 !important; }
+    html.dark-mode .filter-btn { background: #1c2333 !important; border-color: #30363d !important; color: #8b949e !important; }
+    html.dark-mode .record-count { color: #484f58 !important; }
     html.dark-mode .sb-nm-wrap { border-top-color: #30363d !important; }
     html.dark-mode .sb-nm-toggle { background: #1a2030 !important; box-shadow: 5px 5px 10px #0a0e17,-4px -4px 9px #263040 !important; }
     html.dark-mode .sb-nm-knob { left: 53px !important; background: linear-gradient(135deg,#3a4a5c,#2d3748) !important; box-shadow: 2px 2px 6px #0a0e17,-1px -1px 4px #3a4a5c !important; }
@@ -1043,7 +1062,6 @@
       border-right-color: #30363d !important;
     }
     body.dark-mode .sidebar-brand { border-bottom-color: #30363d !important; }
-    body.dark-mode .sidebar-brand p { color: #484f58 !important; }
     body.dark-mode .nav-link { color: #8b949e !important; }
     body.dark-mode .nav-link:hover,
     body.dark-mode .nav-link.active {
@@ -1064,48 +1082,48 @@
 
     /* stat cards */
     body.dark-mode .stat-card {
-      background: #161b22 !important; border-color: #30363d !important;
+      background: #161b22 !important;
+      border: 1px solid rgba(124,106,247,0.25) !important;
+      box-shadow: 0 0 0 1px rgba(124,106,247,0.1), 0 4px 20px rgba(0,0,0,0.35) !important;
     }
+    body.dark-mode .stat-card.is-shimmer .stat-label { color: transparent !important; }
     body.dark-mode .stat-value { color: #e6edf3 !important; }
-    body.dark-mode .stat-label { color: #484f58 !important; }
     body.dark-mode .stat-sub   { color: #8b949e !important; }
     body.dark-mode .stat-card:hover .stat-value { color: #a78bfa !important; }
 
     /* shimmer dark */
-    body.dark-mode .shimmer {
-      background: linear-gradient(90deg,#1c2333 25%,#21293d 50%,#1c2333 75%) !important;
-      background-size: 400% 100% !important;
-    }
-    body.dark-mode .stat-card.is-shimmer .stat-icon {
-      background: linear-gradient(90deg,#1c2333 25%,#21293d 50%,#1c2333 75%) !important;
-      background-size: 400% 100% !important;
-      animation: shimmer-slide 1.4s infinite linear !important;
-    }
-    body.dark-mode .table-shimmer-cell {
-      background: linear-gradient(90deg,#1c2333 25%,#21293d 50%,#1c2333 75%) !important;
-      background-size: 400% 100% !important;
-    }
-    body.dark-mode .table-shimmer-row td { background: #161b22 !important; border-bottom-color: #21293d !important; }
-
-    /* shimmer dark — html.dark-mode covers pre-body-class flash */
     body.dark-mode .shimmer,
     html.dark-mode .shimmer {
-      background: linear-gradient(90deg,#1c2333 25%,#21293d 50%,#1c2333 75%) !important;
+      background: linear-gradient(90deg,#1c2333 25%,#252f42 50%,#1c2333 75%) !important;
       background-size: 400% 100% !important;
       animation: shimmer-slide 1.4s infinite linear !important;
+      transition: none !important;
     }
     body.dark-mode .stat-card.is-shimmer .stat-icon,
     html.dark-mode .stat-card.is-shimmer .stat-icon {
-      background: linear-gradient(90deg,#1c2333 25%,#21293d 50%,#1c2333 75%) !important;
+      background: linear-gradient(90deg,#1c2333 25%,#252f42 50%,#1c2333 75%) !important;
       background-size: 400% 100% !important;
       animation: shimmer-slide 1.4s infinite linear !important;
+      transition: none !important;
+    }
+    body.dark-mode .table-shimmer-cell,
+    html.dark-mode .table-shimmer-cell {
+      background: linear-gradient(90deg,#1c2333 25%,#252f42 50%,#1c2333 75%) !important;
+      background-size: 400% 100% !important;
+      animation: shimmer-slide 1.4s infinite linear !important;
+      transition: none !important;
     }
 
     /* table card */
-    body.dark-mode .table-card { background: #161b22 !important; border-color: #30363d !important; }
+    body.dark-mode .table-card {
+      background: #161b22 !important;
+      border: 1px solid rgba(124,106,247,0.25) !important;
+      box-shadow: 0 0 0 1px rgba(124,106,247,0.1), 0 4px 20px rgba(0,0,0,0.35) !important;
+    }
     body.dark-mode .table-header { border-bottom-color: #30363d !important; }
     body.dark-mode .table-header h3 { color: #e6edf3 !important; }
     body.dark-mode .record-count { color: #484f58 !important; }
+    body.dark-mode .table-shimmer-row td { background: #161b22 !important; border-bottom-color: #21293d !important; border-right-color: #2d3748 !important; }
 
     /* search & filter */
     body.dark-mode .search-box {
@@ -1132,7 +1150,7 @@
     /* inline colored td text */
     body.dark-mode td[style*="color:#1e293b"] { color: #e6edf3 !important; }
     body.dark-mode td[style*="color:#10b981"] { color: #3fb950 !important; }
-    body.dark-mode td[style*="color:#94a3b8"] { color: #484f58 !important; }
+
 
     /* badges */
     body.dark-mode .badge-completed { background: rgba(6,95,70,0.15) !important; color: #86efac !important; }

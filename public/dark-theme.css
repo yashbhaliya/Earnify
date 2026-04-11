@@ -1768,7 +1768,7 @@ html.dark-mode body .dash-banner-left p {
 /* Stat cards */
 body.dark-mode,
 html.dark-mode body .stat-card {
-  background: #161b22 !important;
+  /* background: #161b22 !important; */
   border-color: #30363d !important;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35) !important;
 }
@@ -1984,10 +1984,6 @@ html.dark-mode body .empty-state p {
   color: #8b949e !important;
 }
 
-body.dark-mode,
-html.dark-mode body .empty-icon {
-  background: rgba(124, 106, 247, 0.12) !important;
-}
 
 /* Detail modal */
 body.dark-mode,

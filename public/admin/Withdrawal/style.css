@@ -288,11 +288,15 @@ html.dark-mode .main {
 /* w-card — main flash fix */
 html.dark-mode .w-card {
   background: #161b22 !important;
-  border-color: #30363d !important;
+  border: 1px solid rgba(124,106,247,0.25) !important;
+  box-shadow: 0 0 0 1px rgba(124,106,247,0.15), 0 4px 24px rgba(0,0,0,0.4) !important;
 }
 html.dark-mode .w-card-title {
   color: #e6edf3 !important;
-  border-bottom-color: #30363d !important;
+  border-bottom: 2px solid rgba(124,106,247,0.25) !important;
+}
+html.dark-mode .shimmer-card-header {
+  border-bottom-color: rgba(124,106,247,0.25) !important;
 }
 
 /* Hero banner */
@@ -511,12 +515,17 @@ body.dark-mode .logout-link:hover {
 
 body.dark-mode .w-card {
   background: #161b22 !important;
-  border-color: #30363d !important;
+  border: 1px solid rgba(124,106,247,0.25) !important;
+  box-shadow: 0 0 0 1px rgba(124,106,247,0.15), 0 4px 24px rgba(0,0,0,0.4) !important;
 }
 
 body.dark-mode .w-card-title {
   color: #e6edf3 !important;
-  border-bottom-color: #30363d !important;
+  border-bottom: 2px solid rgba(124,106,247,0.25) !important;
+}
+
+body.dark-mode .shimmer-card-header {
+  border-bottom-color: rgba(124,106,247,0.25) !important;
 }
 
 body.dark-mode .form-group label {

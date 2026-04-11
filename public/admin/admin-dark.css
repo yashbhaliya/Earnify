@@ -156,11 +156,17 @@ html.dark-mode body .analytics-section,
 body.dark-mode,
 html.dark-mode body .resource-section,
 body.dark-mode,
-html.dark-mode body .w-card,
-body.dark-mode,
 html.dark-mode body .profile-card {
   background: #161b22 !important;
-  border-color: #30363d !important;
+  border-color: #3d4451 !important;
+  color: #e6edf3 !important;
+}
+
+body.dark-mode,
+html.dark-mode body .w-card {
+  background: #161b22 !important;
+  border: 1px solid rgba(124,106,247,0.25) !important;
+  box-shadow: 0 0 0 1px rgba(124,106,247,0.15), 0 4px 24px rgba(0,0,0,0.4) !important;
   color: #e6edf3 !important;
 }
 
@@ -782,7 +788,7 @@ html.dark-mode body .wi-form-group input:focus {
 body.dark-mode,
 html.dark-mode body .w-card-title {
   color: #e6edf3 !important;
-  border-bottom-color: #30363d !important;
+  border-bottom: 2px solid rgba(124,106,247,0.25) !important;
 }
 
 body.dark-mode,
