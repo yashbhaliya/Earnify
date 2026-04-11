@@ -52,7 +52,7 @@
    FAQ INTRO & CATEGORY NAV
 ═══════════════════════════════════════ */
 .faq-intro { margin-bottom: 20px; }
-.faq-intro p { color: #475569; font-size: 0.95rem; line-height: 1.7; margin: 0; }
+.faq-intro p {  font-size: 0.95rem; line-height: 1.7; margin: 0; }
 
 .faq-cat-nav {
   display: flex; flex-wrap: wrap; gap: 10px;
@@ -418,4 +418,73 @@ html.dark-mode .shimmer-box::before,
 body.dark-mode .shimmer-box::before {
   background: linear-gradient(90deg, transparent, rgba(255,255,255,0.04), transparent) !important;
   transition: none !important;
+}
+
+/* ══════════════════════════════════════════
+   FAQ — ADDITIONAL DARK/LIGHT FIXES
+   ══════════════════════════════════════════ */
+
+/* Light mode explicit text colors */
+.content-box { color: #1e293b; }
+.faq-intro p  { color: #475569; }
+.faq-q        { color: #1e293b; }
+.faq-a        { color: #475569; }
+
+/* Shimmer light mode — more visible */
+.shimmer-title     { background: #e2e8f0; }
+.shimmer-list-item { background: #e2e8f0; }
+
+/* Dark mode — shimmer animated wave */
+html.dark-mode .shimmer-title,
+html.dark-mode .shimmer-list-item,
+body.dark-mode .shimmer-title,
+body.dark-mode .shimmer-list-item {
+  background: linear-gradient(90deg, #1c2333 25%, #252f42 50%, #1c2333 75%) !important;
+  background-size: 400px 100% !important;
+  animation: shimmerMove 1.8s infinite linear !important;
+  transition: none !important;
+}
+
+/* Dark mode — faq-intro text & link */
+html.dark-mode .faq-intro p,
+body.dark-mode .faq-intro p { color: #8b949e !important; }
+
+html.dark-mode .faq-intro a,
+body.dark-mode .faq-intro a { color: #a78bfa !important; }
+
+/* Dark mode — category head icon bg */
+html.dark-mode .faq-cat-head i,
+body.dark-mode .faq-cat-head i {
+  background: rgba(124,106,247,0.15) !important;
+  color: #a78bfa !important;
+}
+
+/* Dark mode — faq-item background on shimmer phase */
+html.dark-mode .shimmer-box,
+body.dark-mode .shimmer-box {
+  background: transparent !important;
+}
+
+/* Dark mode — content-box text */
+html.dark-mode .content-box,
+body.dark-mode .content-box { color: #e6edf3 !important; }
+
+html.dark-mode .faq-intro p strong,
+body.dark-mode .faq-intro p strong { color: #e6edf3 !important; }
+
+/* Dark mode — faq-q background (open state) */
+html.dark-mode .faq-item.open .faq-q,
+body.dark-mode .faq-item.open .faq-q { color: #e6edf3 !important; }
+
+/* Dark mode — faq-a link */
+html.dark-mode .faq-a a,
+body.dark-mode .faq-a a { color: #a78bfa !important; }
+
+/* Dark mode — section heading text (gradient stays, just ensure visibility) */
+html.dark-mode .faq-cat-head h2,
+body.dark-mode .faq-cat-head h2 {
+  background: linear-gradient(135deg,#a78bfa,#7c6af7) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
 }

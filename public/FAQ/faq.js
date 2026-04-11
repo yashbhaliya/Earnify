@@ -9,9 +9,12 @@ function loadFaqContent() {
 
 function showShimmer() {
   const container = document.getElementById('faqContainer');
-  const shimmer = `<div class="shimmer-box"><div class="shimmer-title"></div><div class="shimmer-list"><div class="shimmer-list-item"></div><div class="shimmer-list-item"></div><div class="shimmer-list-item"></div><div class="shimmer-list-item"></div></div></div>`;
+  const isDark = document.documentElement.classList.contains('dark-mode') || document.body.classList.contains('dark-mode');
+  const shimmerBg = isDark ? 'background:linear-gradient(90deg,#1c2333 25%,#252f42 50%,#1c2333 75%);background-size:400px 100%;animation:shimmerMove 1.8s infinite linear;' : '';
+  const boxBg = isDark ? 'background:#161b22;border-bottom:1px solid #30363d;' : '';
+  const shimmer = `<div class="shimmer-box"><div class="shimmer-title" style="${shimmerBg}"></div><div class="shimmer-list"><div class="shimmer-list-item" style="${shimmerBg}"></div><div class="shimmer-list-item" style="${shimmerBg}"></div><div class="shimmer-list-item" style="${shimmerBg}"></div><div class="shimmer-list-item" style="${shimmerBg}"></div></div></div>`;
   let html = '';
-  for (let i = 0; i < 5; i++) html += `<div class="content-box">${shimmer}</div>`;
+  for (let i = 0; i < 5; i++) html += `<div class="content-box" style="${boxBg}">${shimmer}</div>`;
   container.innerHTML = html;
 }
 

@@ -111,7 +111,17 @@
   </footer>
 
   <script src="faq.js"></script>
-  <script src="landing.js"></script>
   <script src="../dark-theme.js"></script>
+  <script>
+    function toggleMobileMenu() {
+      const sidebar = document.getElementById('mobileSidebar');
+      const overlay = document.getElementById('mobileSidebarOverlay');
+      const btn = document.querySelector('.mobile-menu-btn');
+      sidebar.classList.toggle('active');
+      overlay.classList.toggle('active');
+      if (btn) btn.classList.toggle('active');
+      document.body.classList.toggle('sidebar-open');
+    }
+  </script>
 </body>
 </html>

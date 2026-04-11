@@ -1,14 +1,5 @@
 {
   "version": 2,
-  "env": {
-    "GMAIL_USER": "hardikkotadiya90@gmail.com",
-    "GMAIL_PASS": "qmipirlvmpoygyqs",
-    "SITE_URL": "https://earnify-gamma.vercel.app",
-    "SUPABASE_URL": "https://emnrgsgerfjvndexomro.supabase.co",
-    "SUPABASE_SERVICE_ROLE_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVtbnJnc2dlcmZqdm5kZXhvbXJvIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3MjQyMDIxMCwiZXhwIjoyMDg3OTk2MjEwfQ.mr4k_GsJ14CC1mqvEZgf9cTaNiLMlnj_sZxFjJud67k",
-    "RAZORPAY_KEY_ID": "rzp_test_SSITbj2voJfP8y",
-    "RAZORPAY_KEY_SECRET": "QcL16W8G083kjQZZ2d0KRipT"
-  },
   "builds": [
     {
       "src": "server.js",
@@ -24,143 +15,63 @@
     }
   ],
   "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "/server.js"
-    },
-    {
-      "src": "/earnify-admin/Dashboard/index.html",
-      "dest": "/earnify-admin/Dashboard/index.html"
-    },
-    {
-      "src": "/earnify-admin/Dashboard/?$",
-      "dest": "/earnify-admin/Dashboard/index.html"
-    },
-    {
-      "src": "/earnify-admin/Dashboard/(.*)",
-      "dest": "/earnify-admin/Dashboard/$1"
-    },
-    {
-      "src": "/earnify-admin/statistic/?$",
-      "dest": "/earnify-admin/statistic/index.html"
-    },
-    {
-      "src": "/earnify-admin/statistic/(.*)",
-      "dest": "/earnify-admin/statistic/$1"
-    },
-    {
-      "src": "/earnify-admin/payments/?$",
-      "dest": "/earnify-admin/payments/index.html"
-    },
-    {
-      "src": "/earnify-admin/payments/(.*)",
-      "dest": "/earnify-admin/payments/$1"
-    },
-    {
-      "src": "/earnify-admin/Blog/?$",
-      "dest": "/earnify-admin/Blog/index.html"
-    },
-    {
-      "src": "/earnify-admin/Blog/(.*)",
-      "dest": "/earnify-admin/Blog/$1"
-    },
-    {
-      "src": "/earnify-admin/(.*)",
-      "dest": "/earnify-admin/$1"
-    },
-    {
-      "src": "/file/(.*)",
-      "dest": "/public/file/$1"
-    },
+    { "src": "/api/(.*)", "dest": "/server.js" },
+
+    { "src": "/earnify-admin/Dashboard/?$",   "dest": "/earnify-admin/Dashboard/index.html" },
+    { "src": "/earnify-admin/Dashboard/(.*)", "dest": "/earnify-admin/Dashboard/$1" },
+    { "src": "/earnify-admin/statistic/?$",   "dest": "/earnify-admin/statistic/index.html" },
+    { "src": "/earnify-admin/statistic/(.*)", "dest": "/earnify-admin/statistic/$1" },
+    { "src": "/earnify-admin/payments/?$",    "dest": "/earnify-admin/payments/index.html" },
+    { "src": "/earnify-admin/payments/(.*)",  "dest": "/earnify-admin/payments/$1" },
+    { "src": "/earnify-admin/Blog/?$",        "dest": "/earnify-admin/Blog/index.html" },
+    { "src": "/earnify-admin/Blog/(.*)",      "dest": "/earnify-admin/Blog/$1" },
+
+    { "src": "/admin/Resources/?$",    "dest": "/public/admin/Resources/index.html" },
+    { "src": "/admin/Resources/(.*)",  "dest": "/public/admin/Resources/$1" },
+    { "src": "/admin/Statistics/?$",   "dest": "/public/admin/Statistics/index.html" },
+    { "src": "/admin/Statistics/(.*)", "dest": "/public/admin/Statistics/$1" },
+    { "src": "/admin/Profile/?$",      "dest": "/public/admin/Profile/index.html" },
+    { "src": "/admin/Profile/(.*)",    "dest": "/public/admin/Profile/$1" },
+    { "src": "/admin/Withdrawal/?$",   "dest": "/public/admin/Withdrawal/index.html" },
+    { "src": "/admin/Withdrawal/(.*)", "dest": "/public/admin/Withdrawal/$1" },
+    { "src": "/admin/(.*)",            "dest": "/public/admin/$1" },
+
+    { "src": "/file/(.*)", "dest": "/public/file/$1" },
+
+    { "src": "/About/?$",    "dest": "/public/About/index.html" },
+    { "src": "/About/(.*)",  "dest": "/public/About/$1" },
+    { "src": "/Blog/?$",     "dest": "/public/Blog/index.html" },
+    { "src": "/Blog/(.*)",   "dest": "/public/Blog/$1" },
+    { "src": "/Contact/?$",  "dest": "/public/Contact/index.html" },
+    { "src": "/Contact/(.*)", "dest": "/public/Contact/$1" },
+    { "src": "/Dashboard/?$", "dest": "/public/Dashboard/index.html" },
+    { "src": "/Dashboard/(.*)", "dest": "/public/Dashboard/$1" },
+    { "src": "/Detail/?$",   "dest": "/public/Detail/index.html" },
+    { "src": "/Detail/(.*)", "dest": "/public/Detail/index.html" },
+    { "src": "/FAQ/?$",      "dest": "/public/FAQ/index.html" },
+    { "src": "/FAQ/(.*)",    "dest": "/public/FAQ/$1" },
+    { "src": "/Payment/?$",  "dest": "/public/Payment/index.html" },
+    { "src": "/Payment/(.*)", "dest": "/public/Payment/$1" },
+    { "src": "/Privacy/?$",  "dest": "/public/Privacy/index.html" },
+    { "src": "/Privacy/(.*)", "dest": "/public/Privacy/$1" },
+    { "src": "/Resources/?$", "dest": "/public/Resources/index.html" },
+    { "src": "/Terms/?$",    "dest": "/public/Terms/index.html" },
+    { "src": "/Terms/(.*)",  "dest": "/public/Terms/$1" },
+
     {
       "src": "/(.*\\.js)$",
       "dest": "/public/$1",
-      "headers": {
-        "Content-Type": "application/javascript"
-      }
+      "headers": { "Content-Type": "application/javascript" }
     },
     {
       "src": "/(.*\\.css)$",
       "dest": "/public/$1",
-      "headers": {
-        "Content-Type": "text/css"
-      }
+      "headers": { "Content-Type": "text/css" }
     },
-    {
-      "src": "/admin/Resources/?$",
-      "dest": "/public/admin/Resources/index.html"
-    },
-    {
-      "src": "/admin/Resources/(.*)",
-      "dest": "/public/admin/Resources/$1"
-    },
-    {
-      "src": "/admin/Statistics/?$",
-      "dest": "/public/admin/Statistics/index.html"
-    },
-    {
-      "src": "/admin/Statistics/(.*)",
-      "dest": "/public/admin/Statistics/$1"
-    },
-    {
-      "src": "/admin/Profile/?$",
-      "dest": "/public/admin/Profile/index.html"
-    },
-    {
-      "src": "/admin/Profile/(.*)",
-      "dest": "/public/admin/Profile/$1"
-    },
-    {
-      "src": "/admin/Withdrawal/?$",
-      "dest": "/public/admin/Withdrawal/index.html"
-    },
-    {
-      "src": "/admin/Withdrawal/(.*)",
-      "dest": "/public/admin/Withdrawal/$1"
-    },
-    {
-      "src": "/admin/(.*)",
-      "dest": "/public/admin/$1"
-    },
-    {
-      "src": "/About/?$",
-      "dest": "/public/About/index.html"
-    },
-    {
-      "src": "/Contact/?$",
-      "dest": "/public/Contact/index.html"
-    },
-    {
-      "src": "/Privacy/?$",
-      "dest": "/public/Privacy/index.html"
-    },
-    {
-      "src": "/Terms/?$",
-      "dest": "/public/Terms/index.html"
-    },
-    {
-      "src": "/Dashboard/?$",
-      "dest": "/public/Dashboard/index.html"
-    },
-    {
-      "src": "/Detail/?$",
-      "dest": "/public/Detail/index.html"
-    },
-    {
-      "src": "/Detail/.*",
-      "dest": "/public/Detail/index.html"
-    },
-    {
-      "src": "/Payment/?$",
-      "dest": "/public/Payment/index.html"
-    },
-    {
-      "src": "/(.*\\.(html|png|jpg|jpeg|gif|svg|ico|pdf|xls|xlsx))",
-      "dest": "/public/$1"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/public/$1"
-    }
+
+    { "src": "/(.*\\.(html|png|jpg|jpeg|gif|svg|ico|pdf|xls|xlsx|json))", "dest": "/public/$1" },
+
+    { "src": "/?$", "dest": "/public/index.html" },
+    { "src": "/(.*)", "dest": "/public/$1" }
   ]
 }

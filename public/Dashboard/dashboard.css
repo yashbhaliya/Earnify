@@ -1047,3 +1047,299 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* ══════════════════════════════════════
+   DARK MODE — DASHBOARD
+══════════════════════════════════════ */
+
+/* Wrapper */
+body.dark-mode .dashboard-wrapper,
+html.dark-mode .dashboard-wrapper {
+  background: #0d1117 !important;
+}
+
+/* Stat cards */
+body.dark-mode .stat-card,
+html.dark-mode .stat-card {
+  background: #161b22 !important;
+  border-color: rgba(124,106,247,0.25) !important;
+  box-shadow: 0 0 0 1px rgba(124,106,247,0.1), 0 4px 20px rgba(0,0,0,0.35) !important;
+}
+
+body.dark-mode .stat-num,
+html.dark-mode .stat-num {
+  color: #e6edf3 !important;
+}
+
+body.dark-mode .stat-label,
+html.dark-mode .stat-label {
+  color: #8b949e !important;
+}
+
+body.dark-mode .stat-icon.purple,
+html.dark-mode .stat-icon.purple {
+  background: rgba(124,106,247,0.15) !important;
+  color: #a78bfa !important;
+}
+
+body.dark-mode .stat-icon.green,
+html.dark-mode .stat-icon.green {
+  background: rgba(16,185,129,0.15) !important;
+  color: #34d399 !important;
+}
+
+body.dark-mode .stat-icon.blue,
+html.dark-mode .stat-icon.blue {
+  background: rgba(59,130,246,0.15) !important;
+  color: #60a5fa !important;
+}
+
+body.dark-mode .stat-icon.amber,
+html.dark-mode .stat-icon.amber {
+  background: rgba(245,158,11,0.15) !important;
+  color: #fbbf24 !important;
+}
+
+/* Shimmer bars inside stat cards */
+body.dark-mode .sh,
+html.dark-mode .sh {
+  background: linear-gradient(90deg, #1c2333 25%, #252f42 50%, #1c2333 75%) !important;
+  background-size: 400px 100% !important;
+  animation: shimMove 1.8s infinite linear !important;
+  transition: none !important;
+}
+
+body.dark-mode .shimmer-wrap::before,
+html.dark-mode .shimmer-wrap::before {
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.04), transparent) !important;
+}
+
+/* Section head */
+body.dark-mode .dash-section-head h2,
+html.dark-mode .dash-section-head h2 {
+  color: #e6edf3 !important;
+}
+
+/* Filter pills */
+body.dark-mode .dash-filters,
+html.dark-mode .dash-filters {
+  background: #161b22 !important;
+  border-color: #30363d !important;
+}
+
+body.dark-mode .dash-filter-btn,
+html.dark-mode .dash-filter-btn {
+  color: #8b949e !important;
+}
+
+body.dark-mode .dash-filter-btn:hover,
+html.dark-mode .dash-filter-btn:hover {
+  background: rgba(124,106,247,0.1) !important;
+  color: #a78bfa !important;
+}
+
+body.dark-mode .dash-filter-btn.active,
+html.dark-mode .dash-filter-btn.active {
+  background: linear-gradient(135deg,#7c6af7,#5b4fcf) !important;
+  color: #fff !important;
+}
+
+/* Mobile filter select */
+body.dark-mode .dash-filter-select-wrap,
+html.dark-mode .dash-filter-select-wrap {
+  background: #161b22 !important;
+  border-color: #30363d !important;
+  color: #a78bfa !important;
+}
+
+body.dark-mode .dash-filter-select,
+html.dark-mode .dash-filter-select {
+  color: #e6edf3 !important;
+  background: transparent !important;
+}
+
+/* Purchases table */
+body.dark-mode .purchases-grid,
+html.dark-mode .purchases-grid {
+  background: #161b22 !important;
+  border-color: rgba(124,106,247,0.25) !important;
+  box-shadow: 0 0 0 1px rgba(124,106,247,0.1), 0 4px 20px rgba(0,0,0,0.35) !important;
+}
+
+body.dark-mode .purchases-table tbody tr,
+html.dark-mode .purchases-table tbody tr {
+  border-bottom-color: #21293d !important;
+}
+
+body.dark-mode .purchases-table tbody tr:hover td,
+html.dark-mode .purchases-table tbody tr:hover td {
+  background: #1c2333 !important;
+}
+
+body.dark-mode .purchases-table tbody td,
+html.dark-mode .purchases-table tbody td {
+  color: #8b949e !important;
+  background: #161b22 !important;
+}
+
+body.dark-mode .td-title,
+html.dark-mode .td-title {
+  color: #e6edf3 !important;
+}
+
+body.dark-mode .td-price,
+html.dark-mode .td-price {
+  color: #a78bfa !important;
+}
+
+body.dark-mode .td-date,
+html.dark-mode .td-date {
+  color: #484f58 !important;
+}
+
+/* Type icons dark */
+body.dark-mode .td-icon.pdf,
+html.dark-mode .td-icon.pdf {
+  background: rgba(245,158,11,0.12) !important;
+}
+
+body.dark-mode .td-icon.excel,
+html.dark-mode .td-icon.excel {
+  background: rgba(22,163,74,0.12) !important;
+}
+
+body.dark-mode .td-icon.exam,
+html.dark-mode .td-icon.exam {
+  background: rgba(59,130,246,0.12) !important;
+}
+
+body.dark-mode .td-icon.freelance,
+html.dark-mode .td-icon.freelance {
+  background: rgba(124,58,237,0.12) !important;
+}
+
+body.dark-mode .td-icon.default,
+html.dark-mode .td-icon.default {
+  background: #1c2333 !important;
+}
+
+/* Type badges dark */
+body.dark-mode .td-badge.pdf,
+html.dark-mode .td-badge.pdf {
+  background: rgba(220,38,38,0.15) !important;
+  color: #fca5a5 !important;
+}
+
+body.dark-mode .td-badge.excel,
+html.dark-mode .td-badge.excel {
+  background: rgba(22,163,74,0.15) !important;
+  color: #86efac !important;
+}
+
+body.dark-mode .td-badge.exam,
+html.dark-mode .td-badge.exam {
+  background: rgba(37,99,235,0.15) !important;
+  color: #93c5fd !important;
+}
+
+body.dark-mode .td-badge.freelance,
+html.dark-mode .td-badge.freelance {
+  background: rgba(124,58,237,0.15) !important;
+  color: #c4b5fd !important;
+}
+
+body.dark-mode .td-badge.default,
+html.dark-mode .td-badge.default {
+  background: #1c2333 !important;
+  color: #8b949e !important;
+}
+
+/* Action buttons dark */
+body.dark-mode .pc-btn.download,
+body.dark-mode .pc-btn.view,
+html.dark-mode .pc-btn.download,
+html.dark-mode .pc-btn.view {
+  color: #a78bfa !important;
+  background: linear-gradient(#161b22,#161b22) padding-box,
+    linear-gradient(135deg,#7c6af7,#5b4fcf) border-box !important;
+  border: 1px solid transparent !important;
+}
+
+/* Shimmer table rows */
+body.dark-mode .shimmer-row td,
+html.dark-mode .shimmer-row td {
+  background: #161b22 !important;
+  border-bottom-color: #21293d !important;
+}
+
+/* Empty state */
+body.dark-mode .empty-state,
+html.dark-mode .empty-state {
+  background: #161b22 !important;
+  border-color: rgba(124,106,247,0.25) !important;
+}
+
+body.dark-mode .empty-state h2,
+html.dark-mode .empty-state h2 {
+  color: #e6edf3 !important;
+}
+
+body.dark-mode .empty-state p,
+html.dark-mode .empty-state p {
+  color: #8b949e !important;
+}
+
+body.dark-mode .empty-icon,
+html.dark-mode .empty-icon {
+  background: rgba(124,106,247,0.12) !important;
+}
+
+/* Detail modal */
+body.dark-mode .detail-modal,
+html.dark-mode .detail-modal {
+  background: #161b22 !important;
+}
+
+body.dark-mode .detail-modal-close,
+html.dark-mode .detail-modal-close {
+  background: #1c2333 !important;
+  color: #8b949e !important;
+}
+
+body.dark-mode .dm-title,
+html.dark-mode .dm-title {
+  color: #e6edf3 !important;
+}
+
+body.dark-mode .dm-desc,
+html.dark-mode .dm-desc {
+  background: #1c2333 !important;
+  border-color: #30363d !important;
+  color: #8b949e !important;
+}
+
+body.dark-mode .dm-field,
+html.dark-mode .dm-field {
+  background: #1c2333 !important;
+  border-color: #30363d !important;
+}
+
+body.dark-mode .dm-field-label,
+html.dark-mode .dm-field-label {
+  color: #484f58 !important;
+}
+
+body.dark-mode .dm-field-val,
+html.dark-mode .dm-field-val {
+  color: #e6edf3 !important;
+}
+
+body.dark-mode .dm-field-val.price,
+html.dark-mode .dm-field-val.price {
+  color: #a78bfa !important;
+}
+
+body.dark-mode .dm-field-val.mono,
+html.dark-mode .dm-field-val.mono {
+  color: #8b949e !important;
+}
