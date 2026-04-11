@@ -8549,3 +8549,103 @@ html.dark-mode body .shimmer-gradient {
   background-size: 800px 100% !important;
   animation: shimmer-dark 1.6s infinite linear !important;
 }
+
+
+/* ══════════════════════════════════════════
+   PROFILE — html.dark-mode INSTANT SELECTORS
+   (fires before body.dark-mode on refresh)
+   ══════════════════════════════════════════ */
+
+html.dark-mode body,
+html.dark-mode .main {
+  background: #0d1117 !important;
+  color: #e6edf3 !important;
+}
+
+/* profile-card — the main fix: no white border flash */
+html.dark-mode .profile-card {
+  background: #161b22 !important;
+  border-color: #30363d !important;
+}
+html.dark-mode .profile-card h2 {
+  color: #e6edf3 !important;
+  border-bottom-color: #30363d !important;
+}
+
+/* Sidebar */
+html.dark-mode .sidebar {
+  background: linear-gradient(180deg, #161b22 0%, #0d1117 100%) !important;
+  border-right-color: #30363d !important;
+}
+html.dark-mode .sidebar h2 {
+  -webkit-text-fill-color: #a78bfa !important;
+}
+html.dark-mode .sidebar a { color: #8b949e !important; }
+html.dark-mode .sidebar a:hover {
+  background: rgba(124,106,247,0.08) !important;
+  color: #a78bfa !important;
+}
+html.dark-mode .sidebar a.active-link {
+  background: rgba(124,106,247,0.12) !important;
+  color: #a78bfa !important;
+}
+html.dark-mode .sidebar-header { border-bottom-color: #30363d !important; }
+html.dark-mode .sidebar-user {
+  background: #161b22 !important;
+  border-top-color: #30363d !important;
+}
+html.dark-mode .user-name { color: #e6edf3 !important; }
+html.dark-mode .user-email { color: #8b949e !important; }
+html.dark-mode .user-info { border-bottom-color: #30363d !important; }
+
+/* Profile content */
+html.dark-mode .profile-name { color: #e6edf3 !important; }
+html.dark-mode .profile-email { color: #8b949e !important; }
+html.dark-mode .detail-row { border-bottom-color: #30363d !important; }
+html.dark-mode .detail-label { color: #8b949e !important; }
+html.dark-mode .detail-value { color: #e6edf3 !important; }
+
+/* Shimmer rows */
+html.dark-mode .shimmer-detail-row { border-bottom-color: #30363d !important; }
+html.dark-mode .shimmer-gradient {
+  background: linear-gradient(90deg, #1c2333 25%, #21293d 50%, #1c2333 75%) !important;
+  background-size: 800px 100% !important;
+}
+html.dark-mode .shimmer-resource-item { border-bottom-color: #30363d !important; }
+
+/* Resource items */
+html.dark-mode .resource-item { border-bottom-color: #30363d !important; }
+html.dark-mode .resource-item:hover { background: #1c2333 !important; }
+html.dark-mode .resource-details h4 { color: #e6edf3 !important; }
+html.dark-mode .resource-details p { color: #8b949e !important; }
+
+/* Withdrawal methods */
+html.dark-mode .wi-method {
+  background: #1c2333 !important;
+  border-color: #30363d !important;
+}
+html.dark-mode .wi-label { color: #e6edf3 !important; }
+
+/* Buttons */
+html.dark-mode .btn-edit {
+  background: #161b22 !important;
+  color: #3fb950 !important;
+  border-color: #3fb950 !important;
+}
+html.dark-mode .btn-logout {
+  background: #161b22 !important;
+  color: #f87171 !important;
+  border-color: #f87171 !important;
+}
+
+/* Toggle knob */
+html.dark-mode .sb-nm-toggle {
+  background: #1e2535 !important;
+}
+html.dark-mode .sb-nm-knob {
+  left: 52px !important;
+  background: #2d3748 !important;
+}
+html.dark-mode .sb-nm-label-light { opacity: 0 !important; }
+html.dark-mode .sb-nm-label-dark  { opacity: 1 !important; }
+html.dark-mode .sb-nm-wrap { border-top-color: #30363d !important; }

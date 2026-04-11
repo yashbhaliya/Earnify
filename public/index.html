@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <script>!function () { var d = localStorage.getItem('earnify_dark_mode') === '1'; document.documentElement.classList.toggle('dark-mode', d); if (d) { document.documentElement.style.background = '#0d1117'; document.documentElement.style.colorScheme = 'dark'; } document.addEventListener('DOMContentLoaded', function () { document.body.classList.toggle('dark-mode', d); }); }();</script>
+  <script>!function () { var d = localStorage.getItem('earnify_dark_mode') === '1'; document.documentElement.classList.toggle('dark-mode', d); if (d) { document.documentElement.style.background = '#0d1117'; document.documentElement.style.colorScheme = 'dark'; var s = document.createElement('style'); s.textContent = '.mob-nav{background:#0d1117!important;border-top:1px solid #30363d!important;transition:none!important}.mob-nav-item{color:#8b949e!important;transition:none!important}.mob-nav-item svg{stroke:#8b949e!important}'; document.head.appendChild(s); } document.addEventListener('DOMContentLoaded', function () { document.body.classList.toggle('dark-mode', d); }); }();</script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Earnify - Your Learning Marketplace</title>
@@ -289,6 +289,7 @@
       outline: none;
     }
 
+    html.dark-mode .sb-nm-toggle,
     body.dark-mode .sb-nm-toggle {
       background: #1e2535;
       box-shadow: 4px 4px 8px #0d1117, -3px -3px 7px #2d3a4a;
@@ -308,6 +309,7 @@
       z-index: 2;
     }
 
+    html.dark-mode .sb-nm-knob,
     body.dark-mode .sb-nm-knob {
       left: 52px;
       background: linear-gradient(135deg, #3a4a5c, #2d3748);
@@ -340,10 +342,12 @@
       opacity: 0;
     }
 
+    html.dark-mode .sb-nm-label-light,
     body.dark-mode .sb-nm-label-light {
       opacity: 0;
     }
 
+    html.dark-mode .sb-nm-label-dark,
     body.dark-mode .sb-nm-label-dark {
       opacity: 1;
     }
@@ -405,7 +409,7 @@
         <button id="signupBtn" class="admin-btn" onclick="showSignupModal()">Sign Up</button>
         <div class="sb-nm-wrap" id="navNmWrap">
           <button class="sb-nm-toggle" id="sbNmToggle" onclick="toggleDarkMode()" title="Toggle dark/light mode">
-            <span class="sb-nm-knob" id="sbNmKnob">☀️</span>
+            <span class="sb-nm-knob" id="sbNmKnob">🌙</span>
             <span class="sb-nm-label sb-nm-label-light">LIGHT</span>
             <span class="sb-nm-label sb-nm-label-dark">DARK</span>
           </button>
@@ -1156,16 +1160,16 @@
   <div id="signupModal" style="display:none;"></div>
   <nav class="mob-nav">
 
-    <a href="/" class="mob-nav-item" data-nav="home">
-      <svg viewBox="0 0 24 24">
+    <a href="/" class="mob-nav-item" id="mnHome" data-nav="home">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
         <polyline points="9 22 9 12 15 12 15 22" />
       </svg>
       <span>Home</span>
     </a>
 
-    <a href="/#resources" class="mob-nav-item" data-nav="resources">
-      <svg viewBox="0 0 24 24">
+    <a href="/#resources" class="mob-nav-item" id="mnResources" data-nav="resources">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
         <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15" />
       </svg>
@@ -1173,22 +1177,22 @@
     </a>
 
     <a href="/admin/Resources/" class="mob-nav-add" id="addBtn">
-      <svg viewBox="0 0 24 24">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
         <line x1="12" y1="5" x2="12" y2="19" />
         <line x1="5" y1="12" x2="19" y2="12" />
       </svg>
     </a>
 
-    <a href="/Blog/" class="mob-nav-item" data-nav="blog">
-      <svg viewBox="0 0 24 24">
+    <a href="/Blog/" class="mob-nav-item" id="mnBlog" data-nav="blog">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M12 20h9" />
         <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4z" />
       </svg>
       <span>Blog</span>
     </a>
 
-    <a href="/admin/Resources/" class="mob-nav-item" data-nav="dashboard">
-      <svg viewBox="0 0 24 24">
+    <a href="/Dashboard/" class="mob-nav-item" id="mnDash" data-nav="dashboard">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <rect x="3" y="3" width="7" height="7" />
         <rect x="14" y="3" width="7" height="7" />
         <rect x="3" y="14" width="7" height="7" />

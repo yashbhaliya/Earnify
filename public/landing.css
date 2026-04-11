@@ -2781,3 +2781,40 @@ body.dark-mode footer {
   border-top: 1px solid #30363d !important;
   transition: none !important;
 }
+
+/* ── mob-nav dark mode — instant via html.dark-mode ── */
+html.dark-mode .mob-nav,
+body.dark-mode .mob-nav {
+  background: #0d1117 !important;
+  border-top: 1px solid #30363d !important;
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.6) !important;
+  transition: background 0s, border-color 0s, box-shadow 0s !important;
+  transform: translate3d(0,0,0) !important;
+  will-change: transform !important;
+}
+html.dark-mode .mob-nav-item,
+body.dark-mode .mob-nav-item {
+  color: #8b949e !important;
+  transition: none !important;
+}
+html.dark-mode .mob-nav-item svg,
+body.dark-mode .mob-nav-item svg {
+  stroke: #8b949e !important;
+  transition: none !important;
+}
+html.dark-mode .mob-nav-item.active,
+html.dark-mode .mob-nav-item:hover,
+body.dark-mode .mob-nav-item.active,
+body.dark-mode .mob-nav-item:hover {
+  color: #a78bfa !important;
+}
+html.dark-mode .mob-nav-item.active svg,
+html.dark-mode .mob-nav-item:hover svg,
+body.dark-mode .mob-nav-item.active svg,
+body.dark-mode .mob-nav-item:hover svg {
+  stroke: #a78bfa !important;
+}
+html.dark-mode .mob-nav-item.active::after,
+body.dark-mode .mob-nav-item.active::after {
+  background: #a78bfa !important;
+}

@@ -720,38 +720,52 @@ html.dark-mode body .mobile-user-email {
    DARK MODE 🌙
    ───────────────────────────────────────── */
 
+html.dark-mode .mob-nav,
 body.dark-mode .mob-nav {
-  background: #0d1117;
-  border-top: 1px solid #30363d;
-  box-shadow: 0 -4px 20px rgba(0,0,0,0.6);
+  background: #0d1117 !important;
+  border-top: 1px solid #30363d !important;
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.6) !important;
+  transition: background 0s, border-color 0s, box-shadow 0s !important;
+  will-change: transform !important;
+  transform: translate3d(0,0,0) !important;
 }
 
 /* Default text/icon */
+html.dark-mode .mob-nav-item,
 body.dark-mode .mob-nav-item {
-  color: #8b949e;
+  color: #8b949e !important;
 }
 
+html.dark-mode .mob-nav-item svg,
 body.dark-mode .mob-nav-item svg {
-  stroke: #8b949e;
+  stroke: #8b949e !important;
 }
 
 /* Active */
+html.dark-mode .mob-nav-item.active,
+html.dark-mode .mob-nav-item:hover,
+html.dark-mode .mob-nav-item.active,
+html.dark-mode .mob-nav-item:hover,
 body.dark-mode .mob-nav-item.active,
 body.dark-mode .mob-nav-item:hover {
-  color: #a78bfa;
+  color: #a78bfa !important;
 }
 
+html.dark-mode .mob-nav-item.active svg,
+html.dark-mode .mob-nav-item:hover svg,
 body.dark-mode .mob-nav-item.active svg,
 body.dark-mode .mob-nav-item:hover svg {
-  stroke: #a78bfa;
+  stroke: #a78bfa !important;
 }
 
 /* Active dot */
+html.dark-mode .mob-nav-item.active::after,
 body.dark-mode .mob-nav-item.active::after {
-  background: #a78bfa;
+  background: #a78bfa !important;
 }
 
 /* Add button (dark mode tweak) */
+html.dark-mode .mob-nav-add,
 body.dark-mode .mob-nav-add {
   background: linear-gradient(135deg, #7c3aed, #6d28d9);
   box-shadow: 0 4px 16px rgba(124,58,237,0.5);
@@ -762,13 +776,7 @@ body.dark-mode .mob-nav-add {
    ───────────────────────────────────────── */
 
 html, body {
-  height: 100vh;
-}
-
-@supports (height: 100vh) {
-  body {
-    min-height: 100vh;
-  }
+  height: auto;
 }
 
 /* ── Auth Modal ── */
@@ -2177,4 +2185,19 @@ html.dark-mode body .hero-badge {
   background: rgba(22, 27, 34, 0.7) !important;
   border-color: rgba(124, 106, 247, 0.4) !important;
   color: #e6edf3 !important;
+}
+
+/* ── mob-nav SVG icon fix ── */
+.mob-nav-item svg {
+  display: block !important;
+  flex-shrink: 0 !important;
+  width: 22px !important;
+  height: 22px !important;
+  stroke: currentColor !important;
+}
+.mob-nav-add svg {
+  display: block !important;
+  width: 24px !important;
+  height: 24px !important;
+  stroke: #fff !important;
 }

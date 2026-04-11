@@ -275,13 +275,178 @@ body.sidebar-open {
 html.dark-mode,
 html.dark-mode body {
   background: #0d1117 !important;
+  color: #e6edf3 !important;
 }
 html.dark-mode .sidebar {
   background: linear-gradient(180deg, #161b22 0%, #0d1117 100%) !important;
+  border-right-color: #30363d !important;
 }
 html.dark-mode .main {
   background: #0d1117 !important;
 }
+
+/* w-card — main flash fix */
+html.dark-mode .w-card {
+  background: #161b22 !important;
+  border-color: #30363d !important;
+}
+html.dark-mode .w-card-title {
+  color: #e6edf3 !important;
+  border-bottom-color: #30363d !important;
+}
+
+/* Hero banner */
+html.dark-mode .hero-banner {
+  background: linear-gradient(135deg, #7c6af7 0%, #5b4fcf 100%) !important;
+}
+
+/* Form inputs */
+html.dark-mode .form-group label { color: #8b949e !important; }
+html.dark-mode .form-group input,
+html.dark-mode .form-group select,
+html.dark-mode .form-group textarea {
+  background: #1c2333 !important;
+  border-color: #30363d !important;
+  color: #e6edf3 !important;
+}
+html.dark-mode .form-group input:focus,
+html.dark-mode .form-group select:focus,
+html.dark-mode .form-group textarea:focus {
+  border-color: #7c6af7 !important;
+  background: #21293d !important;
+}
+html.dark-mode #amountPreview {
+  background: #1c2333 !important;
+  border-color: #30363d !important;
+  color: #e6edf3 !important;
+}
+
+/* Method pills */
+html.dark-mode .method-pill {
+  background: #1c2333 !important;
+  border-color: #30363d !important;
+  color: #8b949e !important;
+}
+html.dark-mode .method-pill.active {
+  background: linear-gradient(135deg, #7c6af7, #5b4fcf) !important;
+  color: #fff !important;
+  border-color: transparent !important;
+}
+html.dark-mode .method-pill:hover:not(.active) {
+  border-color: #7c6af7 !important;
+  color: #a78bfa !important;
+}
+
+/* History table — main flash fix */
+html.dark-mode .history-table {
+  background: #161b22 !important;
+}
+html.dark-mode .history-table td {
+  color: #8b949e !important;
+  border-bottom-color: #21293d !important;
+  border-right-color: #30363d !important;
+}
+html.dark-mode .history-table th {
+  border-right-color: rgba(255,255,255,0.1) !important;
+}
+html.dark-mode .history-table tbody tr:hover {
+  background: #1c2333 !important;
+}
+html.dark-mode .amount-cell { color: #e6edf3 !important; }
+html.dark-mode .method-chip {
+  background: #1c2333 !important;
+  color: #8b949e !important;
+}
+
+/* Badges */
+html.dark-mode .badge-pending {
+  background: rgba(180,83,9,0.15) !important;
+  color: #fcd34d !important;
+  border-color: rgba(180,83,9,0.3) !important;
+}
+html.dark-mode .badge-approved {
+  background: rgba(6,95,70,0.15) !important;
+  color: #86efac !important;
+  border-color: rgba(6,95,70,0.3) !important;
+}
+html.dark-mode .badge-rejected {
+  background: rgba(153,27,27,0.15) !important;
+  color: #fca5a5 !important;
+  border-color: rgba(153,27,27,0.3) !important;
+}
+
+/* View button */
+html.dark-mode .view-btn {
+  background: #1c2333 !important;
+  border-color: #7c6af7 !important;
+}
+
+/* Reason popup */
+html.dark-mode .reason-box { background: #161b22 !important; }
+html.dark-mode .reason-box-header { border-bottom-color: #30363d !important; }
+html.dark-mode .reason-box-close {
+  background: #1c2333 !important;
+  color: #8b949e !important;
+}
+html.dark-mode .reason-box-body {
+  background: #1c2333 !important;
+  border-color: #30363d !important;
+  color: #e6edf3 !important;
+}
+
+/* Withdrawal detail sheet */
+html.dark-mode .wd-sheet { background: #161b22 !important; }
+html.dark-mode .wd-handle { background: #30363d !important; }
+html.dark-mode .wd-sheet h3 { color: #e6edf3 !important; }
+html.dark-mode .wd-row { border-bottom-color: #30363d !important; }
+html.dark-mode .wd-label { color: #484f58 !important; }
+html.dark-mode .wd-value { color: #e6edf3 !important; }
+
+/* Confirm overlay */
+html.dark-mode #confirmOverlay > div { background: #161b22 !important; }
+html.dark-mode #confirmDetails {
+  background: #1c2333 !important;
+  border-color: #30363d !important;
+}
+
+/* Shimmer */
+html.dark-mode .shimmer-dark {
+  background: linear-gradient(90deg, #1c2333 25%, #21293d 50%, #1c2333 75%) !important;
+  background-size: 600px 100% !important;
+}
+
+/* Sidebar elements */
+html.dark-mode .sidebar h2 { -webkit-text-fill-color: #a78bfa !important; }
+html.dark-mode .sidebar a { color: #8b949e !important; }
+html.dark-mode .sidebar a:hover {
+  background: rgba(124,106,247,0.08) !important;
+  color: #a78bfa !important;
+}
+html.dark-mode .sidebar a.active-link {
+  background: rgba(124,106,247,0.12) !important;
+  color: #a78bfa !important;
+}
+html.dark-mode .sidebar-header { border-bottom-color: #30363d !important; }
+html.dark-mode .sidebar-user {
+  background: #161b22 !important;
+  border-top-color: #30363d !important;
+}
+html.dark-mode .user-name { color: #e6edf3 !important; }
+html.dark-mode .user-email { color: #8b949e !important; }
+html.dark-mode .user-info { border-bottom-color: #30363d !important; }
+html.dark-mode .logout-link {
+  background: #161b22 !important;
+  color: #f87171 !important;
+  border-color: #f87171 !important;
+}
+
+/* Toggle */
+html.dark-mode .sb-nm-toggle { background: #1e2535 !important; }
+html.dark-mode .sb-nm-knob { left: 52px !important; background: #2d3748 !important; }
+html.dark-mode .sb-nm-label-light { opacity: 0 !important; }
+html.dark-mode .sb-nm-label-dark  { opacity: 1 !important; }
+html.dark-mode .sb-nm-wrap { border-top-color: #30363d !important; }
+html.dark-mode .sb-nm-wrap-label { color: #8b949e !important; }
 
 body.dark-mode {
   background: #0d1117 !important;

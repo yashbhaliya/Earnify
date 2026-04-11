@@ -1225,3 +1225,35 @@ body.dark-mode,
 html.dark-mode body .sidebar-user .user-email {
   color: #8b949e !important;
 }
+
+/* ── Fix stat-number: clear webkit gradient so dark color applies ── */
+body.dark-mode .stat-number,
+html.dark-mode body .stat-number {
+  background: none !important;
+  -webkit-background-clip: unset !important;
+  -webkit-text-fill-color: #e6edf3 !important;
+  background-clip: unset !important;
+}
+
+/* ── Fix sidebar-close-btn in dark mode ── */
+body.dark-mode .sidebar-close-btn,
+html.dark-mode body .sidebar-close-btn {
+  color: #8b949e !important;
+}
+
+/* ── Fix sb-nm-wrap border-top in dark mode ── */
+body.dark-mode .sb-nm-wrap,
+html.dark-mode body .sb-nm-wrap {
+  border-top-color: #30363d !important;
+}
+
+/* ── Fix html.dark-mode knob position (before body class loads) ── */
+html.dark-mode .sb-nm-knob {
+  left: 52px !important;
+  background: #2d3748 !important;
+}
+html.dark-mode .sb-nm-toggle {
+  background: #1e2535 !important;
+}
+html.dark-mode .sb-nm-label-light { opacity: 0 !important; }
+html.dark-mode .sb-nm-label-dark  { opacity: 1 !important; }

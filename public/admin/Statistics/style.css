@@ -3028,6 +3028,7 @@ body.dark-mode .modern-table td,
 html.dark-mode body .modern-table td {
   color: #8b949e !important;
   border-bottom-color: #21293d !important;
+      border-right: 2px solid #7c7676;
 }
 body.dark-mode .modern-table td:first-child,
 html.dark-mode body .modern-table td:first-child {
@@ -3222,4 +3223,585 @@ html.dark-mode body .date-badge {
   background: rgba(124,106,247,0.15) !important;
   color: #a78bfa !important;
   border-color: rgba(124,106,247,0.25) !important;
+}
+
+
+/* ══════════════════════════════════════════
+   STATISTICS PAGE — DARK MODE COMPLETE FIX
+   ══════════════════════════════════════════ */
+
+/* Body & main background — instant, no flash */
+html.dark-mode body,
+body.dark-mode {
+  background: #0d1117 !important;
+  color: #e6edf3 !important;
+}
+html.dark-mode .main,
+body.dark-mode .main {
+  background: #0d1117 !important;
+}
+
+/* Sidebar */
+html.dark-mode .sidebar,
+body.dark-mode .sidebar {
+  background: linear-gradient(180deg, #161b22 0%, #0d1117 100%) !important;
+  border-right-color: #30363d !important;
+}
+html.dark-mode .sidebar-header,
+body.dark-mode .sidebar-header {
+  border-bottom-color: #30363d !important;
+}
+html.dark-mode .sidebar h2,
+body.dark-mode .sidebar h2 {
+  -webkit-text-fill-color: #a78bfa !important;
+}
+html.dark-mode .sidebar a,
+body.dark-mode .sidebar a {
+  color: #8b949e !important;
+}
+html.dark-mode .sidebar a:hover,
+body.dark-mode .sidebar a:hover {
+  background: rgba(124,106,247,0.08) !important;
+  color: #a78bfa !important;
+}
+html.dark-mode .sidebar a.active-link,
+body.dark-mode .sidebar a.active-link {
+  background: rgba(124,106,247,0.12) !important;
+  color: #a78bfa !important;
+  border-left-color: #7c6af7 !important;
+}
+html.dark-mode .sidebar-close-btn,
+body.dark-mode .sidebar-close-btn {
+  color: #8b949e !important;
+}
+
+/* Neumorphic toggle wrap border */
+html.dark-mode .sb-nm-wrap,
+body.dark-mode .sb-nm-wrap {
+  border-top-color: #30363d !important;
+  border-bottom-color: #30363d !important;
+}
+html.dark-mode .sb-nm-wrap-label,
+body.dark-mode .sb-nm-wrap-label {
+  color: #8b949e !important;
+}
+html.dark-mode .sb-nm-toggle,
+body.dark-mode .sb-nm-toggle {
+  background: #1e2535 !important;
+  box-shadow: 4px 4px 8px #0d1117, -3px -3px 7px #2d3a4a !important;
+}
+html.dark-mode .sb-nm-knob,
+body.dark-mode .sb-nm-knob {
+  left: 52px !important;
+  background: #2d3748 !important;
+  box-shadow: 2px 2px 5px #0d1117, -1px -1px 4px #3a4a5c !important;
+}
+html.dark-mode .sb-nm-label-light,
+body.dark-mode .sb-nm-label-light { opacity: 0 !important; }
+html.dark-mode .sb-nm-label-dark,
+body.dark-mode .sb-nm-label-dark  { opacity: 1 !important; }
+
+/* Stat cards */
+html.dark-mode .stat-card,
+body.dark-mode .stat-card {
+  background: #161b22 !important;
+  border-color: #30363d !important;
+}
+html.dark-mode .stat-card:hover,
+body.dark-mode .stat-card:hover {
+  background: #1c2333 !important;
+}
+html.dark-mode .stat-content h3,
+body.dark-mode .stat-content h3 {
+  color: #8b949e !important;
+}
+/* Fix stat-number: clear webkit gradient so color applies */
+html.dark-mode .stat-number,
+body.dark-mode .stat-number {
+  background: none !important;
+  -webkit-background-clip: unset !important;
+  -webkit-text-fill-color: #e6edf3 !important;
+  background-clip: unset !important;
+  color: #e6edf3 !important;
+}
+html.dark-mode .stat-label,
+body.dark-mode .stat-label {
+  color: #8b949e !important;
+}
+html.dark-mode .stat-icon,
+body.dark-mode .stat-icon {
+  border-color: #30363d !important;
+}
+
+/* Analytics section */
+html.dark-mode .analytics-section,
+body.dark-mode .analytics-section {
+  background: #161b22 !important;
+  border-color: #30363d !important;
+}
+html.dark-mode .analytics-section p,
+body.dark-mode .analytics-section p {
+  color: #8b949e !important;
+}
+html.dark-mode .section-header h2,
+body.dark-mode .section-header h2 {
+  color: #e6edf3 !important;
+}
+html.dark-mode .section-header p,
+body.dark-mode .section-header p {
+  color: #8b949e !important;
+}
+
+/* Table */
+html.dark-mode .table-wrapper,
+body.dark-mode .table-wrapper {
+  background: #161b22 !important;
+}
+html.dark-mode .modern-table,
+body.dark-mode .modern-table {
+  background: #161b22 !important;
+}
+html.dark-mode .modern-table tbody tr,
+body.dark-mode .modern-table tbody tr {
+  border-bottom-color: #21293d !important;
+}
+html.dark-mode .modern-table tbody tr:hover,
+body.dark-mode .modern-table tbody tr:hover {
+  background: #1c2333 !important;
+}
+html.dark-mode .modern-table td,
+body.dark-mode .modern-table td {
+  color: #8b949e !important;
+  border-bottom-color: #21293d !important;
+  border-right-color: #30363d !important;
+}
+html.dark-mode .customer-email,
+body.dark-mode .customer-email {
+  color: #c9d1d9 !important;
+}
+html.dark-mode .amount-value,
+body.dark-mode .amount-value {
+  color: #3fb950 !important;
+}
+html.dark-mode .date-badge,
+body.dark-mode .date-badge {
+  background: rgba(124,106,247,0.15) !important;
+  color: #a78bfa !important;
+  border-color: rgba(124,106,247,0.25) !important;
+}
+html.dark-mode .resource-tag,
+body.dark-mode .resource-tag {
+  background: #1c2333 !important;
+  color: #a78bfa !important;
+}
+
+/* Eye button */
+html.dark-mode .eye-btn,
+body.dark-mode .eye-btn {
+  background: #1c2333 !important;
+  border-color: #7c6af7 !important;
+}
+
+/* Detail sheet (mobile modal) */
+html.dark-mode .detail-sheet,
+body.dark-mode .detail-sheet {
+  background: #161b22 !important;
+}
+html.dark-mode .detail-sheet-handle,
+body.dark-mode .detail-sheet-handle {
+  background: #30363d !important;
+}
+html.dark-mode .detail-sheet h3,
+body.dark-mode .detail-sheet h3 {
+  color: #e6edf3 !important;
+}
+html.dark-mode .detail-row,
+body.dark-mode .detail-row {
+  border-bottom-color: #30363d !important;
+}
+html.dark-mode .detail-label,
+body.dark-mode .detail-label {
+  color: #484f58 !important;
+}
+html.dark-mode .detail-value,
+body.dark-mode .detail-value {
+  color: #e6edf3 !important;
+}
+
+/* Custom date modal */
+html.dark-mode .modal-content,
+body.dark-mode .modal-content {
+  background: #161b22 !important;
+  border-color: #30363d !important;
+}
+html.dark-mode .modal-content h2,
+body.dark-mode .modal-content h2 {
+  color: #a78bfa !important;
+}
+html.dark-mode .close,
+body.dark-mode .close {
+  color: #8b949e !important;
+}
+html.dark-mode .date-input-group label,
+body.dark-mode .date-input-group label {
+  color: #8b949e !important;
+}
+html.dark-mode .date-input,
+body.dark-mode .date-input {
+  background: #1c2333 !important;
+  border-color: #30363d !important;
+  color: #e6edf3 !important;
+}
+html.dark-mode .date-input:focus,
+body.dark-mode .date-input:focus {
+  border-color: #7c6af7 !important;
+  background: #21293d !important;
+}
+html.dark-mode .btn-cancel,
+body.dark-mode .btn-cancel {
+  background: #1c2333 !important;
+  border-color: #30363d !important;
+  color: #8b949e !important;
+}
+
+/* Inline JS-generated empty/error/login state divs */
+html.dark-mode #analyticsContent > div,
+body.dark-mode #analyticsContent > div {
+  background: #161b22 !important;
+  border-color: #30363d !important;
+}
+html.dark-mode #analyticsContent h3,
+body.dark-mode #analyticsContent h3 {
+  color: #e6edf3 !important;
+}
+html.dark-mode #analyticsContent p,
+body.dark-mode #analyticsContent p {
+  color: #8b949e !important;
+}
+
+/* Shimmer cards */
+html.dark-mode .shimmer-stat-card,
+body.dark-mode .shimmer-stat-card {
+  background: #161b22 !important;
+  border-color: #30363d !important;
+}
+html.dark-mode .shimmer-stat-icon,
+html.dark-mode .shimmer-stat-title,
+html.dark-mode .shimmer-stat-number,
+html.dark-mode .shimmer-stat-label,
+html.dark-mode .shimmer-table-cell,
+body.dark-mode .shimmer-stat-icon,
+body.dark-mode .shimmer-stat-title,
+body.dark-mode .shimmer-stat-number,
+body.dark-mode .shimmer-stat-label,
+body.dark-mode .shimmer-table-cell {
+  background: linear-gradient(90deg,#1c2333 25%,#21293d 50%,#1c2333 75%) !important;
+  background-size: 400px 100% !important;
+}
+html.dark-mode #analyticsShimmer .modern-table thead,
+body.dark-mode #analyticsShimmer .modern-table thead {
+  background: #1c2333 !important;
+}
+html.dark-mode #analyticsShimmer .modern-table tbody tr,
+body.dark-mode #analyticsShimmer .modern-table tbody tr {
+  background: #161b22 !important;
+}
+
+/* Sidebar user section */
+html.dark-mode .sidebar-user,
+body.dark-mode .sidebar-user {
+  background: #161b22 !important;
+  border-top-color: #30363d !important;
+}
+html.dark-mode .user-info,
+body.dark-mode .user-info {
+  border-bottom-color: #30363d !important;
+}
+html.dark-mode .user-name,
+body.dark-mode .user-name {
+  color: #e6edf3 !important;
+}
+html.dark-mode .user-email,
+body.dark-mode .user-email {
+  color: #8b949e !important;
+}
+html.dark-mode .logout-link,
+body.dark-mode .logout-link {
+  background: #161b22 !important;
+  color: #f87171 !important;
+  border-color: #f87171 !important;
+}
+
+/* Mobile responsive overrides for dark mode */
+html.dark-mode .resource-tabs,
+body.dark-mode .resource-tabs {
+  background: #161b22 !important;
+  border-color: #30363d !important;
+}
+html.dark-mode .customer-avatar,
+body.dark-mode .customer-avatar {
+  background: #1c2333 !important;
+  color: #8b949e !important;
+}
+html.dark-mode .quantity-badge,
+body.dark-mode .quantity-badge {
+  background: rgba(124,106,247,0.15) !important;
+  color: #a78bfa !important;
+}
+
+
+/* ══════════════════════════════════════════
+   analyticsContent TABLE — COMPLETE BASE STYLES
+   (light + dark, all screen sizes)
+   ══════════════════════════════════════════ */
+
+/* ── Table wrapper ── */
+#analyticsContent .table-wrapper {
+  overflow-x: auto;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  background: #fff;
+}
+
+/* ── Table base ── */
+#analyticsContent .modern-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  font-size: 14px;
+}
+
+/* ── Header ── */
+#analyticsContent .modern-table thead {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+#analyticsContent .modern-table th {
+  padding: 14px 16px;
+  text-align: left;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-right: 1px solid rgba(255,255,255,0.15);
+  white-space: nowrap;
+}
+#analyticsContent .modern-table th:last-child {
+  border-right: none;
+}
+.th-content {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ── Body rows ── */
+#analyticsContent .modern-table tbody tr {
+  border-bottom: 1px solid #f1f5f9;
+  transition: background 0.15s;
+}
+#analyticsContent .modern-table tbody tr:last-child {
+  border-bottom: none;
+}
+#analyticsContent .modern-table tbody tr:hover {
+  background: #f8fafc;
+}
+#analyticsContent .modern-table td {
+  padding: 13px 16px;
+  color: #475569;
+  border-right: 1px solid #f1f5f9;
+  vertical-align: middle;
+}
+#analyticsContent .modern-table td:last-child {
+  border-right: none;
+}
+
+/* ── Customer cell ── */
+.customer-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.customer-email {
+  font-size: 13px;
+  font-weight: 600;
+  color: #1e293b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+}
+
+/* ── Date badge ── */
+.date-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  background: linear-gradient(135deg, rgba(102,126,234,0.10), rgba(118,75,162,0.10));
+  color: #667eea;
+  border: 1px solid rgba(102,126,234,0.2);
+  white-space: nowrap;
+}
+
+/* ── Amount value ── */
+.amount-value {
+  font-size: 14px;
+  font-weight: 700;
+  color: #10b981;
+}
+
+/* ── Resource tag ── */
+.resource-tag {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  background: #f1f5f9;
+  color: #475569;
+  border: 1px solid #e2e8f0;
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ── Eye / View button ── */
+.eye-btn {
+  background: #fff;
+  border: 1.5px solid #667eea;
+  border-radius: 8px;
+  width: 60px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: box-shadow 0.2s, transform 0.2s;
+  padding: 0;
+}
+.eye-btn span {
+  font-size: 11px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.eye-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 3px 10px rgba(102,126,234,0.25) !important;
+}
+
+/* ── Inline JS empty / error / login state boxes ── */
+#analyticsContent > div[style*="text-align:center"],
+#analyticsContent > div[style*="text-align: center"] {
+  background: #fff !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 12px !important;
+  color: #1e293b !important;
+}
+#analyticsContent > div[style*="text-align:center"] h3,
+#analyticsContent > div[style*="text-align: center"] h3 {
+  color: #1e293b !important;
+}
+#analyticsContent > div[style*="text-align:center"] p,
+#analyticsContent > div[style*="text-align: center"] p {
+  color: #64748b !important;
+}
+
+/* ── Mobile ── */
+@media (max-width: 768px) {
+  #analyticsContent .modern-table th,
+  #analyticsContent .modern-table td {
+    padding: 10px 10px;
+    font-size: 12px;
+  }
+  .customer-email { max-width: 130px; font-size: 12px; }
+  .amount-value   { font-size: 12px; }
+  .resource-tag   { font-size: 10px; max-width: 100px; }
+}
+
+/* ══════════════════════════════════════════
+   analyticsContent TABLE — DARK MODE
+   ══════════════════════════════════════════ */
+
+html.dark-mode #analyticsContent .table-wrapper,
+body.dark-mode #analyticsContent .table-wrapper {
+  background: #161b22 !important;
+  border-color: #30363d !important;
+}
+html.dark-mode #analyticsContent .modern-table,
+body.dark-mode #analyticsContent .modern-table {
+  background: #161b22 !important;
+}
+html.dark-mode #analyticsContent .modern-table thead,
+body.dark-mode #analyticsContent .modern-table thead {
+  background: linear-gradient(135deg, #7c6af7 0%, #5b4fcf 100%) !important;
+}
+html.dark-mode #analyticsContent .modern-table th,
+body.dark-mode #analyticsContent .modern-table th {
+  border-right-color: rgba(255,255,255,0.1) !important;
+  color: #fff !important;
+}
+html.dark-mode #analyticsContent .modern-table tbody tr,
+body.dark-mode #analyticsContent .modern-table tbody tr {
+  border-bottom-color: #21293d !important;
+}
+html.dark-mode #analyticsContent .modern-table tbody tr:hover,
+body.dark-mode #analyticsContent .modern-table tbody tr:hover {
+  background: #1c2333 !important;
+}
+html.dark-mode #analyticsContent .modern-table td,
+body.dark-mode #analyticsContent .modern-table td {
+  color: #8b949e !important;
+  border-right-color: #21293d !important;
+}
+html.dark-mode .customer-email,
+body.dark-mode .customer-email {
+  color: #c9d1d9 !important;
+}
+html.dark-mode .date-badge,
+body.dark-mode .date-badge {
+  background: rgba(124,106,247,0.15) !important;
+  color: #a78bfa !important;
+  border-color: rgba(124,106,247,0.25) !important;
+}
+html.dark-mode .amount-value,
+body.dark-mode .amount-value {
+  color: #3fb950 !important;
+}
+html.dark-mode .resource-tag,
+body.dark-mode .resource-tag {
+  background: #1c2333 !important;
+  color: #a78bfa !important;
+  border-color: #30363d !important;
+}
+html.dark-mode .eye-btn,
+body.dark-mode .eye-btn {
+  background: #1c2333 !important;
+  border-color: #7c6af7 !important;
+}
+/* Inline JS state boxes — dark */
+html.dark-mode #analyticsContent > div[style*="text-align:center"],
+html.dark-mode #analyticsContent > div[style*="text-align: center"],
+body.dark-mode #analyticsContent > div[style*="text-align:center"],
+body.dark-mode #analyticsContent > div[style*="text-align: center"] {
+  background: #161b22 !important;
+  border-color: #30363d !important;
+  color: #e6edf3 !important;
+}
+html.dark-mode #analyticsContent > div[style*="text-align:center"] h3,
+html.dark-mode #analyticsContent > div[style*="text-align: center"] h3,
+body.dark-mode #analyticsContent > div[style*="text-align:center"] h3,
+body.dark-mode #analyticsContent > div[style*="text-align: center"] h3 {
+  color: #e6edf3 !important;
+}
+html.dark-mode #analyticsContent > div[style*="text-align:center"] p,
+html.dark-mode #analyticsContent > div[style*="text-align: center"] p,
+body.dark-mode #analyticsContent > div[style*="text-align:center"] p,
+body.dark-mode #analyticsContent > div[style*="text-align: center"] p {
+  color: #8b949e !important;
 }
