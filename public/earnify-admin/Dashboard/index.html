@@ -98,6 +98,14 @@
       font-weight: 700;
     }
 
+    .back-link {
+      border-top: 1px solid #e2e8f0;
+      padding-top: 10px;
+      margin-top: 10px;
+      color: #667eea;
+      font-weight: 600;
+    }
+
     .nav-icon {
       font-size: 17px;
       width: 22px;
@@ -631,6 +639,10 @@
       color: transparent !important;
       position: relative;
       overflow: hidden;
+      border-right: 1px solid rgba(255, 255, 255, 0.28);
+    }
+    thead.is-loading th:last-child {
+      border-right: none;
     }
 
     thead.is-loading th::before {
@@ -762,7 +774,10 @@
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      border-right: 1px solid #e8e2e2;
+      border-right: 1px solid rgba(255, 255, 255, 0.3);
+    }
+    th:last-child {
+      border-right: none;
     }
 
     td {
@@ -1368,18 +1383,18 @@
     }
     html.dark-mode .stat-card:nth-child(n+2) {
       background: #161b22 !important;
-      border: 1px solid rgba(124,106,247,0.25) !important;
-      box-shadow: 0 0 0 1px rgba(124,106,247,0.1), 0 4px 20px rgba(0,0,0,0.35) !important;
+      border: 1px solid rgba(124,106,247,0.5) !important;
+      box-shadow: 0 0 0 1px rgba(124,106,247,0.2), 0 4px 20px rgba(0,0,0,0.35) !important;
     }
     html.dark-mode .chart-card {
       background: #161b22 !important;
-      border: 1px solid rgba(124,106,247,0.25) !important;
-      box-shadow: 0 0 0 1px rgba(124,106,247,0.1), 0 4px 20px rgba(0,0,0,0.35) !important;
+      border: 1px solid rgba(124,106,247,0.5) !important;
+      box-shadow: 0 0 0 1px rgba(124,106,247,0.2), 0 4px 20px rgba(0,0,0,0.35) !important;
     }
     html.dark-mode .table-card {
       background: #161b22 !important;
-      border: 1px solid rgba(124,106,247,0.25) !important;
-      box-shadow: 0 0 0 1px rgba(124,106,247,0.1), 0 4px 20px rgba(0,0,0,0.35) !important;
+      border: 1px solid rgba(124,106,247,0.5) !important;
+      box-shadow: 0 0 0 1px rgba(124,106,247,0.2), 0 4px 20px rgba(0,0,0,0.35) !important;
     }
     html.dark-mode .table-shimmer-row td {
       background: #161b22 !important;
@@ -1431,9 +1446,12 @@
     }
     html.dark-mode .admin-badge { background: rgba(124, 106, 247, 0.1) !important; }
     html.dark-mode .admin-name { color: #e6edf3 !important; }
-    html.dark-mode .admin-role { color: #484f58 !important; }
     html.dark-mode .sidebar-brand { border-bottom-color: #30363d !important; }
     html.dark-mode .nav-link { color: #8b949e !important; }
+    html.dark-mode .back-link {
+      color: #a78bfa !important;
+      border-top-color: #30363d !important;
+    }
     html.dark-mode .admin-badge.is-loading .admin-avatar {
       background: linear-gradient(90deg, #1c2333 25%, #21293d 50%, #1c2333 75%) !important;
       background-size: 400% 100% !important;
@@ -1460,6 +1478,10 @@
     body.dark-mode .nav-link {
       color: #8b949e !important;
     }
+    body.dark-mode .back-link {
+      color: #a78bfa !important;
+      border-top-color: #30363d !important;
+    }
 
     body.dark-mode .nav-link:hover,
     body.dark-mode .nav-link.active {
@@ -1480,10 +1502,6 @@
       color: #e6edf3 !important;
     }
 
-    body.dark-mode .admin-role {
-      color: #484f58 !important;
-    }
-
     body.dark-mode .logout-btn {
       background: #161b22 !important;
       color: #f87171 !important;
@@ -1501,8 +1519,8 @@
     /* stat cards */
     body.dark-mode .stat-card:nth-child(n+2) {
       background: #161b22 !important;
-      border: 1px solid rgba(124,106,247,0.25) !important;
-      box-shadow: 0 0 0 1px rgba(124,106,247,0.1), 0 4px 20px rgba(0,0,0,0.35) !important;
+      border: 1px solid rgba(124,106,247,0.5) !important;
+      box-shadow: 0 0 0 1px rgba(124,106,247,0.2), 0 4px 20px rgba(0,0,0,0.35) !important;
     }
 
     body.dark-mode .stat-card:nth-child(n+2) .stat-value {
@@ -1513,9 +1531,6 @@
       color: #8b949e !important;
     }
 
-    body.dark-mode .stat-card:nth-child(n+2) .stat-label {
-      color: #484f58 !important;
-    }
 
     body.dark-mode .stat-card:nth-child(2):hover .stat-value {
       color: #f5576c !important;
@@ -1561,6 +1576,12 @@
       border-bottom-color: #21293d !important;
       border-right-color: #2d3748 !important;
     }
+    body.dark-mode thead.is-loading th {
+      border-right-color: #3d4758 !important;
+    }
+    body.dark-mode thead.is-loading th:last-child {
+      border-right: none !important;
+    }
 
     body.dark-mode .admin-badge.is-loading .admin-avatar,
     body.dark-mode .admin-badge.is-loading .admin-name,
@@ -1574,17 +1595,14 @@
     /* charts */
     body.dark-mode .chart-card {
       background: #161b22 !important;
-      border: 1px solid rgba(124,106,247,0.25) !important;
-      box-shadow: 0 0 0 1px rgba(124,106,247,0.1), 0 4px 20px rgba(0,0,0,0.35) !important;
+      border: 1px solid rgba(124,106,247,0.5) !important;
+      box-shadow: 0 0 0 1px rgba(124,106,247,0.2), 0 4px 20px rgba(0,0,0,0.35) !important;
     }
 
     body.dark-mode .chart-title {
       color: #e6edf3 !important;
     }
 
-    body.dark-mode .chart-sub {
-      color: #484f58 !important;
-    }
 
     body.dark-mode .donut-center {
       color: #e6edf3 !important;
@@ -1598,16 +1616,15 @@
       color: #e6edf3 !important;
     }
 
-    body.dark-mode #legendToggleBtn {
-      background: #1c2333 !important;
-      border-color: #30363d !important;
-      color: #a78bfa !important;
+    #legendToggleBtn {
+      display: block; width: 100%; margin-top: 8px; padding: 4px 0;
+      background: none; border: none; color: #667eea;
+      font-size: 12px; font-weight: 700; cursor: pointer;
+      font-family: inherit; text-align: center; transition: color 0.2s;
     }
-
-    body.dark-mode #legendToggleBtn:hover {
-      background: rgba(124, 106, 247, 0.15) !important;
-      border-color: #7c6af7 !important;
-    }
+    #legendToggleBtn:hover { color: #764ba2; }
+    body.dark-mode #legendToggleBtn { color: #a78bfa !important; }
+    body.dark-mode #legendToggleBtn:hover { color: #c4b5fd !important; }
 
     body.dark-mode .filter-select {
       background: #1c2333 !important;
@@ -1624,8 +1641,8 @@
     /* tables */
     body.dark-mode .table-card {
       background: #161b22 !important;
-      border: 1px solid rgba(124,106,247,0.25) !important;
-      box-shadow: 0 0 0 1px rgba(124,106,247,0.1), 0 4px 20px rgba(0,0,0,0.35) !important;
+      border: 1px solid rgba(124,106,247,0.5) !important;
+      box-shadow: 0 0 0 1px rgba(124,106,247,0.2), 0 4px 20px rgba(0,0,0,0.35) !important;
     }
 
     body.dark-mode .table-header {
@@ -1819,8 +1836,7 @@
     <a href="/earnify-admin/Blog/" class="nav-link">
       <span class="nav-icon">✍️</span> Blog
     </a>
-    <a href="/admin/Resources/" class="nav-link"
-      style="border-top:1px solid #e2e8f0; padding-top:10px; margin-top:10px; color:#667eea;font-weight:600">
+    <a href="/admin/Resources/" class="nav-link back-link">
       <span class="nav-icon">←</span> Back
     </a>
     <div class="sb-nm-wrap">

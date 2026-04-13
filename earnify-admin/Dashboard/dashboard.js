@@ -211,7 +211,7 @@ function renderResourceChart(limit = 10) {
     const previewRows = allData.slice(0, PREVIEW).map(makeRow).join('');
 
     const showAllBtn = allData.length > PREVIEW
-      ? `<button onclick="openAllLegendPopup()" style="display:flex;align-items:center;justify-content:center;gap:5px;width:100%;margin-top:8px;padding:7px 12px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;transition:all 0.2s;background:${isDark ? '#1c2333' : '#f1f5f9'};border:1.5px solid ${isDark ? '#30363d' : '#e2e8f0'};color:${isDark ? '#a78bfa' : '#667eea'};">&#9660; Show all ${allData.length} resources</button>`
+      ? `<button onclick="openAllLegendPopup()" style="display:flex;align-items:center;justify-content:center;gap:5px;width:100%;margin-top:8px;padding:7px 12px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;transition:all 0.2s;background:${isDark ? '#1c2333' : '#f1f5f9'};border:1.5px solid ${isDark ? '#30363d' : '#e2e8f0'};color:${isDark ? '#a78bfa' : '#667eea'};">&#9660; Show all </button>`
       : '';
 
     legend.innerHTML = previewRows + showAllBtn;

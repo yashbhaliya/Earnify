@@ -6,9 +6,11 @@
     var body = document.body;
 
     html.classList.toggle('dark-mode', dark);
-    if (body) {
-      body.classList.toggle('dark-mode', dark);
-    }
+    if (body) body.classList.toggle('dark-mode', dark);
+
+    // Clear inline background so light mode CSS takes over
+    html.style.background = dark ? '#0d1117' : '';
+    if (body) body.style.background = '';
 
     var knob = document.getElementById('sbNmKnob');
     if (knob) knob.textContent = dark ? '🌙' : '☀️';

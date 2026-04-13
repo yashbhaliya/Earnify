@@ -63,8 +63,6 @@ body {
   text-decoration: none;
   font-weight: 500;
   font-size: 14px;
-  border-left: 3px solid transparent;
-  border-radius: 0 10px 10px 0;
   margin: 2px 12px 2px 0;
   transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
 }
@@ -175,23 +173,23 @@ body {
   justify-content: center;
   gap: 8px;
   padding: 12px 15px;
-  color: #dc2626 !important;
-  background: white !important;
-  border: 2px solid #ef4444 !important;
-  border-radius: 10px !important;
+  color: #dc2626;
+  background: white;
+  border: 2px solid #ef4444;
+  border-radius: 10px;
   font-weight: 600;
   font-size: 14px;
   margin-top: 10px;
-  transition: all 0.3s !important;
+  transition: all 0.3s;
   text-decoration: none;
   cursor: pointer;
 }
 
 .logout-link:hover {
-  background: #fee2e2 !important;
-  color: #dc2626 !important;
-  border-color: #dc2626 !important;
-  transform: translateY(-2px) !important;
+  background: #fee2e2;
+  color: #dc2626;
+  border-color: #dc2626;
+  transform: translateY(-2px);
 }
 
 /* ── Mobile toggle ── */

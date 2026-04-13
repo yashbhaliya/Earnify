@@ -639,6 +639,52 @@ html.dark-mode body .profile-card h2 {
 }
 
 body.dark-mode,
+html.dark-mode body .profile-details h2 {
+  border-bottom-color: #30363d !important;
+}
+
+body.dark-mode,
+html.dark-mode body .shimmer-detail-row {
+  border-bottom-color: #30363d !important;
+}
+
+body.dark-mode,
+html.dark-mode body .btn-edit {
+  background: #1c2333 !important;
+  color: #e6edf3 !important;
+  border-color: #3fb950 !important;
+}
+
+body.dark-mode,
+html.dark-mode body .btn-edit:hover {
+  background: rgba(63, 185, 80, 0.15) !important;
+  color: #3fb950 !important;
+}
+
+body.dark-mode,
+html.dark-mode body .btn-logout {
+  background: #1c2333 !important;
+  color: #e6edf3 !important;
+  border-color: #f87171 !important;
+}
+
+body.dark-mode,
+html.dark-mode body .btn-logout:hover {
+  background: rgba(248, 113, 113, 0.15) !important;
+  color: #fca5a5 !important;
+}
+
+body.dark-mode,
+html.dark-mode body .empty-resources {
+  color: #8b949e !important;
+}
+
+body.dark-mode,
+html.dark-mode body .profile-page-header {
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5) !important;
+}
+
+body.dark-mode,
 html.dark-mode body .profile-name {
   color: #e6edf3 !important;
 }
@@ -920,9 +966,36 @@ html.dark-mode body #confirmOverlay>div {
 }
 
 body.dark-mode,
+html.dark-mode body #confirmBox {
+  background: #161b22 !important;
+}
+
+body.dark-mode,
+html.dark-mode body .confirm-cancel-btn {
+  background: #1c2333 !important;
+  border-color: #30363d !important;
+  color: #8b949e !important;
+}
+
+body.dark-mode,
 html.dark-mode body #confirmDetails {
   background: #1c2333 !important;
   border-color: #30363d !important;
+}
+
+body.dark-mode,
+html.dark-mode body .shimmer-row-border {
+  border-bottom-color: #30363d !important;
+}
+
+body.dark-mode,
+html.dark-mode body .shimmer-card-header {
+  border-bottom-color: #30363d !important;
+}
+
+body.dark-mode,
+html.dark-mode body .history-table tbody tr:last-child td {
+  border-bottom-color: #30363d !important;
 }
 
 /* ── Statistics page ── */

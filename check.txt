@@ -1,5 +1,0 @@
-corrupt=true
-ctx=tsContent1,
-#statsContent2,
-#statsContent3 {
-  box-shadow: none !important;

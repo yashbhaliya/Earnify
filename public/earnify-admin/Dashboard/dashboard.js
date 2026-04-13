@@ -224,7 +224,7 @@ function renderResourceChart(limit = 10) {
 
     const showAllBtn = allData.length > PREVIEW
       ? `<div id="legendExtraRows" style="display:none;">${extraRows}</div>
-         <button id="legendToggleBtn" onclick="toggleLegendRows()" style="display:flex;align-items:center;justify-content:center;gap:5px;width:100%;margin-top:8px;padding:7px 12px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;transition:all 0.2s;background:${isDark ? '#1c2333' : '#f1f5f9'};border:1.5px solid ${isDark ? '#30363d' : '#e2e8f0'};color:${isDark ? '#a78bfa' : '#667eea'};">&#9660; Show all ${allData.length} resources</button>`
+         <button id="legendToggleBtn" onclick="toggleLegendRows()">&#9660; Show all</button>`
       : '';
 
     legend.innerHTML = previewRows + showAllBtn;
@@ -519,7 +519,7 @@ function toggleLegendRows() {
   const total = (window._allLegendData || []).length;
   btn.innerHTML = isHidden
     ? `&#9650; Show less`
-    : `&#9660; Show all ${total} resources`;
+    : `&#9660; Show all `;
 }
 
 function openAllLegendPopup() {}

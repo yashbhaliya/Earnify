@@ -445,6 +445,10 @@
       padding: 14px 18px !important;
       background: white;
       border-bottom: 1px solid #f8fafc;
+      border-right: 1px solid #e2e8f0;
+    }
+    .table-shimmer-row td:last-child {
+      border-right: none;
     }
 
     .table-shimmer-cell {
@@ -467,6 +471,10 @@
       color: transparent !important;
       position: relative;
       overflow: hidden;
+      border-right: 1px solid rgba(255, 255, 255, 0.28);
+    }
+    thead.is-loading th:last-child {
+      border-right: none;
     }
     thead.is-loading th::before {
       content: '';
@@ -582,7 +590,10 @@
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      border-right: 1px solid #e8e2e2;
+      border-right: 1px solid rgba(255, 255, 255, 0.3);
+    }
+    th:last-child {
+      border-right: none;
     }
 
     td {
@@ -590,7 +601,10 @@
       border-bottom: 1px solid #f8fafc;
       font-size: 13px;
       color: #475569;
-      border-right: 1px solid #e8e2e2;
+      border-right: 1px solid #e2e8f0;
+    }
+    td:last-child {
+      border-right: none;
     }
 
     tbody tr:last-child td {
@@ -1029,6 +1043,10 @@
       animation: shimmer-slide 1.4s infinite linear !important;
     }
     html.dark-mode .table-card { background: #161b22 !important; border-color: #30363d !important; }
+    html.dark-mode .table-shimmer-row td { border-right-color: #2d3748 !important; }
+    html.dark-mode .table-shimmer-row td:last-child { border-right: none !important; }
+    html.dark-mode thead.is-loading th { border-right-color: #3d4758 !important; }
+    html.dark-mode thead.is-loading th:last-child { border-right: none !important; }
     html.dark-mode .sb-nm-wrap { border-top-color: #30363d !important; }
     html.dark-mode .sb-nm-toggle { background: #1a2030 !important; box-shadow: 5px 5px 10px #0a0e17,-4px -4px 9px #263040 !important; }
     html.dark-mode .sb-nm-knob { left: 53px !important; background: linear-gradient(135deg,#3a4a5c,#2d3748) !important; box-shadow: 2px 2px 6px #0a0e17,-1px -1px 4px #3a4a5c !important; }
@@ -1053,7 +1071,6 @@
     body.dark-mode .sidebar-footer { border-top-color: #30363d !important; }
     body.dark-mode .admin-badge { background: rgba(124,106,247,0.1) !important; }
     body.dark-mode .admin-name { color: #e6edf3 !important; }
-    body.dark-mode .admin-role { color: #484f58 !important; }
     body.dark-mode .logout-btn {
       background: #161b22 !important; color: #f87171 !important; border-color: #f87171 !important;
     }
@@ -1083,7 +1100,10 @@
       background: linear-gradient(90deg,#1c2333 25%,#21293d 50%,#1c2333 75%) !important;
       background-size: 400% 100% !important;
     }
-    body.dark-mode .table-shimmer-row td { background: #161b22 !important; border-bottom-color: #21293d !important; }
+    body.dark-mode .table-shimmer-row td { background: #161b22 !important; border-bottom-color: #21293d !important; border-right-color: #2d3748 !important; }
+    body.dark-mode .table-shimmer-row td:last-child { border-right: none !important; }
+    body.dark-mode thead.is-loading th { border-right-color: #3d4758 !important; }
+    body.dark-mode thead.is-loading th:last-child { border-right: none !important; }
 
     /* shimmer dark — html.dark-mode covers pre-body-class flash */
     body.dark-mode .shimmer,
