@@ -239,6 +239,12 @@
         </div>
       </div>
 
+      <!-- Mobile Search (hidden on desktop) -->
+      <div class="dash-mobile-search">
+        <i class="fas fa-search"></i>
+        <input type="text" id="searchInputMobile" placeholder="Search purchases..." oninput="searchPurchases()">
+      </div>
+
       <!-- Section head + filters -->
       <div class="dash-section-head">
         <h2><i class="fas fa-box-open"></i> My Purchases</h2>
@@ -396,7 +402,9 @@
 
   /* ── Search ── */
   function searchPurchases() {
-    const q = document.getElementById('searchInput').value.toLowerCase();
+    const desktopVal = document.getElementById('searchInput')?.value || '';
+    const mobileVal = document.getElementById('searchInputMobile')?.value || '';
+    const q = (desktopVal || mobileVal).toLowerCase();
     renderPurchases(q ? allPurchases.filter(p => {
       const r = p.resources;
       return r && (r.title?.toLowerCase().includes(q) || r.type?.toLowerCase().includes(q) ||

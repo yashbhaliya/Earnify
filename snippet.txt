@@ -1,0 +1,1 @@
+"rtant;\r\n}.Value -replace 'overflow-y: auto','overflow-y: hidden';\r\n  overflow-x: hidden;\r\n  border-right: 2px "

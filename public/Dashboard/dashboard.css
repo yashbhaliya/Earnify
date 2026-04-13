@@ -1049,8 +1049,114 @@
 }
 
 /* ══════════════════════════════════════
-   DARK MODE — DASHBOARD
+   MOBILE SEARCH BAR (inside dash-content)
 ══════════════════════════════════════ */
+.dash-mobile-search {
+  display: none;
+  align-items: center;
+  gap: 10px;
+  background: white;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 10px 14px;
+  margin-bottom: 18px;
+  box-shadow: 0 2px 8px rgba(102,126,234,0.08);
+}
+
+.dash-mobile-search i {
+  color: #94a3b8;
+  font-size: 0.85rem;
+  flex-shrink: 0;
+}
+
+.dash-mobile-search input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 0.9rem;
+  font-family: inherit;
+  background: transparent;
+  color: #0f172a;
+}
+
+.dash-mobile-search input::placeholder { color: #94a3b8; }
+
+@media (max-width: 768px) {
+  .dash-mobile-search { display: flex; }
+}
+
+/* Desktop search input — light mode explicit reset */
+body:not(.dark-mode) .search-box input,
+html:not(.dark-mode) .search-box input {
+  background: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  color: #1e293b !important;
+}
+
+body:not(.dark-mode) .search-box input::placeholder,
+html:not(.dark-mode) .search-box input::placeholder {
+  color: #94a3b8 !important;
+}
+
+/* Desktop search input dark mode */
+body.dark-mode .search-box input,
+html.dark-mode .search-box input {
+  background: #161b22 !important;
+  border-color: #30363d !important;
+  color: #e6edf3 !important;
+}
+
+body.dark-mode .search-box input::placeholder,
+html.dark-mode .search-box input::placeholder {
+  color: #484f58 !important;
+}
+
+body.dark-mode .search-box input:focus,
+html.dark-mode .search-box input:focus {
+  border-color: #7c6af7 !important;
+  box-shadow: 0 0 0 3px rgba(124,106,247,0.15) !important;
+}
+
+/* Mobile search — light mode explicit reset */
+body:not(.dark-mode) .dash-mobile-search,
+html:not(.dark-mode) .dash-mobile-search {
+  background: #ffffff !important;
+  border-color: #e2e8f0 !important;
+}
+
+body:not(.dark-mode) .dash-mobile-search input,
+html:not(.dark-mode) .dash-mobile-search input {
+  color: #0f172a !important;
+}
+
+body:not(.dark-mode) .dash-mobile-search i,
+html:not(.dark-mode) .dash-mobile-search i {
+  color: #94a3b8 !important;
+}
+
+/* Mobile search dark mode */
+body.dark-mode .dash-mobile-search,
+html.dark-mode .dash-mobile-search {
+  background: #161b22 !important;
+  border-color: #30363d !important;
+  box-shadow: none !important;
+}
+
+body.dark-mode .dash-mobile-search i,
+html.dark-mode .dash-mobile-search i {
+  color: #484f58 !important;
+}
+
+body.dark-mode .dash-mobile-search input,
+html.dark-mode .dash-mobile-search input {
+  color: #e6edf3 !important;
+}
+
+body.dark-mode .dash-mobile-search input::placeholder,
+html.dark-mode .dash-mobile-search input::placeholder {
+  color: #484f58 !important;
+}
+
 
 /* Wrapper */
 body.dark-mode .dashboard-wrapper,

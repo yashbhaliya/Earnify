@@ -1,94 +1,214 @@
 /* Light Theme Override */
-body.light-mode {
+body:not(.dark-mode) {
   background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #dbeafe 100%);
 }
 
-body.light-mode .sidebar {
+body:not(.dark-mode) .sidebar {
   background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
   box-shadow: 4px 0 20px rgba(59, 130, 246, 0.1);
   border-right: 2px solid #e0f2fe;
 }
 
-body.light-mode .sidebar h2 {
+body:not(.dark-mode) .sidebar h2 {
   color: #3b82f6;
   /* border-bottom: 2px solid #dbeafe; */
   text-shadow: none;
 }
 
-body.light-mode .sidebar a {
+body:not(.dark-mode) .sidebar a {
   color: #475569;
 }
 
-body.light-mode .sidebar a:hover {
+body:not(.dark-mode) .sidebar a:hover {
   background: linear-gradient(90deg, rgba(59, 130, 246, 0.1) 0%, rgba(59, 130, 246, 0.15) 100%);
   border-left-color: #3b82f6;
   color: #3b82f6;
 }
 
-body.light-mode .main {
+body:not(.dark-mode) .main {
   background: rgba(255, 255, 255, 0.4);
 }
 
-body.light-mode .main h1 {
+body:not(.dark-mode) .main h1 {
   color: #1e293b;
   text-shadow: none;
 }
 
-body.light-mode .card {
+body:not(.dark-mode) .card {
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.9) 100%);
   box-shadow: 0 4px 20px rgba(59, 130, 246, 0.1);
   border-left: 5px solid #3b82f6;
   color: #1e293b;
 }
 
-body.light-mode .card h3 {
+body:not(.dark-mode) .card h3 {
   color: #64748b;
 }
 
-body.light-mode .card p {
+body:not(.dark-mode) .card p {
   color: #3b82f6;
 }
 
-body.light-mode table {
+body:not(.dark-mode) table {
   background: white;
   box-shadow: 0 4px 20px rgba(59, 130, 246, 0.1);
 }
 
-body.light-mode thead {
+body:not(.dark-mode) thead {
   background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
 }
 
-body.light-mode td {
+body:not(.dark-mode) td {
   background: rgba(255, 255, 255, 0.9);
   border-bottom: 1px solid #e0f2fe;
   color: #334155;
 }
 
-body.light-mode tbody tr:hover td {
+body:not(.dark-mode) tbody tr:hover td {
   background: #f0f9ff;
 }
 
-body.light-mode .analytics-section,
-body.light-mode .settings-card,
-body.light-mode .profile-details {
+body:not(.dark-mode) .analytics-section,
+body:not(.dark-mode) .settings-card,
+body:not(.dark-mode) .profile-details {
   background: white;
   box-shadow: 0 4px 20px rgba(59, 130, 246, 0.1);
 }
 
-body.light-mode .profile-header {
+body:not(.dark-mode) .profile-header {
   background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
 }
 
-body.light-mode .resource-card {
+body:not(.dark-mode) .resource-card {
   background: white;
   box-shadow: 0 4px 20px rgba(59, 130, 246, 0.1);
 }
 
-body.light-mode .modal-content {
+body:not(.dark-mode) .modal-content {
   background: white;
 }
 
-body.light-mode .sidebar-user {
+body:not(.dark-mode) .sidebar-user {
   background: #f8fafc;
   border-top: 2px solid #e0f2fe;
+}
+
+/* ── Profile Page Light Mode ── */
+body:not(.dark-mode) .main {
+  background: rgba(255, 255, 255, 0.85);
+}
+
+body:not(.dark-mode) .profile-card {
+  background: white;
+  border-color: rgba(0, 0, 0, 0.06);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.07);
+}
+
+body:not(.dark-mode) .profile-card h2 {
+  color: #1e293b;
+  border-bottom-color: #f1f5f9;
+}
+
+body:not(.dark-mode) .profile-name {
+  color: #1e293b;
+}
+
+body:not(.dark-mode) .profile-email {
+  color: #64748b;
+}
+
+body:not(.dark-mode) .detail-row {
+  border-bottom-color: #f1f5f9;
+}
+
+body:not(.dark-mode) .detail-label {
+  color: #64748b;
+}
+
+body:not(.dark-mode) .detail-value {
+  color: #1e293b;
+}
+
+body:not(.dark-mode) .resource-item {
+  border-bottom-color: #f1f5f9;
+}
+
+body:not(.dark-mode) .resource-item:hover {
+  background: #f8fafc;
+}
+
+body:not(.dark-mode) .resource-details h4 {
+  color: #1e293b;
+}
+
+body:not(.dark-mode) .resource-details p {
+  color: #64748b;
+}
+
+body:not(.dark-mode) .wi-method {
+  background: #fafbff;
+  border-color: #e8edf5;
+}
+
+body:not(.dark-mode) .wi-label {
+  color: #1e293b;
+}
+
+body:not(.dark-mode) .btn-edit {
+  background: white !important;
+  color: #166534 !important;
+  border-color: #16a34a !important;
+}
+
+body:not(.dark-mode) .btn-edit:hover {
+  background: #dcfce7 !important;
+}
+
+body:not(.dark-mode) .btn-logout {
+  background: white !important;
+  color: #991b1b !important;
+  border-color: #ef4444 !important;
+}
+
+body:not(.dark-mode) .btn-logout:hover {
+  background: #fee2e2 !important;
+}
+
+body:not(.dark-mode) .shimmer-gradient {
+  background: linear-gradient(90deg, #f0f0f0 0%, #e0e0e0 50%, #f0f0f0 100%);
+  background-size: 800px 100%;
+}
+
+body:not(.dark-mode) .shimmer-detail-row {
+  border-bottom-color: #f1f5f9;
+}
+
+body:not(.dark-mode) .wi-detail-box {
+  background: white;
+}
+
+body:not(.dark-mode) .wi-detail-header {
+  border-bottom-color: #f1f5f9;
+}
+
+body:not(.dark-mode) .wi-detail-title {
+  color: #1e293b;
+}
+
+body:not(.dark-mode) .wi-detail-row {
+  border-bottom-color: #f1f5f9;
+}
+
+body:not(.dark-mode) .wi-detail-lbl {
+  color: #94a3b8;
+}
+
+body:not(.dark-mode) .wi-detail-val {
+  color: #1e293b;
+}
+
+body:not(.dark-mode) .wi-detail-cancel-btn {
+  background: #f1f5f9;
+  border-color: #e2e8f0;
+  color: #64748b;
 }

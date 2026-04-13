@@ -6,10 +6,8 @@
     var body = document.body;
 
     html.classList.toggle('dark-mode', dark);
-    html.classList.toggle('light-mode', !dark);
     if (body) {
       body.classList.toggle('dark-mode', dark);
-      body.classList.toggle('light-mode', !dark);
     }
 
     var knob = document.getElementById('sbNmKnob');
@@ -18,18 +16,6 @@
       btn.textContent = dark ? '☀️' : '🌙';
       btn.title = dark ? 'Switch to light mode' : 'Switch to dark mode';
     });
-
-    var main = document.querySelector('.main');
-    if (main) {
-      main.classList.toggle('dark-mode', dark);
-      main.classList.toggle('light-mode', !dark);
-    }
-
-    var sidebar = document.querySelector('.sidebar');
-    if (sidebar) {
-      sidebar.classList.toggle('dark-mode', dark);
-      sidebar.classList.toggle('light-mode', !dark);
-    }
 
     var btnAll = document.getElementById('btnAllResources');
     var btnPur = document.getElementById('btnPurchases');
@@ -45,12 +31,15 @@
   }
 
   window.toggleDarkMode = function () {
-    var isDark = !document.body.classList.contains('dark-mode');
+    var isDark = !document.documentElement.classList.contains('dark-mode');
     localStorage.setItem(DARK_KEY, isDark ? '1' : '0');
     applyDarkMode(isDark);
   };
 
-  // Apply once on DOMContentLoaded only
+  // Apply immediately so html+body are in sync before paint
+  applyDarkMode(localStorage.getItem(DARK_KEY) === '1');
+
+  // Re-apply on DOMContentLoaded to catch body and knob
   document.addEventListener('DOMContentLoaded', function () {
     applyDarkMode(localStorage.getItem(DARK_KEY) === '1');
   });

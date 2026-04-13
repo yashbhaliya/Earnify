@@ -307,7 +307,6 @@
         font-weight: 600 !important;
         color: #1e293b !important;
         white-space: nowrap !important;
-        overflow: hidden !important;
         text-overflow: ellipsis !important;
     }
 

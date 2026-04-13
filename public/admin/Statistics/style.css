@@ -2204,74 +2204,74 @@ button:last-child:hover {
 }
 
 /* Light Mode Styles */
-body.light-mode {
-  background: #f1f5f9;
+body:not(.dark-mode) {
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
 }
 
-body.light-mode .sidebar {
+body:not(.dark-mode) .sidebar {
   background: white;
   box-shadow: 4px 0 30px rgba(0, 0, 0, 0.1);
 }
 
-body.light-mode .sidebar h2 {
+body:not(.dark-mode) .sidebar h2 {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-body.light-mode .sidebar a {
+body:not(.dark-mode) .sidebar a {
   color: #64748b;
 }
 
-body.light-mode .sidebar a:hover {
+body:not(.dark-mode) .sidebar a:hover {
   background: #f1f5f9;
   border-left-color: #3b82f6;
   color: #3b82f6;
 }
 
-body.light-mode .main h1 {
+body:not(.dark-mode) .main h1 {
   color: white;
 }
 
-body.light-mode .card {
+body:not(.dark-mode) .card {
   background: white;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
   color: #1e293b;
 }
 
-body.light-mode .card h3 {
+body:not(.dark-mode) .card h3 {
   color: #64748b;
 }
 
-body.light-mode .card p {
+body:not(.dark-mode) .card p {
   color: #3b82f6;
 }
 
-body.light-mode table {
+body:not(.dark-mode) table {
   background: white;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
 }
 
-body.light-mode thead {
+body:not(.dark-mode) thead {
   background: #3b82f6;
 }
 
-body.light-mode td {
+body:not(.dark-mode) td {
   border-bottom: 1px solid #e2e8f0;
   color: #475569;
 }
 
-body.light-mode tbody tr:hover {
+body:not(.dark-mode) tbody tr:hover {
   background: #f8fafc;
 }
 
-body.light-mode .analytics-section {
+body:not(.dark-mode) .analytics-section {
   background: white;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
 }
 
-body.light-mode .analytics-section h2 .analytics-h2-text {
+body:not(.dark-mode) .analytics-section h2 .analytics-h2-text {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -3063,16 +3063,7 @@ html.dark-mode .shimmer-table-cell {
   background: linear-gradient(90deg,#1c2333 25%,#21293d 50%,#1c2333 75%) !important;
   background-size: 400px 100% !important;
 }
-body.dark-mode #analyticsShimmer .modern-table thead,
-html.dark-mode body #analyticsShimmer .modern-table thead,
-html.dark-mode #analyticsShimmer .modern-table thead {
-  background: #1c2333 !important;
-}
-body.dark-mode #analyticsShimmer .modern-table tbody tr,
-html.dark-mode body #analyticsShimmer .modern-table tbody tr,
-html.dark-mode #analyticsShimmer .modern-table tbody tr {
-  background: #161b22 !important;
-}
+/* shimmer thead/tbody dark rules handled by scoped inline styles in index.html */
 body.dark-mode .modal-content,
 html.dark-mode body .modal-content {
   background: #161b22 !important;
@@ -3215,7 +3206,7 @@ html.dark-mode body .success-message {
   white-space: nowrap;
 }
 
-body.dark-mode .date-badge {
+body.dark-mode .date-badge,
 html.dark-mode body .date-badge {
   background: rgba(124,106,247,0.15) !important;
   color: #a78bfa !important;
@@ -3620,7 +3611,6 @@ body.dark-mode .quantity-badge {
   font-weight: 600;
   color: #1e293b;
   white-space: nowrap;
-  overflow: hidden;
   text-overflow: ellipsis;
   max-width: 200px;
 }

@@ -1,0 +1,1 @@
+"color: #86efac !important;\r\n}.Value -replace 'overflow-y: auto','overflow-y: hidden';\r\n  overflow-x: hidden;\r\n  border-right: 2px solid rgba(59, 130, "
