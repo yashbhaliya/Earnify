@@ -17,14 +17,14 @@
   "routes": [
     { "src": "/api/(.*)", "dest": "/server.js" },
 
-    { "src": "/earnify-admin/Dashboard/?$",   "dest": "/earnify-admin/Dashboard/index.html", "headers": { "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0" } },
-    { "src": "/earnify-admin/Dashboard/(.*)", "dest": "/earnify-admin/Dashboard/$1", "headers": { "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0" } },
-    { "src": "/earnify-admin/statistic/?$",   "dest": "/earnify-admin/statistic/index.html", "headers": { "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0" } },
-    { "src": "/earnify-admin/statistic/(.*)", "dest": "/earnify-admin/statistic/$1" },
-    { "src": "/earnify-admin/payments/?$",    "dest": "/earnify-admin/payments/index.html", "headers": { "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0" } },
-    { "src": "/earnify-admin/payments/(.*)",  "dest": "/earnify-admin/payments/$1" },
-    { "src": "/earnify-admin/Blog/?$",        "dest": "/earnify-admin/Blog/index.html", "headers": { "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0" } },
-    { "src": "/earnify-admin/Blog/(.*)",      "dest": "/earnify-admin/Blog/$1" },
+    { "src": "/earnify-admin/Dashboard/?$",   "dest": "/public/earnify-admin/Dashboard/index.html", "headers": { "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0" } },
+    { "src": "/earnify-admin/Dashboard/(.*)", "dest": "/public/earnify-admin/Dashboard/$1", "headers": { "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0" } },
+    { "src": "/earnify-admin/statistic/?$",   "dest": "/public/earnify-admin/statistic/index.html", "headers": { "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0" } },
+    { "src": "/earnify-admin/statistic/(.*)", "dest": "/public/earnify-admin/statistic/$1" },
+    { "src": "/earnify-admin/payments/?$",    "dest": "/public/earnify-admin/payments/index.html", "headers": { "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0" } },
+    { "src": "/earnify-admin/payments/(.*)",  "dest": "/public/earnify-admin/payments/$1" },
+    { "src": "/earnify-admin/Blog/?$",        "dest": "/public/earnify-admin/Blog/index.html", "headers": { "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0" } },
+    { "src": "/earnify-admin/Blog/(.*)",      "dest": "/public/earnify-admin/Blog/$1" },
 
     { "src": "/admin/Resources/?$",    "dest": "/public/admin/Resources/index.html", "headers": { "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0" } },
     { "src": "/admin/Resources/(.*)",  "dest": "/public/admin/Resources/$1" },
@@ -37,6 +37,7 @@
     { "src": "/admin/(.*)",            "dest": "/public/admin/$1" },
 
     { "src": "/file/(.*)", "dest": "/public/file/$1" },
+    { "src": "/favicon.ico", "dest": "/public/file/logo1.jpeg" },
 
     { "src": "/About/?$",    "dest": "/public/About/index.html" },
     { "src": "/About/(.*)",  "dest": "/public/About/$1" },

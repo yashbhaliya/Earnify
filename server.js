@@ -25,17 +25,20 @@ app.use(cors({
 app.use(express.json());
 // admin pages (public/admin)
 app.use('/admin', express.static(path.join(__dirname, 'public', 'admin'), { index: 'index.html' }));
+app.get('/favicon.ico', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'file', 'logo1.jpeg'));
+});
 
-// earnify-admin pages — explicit routes cover all URL variants
+// earnify-admin pages — serve from public so Vercel function bundle always contains files
 ['Dashboard','statistic','payments','Blog'].forEach(folder => {
-  const file = path.join(__dirname, 'earnify-admin', folder, 'index.html');
+  const file = path.join(__dirname, 'public', 'earnify-admin', folder, 'index.html');
   app.get(`/earnify-admin/${folder}`,            (req, res) => res.sendFile(file));
   app.get(`/earnify-admin/${folder}/`,           (req, res) => res.sendFile(file));
   app.get(`/earnify-admin/${folder}/index.html`, (req, res) => res.sendFile(file));
 });
 
 // earnify-admin static assets (js, css, images)
-app.use('/earnify-admin', express.static(path.join(__dirname, 'earnify-admin')));
+app.use('/earnify-admin', express.static(path.join(__dirname, 'public', 'earnify-admin')));
 
 const upload = multer({ storage: multer.memoryStorage() });
 
