@@ -2,13 +2,14 @@
 .hero {
   position: relative !important;
   width: 100% !important;
+  min-height: 320px !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
   text-align: center !important;
   overflow: hidden !important;
   padding: 0 !important;
-  margin: 2px 0 0;
+  background: linear-gradient(135deg, #e8edf5 0%, #dde4f0 100%) !important;
 }
 
 .hero img {
@@ -26,7 +27,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: rgba(255, 255, 255, 0.18);
+  background: rgba(248, 250, 252, 0.45);
   z-index: 1;
 }
 
@@ -67,9 +68,10 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: rgb(97 72 72 / 25%);
+  background: rgba(255, 255, 255, 0.55);
   backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.5);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.7);
   color: #1e293b;
   padding: 6px 16px;
   border-radius: 50px;
@@ -108,7 +110,7 @@
 
 /* ── Page ── */
 .page-content {
-  /* background: linear-gradient(160deg, #f1f5f9 0%, #e8edf5 100%); */
+  background: linear-gradient(160deg, #f1f5f9 0%, #e8edf5 100%);
   padding: 0;
   min-height: 60vh;
   display: block;
@@ -595,78 +597,92 @@ a.info-card:hover {
 }
 
 /* ── Shimmer ── */
-.shimmer-box {
-  position: relative;
-  overflow: hidden;
+@keyframes shimmerSweep {
+  0%   { background-position: -400px 0; }
+  100% { background-position:  400px 0; }
 }
 
-.shimmer-box::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -150%;
-  width: 150%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
-  animation: shimmer 2s infinite;
-  z-index: 1;
-}
-
-@keyframes shimmer {
-  0% {
-    left: -150%;
-  }
-
-  100% {
-    left: 150%;
-  }
+.shimmer-title,
+.shimmer-text,
+.shimmer-form-field,
+.shimmer-button,
+.shimmer-info-card {
+  display: block;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #e8edf5 25%, #f8fafc 50%, #e8edf5 75%);
+  background-size: 800px 100%;
+  animation: shimmerSweep 1.5s ease-in-out infinite;
 }
 
 .shimmer-title {
-  width: 40%;
-  height: 28px;
-  background: #e2e8f0;
-  border-radius: 8px;
-  margin-bottom: 18px;
+  width: 45%;
+  height: 24px;
+  margin-bottom: 16px;
 }
 
 .shimmer-text {
   width: 100%;
-  height: 14px;
-  background: #e2e8f0;
+  height: 13px;
+  margin-bottom: 10px;
   border-radius: 4px;
-  margin-bottom: 10px;
 }
 
-.shimmer-text.short {
-  width: 70%;
-}
-
-.shimmer-card {
-  width: 100%;
-  height: 64px;
-  background: #e2e8f0;
-  border-radius: 12px;
-  margin-bottom: 10px;
-}
+.shimmer-text.short { width: 65%; }
 
 .shimmer-form-field {
   width: 100%;
   height: 46px;
-  background: #e2e8f0;
+  margin-bottom: 14px;
   border-radius: 10px;
-  margin-bottom: 16px;
 }
 
-.shimmer-form-field.large {
-  height: 130px;
-}
+.shimmer-form-field.large { height: 130px; }
 
 .shimmer-button {
   width: 100%;
   height: 48px;
-  background: #e2e8f0;
   border-radius: 10px;
+  margin-bottom: 0;
+}
+
+.shimmer-info-card {
+  width: 100%;
+  height: 64px;
+  border-radius: 12px;
+}
+
+/* shimmer panel wrappers — match real panels */
+.shimmer-left-panel {
+  background: white;
+  border-radius: 20px;
+  padding: 36px 28px;
+  border: 1px solid #e8edf5;
+  box-shadow: 0 4px 24px rgba(102,126,234,0.09);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.shimmer-right-panel {
+  background: white;
+  border-radius: 20px;
+  padding: 36px 32px;
+  border: 1px solid #e8edf5;
+  box-shadow: 0 4px 24px rgba(102,126,234,0.09);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.shimmer-faq-card {
+  display: block;
+  width: 100%;
+  height: 56px;
+  border-radius: 12px;
+  background: linear-gradient(90deg, #e8edf5 25%, #f8fafc 50%, #e8edf5 75%);
+  background-size: 800px 100%;
+  animation: shimmerSweep 1.5s ease-in-out infinite;
+  margin-bottom: 10px;
 }
 
 /* ── Responsive ── */
@@ -715,11 +731,8 @@ a.info-card:hover {
   }
 }
 /* ══════════════════════════════════════════
-   DARK MODE — instant via html.dark-mode
-   Applies to: About, FAQ, Terms, Privacy, Contact
+   DARK MODE
    ══════════════════════════════════════════ */
-
-/* Body & page bg */
 html.dark-mode body,
 body.dark-mode {
   background: #0d1117 !important;
@@ -732,35 +745,9 @@ body.dark-mode .page-content {
   transition: none !important;
 }
 
-/* Content boxes — instant bg + border */
-html.dark-mode .content-box,
-body.dark-mode .content-box {
-  background: #161b22 !important;
-  border-bottom-color: #30363d !important;
-  transition: none !important;
-}
-html.dark-mode .content-box:nth-child(even),
-body.dark-mode .content-box:nth-child(even) {
-  background: #0d1117 !important;
-}
-html.dark-mode .content-box:nth-child(even):hover,
-body.dark-mode .content-box:nth-child(even):hover {
-  background: #161b22 !important;
-}
-html.dark-mode .content-box h2,
-body.dark-mode .content-box h2 {
-  border-bottom-color: #30363d !important;
-}
-html.dark-mode .content-box > p,
-body.dark-mode .content-box > p { color: #8b949e !important; }
-html.dark-mode .content-box strong,
-body.dark-mode .content-box strong { color: #e6edf3 !important; }
-
 /* Hero */
 html.dark-mode .hero::before,
-body.dark-mode .hero::before {
-  background: rgba(13,17,23,0.55) !important;
-}
+body.dark-mode .hero::before { background: rgba(13,17,23,0.55) !important; }
 html.dark-mode .hero-badge,
 body.dark-mode .hero-badge {
   background: rgba(124,106,247,0.18) !important;
@@ -774,60 +761,111 @@ body.dark-mode .hero h1 { color: #e6edf3 !important; }
 html.dark-mode .hero p,
 body.dark-mode .hero p { color: #8b949e !important; }
 
-/* Feature items */
-html.dark-mode .feature-item,
-body.dark-mode .feature-item {
-  background: #1c2333 !important;
+/* Contact panels */
+html.dark-mode .contact-left,
+body.dark-mode .contact-left,
+html.dark-mode .contact-right,
+body.dark-mode .contact-right {
+  background: #161b22 !important;
   border-color: #30363d !important;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.4) !important;
   transition: none !important;
 }
-html.dark-mode .feature-item:hover,
-body.dark-mode .feature-item:hover {
-  background: #21293d !important;
-  border-color: #7c6af7 !important;
-}
-html.dark-mode .feature-item h3,
-body.dark-mode .feature-item h3 { color: #e6edf3 !important; }
-html.dark-mode .feature-item p,
-body.dark-mode .feature-item p { color: #8b949e !important; }
 
-/* Benefits list */
-html.dark-mode .benefits-list li,
-body.dark-mode .benefits-list li {
+/* Info head */
+html.dark-mode .info-head h2,
+body.dark-mode .info-head h2 { color: #e6edf3 !important; }
+html.dark-mode .info-head p,
+body.dark-mode .info-head p { color: #8b949e !important; }
+html.dark-mode .info-icon-wrap,
+body.dark-mode .info-icon-wrap { background: rgba(124,106,247,0.15) !important; }
+html.dark-mode .info-icon-wrap i,
+body.dark-mode .info-icon-wrap i { color: #a78bfa !important; }
+
+/* Response badge */
+html.dark-mode .response-badge,
+body.dark-mode .response-badge {
+  background: rgba(124,106,247,0.1) !important;
+  border-color: rgba(124,106,247,0.3) !important;
+  color: #a78bfa !important;
+}
+html.dark-mode .response-badge i,
+body.dark-mode .response-badge i { color: #a78bfa !important; }
+
+/* Info cards */
+html.dark-mode .info-card,
+body.dark-mode .info-card {
   background: #1c2333 !important;
   border-color: #30363d !important;
+  color: #e6edf3 !important;
   transition: none !important;
 }
-html.dark-mode .benefits-list li:hover,
-body.dark-mode .benefits-list li:hover {
+html.dark-mode a.info-card:hover,
+body.dark-mode a.info-card:hover {
   background: #21293d !important;
   border-color: #7c6af7 !important;
+  box-shadow: 0 4px 14px rgba(124,106,247,0.15) !important;
 }
-html.dark-mode .benefits-list i,
-body.dark-mode .benefits-list i { color: #a78bfa !important; }
-html.dark-mode .benefits-list li strong,
-body.dark-mode .benefits-list li strong { color: #e6edf3 !important; }
-html.dark-mode .benefits-list li span,
-body.dark-mode .benefits-list li span { color: #8b949e !important; }
+html.dark-mode .info-card strong,
+body.dark-mode .info-card strong { color: #e6edf3 !important; }
+html.dark-mode .info-card span,
+body.dark-mode .info-card span { color: #8b949e !important; }
+html.dark-mode .info-card-arrow,
+body.dark-mode .info-card-arrow { color: #484f58 !important; }
 
-/* Value cards */
-html.dark-mode .value-card,
-body.dark-mode .value-card {
+/* Social */
+html.dark-mode .social-label,
+body.dark-mode .social-label { color: #484f58 !important; }
+html.dark-mode .social-btn,
+body.dark-mode .social-btn {
   background: #1c2333 !important;
   border-color: #30363d !important;
-  transition: none !important;
+  color: #8b949e !important;
 }
-html.dark-mode .value-card:hover,
-body.dark-mode .value-card:hover {
-  background: #21293d !important;
-  border-color: #7c6af7 !important;
-}
-html.dark-mode .value-card h3,
-body.dark-mode .value-card h3 { color: #e6edf3 !important; }
-html.dark-mode .value-card p,
-body.dark-mode .value-card p { color: #8b949e !important; }
 
-/* FAQ accordion */
+/* Form */
+html.dark-mode .form-head p,
+body.dark-mode .form-head p { color: #8b949e !important; }
+html.dark-mode .form-group label,
+body.dark-mode .form-group label { color: #c9d1d9 !important; }
+html.dark-mode .form-group label i,
+body.dark-mode .form-group label i { color: #a78bfa !important; }
+html.dark-mode .form-group input,
+html.dark-mode .form-group textarea,
+html.dark-mode .select-wrap select,
+body.dark-mode .form-group input,
+body.dark-mode .form-group textarea,
+body.dark-mode .select-wrap select {
+  background: #1c2333 !important;
+  border-color: #30363d !important;
+  color: #e6edf3 !important;
+}
+html.dark-mode .form-group input::placeholder,
+html.dark-mode .form-group textarea::placeholder,
+body.dark-mode .form-group input::placeholder,
+body.dark-mode .form-group textarea::placeholder { color: #484f58 !important; }
+html.dark-mode .form-group input:focus,
+html.dark-mode .form-group textarea:focus,
+html.dark-mode .select-wrap select:focus,
+body.dark-mode .form-group input:focus,
+body.dark-mode .form-group textarea:focus,
+body.dark-mode .select-wrap select:focus {
+  border-color: #7c6af7 !important;
+  background: #21293d !important;
+  box-shadow: 0 0 0 3px rgba(124,106,247,0.15) !important;
+}
+html.dark-mode .select-arrow,
+body.dark-mode .select-arrow { color: #484f58 !important; }
+
+/* FAQ section */
+html.dark-mode .faq-section,
+body.dark-mode .faq-section { border-top-color: #30363d !important; }
+html.dark-mode .faq-head p,
+body.dark-mode .faq-head p { color: #8b949e !important; }
+html.dark-mode .faq-head-icon,
+body.dark-mode .faq-head-icon { background: rgba(124,106,247,0.15) !important; }
+html.dark-mode .faq-head-icon i,
+body.dark-mode .faq-head-icon i { color: #a78bfa !important; }
 html.dark-mode .faq-item,
 body.dark-mode .faq-item {
   background: #161b22 !important;
@@ -835,9 +873,7 @@ body.dark-mode .faq-item {
   transition: none !important;
 }
 html.dark-mode .faq-item:hover,
-body.dark-mode .faq-item:hover {
-  border-color: #7c6af7 !important;
-}
+body.dark-mode .faq-item:hover { border-color: #7c6af7 !important; }
 html.dark-mode .faq-item.open,
 body.dark-mode .faq-item.open {
   background: #1c2333 !important;
@@ -855,59 +891,29 @@ body.dark-mode .faq-a {
   color: #8b949e !important;
   border-top-color: #30363d !important;
 }
-html.dark-mode .faq-cat-head,
-body.dark-mode .faq-cat-head { border-bottom-color: #30363d !important; }
-html.dark-mode .faq-cat-btn,
-body.dark-mode .faq-cat-btn {
-  background: #1c2333 !important;
-  border-color: #30363d !important;
-  color: #8b949e !important;
-}
-html.dark-mode .faq-cat-btn:hover,
-body.dark-mode .faq-cat-btn:hover {
-  background: rgba(124,106,247,0.1) !important;
-  border-color: #7c6af7 !important;
-  color: #a78bfa !important;
-}
 
-/* Contact us strip */
-html.dark-mode .contact-us-strip,
-body.dark-mode .contact-us-strip {
-  background: #161b22 !important;
-  border-top-color: #30363d !important;
-  transition: none !important;
-}
-html.dark-mode .contact-us-icon,
-body.dark-mode .contact-us-icon { background: rgba(124,106,247,0.15) !important; }
-html.dark-mode .contact-us-icon i,
-body.dark-mode .contact-us-icon i { color: #a78bfa !important; }
-html.dark-mode .contact-us-left h3,
-body.dark-mode .contact-us-left h3 { color: #e6edf3 !important; }
-html.dark-mode .contact-us-left p,
-body.dark-mode .contact-us-left p { color: #8b949e !important; }
-
-/* ── Shimmer — dark-correct, no transition ── */
+/* ── Shimmer — dark mode ── */
 html.dark-mode .shimmer-title,
 html.dark-mode .shimmer-text,
-html.dark-mode .shimmer-icon,
-html.dark-mode .shimmer-feature-title,
-html.dark-mode .shimmer-list-item,
 html.dark-mode .shimmer-form-field,
 html.dark-mode .shimmer-button,
-html.dark-mode .shimmer-contact-item,
+html.dark-mode .shimmer-info-card,
+html.dark-mode .shimmer-faq-card,
 body.dark-mode .shimmer-title,
 body.dark-mode .shimmer-text,
-body.dark-mode .shimmer-icon,
-body.dark-mode .shimmer-feature-title,
-body.dark-mode .shimmer-list-item,
 body.dark-mode .shimmer-form-field,
 body.dark-mode .shimmer-button,
-body.dark-mode .shimmer-contact-item {
-  background: #21293d !important;
-  transition: none !important;
+body.dark-mode .shimmer-info-card,
+body.dark-mode .shimmer-faq-card {
+  background: linear-gradient(90deg, #1c2333 25%, #252f3f 50%, #1c2333 75%) !important;
+  background-size: 800px 100% !important;
+  animation: shimmerSweep 1.5s ease-in-out infinite !important;
 }
-html.dark-mode .shimmer-box::before,
-body.dark-mode .shimmer-box::before {
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.04), transparent) !important;
-  transition: none !important;
+html.dark-mode .shimmer-left-panel,
+html.dark-mode .shimmer-right-panel,
+body.dark-mode .shimmer-left-panel,
+body.dark-mode .shimmer-right-panel {
+  background: #161b22 !important;
+  border-color: #30363d !important;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.4) !important;
 }

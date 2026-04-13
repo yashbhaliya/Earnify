@@ -558,13 +558,10 @@ html.dark-mode body .mobile-user-email {
   border-top: 1px solid #e8edf5;
   box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
   z-index: 9999;
-
   align-items: center;
   justify-content: space-around;
   padding: 0 4px;
   padding-bottom: env(safe-area-inset-bottom);
-
-  /* 🔥 SCROLL FIX */
   transform: translate3d(0, 0, 0);
   will-change: transform;
 }
@@ -694,7 +691,7 @@ html.dark-mode body .mobile-user-email {
   align-items: center;
   justify-content: center;
 
-  transform: translateY(-8px); /* lift effect */
+  transform: translateY(-20px); /* lift effect */
 }
 
 .mob-nav-add svg {
@@ -725,9 +722,15 @@ body.dark-mode .mob-nav {
   background: #0d1117 !important;
   border-top: 1px solid #30363d !important;
   box-shadow: 0 -4px 20px rgba(0,0,0,0.6) !important;
-  transition: background 0s, border-color 0s, box-shadow 0s !important;
+  transition: none !important;
   will-change: transform !important;
   transform: translate3d(0,0,0) !important;
+}
+html:not(.dark-mode) .mob-nav,
+body:not(.dark-mode) .mob-nav {
+  background: #ffffff !important;
+  border-top: 1px solid #e8edf5 !important;
+  transition: none !important;
 }
 
 /* Default text/icon */
@@ -895,8 +898,8 @@ html.dark-mode body .hero p {
 }
 
 /* Page background */
-body.dark-mode,
-html.dark-mode body .page-content {
+html.dark-mode .page-content,
+body.dark-mode .page-content {
   background: linear-gradient(160deg, #0d1117 0%, #0d1117 100%) !important;
 }
 
@@ -1064,8 +1067,8 @@ html.dark-mode body .shimmer-box::before {
 /* ══════════════════════════════════════════
    FAQ PAGE
    ══════════════════════════════════════════ */
-body.dark-mode,
-html.dark-mode body .page-content {
+html.dark-mode .page-content,
+body.dark-mode .page-content {
   background: #0d1117 !important;
 }
 
@@ -1103,10 +1106,10 @@ html.dark-mode body .faq-category-title {
 /* ══════════════════════════════════════════
    TERMS & PRIVACY PAGES
    ══════════════════════════════════════════ */
-body.dark-mode,
-html.dark-mode body .terms-layout,
-body.dark-mode,
-html.dark-mode body .privacy-layout {
+html.dark-mode .terms-layout,
+html.dark-mode .privacy-layout,
+body.dark-mode .terms-layout,
+body.dark-mode .privacy-layout {
   background: #0d1117 !important;
 }
 

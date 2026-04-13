@@ -356,6 +356,14 @@ body.dark-mode .dropdown div:hover {
   color: #a78bfa !important;
 }
 
+/* Section title — explicit light mode */
+body:not(.dark-mode) .section-title h2 {
+  color: #1e293b !important;
+}
+body:not(.dark-mode) .section-header {
+  background: transparent;
+}
+
 /* Section title */
 body.dark-mode .section-title h2 { color: #e6edf3 !important; }
 body.dark-mode .resource-count {

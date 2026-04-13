@@ -1057,15 +1057,7 @@ html.dark-mode body .admin-mob-nav {
   will-change: transform !important;
 }
 
-body.dark-mode,
-html.dark-mode body .amn-item {
-  color: #484f58 !important;
-}
 
-body.dark-mode,
-html.dark-mode body .amn-item svg {
-  stroke: #484f58 !important;
-}
 
 body.dark-mode,
 html.dark-mode body .amn-item.active,

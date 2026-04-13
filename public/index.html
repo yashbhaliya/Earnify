@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <script>!function () { var d = localStorage.getItem('earnify_dark_mode') === '1'; document.documentElement.classList.toggle('dark-mode', d); if (d) { document.documentElement.style.background = '#0d1117'; document.documentElement.style.colorScheme = 'dark'; var s = document.createElement('style'); s.textContent = '.mob-nav{background:#0d1117!important;border-top:1px solid #30363d!important;transition:none!important}.mob-nav-item{color:#8b949e!important;transition:none!important}.mob-nav-item svg{stroke:#8b949e!important}'; document.head.appendChild(s); } document.addEventListener('DOMContentLoaded', function () { document.body.classList.toggle('dark-mode', d); }); }();</script>
+  <script>!function () { var d = localStorage.getItem('earnify_dark_mode') === '1'; document.documentElement.classList.toggle('dark-mode', d); if (d) { document.documentElement.style.background = '#0d1117'; document.documentElement.style.colorScheme = 'dark'; } var s = document.createElement('style'); s.id = 'mob-nav-flash-fix'; s.textContent = d ? '.mob-nav{background:#0d1117!important;border-top-color:#30363d!important;transition:none!important}.mob-nav-item{color:#8b949e!important;transition:none!important}.mob-nav-item svg{stroke:#8b949e!important;transition:none!important}' : '.mob-nav{background:#ffffff!important;border-top-color:#e8edf5!important;transition:none!important}.mob-nav-item{color:#94a3b8!important;transition:none!important}'; document.head.appendChild(s); document.addEventListener('DOMContentLoaded', function () { document.body.classList.toggle('dark-mode', d); setTimeout(function(){ var el=document.getElementById('mob-nav-flash-fix'); if(el) el.remove(); }, 400); }); }();</script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Earnify - Your Learning Marketplace</title>
@@ -15,10 +15,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    /* HERO BACKGROUND */
-    .hero-wrapper {
-      margin-top: 10px;
-    }
+    
 
     .hero-gradient {
       position: relative;

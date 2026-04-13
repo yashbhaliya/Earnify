@@ -1,7 +1,7 @@
 /* ═══════════════════════════════════════
    HERO
 ═══════════════════════════════════════ */
-.hero-wrapper { margin-top: 10px; }
+
 .hero {
   position: relative !important; width: 100% !important;
   display: flex !important; align-items: center !important;

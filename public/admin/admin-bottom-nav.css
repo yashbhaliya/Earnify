@@ -104,8 +104,7 @@ body.dark-mode .admin-mob-nav {
   transform: translateZ(0) !important;
   will-change: transform !important;
 }
-body.dark-mode .amn-item { color: #484f58 !important; }
-body.dark-mode .amn-item svg { stroke: #484f58 !important; }
+
 body.dark-mode .amn-item.active,
 body.dark-mode .amn-item:hover { color: #a78bfa !important; }
 body.dark-mode .amn-item.active svg,

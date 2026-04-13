@@ -165,13 +165,13 @@ html.dark-mode body .how-section {
   background: #0d1117 !important;
 }
 
-body.dark-mode,
-html.dark-mode body .section-header h2 {
+body.dark-mode .how-section .section-header h2,
+html.dark-mode body .how-section .section-header h2 {
   color: #e6edf3 !important;
 }
 
-body.dark-mode,
-html.dark-mode body .section-header p {
+body.dark-mode .how-section .section-header p,
+html.dark-mode body .how-section .section-header p {
   color: #8b949e !important;
 }
 
@@ -2240,6 +2240,15 @@ html.dark-mode body .sb-nm-wrap {
 body.dark-mode .sb-nm-wrap-label,
 html.dark-mode body .sb-nm-wrap-label {
   color: #8b949e !important;
+}
+
+/* ── Section header — light mode explicit ── */
+.section-header {
+  background: transparent;
+}
+
+.section-title h2 {
+  color: #1e293b;
 }
 
 /* ── Section title & counts ── */

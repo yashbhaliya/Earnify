@@ -9,15 +9,45 @@ function loadPrivacyContent() {
 
 function showShimmer() {
   const container = document.getElementById('privacyContainer');
-  let html = '';
-  for (let i = 0; i < 13; i++) {
-    html += `<div class="content-box"><div class="shimmer-box">
-      <div class="shimmer-title"></div>
-      <div class="shimmer-text"></div><div class="shimmer-text"></div><div class="shimmer-text short"></div>
-      <div class="shimmer-list"><div class="shimmer-list-item"></div><div class="shimmer-list-item"></div><div class="shimmer-list-item"></div></div>
-    </div></div>`;
+
+  const patterns = [
+    ['', 'w85', 'w70'],
+    ['', 'w90', ''],
+    ['', '', 'w85', 'w60'],
+    ['', 'w70'],
+    ['', 'w90', 'w85'],
+    ['', '', 'w70'],
+    ['', 'w85'],
+    ['', 'w90', 'w60'],
+  ];
+
+  let cards = '';
+  for (let i = 0; i < 8; i++) {
+    const lines = patterns[i].map(w =>
+      `<div class="shimmer-text${w ? ' ' + w : ''}"></div>`
+    ).join('');
+    cards += `
+      <div class="content-box shimmer-card">
+        <div class="shimmer-icon"></div>
+        <div class="shimmer-title"></div>
+        ${lines}
+      </div>`;
   }
-  container.innerHTML = html;
+
+  const sidebarLines = ['w85','w70','w90','w60','w85','w70','w90','w60','w85','w70','w90','w60','w85'].map(w =>
+    `<div class="shimmer-text ${w}" style="height:11px;margin-bottom:9px"></div>`
+  ).join('');
+
+  const sidebar = `
+    <div class="shimmer-sidebar" style="width:230px;flex-shrink:0">
+      <div class="toc-inner">
+        <div class="shimmer-title" style="width:55%;height:13px;margin-bottom:18px"></div>
+        ${sidebarLines}
+        <div class="shimmer-title" style="width:100%;height:34px;border-radius:10px;margin-top:16px;margin-bottom:0"></div>
+      </div>
+    </div>`;
+
+  container.innerHTML = `<div class="privacy-layout">${sidebar}<div class="privacy-main">${cards}</div></div>`;
 }
 
 function loadActualContent() {

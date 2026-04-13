@@ -286,7 +286,144 @@
       box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3) !important;
     }
 
-    /* ── Purchased filter strip ── */
+    /* ── View Tab Buttons ── */
+    #btnAllResources,
+    #btnPurchases {
+      padding: 10px 24px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.2s;
+    }
+    .view-tab-active {
+      border: none;
+      outline: 2.5px solid #667eea;
+      outline-offset: -1px;
+      background: #fff;
+      color: #667eea;
+      box-shadow: 0 0 0 1px #764ba2, 0 4px 14px rgba(102,126,234,0.2);
+    }
+    .view-tab-inactive {
+      border: 2px solid #e2e8f0;
+      background: #f8fafc;
+      color: #64748b;
+      outline: none;
+      box-shadow: none;
+    }
+    body.dark-mode .view-tab-active {
+      outline-color: #7c6af7;
+      background: #161b22;
+      color: #a78bfa;
+      box-shadow: 0 0 0 1px #5b4fcf, 0 4px 14px rgba(124,106,247,0.3);
+    }
+    body.dark-mode .view-tab-inactive {
+      border-color: #30363d;
+      background: #1c2333;
+      color: #8b949e;
+    }
+
+    /* ── Single Add Resource Button ── */
+    .add-resource-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 11px 15px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      box-shadow: 0 4px 14px rgba(102,126,234,0.35);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .add-resource-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 22px rgba(102,126,234,0.45);
+    }
+
+    /* ── Type Picker Grid ── */
+    .type-picker-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 4px;
+    }
+    .type-picker-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      padding: 20px 12px;
+      border: 2px solid #e2e8f0;
+      border-radius: 14px;
+      background: #f8fafc;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 700;
+      color: #1e293b;
+      transition: all 0.2s;
+    }
+    .type-picker-btn:hover {
+      border-color: #667eea;
+      background: #fff;
+      box-shadow: 0 4px 16px rgba(102,126,234,0.15);
+      transform: translateY(-2px);
+      color: #667eea;
+    }
+    .type-picker-btn img {
+      width: 44px;
+      height: 44px;
+      object-fit: contain;
+      border-radius: 10px;
+    }
+    body.dark-mode .type-picker-btn {
+      background: #1c2333;
+      border-color: #30363d;
+      color: #e6edf3;
+    }
+    body.dark-mode .type-picker-btn:hover {
+      border-color: #7c6af7;
+      background: #21293d;
+      color: #a78bfa;
+    }
+
+    /* ── Back Button ── */
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 8px;
+      background: #f8fafc;
+      color: #64748b;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      margin-bottom: 16px;
+      transition: all 0.2s;
+    }
+    .back-btn:hover {
+      border-color: #667eea;
+      color: #667eea;
+      background: #fff;
+    }
+    body.dark-mode .back-btn {
+      background: #1c2333;
+      border-color: #30363d;
+      color: #8b949e;
+    }
+    body.dark-mode .back-btn:hover {
+      border-color: #7c6af7;
+      color: #a78bfa;
+    }
     .pr-filter-strip {
       display: flex;
       gap: 8px;
@@ -529,8 +666,8 @@
 
     <!-- View Toggle Buttons -->
     <div style="display:flex;gap:10px;margin-bottom:24px;">
-      <button id="btnAllResources" onclick="switchView('resources')" style="padding:10px 24px;border-radius:10px;border:none;outline:2.5px solid #667eea;outline-offset:-1px;background:#fff;color:#667eea;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 0 0 1px #764ba2,0 4px 14px rgba(102,126,234,0.2);transition:all .2s;">📚 All Resources</button>
-      <button id="btnPurchases" onclick="switchView('purchases')" style="padding:10px 24px;border-radius:10px;border:2px solid #e2e8f0;background:#f8fafc;color:#64748b;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s;">🛒 Purchased Resources</button>
+      <button id="btnAllResources" onclick="switchView('resources')">📚 All Resources</button>
+      <button id="btnPurchases" onclick="switchView('purchases')">🛒 Purchased Resources</button>
     </div>
 
 
@@ -554,25 +691,9 @@
             </button>
           </div>
           <div class="add-buttons-group">
-            <button class="add-btn pdf-btn" onclick="showAddModal('pdf')">
-              <span class="btn-icon"><img src="/file/pdf.jpg" alt="PDF"
-                  style="width:20px;height:20px;object-fit:contain;vertical-align:middle;"></span>
-              <span class="btn-text">Add PDF</span>
-            </button>
-            <button class="add-btn excel-btn" onclick="showAddModal('excel')">
-              <span class="btn-icon"><img src="/file/excel.jpg" alt="Excel"
-                  style="width:20px;height:20px;object-fit:contain;vertical-align:middle;"></span>
-              <span class="btn-text">Add Excel</span>
-            </button>
-            <button class="add-btn exam-btn" onclick="showAddModal('exam')">
-              <span class="btn-icon"><img src="/file/exam.jpg" alt="Exam"
-                  style="width:20px;height:20px;object-fit:contain;vertical-align:middle;"></span>
-              <span class="btn-text">Add Exam</span>
-            </button>
-            <button class="add-btn freelance-btn" onclick="showAddModal('freelance')">
-              <span class="btn-icon"><img src="/file/service.jpg" alt="Freelance"
-                  style="width:20px;height:20px;object-fit:contain;vertical-align:middle;"></span>
-              <span class="btn-text">Add Service</span>
+            <button class="add-resource-btn" onclick="openAddPicker()">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Add Resource
             </button>
           </div>
         </div>
@@ -820,15 +941,46 @@
   <div id="addModal" class="modal">
     <div class="modal-content">
       <span class="close" onclick="closeModal()">&times;</span>
-      <h2 id="modalTitle">Add Resource</h2>
-      <form id="resourceForm">
-        <input type="text" id="title" placeholder="Title" required>
-        <textarea id="description" placeholder="Description" required></textarea>
-        <input type="text" id="price" placeholder="Price (?)" required>
-        <input type="file" id="fileUpload" accept=".pdf,.xlsx,.xls,.doc,.docx" required>
-        <div id="uploadProgress" style="display:none;">Uploading...</div>
-        <button type="submit">Add Resource</button>
-      </form>
+
+      <!-- Step 1: Type Picker -->
+      <div id="addStep1">
+        <h2>Choose Resource Type</h2>
+        <div class="type-picker-grid">
+          <button class="type-picker-btn" onclick="pickType('pdf')">
+            <img src="/file/pdf.jpg" alt="PDF">
+            <span>PDF Notes</span>
+          </button>
+          <button class="type-picker-btn" onclick="pickType('excel')">
+            <img src="/file/excel.jpg" alt="Excel">
+            <span>Excel Template</span>
+          </button>
+          <button class="type-picker-btn" onclick="pickType('exam')">
+            <img src="/file/exam.jpg" alt="Exam">
+            <span>Exam Material</span>
+          </button>
+          <button class="type-picker-btn" onclick="pickType('freelance')">
+            <img src="/file/service.jpg" alt="Service">
+            <span>Freelance Service</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Step 2: Form -->
+      <div id="addStep2" style="display:none;">
+        <button class="back-btn" onclick="backToPicker()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+          Back
+        </button>
+        <h2 id="modalTitle">Add Resource</h2>
+        <form id="resourceForm">
+          <input type="text" id="title" placeholder="Title" required>
+          <textarea id="description" placeholder="Description" required></textarea>
+          <input type="text" id="price" placeholder="Price (₹)" required>
+          <input type="file" id="fileUpload" accept=".pdf,.xlsx,.xls,.doc,.docx" required>
+          <div id="uploadProgress" style="display:none;">Uploading...</div>
+          <button type="submit">Add Resource</button>
+        </form>
+      </div>
     </div>
   </div>
 
@@ -941,6 +1093,30 @@
       }
     };
 
+    // Open picker step
+    window.openAddPicker = function() {
+      document.getElementById('addStep1').style.display = 'block';
+      document.getElementById('addStep2').style.display = 'none';
+      document.getElementById('addModal').style.display = 'flex';
+    };
+
+    // Pick a type and go to form
+    window.pickType = function(type) {
+      document.getElementById('addStep1').style.display = 'none';
+      document.getElementById('addStep2').style.display = 'block';
+      if (typeof showAddModal === 'function') showAddModal(type);
+      else {
+        const labels = { pdf:'PDF Notes', excel:'Excel Template', exam:'Exam Material', freelance:'Freelance Service' };
+        document.getElementById('modalTitle').textContent = 'Add ' + (labels[type] || 'Resource');
+      }
+    };
+
+    // Back to picker
+    window.backToPicker = function() {
+      document.getElementById('addStep2').style.display = 'none';
+      document.getElementById('addStep1').style.display = 'block';
+    };
+
     window.showTab = window.showTab || function (type) {
       console.log('showTab called with type:', type);
     };
@@ -1047,25 +1223,21 @@
       const btnPur       = document.getElementById('btnPurchases');
       const purchasedSec = document.getElementById('purchasedSection');
       const tabContents  = document.querySelectorAll('.tab-content');
-      const isDark       = document.body.classList.contains('dark-mode');
-      const darkInactiveStyle = 'padding:10px 24px;border-radius:10px;border:2px solid #30363d;background:#1c2333;color:#8b949e;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s;';
-      const darkActiveStyle   = 'padding:10px 24px;border-radius:10px;border:none;outline:2.5px solid #7c6af7;outline-offset:-1px;background:#161b22;color:#a78bfa;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 0 0 1px #5b4fcf,0 4px 14px rgba(124,106,247,0.3);transition:all .2s;';
-      const lightInactiveStyle = 'padding:10px 24px;border-radius:10px;border:2px solid #e2e8f0;background:#f8fafc;color:#64748b;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s;';
-      const lightActiveStyle   = 'padding:10px 24px;border-radius:10px;border:none;outline:2.5px solid #667eea;outline-offset:-1px;background:#fff;color:#667eea;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 0 0 1px #764ba2,0 4px 14px rgba(102,126,234,0.2);transition:all .2s;';
-      const activeStyle = isDark ? darkActiveStyle : lightActiveStyle;
-      const inactiveStyle = isDark ? darkInactiveStyle : lightInactiveStyle;
 
       if (view === 'resources') {
-        // Remove inline display overrides — let CSS classes control visibility
         tabContents.forEach(t => t.style.display = '');
         purchasedSec.style.display = 'none';
-        btnRes.style.cssText = activeStyle;
-        btnPur.style.cssText = inactiveStyle;
+        btnRes.classList.add('view-tab-active');
+        btnRes.classList.remove('view-tab-inactive');
+        btnPur.classList.add('view-tab-inactive');
+        btnPur.classList.remove('view-tab-active');
       } else {
         tabContents.forEach(t => t.style.display = 'none');
         purchasedSec.style.display = 'block';
-        btnPur.style.cssText = activeStyle;
-        btnRes.style.cssText = inactiveStyle;
+        btnPur.classList.add('view-tab-active');
+        btnPur.classList.remove('view-tab-inactive');
+        btnRes.classList.add('view-tab-inactive');
+        btnRes.classList.remove('view-tab-active');
         loadPurchased();
       }
     }

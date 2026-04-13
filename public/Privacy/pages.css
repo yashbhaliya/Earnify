@@ -2,14 +2,14 @@
 .hero {
   position: relative !important;
   width: 100% !important;
+  min-height: 320px !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
   text-align: center !important;
   overflow: hidden !important;
   padding: 0 !important;
-  margin: 2px 0 0;
-
+  background: linear-gradient(135deg, #e8edf5 0%, #dde4f0 100%) !important;
 }
 
 .hero img {
@@ -27,7 +27,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: rgba(255, 255, 255, 0.18);
+  background: rgba(248, 250, 252, 0.45);
   z-index: 1;
 }
 
@@ -68,9 +68,10 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: rgb(97 72 72 / 25%);
+  background: rgba(255, 255, 255, 0.55);
   backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.5);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.7);
   color: #1e293b;
   padding: 6px 16px;
   border-radius: 50px;
@@ -782,65 +783,61 @@
 }
 
 /* ── Shimmer ── */
-.shimmer-box {
-  position: relative;
-  overflow: hidden;
+@keyframes shimmerSweep {
+  0%   { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
 }
 
-.shimmer-box::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -150%;
-  width: 150%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
-  animation: shimmer 2s infinite;
-  z-index: 1;
+.shimmer-icon,
+.shimmer-title,
+.shimmer-text {
+  display: block;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #e8edf5 25%, #f8fafc 50%, #e8edf5 75%);
+  background-size: 800px 100%;
+  animation: shimmerSweep 1.5s ease-in-out infinite;
 }
 
-@keyframes shimmer {
-  0% {
-    left: -150%;
-  }
-
-  100% {
-    left: 150%;
-  }
+.shimmer-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  margin-bottom: 16px;
 }
 
 .shimmer-title {
-  width: 40%;
-  height: 28px;
-  background: #e2e8f0;
-  border-radius: 8px;
+  height: 20px;
+  width: 50%;
   margin-bottom: 18px;
+  border-radius: 8px;
 }
 
 .shimmer-text {
+  height: 13px;
   width: 100%;
-  height: 14px;
-  background: #e2e8f0;
-  border-radius: 4px;
   margin-bottom: 10px;
 }
 
-.shimmer-text.short {
-  width: 70%;
+.shimmer-text.w85 { width: 85%; }
+.shimmer-text.w70 { width: 70%; }
+.shimmer-text.w90 { width: 90%; }
+.shimmer-text.w60 { width: 60%; }
+
+.shimmer-card {
+  pointer-events: none;
+  cursor: default;
+}
+.shimmer-card:hover {
+  transform: none !important;
+  box-shadow: 0 2px 12px rgba(102,126,234,0.07) !important;
 }
 
-.shimmer-list {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-top: 16px;
-}
-
-.shimmer-list-item {
-  width: 100%;
-  height: 18px;
-  background: #e2e8f0;
-  border-radius: 4px;
+.shimmer-sidebar .toc-inner {
+  background: white;
+  border-radius: 16px;
+  padding: 20px 16px;
+  box-shadow: 0 4px 24px rgba(102,126,234,0.10);
+  border: 1px solid #e8edf5;
 }
 
 /* ── Responsive ── */
@@ -848,7 +845,9 @@
   .toc-sidebar {
     display: none;
   }
-
+  .shimmer-sidebar {
+    display: none;
+  }
   .privacy-layout {
     padding: 20px 12px 40px;
   }
@@ -907,13 +906,14 @@
 /* ── Contact Us Strip ── */
 .contact-us-strip {
   background: white;
-  border-top: 1px solid #e8edf5;
-  padding: 28px 24px;
+  border: 1px solid #e8edf5;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 2px 12px rgba(102, 126, 234, 0.07);
+  margin-bottom: 0;
 }
 
 .contact-us-strip-inner {
-  max-width: 1200px;
-  margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1148,7 +1148,7 @@ body.dark-mode .faq-cat-btn:hover {
 html.dark-mode .contact-us-strip,
 body.dark-mode .contact-us-strip {
   background: #161b22 !important;
-  border-top-color: #30363d !important;
+  border-color: #30363d !important;
   transition: none !important;
 }
 html.dark-mode .contact-us-icon,
@@ -1160,33 +1160,29 @@ body.dark-mode .contact-us-left h3 { color: #e6edf3 !important; }
 html.dark-mode .contact-us-left p,
 body.dark-mode .contact-us-left p { color: #8b949e !important; }
 
-/* ── Shimmer — dark-correct, no transition ── */
+/* ── Shimmer — dark mode ── */
+html.dark-mode .shimmer-icon,
 html.dark-mode .shimmer-title,
 html.dark-mode .shimmer-text,
-html.dark-mode .shimmer-icon,
-html.dark-mode .shimmer-feature-title,
-html.dark-mode .shimmer-list-item,
-html.dark-mode .shimmer-form-field,
-html.dark-mode .shimmer-button,
-html.dark-mode .shimmer-contact-item,
-body.dark-mode .shimmer-title,
-body.dark-mode .shimmer-text,
 body.dark-mode .shimmer-icon,
-body.dark-mode .shimmer-feature-title,
-body.dark-mode .shimmer-list-item,
-body.dark-mode .shimmer-form-field,
-body.dark-mode .shimmer-button,
-body.dark-mode .shimmer-contact-item {
-  background: #21293d !important;
-  transition: none !important;
+body.dark-mode .shimmer-title,
+body.dark-mode .shimmer-text {
+  background: linear-gradient(90deg, #1c2333 25%, #252f3f 50%, #1c2333 75%) !important;
+  background-size: 800px 100% !important;
+  animation: shimmerSweep 1.5s ease-in-out infinite !important;
 }
-html.dark-mode .shimmer-box::before,
-body.dark-mode .shimmer-box::before {
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.04), transparent) !important;
-  transition: none !important;
+html.dark-mode .shimmer-card,
+body.dark-mode .shimmer-card {
+  background: #161b22 !important;
+  border-color: #30363d !important;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.3) !important;
 }
-
-/* ── Terms/Privacy specific dark mode ── */
+html.dark-mode .shimmer-sidebar .toc-inner,
+body.dark-mode .shimmer-sidebar .toc-inner {
+  background: #161b22 !important;
+  border-color: #30363d !important;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.4) !important;
+}
 
 /* TOC sidebar */
 html.dark-mode .toc-inner,
@@ -1455,9 +1451,3 @@ body.dark-mode .retention-icon {
 html.dark-mode .retention-icon i,
 body.dark-mode .retention-icon i { color: #a78bfa !important; }
 
-/* Shimmer container bg */
-html.dark-mode .shimmer-box,
-body.dark-mode .shimmer-box {
-  background: #161b22 !important;
-  transition: none !important;
-}

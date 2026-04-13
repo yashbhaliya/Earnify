@@ -9,33 +9,38 @@ function loadContactContent() {
 
 function showShimmer() {
   const container = document.getElementById('contactContainer');
+
+  const infoCards = Array(4).fill(
+    `<div class="shimmer-info-card"></div>`
+  ).join('');
+
+  const formFields = Array(3).fill(
+    `<div class="shimmer-form-field"></div>`
+  ).join('');
+
+  const faqCards = Array(4).fill(
+    `<div class="shimmer-faq-card"></div>`
+  ).join('');
+
   container.innerHTML = `
     <div class="contact-page">
-      <div class="contact-left">
-        <div class="shimmer-box">
-          <div class="shimmer-title"></div>
-          <div class="shimmer-text"></div><div class="shimmer-text short"></div>
-          <div style="margin-top:20px;display:flex;flex-direction:column;gap:12px;">
-            <div class="shimmer-card"></div><div class="shimmer-card"></div>
-            <div class="shimmer-card"></div><div class="shimmer-card"></div>
-          </div>
-        </div>
+      <div class="shimmer-left-panel">
+        <div class="shimmer-title" style="width:55%"></div>
+        <div class="shimmer-text short"></div>
+        ${infoCards}
       </div>
-      <div class="contact-right">
-        <div class="shimmer-box">
-          <div class="shimmer-title"></div>
-          <div class="shimmer-form-field"></div><div class="shimmer-form-field"></div>
-          <div class="shimmer-form-field"></div><div class="shimmer-form-field"></div>
-          <div class="shimmer-form-field large"></div>
-          <div class="shimmer-button"></div>
-        </div>
+      <div class="shimmer-right-panel">
+        <div class="shimmer-title" style="width:45%"></div>
+        <div class="shimmer-text short"></div>
+        ${formFields}
+        <div class="shimmer-form-field large"></div>
+        <div class="shimmer-button"></div>
       </div>
     </div>
     <div class="faq-section">
-      <div class="shimmer-box">
-        <div class="shimmer-title" style="width:30%;margin:0 auto 24px;"></div>
-        <div class="shimmer-card"></div><div class="shimmer-card"></div>
-        <div class="shimmer-card"></div><div class="shimmer-card"></div>
+      <div class="shimmer-title" style="width:28%;margin:0 auto 24px"></div>
+      <div style="max-width:860px;margin:0 auto;display:flex;flex-direction:column;gap:10px">
+        ${faqCards}
       </div>
     </div>`;
 }

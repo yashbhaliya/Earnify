@@ -431,10 +431,11 @@ async function loadResources(type) {
       resources = resources.filter(r => r.type === type);
     }
 
-    // Update resource count
     const countElement = document.getElementById(type + 'Count');
     if (countElement) {
-      countElement.textContent = `${resources.length} item${resources.length !== 1 ? 's' : ''}`;
+      const n = resources.length;
+      countElement.textContent = `${n} item${n !== 1 ? 's' : ''}`;
+      countElement.setAttribute('data-num', n);
     }
 
     if (resources.length === 0) {
