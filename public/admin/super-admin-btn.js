@@ -46,7 +46,14 @@
       btn.textContent = '🛡️ Super Admin Panel';
       btn.className = 'super-admin-btn logout-link';
       btn.style.cssText = 'background:#667eea!important;border-radius:10px;color:#fff!important;border-color:#667eea!important;display:block;text-align:center;cursor:pointer;text-decoration:none;gap:5px';
-      btn.onclick = function(e) { e.preventDefault(); window.location.href = getDashboardURL(); };
+      btn.onclick = function(e) {
+        e.preventDefault();
+        // Persist current UI theme before redirecting to dashboard.
+        const darkNow = document.documentElement.classList.contains('dark-mode')
+          || document.body.classList.contains('dark-mode');
+        localStorage.setItem('earnify_dark_mode', darkNow ? '1' : '0');
+        window.location.href = getDashboardURL();
+      };
 
       if (logoutLink) sidebarUser.insertBefore(btn, logoutLink);
       else sidebarUser.appendChild(btn);

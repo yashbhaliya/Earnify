@@ -10,6 +10,7 @@
 
     // Clear inline background so light mode CSS takes over
     html.style.background = dark ? '#0d1117' : '';
+    html.style.colorScheme = dark ? 'dark' : 'light';
     if (body) body.style.background = '';
 
     var knob = document.getElementById('sbNmKnob');
@@ -39,10 +40,10 @@
   };
 
   // Apply immediately so html+body are in sync before paint
-  applyDarkMode(localStorage.getItem(DARK_KEY) === '1');
+  applyDarkMode(localStorage.getItem(DARK_KEY) !== '0');
 
   // Re-apply on DOMContentLoaded to catch body and knob
   document.addEventListener('DOMContentLoaded', function () {
-    applyDarkMode(localStorage.getItem(DARK_KEY) === '1');
+    applyDarkMode(localStorage.getItem(DARK_KEY) !== '0');
   });
 })();
