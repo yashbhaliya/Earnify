@@ -52,9 +52,34 @@ function selectOption(value, text, img) {
   if (typeof window.showTab === 'function') window.showTab(value);
 }
 
+// Toggle type dropdown in modal
+function toggleTypeDropdown() {
+  const dropdown = document.getElementById('typeDropdown');
+  if (dropdown) {
+    dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+  }
+}
+
+// Toggle second type dropdown in form (addStep2)
+function toggleTypeDropdown2() {
+  const dropdown = document.getElementById('typeDropdown2');
+  if (dropdown) {
+    dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+  }
+}
+
+// Change type in form (addStep2)
+function changeType(type) {
+  const icons = { pdf: '/file/pdf.jpg', excel: '/file/excel.jpg', exam: '/file/exam.jpg', freelance: '/file/service.jpg' };
+  const labels = { pdf: 'PDF Notes', excel: 'Excel Template', exam: 'Exam Material', freelance: 'Freelance Service' };
+  document.getElementById('typeIcon2').src = icons[type] || '/file/pdf.jpg';
+  document.getElementById('typeText2').textContent = labels[type] || type;
+  document.getElementById('typeDropdown2').style.display = 'none';
+}
+
 // Close on outside click
 document.addEventListener('click', function(e) {
-  if (!e.target.closest('.resource-filter')) {
+  if (!e.target.closest('.resource-filter') && !e.target.closest('.type-select-wrapper')) {
     document.querySelectorAll('.dropdown').forEach(d => d.style.display = 'none');
     document.querySelectorAll('.arrow').forEach(a => a.classList.remove('open'));
   }

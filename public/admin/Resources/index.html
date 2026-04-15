@@ -939,29 +939,34 @@
   </div>
 
   <div id="addModal" class="modal">
-    <div class="modal-content">
+    <div class="modal-content" style="max-width:420px;padding:30px 28px;">
       <span class="close" onclick="closeModal()">&times;</span>
 
-      <!-- Step 1: Type Picker -->
-      <div id="addStep1">
-        <h2>Choose Resource Type</h2>
-        <div class="type-picker-grid">
-          <button class="type-picker-btn" onclick="pickType('pdf')">
-            <img src="/file/pdf.jpg" alt="PDF">
-            <span>PDF Notes</span>
-          </button>
-          <button class="type-picker-btn" onclick="pickType('excel')">
-            <img src="/file/excel.jpg" alt="Excel">
-            <span>Excel Template</span>
-          </button>
-          <button class="type-picker-btn" onclick="pickType('exam')">
-            <img src="/file/exam.jpg" alt="Exam">
-            <span>Exam Material</span>
-          </button>
-          <button class="type-picker-btn" onclick="pickType('freelance')">
-            <img src="/file/service.jpg" alt="Service">
-            <span>Freelance Service</span>
-          </button>
+      <!-- Step 1: Type Picker Dropdown -->
+      <div id="addStep1" style="padding:10px 0;">
+        <h2 style="margin-bottom:24px;font-size:22px;text-align:center;">Choose Resource Type</h2>
+        <div class="type-select-wrapper" style="position:relative;">
+          <div class="custom-select" id="typeSelectTrigger" onclick="toggleTypeDropdown()" style="width:100%;justify-content:space-between;padding:14px 18px;border:2px solid #e2e8f0;border-radius:12px;background:#fff;display:flex;align-items:center;cursor:pointer;transition:all 0.2s;">
+            <div style="display:flex;align-items:center;gap:12px;">
+              <img src="/file/pdf.jpg" class="select-icon" id="typeIcon" style="width:28px;height:28px;border-radius:6px;object-fit:cover;">
+              <span id="typeText" style="font-size:16px;font-weight:500;color:#334155;">Select Type...</span>
+            </div>
+            <span class="arrow" style="font-size:12px;color:#64748b;transition:transform 0.2s;">&#9660;</span>
+          </div>
+          <div class="dropdown type-option-dropdown" id="typeDropdown" style="display:none;position:relative;top:8px;left:0;right:0;background:#fff;border:1px solid #e2e8f0;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,0.12);z-index:1000;margin-top:8px;">
+            <div onclick="pickType('pdf')" style="padding:14px 18px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:background 0.2s;font-size:15px;">
+              <img src="/file/pdf.jpg" style="width:28px;height:28px;border-radius:6px;object-fit:cover;"> <span style="font-weight:500;">PDF Notes</span>
+            </div>
+            <div onclick="pickType('excel')" style="padding:14px 18px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:background 0.2s;font-size:15px;">
+              <img src="/file/excel.jpg" style="width:28px;height:28px;border-radius:6px;object-fit:cover;"> <span style="font-weight:500;">Excel Template</span>
+            </div>
+            <div onclick="pickType('exam')" style="padding:14px 18px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:background 0.2s;font-size:15px;">
+              <img src="/file/exam.jpg" style="width:28px;height:28px;border-radius:6px;object-fit:cover;"> <span style="font-weight:500;">Exam Material</span>
+            </div>
+            <div onclick="pickType('freelance')" style="padding:14px 18px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:background 0.2s;font-size:15px;">
+              <img src="/file/service.jpg" style="width:28px;height:28px;border-radius:6px;object-fit:cover;"> <span style="font-weight:500;">Freelance Service</span>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -972,6 +977,21 @@
           Back
         </button>
         <h2 id="modalTitle">Add Resource</h2>
+        <div class="type-select-wrapper" style="position:relative;margin-bottom:20px;">
+          <div class="custom-select" id="typeSelectTrigger2" onclick="toggleTypeDropdown2()" style="width:100%;justify-content:space-between;padding:14px 18px;border:2px solid #e2e8f0;border-radius:12px;background:#fff;display:flex;align-items:center;cursor:pointer;">
+            <div style="display:flex;align-items:center;gap:12px;">
+              <img src="/file/pdf.jpg" id="typeIcon2" style="width:28px;height:28px;border-radius:6px;">
+              <span id="typeText2" style="font-size:16px;font-weight:500;color:#334155;">Select Type...</span>
+            </div>
+            <span class="arrow" style="font-size:12px;color:#64748b;">&#9660;</span>
+          </div>
+          <div id="typeDropdown2" class="type-option-dropdown" style="display:none;position:relative;top:8px;left:0;right:0;background:#fff;border:1px solid #e2e8f0;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,0.12);margin-top:8px;">
+            <div onclick="changeType('pdf')" style="padding:14px 18px;display:flex;align-items:center;gap:14px;cursor:pointer;"><img src="/file/pdf.jpg" style="width:28px;height:28px;border-radius:6px;"><span style="font-weight:500;">PDF Notes</span></div>
+            <div onclick="changeType('excel')" style="padding:14px 18px;display:flex;align-items:center;gap:14px;cursor:pointer;"><img src="/file/excel.jpg" style="width:28px;height:28px;border-radius:6px;"><span style="font-weight:500;">Excel Template</span></div>
+            <div onclick="changeType('exam')" style="padding:14px 18px;display:flex;align-items:center;gap:14px;cursor:pointer;"><img src="/file/exam.jpg" style="width:28px;height:28px;border-radius:6px;"><span style="font-weight:500;">Exam Material</span></div>
+            <div onclick="changeType('freelance')" style="padding:14px 18px;display:flex;align-items:center;gap:14px;cursor:pointer;"><img src="/file/service.jpg" style="width:28px;height:28px;border-radius:6px;"><span style="font-weight:500;">Freelance Service</span></div>
+          </div>
+        </div>
         <form id="resourceForm">
           <input type="text" id="title" placeholder="Title" required>
           <textarea id="description" placeholder="Description" required></textarea>
@@ -1102,19 +1122,48 @@
 
     // Pick a type and go to form
     window.pickType = function(type) {
+      // Close dropdown and hide step1 completely
+      const dropdown = document.getElementById('typeDropdown');
+      if (dropdown) {
+        dropdown.style.display = 'none';
+        dropdown.style.visibility = 'hidden';
+      }
+      // Hide addStep1
       document.getElementById('addStep1').style.display = 'none';
+      document.getElementById('addStep1').style.visibility = 'hidden';
+      // Update the selected type display
+      const icons = { pdf:'/file/pdf.jpg', excel:'/file/excel.jpg', exam:'/file/exam.jpg', freelance:'/file/service.jpg' };
+      const labels = { pdf:'PDF Notes', excel:'Excel Template', exam:'Exam Material', freelance:'Freelance Service' };
+      document.getElementById('typeIcon').src = icons[type] || '/file/pdf.jpg';
+      document.getElementById('typeText').textContent = labels[type] || type;
+      // Show form
       document.getElementById('addStep2').style.display = 'block';
+      document.getElementById('addStep2').style.visibility = 'visible';
       if (typeof showAddModal === 'function') showAddModal(type);
       else {
-        const labels = { pdf:'PDF Notes', excel:'Excel Template', exam:'Exam Material', freelance:'Freelance Service' };
-        document.getElementById('modalTitle').textContent = 'Add ' + (labels[type] || 'Resource');
+        // Update modal title with selected type
+        const modalTitle = document.getElementById('modalTitle');
+        if (modalTitle) {
+          modalTitle.innerHTML = '<img src="' + (icons[type] || '/file/pdf.jpg') + '" style="width:24px;height:24px;vertical-align:middle;margin-right:8px;border-radius:4px;"> Add ' + (labels[type] || 'Resource');
+        }
+        // Update the type dropdown in form
+        document.getElementById('typeIcon2').src = icons[type] || '/file/pdf.jpg';
+        document.getElementById('typeText2').textContent = labels[type] || type;
       }
     };
 
     // Back to picker
     window.backToPicker = function() {
       document.getElementById('addStep2').style.display = 'none';
+      document.getElementById('addStep2').style.visibility = 'hidden';
       document.getElementById('addStep1').style.display = 'block';
+      document.getElementById('addStep1').style.visibility = 'visible';
+      // Reset the dropdown display
+      const dropdown = document.getElementById('typeDropdown');
+      if (dropdown) {
+        dropdown.style.display = 'none';
+        dropdown.style.visibility = 'visible';
+      }
     };
 
     window.showTab = window.showTab || function (type) {

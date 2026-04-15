@@ -598,6 +598,15 @@ function closeModal() {
     // Reset form
     const form = document.getElementById('resourceForm');
     if (form) form.reset();
+    // Reset type selector
+    document.getElementById('addStep2').style.display = 'none';
+    document.getElementById('addStep2').style.visibility = 'visible';
+    document.getElementById('addStep1').style.display = 'block';
+    document.getElementById('addStep1').style.visibility = 'visible';
+    document.getElementById('typeText').textContent = 'Select Type...';
+    document.getElementById('typeIcon').src = '/file/pdf.jpg';
+    document.getElementById('typeDropdown').style.display = 'none';
+    document.getElementById('typeDropdown').style.visibility = 'visible';
   }
 }
 

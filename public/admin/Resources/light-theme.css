@@ -52,6 +52,7 @@ body.light-mode .main {
 body.light-mode .modal-content {
   background: #ffffff;
   border: 1px solid #e2e8f0;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.12), 0 0 0 1px rgba(102,126,234,0.1);
 }
 
 body.light-mode .auth-modal-content {
@@ -462,13 +463,97 @@ body.dark-mode .pr-price {
 /* Modal */
 body.dark-mode .modal-content {
   background: #161b22 !important;
-  border-color: #30363d !important;
+  border: 1px solid #30363d !important;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4), 0 0 0 1px rgba(124,106,247,0.15) !important;
 }
 body.dark-mode .modal-content h2 {
   background: linear-gradient(135deg, #a78bfa, #7c6af7) !important;
   -webkit-background-clip: text !important;
   -webkit-text-fill-color: transparent !important;
   background-clip: text !important;
+}
+body.dark-mode .type-select-wrapper .custom-select {
+  background: #21293d !important;
+  border-color: #30363d !important;
+  color: #e6edf3 !important;
+}
+body.dark-mode .type-select-wrapper .custom-select .arrow {
+  color: #8b949e !important;
+}
+body.dark-mode .type-select-wrapper .dropdown {
+  background: #161b22 !important;
+  border-color: #30363d !important;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4) !important;
+}
+body.dark-mode .type-select-wrapper .dropdown div {
+  color: #e6edf3 !important;
+}
+body.dark-mode .type-select-wrapper .dropdown div:hover {
+  background: #21293d !important;
+}
+body.dark-mode #typeText {
+  color: #e6edf3 !important;
+}
+.type-option-dropdown div:hover {
+  background: #f1f5f9 !important;
+}
+.type-option-dropdown {
+  display: flex;
+  flex-direction: column;
+}
+.type-option-dropdown div:hover {
+  background: #f1f5f9;
+}
+body.dark-mode .type-option-dropdown div:hover {
+  background: #21293d;
+}
+body.dark-mode .selected-types-grid {
+  background: #161b22 !important;
+  border-color: #30363d !important;
+}
+body.dark-mode .type-option-item {
+  background: #21293d !important;
+  border-color: #30363d !important;
+}
+body.dark-mode .type-option-item span {
+  color: #e6edf3 !important;
+}
+/* Second type dropdown in form */
+body.dark-mode #typeSelectTrigger2 {
+  background: #21293d !important;
+  border: 2px solid #30363d !important;
+}
+body.dark-mode #typeText2 {
+  color: #e6edf3 !important;
+}
+body.dark-mode #typeDropdown2 {
+  background: #161b22 !important;
+  border: 1px solid #30363d !important;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4) !important;
+}
+body.dark-mode #typeDropdown2 div {
+  color: #e6edf3 !important;
+  border-bottom-color: #30363d !important;
+}
+body.dark-mode #typeDropdown2 div:hover {
+  background: #21293d !important;
+}
+html.dark-mode #typeSelectTrigger2 {
+  background: #21293d !important;
+  border: 2px solid #30363d !important;
+}
+html.dark-mode #typeText2 {
+  color: #e6edf3 !important;
+}
+html.dark-mode #typeDropdown2 {
+  background: #161b22 !important;
+  border: 1px solid #30363d !important;
+}
+html.dark-mode #typeDropdown2 div {
+  color: #e6edf3 !important;
+}
+html.dark-mode #typeDropdown2 div:hover {
+  background: #21293d !important;
 }
 body.dark-mode .auth-modal-content {
   background: #161b22 !important;

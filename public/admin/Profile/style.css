@@ -150,6 +150,9 @@ body {
       border-top: 1px solid #e2e8f0 !important;
       padding-top: 16px !important;
     }
+    html.dark-mode .sidebar a.nav-link-divider {
+      border-top: 1px solid #30363d !important;
+    }
 
 .sidebar a.nav-link-logout {
   color: #ef4444;
@@ -4383,6 +4386,12 @@ body.dark-mode .success-message {
   margin-top: 16px;
   border-top: 1px solid #e2e8f0;
   padding-top: 16px;
+}
+html.dark-mode .sidebar a.nav-link-divider {
+  border-top: 1px solid #30363d !important;
+}
+html.dark-mode .sidebar-footer {
+  border-top-color: #30363d !important;
 }
 
 .sidebar a.nav-link-logout {
