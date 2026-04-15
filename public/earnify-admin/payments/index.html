@@ -2,7 +2,8 @@
 <html lang="en">
 
 <head>
-  <script>!function(){var s=localStorage.getItem('earnify_dark_mode');if(s===null||s==='1'){document.documentElement.classList.add('dark-mode');document.documentElement.style.background='#0d1117';}}();</script>
+  <script>!function(){var s=localStorage.getItem('earnify_dark_mode');var d=s===null||s==='1';document.documentElement.classList.toggle('dark-mode',d);document.body.style.background=d?'#0d1117':'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)';}();</script>
+  <style>body{background:#f8fafc;background:linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);}html.dark-mode body{background:#0d1117 !important;}</style>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Payment Requests - Earnify Admin</title>
