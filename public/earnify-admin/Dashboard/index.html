@@ -1961,6 +1961,19 @@
       pointer-events: none;
       transition: left .4s cubic-bezier(.4, 0, .2, 1), background .4s, box-shadow .4s;
       z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+    }
+    html.dark-mode .sb-nm-knob::after {
+      content: "🌙";
+    }
+    body.dark-mode .sb-nm-knob::after {
+      content: "🌙";
+    }
+    .sb-nm-knob::before {
+      content: "☀️";
     }
 
     .sb-nm-label {
@@ -2082,6 +2095,8 @@
       left: 53px !important;
       background: linear-gradient(135deg, #3a4a5c, #2d3748) !important;
     }
+    html.dark-mode .sb-nm-knob::before { display: none !important; }
+    html.dark-mode .sb-nm-knob::after { display: block !important; }
 
     html.dark-mode .sb-nm-label-light {
       opacity: 0 !important;

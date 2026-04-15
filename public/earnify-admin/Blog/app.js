@@ -456,12 +456,13 @@ async function submitBlogForm() {
 // ── LOAD BLOGS ──
 async function loadBlogs() {
   const grid = document.getElementById('blogGrid');
-  grid.innerHTML = `
-    <div class="empty-state">
-      <div class="empty-icon">⏳</div>
-      <h3>Loading...</h3>
-    </div>`;
-
+  // Check if this is initial load - keep showing skeleton for minimum time
+  const hasSkeleton = grid.querySelector('.skeleton-post');
+  const isInitialLoad = hasSkeleton && !grid.querySelector('.blog-card');
+  if (isInitialLoad) {
+    // Ensure skeleton is visible during load
+    grid.style.minHeight = '300px';
+  }
   try {
     const { data: blogs, error } = await supabaseClient
       .from('blogs')
@@ -482,6 +483,8 @@ async function loadBlogs() {
         </div>`;
       return;
     }
+
+    // Check if we have skeleton from initial load (keep showing until data replaces it)
 
     blogs.forEach(b => { _blogMap[b.id] = b; });
 
@@ -621,7 +624,8 @@ async function undoDeletePost() {
 
 // ── INIT ──
 document.addEventListener('DOMContentLoaded', () => {
-  loadBlogs();
+  // Small delay to show skeleton initially
+  setTimeout(() => loadBlogs(), 100);
 
   // ESC key closes editor
   document.addEventListener('keydown', (e) => {
