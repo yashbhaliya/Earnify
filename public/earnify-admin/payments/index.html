@@ -2,8 +2,8 @@
 <html lang="en">
 
 <head>
-  <script>!function(){var s=localStorage.getItem('earnify_dark_mode');var d=s===null||s==='1';document.documentElement.classList.toggle('dark-mode',d);document.body.style.background=d?'#0d1117':'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)';}();</script>
-  <style>body{background:#f8fafc;background:linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);}html.dark-mode body{background:#0d1117 !important;}</style>
+  <script>!function(){var s=localStorage.getItem('earnify_dark_mode');var d=s===null||s==='1';document.documentElement.classList.toggle('dark-mode',d);document.documentElement.style.background=d?'#0d1117':'#f8fafc';}();</script>
+  <style>html{background:#f8fafc;}html.dark-mode{background:#0d1117 !important;}</style>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Payment Requests - Earnify Admin</title>
@@ -1017,7 +1017,7 @@
     body.dark-mode .stat-sub   { color: #8b949e !important; }
     body.dark-mode .stat-label { color: #484f58 !important; }
     body.dark-mode .stat-card.shimmer-card .stat-icon {
-      background: linear-gradient(90deg,#1c2333 25%,#252f42 50%,#1c2333 75%) !important;
+      background: linear-gradient(90deg,#1c212d 25%,#2a3344 50%,#1c212d 75%) !important;
       background-size: 1200px 100% !important;
       animation: shimmer 1.4s infinite linear !important;
       transition: none !important;
@@ -1025,7 +1025,7 @@
 
     /* shimmer */
     body.dark-mode .sh {
-      background: linear-gradient(90deg,#1c2333 25%,#252f42 50%,#1c2333 75%) !important;
+      background: linear-gradient(90deg,#1c212d 25%,#2a3344 50%,#1c212d 75%) !important;
       background-size: 1200px 100% !important;
       animation: shimmer 1.4s infinite linear !important;
       transition: none !important;
@@ -1052,12 +1052,12 @@
 
     /* payment shimmer */
     body.dark-mode .payment-shimmer {
-      background: #161b22 !important;
-      border: 1px solid rgba(124,106,247,0.25) !important;
-      box-shadow: 0 0 0 1px rgba(124,106,247,0.1), 0 4px 20px rgba(0,0,0,0.35) !important;
+      background: linear-gradient(180deg,#1c212d 0%,#161b22 100%) !important;
+      border: 1px solid rgba(124,106,247,0.35) !important;
+      box-shadow: 0 0 0 1px rgba(124,106,247,0.15), 0 4px 20px rgba(0,0,0,0.35) !important;
     }
     body.dark-mode .payment-shimmer .ps-header { border-bottom-color: #30363d !important; }
-    body.dark-mode .payment-shimmer .ps-details { background: #1c2333 !important; }
+    body.dark-mode .payment-shimmer .ps-details { background: #1c212d !important; }
 
     /* mobile amount strip */
     body.dark-mode .payment-amount[style*="background:#f0fdf4"],
@@ -1103,8 +1103,9 @@
     }
     body.dark-mode .toast-message { color: #e6edf3 !important; }
 
-    .back-link { color: #667eea; }
+    .back-link { color: #667eea; border-top: 1px solid #e2e8f0; }
     body.dark-mode .back-link { color: #a78bfa !important; border-top-color: #30363d !important; }
+    html.dark-mode .back-link { color: #a78bfa !important; border-top: 1px solid #30363d !important; background: transparent !important; }
 
     /* smooth transitions — exclude shimmer elements */
     body.dark-mode .sidebar,
@@ -1134,15 +1135,15 @@
     html.dark-mode .main { background: #0d1117 !important; }
     html.dark-mode body { background: #0d1117 !important; }
     html.dark-mode .sh {
-      background: linear-gradient(90deg,#1c2333 25%,#252f42 50%,#1c2333 75%) !important;
+      background: linear-gradient(90deg,#1c212d 25%,#2a3344 50%,#1c212d 75%) !important;
       background-size: 1200px 100% !important;
       animation: shimmer 1.4s infinite linear !important;
       transition: none !important;
     }
     html.dark-mode .payment-shimmer {
-      background: #161b22 !important;
-      border: 1px solid rgba(124,106,247,0.25) !important;
-      box-shadow: 0 0 0 1px rgba(124,106,247,0.1), 0 4px 20px rgba(0,0,0,0.35) !important;
+      background: linear-gradient(180deg,#1c212d 0%,#161b22 100%) !important;
+      border: 1px solid rgba(124,106,247,0.35) !important;
+      box-shadow: 0 0 0 1px rgba(124,106,247,0.15), 0 4px 20px rgba(0,0,0,0.35) !important;
     }
     html.dark-mode .payment-shimmer .ps-header { border-bottom-color: #30363d !important; }
     html.dark-mode .payment-shimmer .ps-details { background: #1c2333 !important; }
@@ -1152,7 +1153,7 @@
       box-shadow: 0 0 0 1px rgba(124,106,247,0.1), 0 4px 20px rgba(0,0,0,0.35) !important;
     }
     html.dark-mode .stat-card.shimmer-card .stat-icon {
-      background: linear-gradient(90deg,#1c2333 25%,#252f42 50%,#1c2333 75%) !important;
+      background: linear-gradient(90deg,#1c212d 25%,#2a3344 50%,#1c212d 75%) !important;
       background-size: 1200px 100% !important;
       animation: shimmer 1.4s infinite linear !important;
       transition: none !important;
