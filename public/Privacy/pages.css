@@ -185,7 +185,6 @@
 .toc-num {
   font-size: 0.68rem;
   font-weight: 700;
-  color: #c7d2fe;
   min-width: 22px;
 }
 
@@ -1192,7 +1191,7 @@ body.dark-mode .toc-inner {
   transition: none !important;
 }
 html.dark-mode .toc-header,
-body.dark-mode .toc-header { color: #484f58 !important; }
+
 html.dark-mode .toc-link,
 body.dark-mode .toc-link { color: #8b949e !important; }
 html.dark-mode .toc-link:hover,
@@ -1202,8 +1201,7 @@ body.dark-mode .toc-link.active {
   background: rgba(124,106,247,0.12) !important;
   color: #a78bfa !important;
 }
-html.dark-mode .toc-num,
-body.dark-mode .toc-num { color: #30363d !important; }
+
 html.dark-mode .toc-link.active .toc-num,
 body.dark-mode .toc-link.active .toc-num { color: #a78bfa !important; }
 

@@ -813,9 +813,7 @@ body.dark-mode .info-card span { color: #8b949e !important; }
 html.dark-mode .info-card-arrow,
 body.dark-mode .info-card-arrow { color: #484f58 !important; }
 
-/* Social */
-html.dark-mode .social-label,
-body.dark-mode .social-label { color: #484f58 !important; }
+
 html.dark-mode .social-btn,
 body.dark-mode .social-btn {
   background: #1c2333 !important;

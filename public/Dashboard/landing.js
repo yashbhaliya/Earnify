@@ -3,6 +3,18 @@ let isLoggedIn = false;
 document.addEventListener('DOMContentLoaded', () => {
   isLoggedIn = localStorage.getItem('userLoggedIn') === 'true' || !!localStorage.getItem('adminToken');
   updateUI();
+  
+  // Navbar scroll effect
+  const navbar = document.querySelector('.navbar');
+  window.addEventListener('scroll', () => {
+    if (navbar) {
+      if (window.scrollY > 50) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    }
+  });
 });
 
 function updateUI() {

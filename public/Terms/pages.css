@@ -185,7 +185,6 @@
 .toc-num {
   font-size: 0.68rem;
   font-weight: 700;
-  color: #c7d2fe;
   min-width: 22px;
 }
 
@@ -934,7 +933,7 @@ body.dark-mode .toc-inner {
   transition: none !important;
 }
 html.dark-mode .toc-header,
-body.dark-mode .toc-header { color: #484f58 !important; }
+
 html.dark-mode .toc-link,
 body.dark-mode .toc-link { color: #8b949e !important; }
 html.dark-mode .toc-link:hover,
@@ -944,8 +943,7 @@ body.dark-mode .toc-link.active {
   background: rgba(124,106,247,0.12) !important;
   color: #a78bfa !important;
 }
-html.dark-mode .toc-num,
-body.dark-mode .toc-num { color: #30363d !important; }
+
 html.dark-mode .toc-link.active .toc-num,
 body.dark-mode .toc-link.active .toc-num { color: #a78bfa !important; }
 
@@ -979,26 +977,32 @@ body.dark-mode .section-icon-wrap i { color: #a78bfa !important; }
 /* Info boxes */
 html.dark-mode .info-blue,
 body.dark-mode .info-blue {
-  background: rgba(59,130,246,0.1) !important;
-  border-color: rgba(59,130,246,0.25) !important;
-  color: #93c5fd !important;
+  background: rgba(59,130,246,0.12) !important;
+  border-color: rgba(96,165,250,0.3) !important;
+  color: #bfdbfe !important;
 }
 html.dark-mode .info-blue i,
 body.dark-mode .info-blue i { color: #60a5fa !important; }
+html.dark-mode .info-blue a,
+body.dark-mode .info-blue a { color: #7dd3fc !important; }
+html.dark-mode .info-blue a:hover,
+body.dark-mode .info-blue a:hover { color: #93c5fd !important; }
 html.dark-mode .info-green,
 body.dark-mode .info-green {
-  background: rgba(34,197,94,0.1) !important;
-  border-color: rgba(34,197,94,0.25) !important;
+  background: rgba(34,197,94,0.12) !important;
+  border-color: rgba(74,222,128,0.3) !important;
   color: #86efac !important;
 }
 html.dark-mode .info-green i,
 body.dark-mode .info-green i { color: #4ade80 !important; }
 html.dark-mode .info-warn,
 body.dark-mode .info-warn {
-  background: rgba(245,158,11,0.1) !important;
-  border-color: rgba(245,158,11,0.25) !important;
+  background: rgba(245,158,11,0.12) !important;
+  border-color: rgba(251,191,36,0.3) !important;
   color: #fcd34d !important;
 }
+html.dark-mode .info-warn i,
+body.dark-mode .info-warn i { color: #fbbf24 !important; }
 html.dark-mode .info-warn i,
 body.dark-mode .info-warn i { color: #fbbf24 !important; }
 

@@ -893,15 +893,6 @@ html.dark-mode body .toc-inner {
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4) !important;
 }
 
-body.dark-mode,
-html.dark-mode body .toc-header {
-  color: #484f58 !important;
-}
-
-body.dark-mode,
-html.dark-mode body .toc-link {
-  color: #8b949e !important;
-}
 
 body.dark-mode,
 html.dark-mode body .toc-link:hover,
@@ -911,10 +902,6 @@ html.dark-mode body .toc-link.active {
   color: #a78bfa !important;
 }
 
-body.dark-mode,
-html.dark-mode body .toc-num {
-  color: #30363d !important;
-}
 
 body.dark-mode,
 html.dark-mode body .toc-link.active .toc-num {
@@ -1283,11 +1270,6 @@ html.dark-mode body .info-card span {
 
 body.dark-mode,
 html.dark-mode body .info-card-arrow {
-  color: #484f58 !important;
-}
-
-body.dark-mode,
-html.dark-mode body .social-label {
   color: #484f58 !important;
 }
 
