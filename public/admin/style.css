@@ -145,6 +145,7 @@ body {
   padding: 40px;
   background: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(10px);
+  max-width: 100%;
 }
 
 .main h1 {

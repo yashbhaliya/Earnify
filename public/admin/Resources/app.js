@@ -586,6 +586,12 @@ function showAddModal(type) {
       modalTitle.textContent = 'Add Resource';
   }
 
+  // Important: when user switches type (e.g. PDF -> Excel),
+  // clear any previously selected file so wrong file does not carry over.
+  if (fileInput) {
+    fileInput.value = '';
+  }
+
   modal.style.display = 'flex';
   console.log('Modal display set to flex');
 }

@@ -25,7 +25,7 @@
     if (btnAll || btnPur) {
       if (dark) {
         if (btnAll) btnAll.style.cssText = 'padding:10px 22px !important;border-radius:10px !important;color:#fff !important;font-size:14px !important;font-weight:700 !important;cursor:pointer !important;font-family:inherit !important;';
-        if (btnPur) btnPur.style.cssText = 'padding:10px 22px !important;border-radius:10px !important;border:2px solid #30363d !important;background:#1c2333 !important;color:#8b949e !important;font-size:14px !important;font-weight:700 !important;cursor:pointer !important;font-family:inherit !important;';
+        if (btnPur) btnPur.style.cssText = 'padding:10px 22px !important;border-radius:10px !important;border:2px solid #30363d !important;background:#1c2333 !important;color:white !important;font-size:14px !important;font-weight:700 !important;cursor:pointer !important;font-family:inherit !important;';
       } else {
         if (btnAll) btnAll.style.cssText = 'padding:10px 22px;border-radius:10px;background:white;color:;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;';
         if (btnPur) btnPur.style.cssText = 'padding:10px 22px;border-radius:10px;border:2px solid #e2e8f0;background:#fff;color:#64748b;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;';

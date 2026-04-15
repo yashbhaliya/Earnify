@@ -13,7 +13,12 @@
   <link rel="stylesheet" href="mobile-responsive.css">
   <link rel="stylesheet" href="/admin/admin-bottom-nav.css">
   <link rel="stylesheet" href="/admin/admin-dark.css">
+  <script>!function(){var d=localStorage.getItem("earnify_dark_mode")!=="0";document.documentElement.classList.toggle("dark-mode",d);if(d){document.documentElement.style.background="#0d1117";document.documentElement.style.colorScheme="dark";}var s=document.createElement("style");s.id="profile-flash-fix";s.textContent=d?".main{background:#0d1117!important}.sidebar{background:linear-gradient(180deg,#161b22,#0d1117)!important;border-right-color:#30363d!important}.profile-card,.wi-method{background:#161b22!important;border-color:#30363d!important}.sb-nm-knob{left:52px!important;background:#2d3748!important}.sb-nm-toggle{background:#1e2535!important}":".main{background:rgba(255,255,255,0.8)!important}.sb-nm-knob{left:4px!important}";document.head.appendChild(s);document.addEventListener("DOMContentLoaded",function(){document.body.classList.toggle("dark-mode",d);var k=document.getElementById("sbNmKnob");if(k)k.textContent=d?"🌙":"☀️";setTimeout(function(){var el=document.getElementById("profile-flash-fix");if(el)el.remove();},400);});}();</script>
   <script src="/admin/dark-theme.js"></script>
+  <script>
+    // Start in loading mode to avoid initial content flash.
+    document.documentElement.classList.add('profile-loading');
+  </script>
   <style>
     .sidebar-header {
       display: flex;
@@ -78,10 +83,41 @@
       }
     }
 
-    .profile-container {
-      /* max-width: 1200px; */
+.profile-container {
+      max-width: 100%;
       margin: 0 auto;
-      padding: 0 10px;
+      padding: 0 15px;
+    }
+
+    .profile-container.shimmer-loading {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .profile-container.shimmer-loading::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.5) 50%, rgba(255,255,255,0) 100%);
+      animation: containerShimmer 1.5s infinite;
+      z-index: 100;
+      pointer-events: none;
+    }
+
+    body.dark-mode .profile-container.shimmer-loading::after {
+      background: linear-gradient(90deg, rgba(13,17,23,0) 0%, rgba(48,54,61,0.5) 50%, rgba(13,17,23,0) 100%);
+    }
+
+    @keyframes containerShimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+
+    .profile-grid {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 24px;
+      margin-bottom: 40px;
     }
 
     .profile-page-header {
@@ -528,6 +564,84 @@
       width: 60px;
       height: 28px;
       border-radius: 20px;
+    }
+
+    /* Profile skeleton loading state */
+    body.profile-loading .profile-avatar-section .profile-actions,
+    html.profile-loading body .profile-avatar-section .profile-actions {
+      display: none !important;
+    }
+
+    /* Hide actions during loading but keep cards visible */
+    body.profile-loading .profile-actions,
+    html.profile-loading body .profile-actions {
+      display: none !important;
+    }
+
+    /* Explicit skeleton targets: top two profile cards */
+    body.profile-loading .profile-grid .profile-card.skeleton-card,
+    html.profile-loading body .profile-grid .profile-card.skeleton-card {
+      background: #ffffff;
+      border-color: #e8edf5;
+      box-shadow: 0 10px 28px rgba(15, 23, 42, 0.08);
+    }
+    body.dark-mode.profile-loading .profile-grid .profile-card.skeleton-card,
+    html.dark-mode body.profile-loading .profile-grid .profile-card.skeleton-card {
+      background: #161b22;
+      border-color: #30363d;
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+    }
+
+    /* Apply skeleton surface directly on profile cards */
+    body.profile-loading .profile-grid .profile-card,
+    html.profile-loading body .profile-grid .profile-card {
+      position: relative;
+      overflow: hidden;
+    }
+    body.profile-loading .profile-grid .profile-card::after,
+    html.profile-loading body .profile-grid .profile-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 10;
+      background: linear-gradient(90deg, rgba(240, 240, 240, 0) 0%, rgba(255, 255, 255, 0.55) 50%, rgba(240, 240, 240, 0) 100%);
+      transform: translateX(-100%);
+animation: cardShimmer 1.8s infinite;
+    }
+
+    /* Shimmer for cards outside profile-grid */
+    body.profile-loading #withdrawalInfoCard,
+    html.profile-loading body #withdrawalInfoCard,
+    body.profile-loading #recentResourcesCard,
+    html.profile-loading body #recentResourcesCard {
+      position: relative;
+      overflow: hidden;
+    }
+    body.profile-loading #withdrawalInfoCard::after,
+    html.profile-loading body #withdrawalInfoCard::after,
+    body.profile-loading #recentResourcesCard::after,
+    html.profile-loading body #recentResourcesCard::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 10;
+      background: linear-gradient(90deg, rgba(240, 240, 240, 0) 0%, rgba(255, 255, 255, 0.55) 50%, rgba(240, 240, 240, 0) 100%);
+      transform: translateX(-100%);
+      animation: cardShimmer 1.8s infinite;
+    }
+    body.dark-mode.profile-loading #withdrawalInfoCard::after,
+    html.dark-mode body.profile-loading #withdrawalInfoCard::after,
+    body.dark-mode.profile-loading #recentResourcesCard::after,
+    html.dark-mode body.profile-loading #recentResourcesCard::after {
+      background: linear-gradient(90deg, rgba(28, 35, 51, 0) 0%, rgba(66, 77, 95, 0.35) 50%, rgba(28, 35, 51, 0) 100%);
+    }
+
+    @keyframes cardShimmer {
+      100% {
+        transform: translateX(100%);
+      }
     }
 
     @media (max-width: 768px) {
@@ -988,7 +1102,7 @@
   </div>
 
   <div class="main">
-    <div class="profile-container">
+    <div class="profile-container" id="profileContainer">
 
       <!-- Mobile-only header bar -->
       <div class="mobile-profile-header">
@@ -1002,7 +1116,7 @@
       </div>
 
       <div class="profile-page-header">
-        <div style="display:flex;align-items:center;gap:14px;j">
+        <div style="display:flex;align-items:center;gap:14px;">
           <button class="mobile-menu-toggle page-header-toggle" onclick="toggleSidebar()" style="display:none;">
             <div class="hamburger"></div>
             <div class="hamburger"></div>
@@ -1014,7 +1128,7 @@
       </div>
 
       <div class="profile-grid">
-        <div class="profile-card profile-avatar-section">
+        <div class="profile-card profile-avatar-section skeleton-card">
           <!-- Shimmer Loading -->
           <div id="profileAvatarShimmer">
             <div class="shimmer-profile-avatar shimmer-gradient"></div>
@@ -1043,7 +1157,7 @@
           </div>
         </div>
 
-        <div class="profile-card">
+        <div class="profile-card skeleton-card">
           <h2>📝 Profile Information</h2>
 
           <!-- Shimmer Loading -->
@@ -1097,7 +1211,7 @@
       </div>
 
       <!-- Withdrawal Info Card -->
-      <div class="profile-card" style="margin-top: 24px;">
+      <div class="profile-card" id="withdrawalInfoCard" style="margin-top: 24px;">
         <h2>💳 Withdrawal Info
           <button class="wi-edit-btn" onclick="openWiModal()" style="margin-left:auto;">✏️ Edit Info</button>
         </h2>
@@ -1132,7 +1246,7 @@
           </div>
         </div>
       </div>
-      <div class="profile-card" style="margin-top: 30px;">
+      <div class="profile-card" id="recentResourcesCard" style="margin-top: 30px;">
         <h2>📚 My Recent Resources</h2>
         <div id="recentResourcesList">
           <div style="text-align: center; padding: 40px; color: #64748b;">
@@ -1265,6 +1379,10 @@
     const currentUser = getCurrentEmail() || JSON.parse(localStorage.getItem('currentUser') || '{}');
 
     function showShimmers() {
+      document.documentElement.classList.add('profile-loading');
+      document.body.classList.add('profile-loading');
+      const container = document.getElementById('profileContainer');
+      if (container) container.classList.add('shimmer-loading');
       document.getElementById('profileAvatarShimmer').style.display = 'block';
       document.getElementById('profileAvatarContent').style.display = 'none';
       document.getElementById('profileDetailsShimmer').style.display = 'block';
@@ -1272,10 +1390,14 @@
     }
 
     function hideShimmers() {
+      const container = document.getElementById('profileContainer');
+      if (container) container.classList.remove('shimmer-loading');
       document.getElementById('profileAvatarShimmer').style.display = 'none';
       document.getElementById('profileAvatarContent').style.display = 'block';
       document.getElementById('profileDetailsShimmer').style.display = 'none';
       document.getElementById('profileDetailsContent').style.display = 'block';
+      document.body.classList.remove('profile-loading');
+      document.documentElement.classList.remove('profile-loading');
     }
 
     function loadProfile() {
@@ -1305,7 +1427,7 @@
       document.getElementById('detailCreated').textContent = createdAt;
       document.getElementById('detailLastLogin').textContent = lastLogin;
 
-      setTimeout(() => hideShimmers(), 600);
+      setTimeout(() => hideShimmers(), 1200);
     }
 
     function editProfile() {
