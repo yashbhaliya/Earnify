@@ -1136,6 +1136,8 @@
       const labels = { pdf:'PDF Notes', excel:'Excel Template', exam:'Exam Material', freelance:'Freelance Service' };
       document.getElementById('typeIcon').src = icons[type] || '/file/pdf.jpg';
       document.getElementById('typeText').textContent = labels[type] || type;
+      document.getElementById('typeIcon2').src = icons[type] || '/file/pdf.jpg';
+      document.getElementById('typeText2').textContent = labels[type] || type;
       // Show form
       document.getElementById('addStep2').style.display = 'block';
       document.getElementById('addStep2').style.visibility = 'visible';

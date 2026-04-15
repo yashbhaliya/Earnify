@@ -75,6 +75,9 @@ function changeType(type) {
   document.getElementById('typeIcon2').src = icons[type] || '/file/pdf.jpg';
   document.getElementById('typeText2').textContent = labels[type] || type;
   document.getElementById('typeDropdown2').style.display = 'none';
+  if (typeof window.showAddModal === 'function') {
+    window.showAddModal(type);
+  }
 }
 
 // Close on outside click
