@@ -1116,12 +1116,25 @@ html.dark-mode body .btn-cancel {
   border-color: #30363d !important;
   color: #8b949e !important;
 }
+/* ── Mobile bottom nav: default/inactive state in dark mode ── */
+body.dark-mode .amn-item,
+html.dark-mode body .amn-item {
+  color: #8b949e !important;
+}
+
+body.dark-mode .amn-item svg,
+html.dark-mode body .amn-item svg {
+  stroke: #8b949e !important;
+}
 
 /* ── Mobile bottom nav ── */
 body.dark-mode .admin-mob-nav,
-html.dark-mode body .admin-mob-nav {
-  background: #0d1117 !important;
-  border-top-color: #30363d !important;
+html.dark-mode body .admin-mob-nav,
+html.dark-mode .admin-mob-nav {
+  display: flex !important;
+  background: #161b22 !important;
+  border-top: 1.5px solid #30363d !important;
+  box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.65) !important;
 }
 
 body.dark-mode,

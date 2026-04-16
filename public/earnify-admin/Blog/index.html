@@ -13,6 +13,34 @@
   <script>!function(){var s=localStorage.getItem('earnify_dark_mode');var d=s===null||s==='1';document.documentElement.classList.toggle('dark-mode',d);document.documentElement.style.background=d?'#0d1117':'#f8fafc';}();</script>
   <style>html{background:#f8fafc;}html.dark-mode{background:#0d1117 !important;}</style>
   <link rel="stylesheet" href="/dark-theme.css">
+  <style>
+  /* sidebar-mobile-fix */
+  @media (max-width: 768px) {
+    .sidebar {
+      overflow-y: auto !important;
+      overflow-x: hidden !important;
+      -webkit-overflow-scrolling: touch !important;
+      height: 100dvh !important;
+      width: min(260px, 82vw) !important;
+    }
+    .sidebar.active {
+      box-shadow: 4px 0 32px rgba(0,0,0,0.28) !important;
+    }
+    .sidebar-brand {
+      position: sticky !important;
+      top: 0 !important;
+      z-index: 2 !important;
+      background: inherit !important;
+      flex-shrink: 0 !important;
+    }
+    .sidebar-footer {
+      position: sticky !important;
+      bottom: 0 !important;
+      background: inherit !important;
+      flex-shrink: 0 !important;
+    }
+  }
+  </style>
 </head>
 
 <body>

@@ -1,47 +1,62 @@
 /* ── Admin Mobile Bottom Navigation ── */
+
 .admin-mob-nav {
   display: none;
   position: fixed;
-  bottom: 0; left: 0; right: 0;
-  height: 64px;
-  background: #fff;
-  border-top: 1px solid #e8edf5;
-  box-shadow: 0 -4px 24px rgba(0,0,0,0.10);
+  bottom: 0;
+  left: 0;
+  right: 0;
   z-index: 998;
+  /* background fills the nav + safe-area gap below */
+  background: #fff;
+  border-top: 1.5px solid #e8edf5;
+  box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.10);
+  /* items sit in the 56px zone; safe-area pushes the whole bar up */
+  padding: 0 4px env(safe-area-inset-bottom, 0px);
   align-items: stretch;
   justify-content: space-around;
-  padding: 0 4px;
-  padding-bottom: env(safe-area-inset-bottom);
 }
 
+/* show on mobile */
 @media (max-width: 1024px) {
-  .admin-mob-nav { display: flex; }
-  .main { padding-bottom: 76px !important; }
+  .admin-mob-nav {
+    display: flex;
+  }
+
+  /* page content must clear nav height + safe-area */
+  .main {
+    padding-bottom: calc(72px + env(safe-area-inset-bottom, 0px)) !important;
+  }
 }
 
+/* ── Individual nav items ── */
 .amn-item {
   flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 4px;
+  gap: 3px;
   text-decoration: none;
   color: #94a3b8;
   font-size: 10px;
   font-weight: 600;
   font-family: 'Inter', sans-serif;
-  transition: color 0.18s, transform 0.18s;
-  padding: 6px 2px;
+  transition: color 0.18s;
+  /* fixed inner height so items never collapse */
+  height: 56px;
+  padding: 8px 2px 6px;
   position: relative;
   border: none;
   background: none;
   cursor: pointer;
   min-width: 0;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .amn-item svg {
-  width: 22px; height: 22px;
+  width: 22px;
+  height: 22px;
   stroke: currentColor;
   fill: none;
   stroke-width: 2;
@@ -57,48 +72,141 @@
   text-overflow: ellipsis;
   max-width: 100%;
   line-height: 1;
+  font-size: 10px;
 }
 
-.amn-item.active { color: #667eea; }
-.amn-item.active svg { stroke: #667eea; transform: scale(1.1); }
-.amn-item:hover  { color: #667eea; }
-.amn-item:hover svg { stroke: #667eea; }
+/* ── Active / hover ── */
+.amn-item.active {
+  color: #667eea;
+}
 
+.amn-item.active svg {
+  stroke: #667eea;
+  transform: scale(1.12);
+}
+
+.amn-item:hover {
+  color: #667eea;
+}
+
+.amn-item:hover svg {
+  stroke: #667eea;
+}
+
+/* active dot indicator */
 .amn-item.active::after {
   content: '';
   position: absolute;
-  top: 5px;
-  width: 4px; height: 4px;
+  top: 4px;
+  width: 4px;
+  height: 4px;
   border-radius: 50%;
   background: #667eea;
 }
 
+/* ── Centre Home button ── */
 .amn-home {
-  flex: 0 0 58px;
-  margin: -14px 4px 0;
+  flex: 0 0 56px;
+  width: 56px;
+  height: 56px;
+  margin: -12px 6px 0;
   background: linear-gradient(135deg, #667eea, #764ba2);
   border-radius: 16px;
   color: #fff !important;
-  box-shadow: 0 6px 20px rgba(102,126,234,0.45);
-  height: 58px;
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.45);
   align-self: flex-start;
   padding: 6px 4px;
-}
-.amn-home svg { stroke: #fff !important; width: 24px; height: 24px; transform: none !important; }
-.amn-home span { color: #fff; font-size: 10px; }
-.amn-home:hover { opacity: 0.9; color: #fff !important; transform: translateY(-1px); }
-.amn-home.active::after { display: none; }
-.amn-home.active { color: #fff !important; }
-
-/* Dark mode */
-body.dark-mode .admin-mob-nav {
-  background: #0d1117 !important;
-  border-top-color: #30363d !important;
-  box-shadow: 0 -4px 24px rgba(0,0,0,0.5) !important;
+  flex-shrink: 0;
 }
 
+.amn-home svg {
+  stroke: #fff !important;
+  width: 24px;
+  height: 24px;
+  transform: none !important;
+}
+
+.amn-home span {
+  color: #fff;
+  font-size: 10px;
+}
+
+.amn-home:hover {
+  opacity: 0.9;
+  color: #fff !important;
+  transform: translateY(-1px);
+}
+
+.amn-home.active::after {
+  display: none;
+}
+
+.amn-home.active {
+  color: #fff !important;
+}
+
+/* ── Dark mode — covers html.dark-mode, body.dark-mode, and bare html.dark-mode ── */
+html.dark-mode .admin-mob-nav,
+body.dark-mode .admin-mob-nav,
+html.dark-mode body .admin-mob-nav {
+  display: flex !important;
+  background: #161b22 !important;
+  border-top: 1.5px solid #30363d !important;
+  box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.65) !important;
+}
+
+html.dark-mode .amn-item,
+body.dark-mode .amn-item {
+  color: #8b949e;
+}
+
+html.dark-mode .amn-item.active,
 body.dark-mode .amn-item.active,
-body.dark-mode .amn-item:hover { color: #a78bfa !important; }
+html.dark-mode .amn-item:hover,
+body.dark-mode .amn-item:hover {
+  color: #a78bfa !important;
+}
+
+html.dark-mode .amn-item.active svg,
 body.dark-mode .amn-item.active svg,
-body.dark-mode .amn-item:hover svg { stroke: #a78bfa !important; }
-body.dark-mode .amn-item.active::after { background: #a78bfa !important; }
+html.dark-mode .amn-item:hover svg,
+body.dark-mode .amn-item:hover svg {
+  stroke: #a78bfa !important;
+}
+
+html.dark-mode .amn-item.active::after,
+body.dark-mode .amn-item.active::after {
+  background: #a78bfa !important;
+}
+
+/* ── Extend background colour into the safe-area gap (no white strip) ── */
+.admin-mob-nav::after {
+  content: '';
+  position: absolute;
+  bottom: calc(-1 * env(safe-area-inset-bottom, 0px));
+  left: 0;
+  right: 0;
+  height: env(safe-area-inset-bottom, 0px);
+  background: inherit;
+  pointer-events: none;
+}
+
+/* ── Very small screens ── */
+@media (max-width: 360px) {
+  .amn-item {
+    font-size: 9px;
+  }
+
+  .amn-item svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .amn-home {
+    flex: 0 0 50px;
+    width: 50px;
+    height: 50px;
+    border-radius: 14px;
+    margin: -10px 4px 0;
+  }
+}

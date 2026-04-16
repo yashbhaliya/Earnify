@@ -80,7 +80,7 @@ body.dark-mode,
 html.dark-mode body .admin-btn:hover {
   background: linear-gradient(135deg, #9580ff 0%, #7c6af7 100%) !important;
   box-shadow: 0 4px 16px rgba(124, 106, 247, 0.5) !important;
-  transform: translateY(-2px) !important;
+
 }
 
 body.dark-mode,

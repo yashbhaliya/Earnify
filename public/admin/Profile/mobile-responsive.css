@@ -70,18 +70,39 @@
     /* --- Sidebar Mobile States --- */
     .sidebar {
         position: fixed;
-        left: calc(-1 * var(--sidebar-width));
+        left: 0;
         top: 0;
         bottom: 0;
-        width: var(--sidebar-width);
+        width: min(var(--sidebar-width), 85vw);
+        height: 100dvh;
         z-index: 1000;
+        transform: translateX(-100%);
         transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         background: white;
         box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+        overflow-y: auto;
+        overflow-x: hidden;
+        -webkit-overflow-scrolling: touch;
+        display: flex;
+        flex-direction: column;
     }
 
     .sidebar.active {
-        transform: translateX(var(--sidebar-width));
+        transform: translateX(0);
+    }
+
+    .sidebar .sidebar-header {
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        flex-shrink: 0;
+    }
+
+    .sidebar .sidebar-user {
+        margin-top: auto;
+        flex-shrink: 0;
+        position: sticky;
+        bottom: 0;
     }
 
     .sidebar-overlay {

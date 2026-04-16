@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 
 <head>
@@ -434,6 +434,22 @@
       padding-bottom: 2px;
     }
     .pr-filter-strip::-webkit-scrollbar { display: none; }
+    .dash-section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      gap: 16px;
+    }
+    .purchased-heading {
+      font-size: 20px;
+      font-weight: 800;
+      color: #1e293b;
+      margin: 0;
+    }
+    body.dark-mode .purchased-heading {
+      color: #e6edf3;
+    }
     .pr-filter {
       padding: 8px 16px;
       border-radius: 50px;
@@ -548,7 +564,21 @@
     .pr-sk-btn   { height:30px; width:78px; border-radius:8px; }
 
     /* Mobile: stack price + download below title */
-    @media (max-width: 520px) {
+    @media (max-width: 640px) {
+      .dash-section-head {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        margin-bottom: 20px;
+      }
+      .purchased-heading {
+        font-size: 18px;
+        margin-bottom: 4px;
+      }
+      .pr-filter-strip {
+        width: 100%;
+        padding: 4px 0;
+      }
       .pr-card { flex-wrap: wrap; gap: 10px; }
       .pr-info { width: calc(100% - 60px); }
       .pr-title { white-space: normal; }
@@ -924,8 +954,8 @@
 
     <!-- Purchased Resources Section -->
     <div id="purchasedSection" style="display:none;padding-bottom:30px;">
-      <div class="dash-section-head" style="margin-bottom:16px;display: flex;justify-content: space-between;">
-        <h2 class="purchased-heading" style="font-size:18px;font-weight:700;margin-bottom:14px;">🛒 My Purchased Resources</h2>
+      <div class="dash-section-head">
+        <h2 class="purchased-heading">🛒 My Purchased Resources</h2>
         <div class="pr-filter-strip">
           <button class="pr-filter active" onclick="filterPurchased('all',this)">All</button>
           <button class="pr-filter" onclick="filterPurchased('pdf',this)">📄 PDF</button>
