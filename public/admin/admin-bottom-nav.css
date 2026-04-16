@@ -17,8 +17,8 @@
   justify-content: space-around;
 }
 
-/* show on mobile */
-@media (max-width: 1024px) {
+/* show on mobile only */
+@media (max-width: 768px) {
   .admin-mob-nav {
     display: flex;
   }
@@ -145,14 +145,16 @@
   color: #fff !important;
 }
 
-/* ── Dark mode — covers html.dark-mode, body.dark-mode, and bare html.dark-mode ── */
-html.dark-mode .admin-mob-nav,
-body.dark-mode .admin-mob-nav,
-html.dark-mode body .admin-mob-nav {
-  display: flex !important;
-  background: #161b22 !important;
-  border-top: 1.5px solid #30363d !important;
-  box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.65) !important;
+/* ── Dark mode — only on mobile ── */
+@media (max-width: 768px) {
+  html.dark-mode .admin-mob-nav,
+  body.dark-mode .admin-mob-nav,
+  html.dark-mode body .admin-mob-nav {
+    display: flex !important;
+    background: #161b22 !important;
+    border-top: 1.5px solid #30363d !important;
+    box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.65) !important;
+  }
 }
 
 html.dark-mode .amn-item,
