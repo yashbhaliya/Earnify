@@ -1595,23 +1595,54 @@ body.dark-mode .editor-publish-btn:hover {
   /* Main layout */
   .main {
     margin-left: 0;
-    padding: 16px 12px;
-    height: 100vh;
+    padding: 16px 12px 80px;
+    height: 100dvh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
   }
 
   /* Page header */
   .page-header {
     padding: 14px 16px;
     border-radius: 12px;
-    gap: 10px;
+    gap: 8px;
+    flex-wrap: nowrap;
+    align-items: center;
+  }
+
+  .page-header > div:first-child {
+    flex: 1;
+    min-width: 0;
   }
 
   .page-header h1 {
-    font-size: 18px;
+    font-size: 16px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .page-header p {
+    font-size: 11px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .header-meta {
+    flex-shrink: 0;
+    gap: 6px;
+  }
+
+  .dark-toggle {
+    display: none !important;
+  }
+
+  .refresh-btn {
+    padding: 7px 12px;
     font-size: 12px;
+    white-space: nowrap;
   }
 
   /* Section header */

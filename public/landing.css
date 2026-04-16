@@ -1818,8 +1818,7 @@ footer {
   .admin-btn,
   .user-menu-btn,
   .cta-btn-main,
-  .mob-nav-item,
-  .mobile-sidebar-content a {
+  .mob-nav-item{
     min-height: 44px;
     display: inline-flex;
     align-items: center;
@@ -1842,8 +1841,8 @@ footer {
     height: auto;
   }
 
-  /* Prevent any element from causing horizontal scroll */
-  * {
+  /* Prevent any element from causing horizontal scroll — exclude fixed/absolute positioned elements */
+  *:not(.mobile-sidebar):not(.mobile-sidebar-overlay):not(.mobile-sidebar *) {
     max-width: 100%;
   }
 }
@@ -1915,14 +1914,20 @@ footer {
 .mobile-sidebar {
   position: fixed;
   top: 0;
-  left: -300px;
+  left: -105vw;
   width: 280px;
-  height: 100vh;
+  max-width: 85vw;
+  height: 100%;
+  height: 100dvh;
   background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
   box-shadow: 4px 0 20px rgba(0, 0, 0, 0.1);
-  z-index: 1002;
+  z-index: 10000;
   transition: left 0.3s ease;
   overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 80px;
 }
 
 .mobile-sidebar.active {
@@ -1933,13 +1938,14 @@ footer {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100vh;
+  width: 100vw;
+  height: 100%;
+  height: 100dvh;
   background: rgba(0, 0, 0, 0.5);
-  z-index: 1001;
+  z-index: 9999;
   opacity: 0;
   visibility: hidden;
-  transition: all 0.3s ease;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
 .mobile-sidebar-overlay.active {
@@ -1951,14 +1957,18 @@ footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px;
+  padding: 16px 20px;
   background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
   color: white;
+  flex-shrink: 0;
 }
 
 .mobile-sidebar-header h2 {
-  font-size: 1.5rem;
+  font-size: clamp(1.1rem, 5vw, 1.5rem);
   margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .close-sidebar {
@@ -1989,13 +1999,16 @@ footer {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 15px 20px;
+  padding: 14px 20px;
   color: #334155;
   text-decoration: none;
   font-weight: 500;
-  font-size: 1rem;
+  font-size: clamp(0.9rem, 4vw, 1rem);
   transition: all 0.3s;
   border-left: 4px solid transparent;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .mobile-sidebar-content a:hover {
@@ -2012,17 +2025,18 @@ footer {
 
 .mobile-sidebar-btn {
   width: calc(100% - 40px);
-  margin: 10px 20px;
-  padding: 12px;
+  margin: 8px 20px;
+  padding: 11px 12px;
   background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
   color: white;
   border: none;
   border-radius: 10px;
   font-weight: 600;
-  font-size: 1rem;
+  font-size: clamp(0.9rem, 4vw, 1rem);
   cursor: pointer;
   transition: all 0.3s;
   box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+  box-sizing: border-box;
 }
 
 .mobile-sidebar-btn:hover {
@@ -2215,7 +2229,10 @@ body.sidebar-open {
     display: none !important;
   }
 
-  .mobile-sidebar,
+  .mobile-sidebar {
+    display: none !important;
+  }
+
   .mobile-sidebar-overlay {
     display: none !important;
   }
@@ -2242,8 +2259,11 @@ body.sidebar-open {
 }
 
 /* Prevent horizontal overflow globally */
-html, body {
+body {
   overflow-x: hidden;
+  max-width: 100%;
+}
+html {
   max-width: 100%;
 }
 
@@ -2556,11 +2576,10 @@ body.dark-mode .search-box input {
   transition: none !important;
 }
 
-/* Mobile sidebar — instant */
+/* Mobile sidebar — dark mode */
 html.dark-mode .mobile-sidebar,
 body.dark-mode .mobile-sidebar {
   background: linear-gradient(180deg,#0d1117,#161b22) !important;
-  transition: none !important;
 }
 html.dark-mode .mobile-sidebar-header,
 body.dark-mode .mobile-sidebar-header {

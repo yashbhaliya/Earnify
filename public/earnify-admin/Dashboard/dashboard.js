@@ -422,7 +422,7 @@ async function loadDashboard() {
                     <span class="mobile-amount">${fmt(net)}</span>
                     <button class="view-btn" onclick="showWithdrawalDetails(${i})">View</button>
                   </div>
-                  <div style="display:flex;align-items:center;gap:8px;margin-top:4px;">
+                  <div style="display:flex;align-items:center;gap:8px;padding:0 16px 10px;">
                     <span class="badge ${badgeClass(w.status)}" style="font-size:10px;">${esc(w.status)}</span>
                     <span style="font-size:11px;color:#94a3b8;">${fmtDate(w.created_at)}</span>
                   </div>

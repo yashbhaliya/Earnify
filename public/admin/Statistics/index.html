@@ -849,7 +849,7 @@
     @media (max-width: 768px) {
       .stats-overview,
       .shimmer-stats {
-        grid-template-columns: 1fr !important;
+        grid-template-columns: 1fr 1fr !important;
         gap: 10px !important;
       }
       .stat-card,
@@ -869,24 +869,16 @@
       .stat-label { font-size: 9px !important; }
       .shimmer-stat-number { height: 20px !important; }
     }
-    @media (max-width: 480px) {
-      .stat-card,
-      .shimmer-stat-card {
-        padding: 10px 12px !important;
-        gap: 10px !important;
-        min-height: 60px !important;
+    @media (max-width: 380px) {
+      .stats-overview,
+      .shimmer-stats {
+        grid-template-columns: 1fr !important;
       }
-      .stat-icon,
-      .shimmer-stat-icon {
-        width: 36px !important; height: 36px !important;
-        font-size: 16px !important;
-      }
-      .stat-number { font-size: 20px !important; }
     }
 
-    /* ── Analytics table: no horizontal scroll ── */
+    /* ── Analytics table: proper scroll on mobile ── */
     #analyticsContent .table-wrapper {
-      overflow-x: visible !important;
+      overflow-x: auto;
     }
     #analyticsContent .modern-table {
       width: 100% !important;
@@ -902,13 +894,13 @@
     /* Customer email column — allow wrap on small screens */
     #analyticsContent .customer-email {
       white-space: nowrap;
-      /* overflow: hidden; */
       text-overflow: ellipsis;
       max-width: 180px;
     }
     @media (max-width: 768px) {
       #analyticsContent .modern-table {
         table-layout: auto;
+        min-width: 420px !important;
       }
       #analyticsContent .customer-email {
         max-width: 120px;
