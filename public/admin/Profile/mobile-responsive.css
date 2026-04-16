@@ -363,8 +363,29 @@
 
 /* ── Profile Page Mobile ── */
 @media (max-width: 768px) {
+    /* Fix: body/main locked to 100vh with overflow:hidden in style.css — override here */
+    body {
+        height: auto !important;
+        min-height: 100dvh !important;
+        overflow: visible !important;
+    }
+
+    .main {
+        height: auto !important;
+        min-height: 100dvh !important;
+        overflow-y: visible !important;
+        padding: 12px !important;
+        padding-top: 16px !important;
+        padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px)) !important;
+        box-sizing: border-box !important;
+        width: 100% !important;
+        margin-left: 0 !important;
+    }
+
     .profile-container {
         padding: 0 !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
     }
 
     .profile-page-header {
@@ -393,6 +414,9 @@
     .profile-card {
         border-radius: 16px !important;
         padding: 18px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+        overflow: hidden !important;
     }
 
     .profile-avatar-large {
@@ -515,6 +539,26 @@
     .resource-price-tag {
         font-size: 12px !important;
         padding: 5px 12px !important;
+    }
+
+    /* Withdrawal info card — 2 cols on mobile */
+    .wi-methods {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 10px !important;
+    }
+
+    /* Bottom cards — full width, proper spacing for nav bar */
+    #withdrawalInfoCard,
+    #recentResourcesCard {
+        width: 100% !important;
+        box-sizing: border-box !important;
+        margin-bottom: 12px !important;
+    }
+
+    /* Mobile header bar */
+    .mobile-profile-header {
+        width: 100% !important;
+        box-sizing: border-box !important;
     }
 }
 

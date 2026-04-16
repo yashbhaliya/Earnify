@@ -15,12 +15,15 @@
     .main {
         transition: margin-left 0.3s ease;
         padding: 10px;
-        padding-bottom: 76px !important;
+        padding-bottom: 90px !important;
         width: 100%;
         box-sizing: border-box;
         margin-left: 0 !important;
         padding-top: 20px;
         overflow-x: hidden;
+        overflow-y: auto !important;
+        height: 100dvh !important;
+        -webkit-overflow-scrolling: touch;
     }
 
     /* --- Hamburger Menu Button --- */
@@ -251,7 +254,7 @@
     /* Stat cards — single column on mobile */
     .stats-overview,
     .shimmer-stats {
-        grid-template-columns: 1fr 1fr !important;
+        grid-template-columns: 1fr  !important;
         gap: 10px !important;
     }
 
@@ -260,7 +263,7 @@
         padding: 12px 10px !important;
         margin-top: 12px !important;
         border-radius: 12px !important;
-        overflow: hidden !important;
+        overflow: visible !important;
     }
 
     .section-header {
@@ -304,6 +307,11 @@
         max-width: 100% !important;
     }
 
+    /* Shimmer wrapper — no scroll needed since columns are hidden */
+    #analyticsShimmer .table-wrapper {
+        overflow-x: hidden !important;
+    }
+
     /* Table itself — fixed min-width so columns don't collapse */
     .modern-table,
     #analyticsContent .modern-table {
@@ -311,6 +319,19 @@
         width: 100% !important;
         font-size: 12px !important;
         table-layout: auto !important;
+    }
+
+    /* Shimmer table — no min-width, hide extra columns to match real table */
+    #analyticsShimmer .modern-table {
+        min-width: unset !important;
+        width: 100% !important;
+        table-layout: fixed !important;
+    }
+    #analyticsShimmer .modern-table thead tr th:nth-child(2),
+    #analyticsShimmer .modern-table tbody tr td:nth-child(2),
+    #analyticsShimmer .modern-table thead tr th:nth-child(4),
+    #analyticsShimmer .modern-table tbody tr td:nth-child(4) {
+        display: none !important;
     }
 
     .modern-table th,
@@ -401,7 +422,7 @@
         font-size: 9px !important;
         font-weight: 500 !important;
         max-width: 100px !important;
-        overflow: hidden !important;
+        overflow: visible !important;
         text-overflow: ellipsis !important;
         white-space: nowrap !important;
     }

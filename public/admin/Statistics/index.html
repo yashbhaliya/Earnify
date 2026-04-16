@@ -849,8 +849,7 @@
     @media (max-width: 768px) {
       .stats-overview,
       .shimmer-stats {
-        grid-template-columns: 1fr 1fr !important;
-        gap: 10px !important;
+        grid-template-columns: 1fr ;
       }
       .stat-card,
       .shimmer-stat-card {
@@ -878,7 +877,7 @@
 
     /* ── Analytics table: proper scroll on mobile ── */
     #analyticsContent .table-wrapper {
-      overflow-x: auto;
+      /* overflow-x: auto; */
     }
     #analyticsContent .modern-table {
       width: 100% !important;
@@ -900,7 +899,7 @@
     @media (max-width: 768px) {
       #analyticsContent .modern-table {
         table-layout: auto;
-        min-width: 420px !important;
+        /* min-width: 420px !important; */
       }
       #analyticsContent .customer-email {
         max-width: 120px;

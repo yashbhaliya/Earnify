@@ -143,8 +143,12 @@
   .main {
     width: 100%;
     padding: 24px 16px;
-    padding-bottom: 76px !important;
-    min-height: 100vh;
+    padding-bottom: 90px !important;
+    height: 100dvh;
+    overflow-y: auto !important;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    box-sizing: border-box;
   }
 }
 
@@ -157,7 +161,7 @@
   }
 
   .main {
-    padding-bottom: 76px !important;
+    padding-bottom: 90px !important;
   }
   
   .page-header h1 {
