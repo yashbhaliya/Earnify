@@ -74,8 +74,9 @@ let _statPage = 1;
 let _statPageSize = 10;
 
 function changePageSize() {
-  const val = document.getElementById('pageSizeSelect')?.value;
-  _statPageSize = val === 'all' ? 'all' : parseInt(val);
+  const val = (typeof _cdValues !== 'undefined' ? _cdValues['pageSizeSelect'] : null)
+    || document.getElementById('pageSizeSelect')?.value;
+  _statPageSize = val === 'all' ? 'all' : parseInt(val) || 10;
   _statPage = 1;
   renderTable(_filteredRows);
 }
@@ -241,7 +242,8 @@ function closeDetailsModal() {
 
 function filterTable() {
   const search = document.getElementById('searchInput').value.toLowerCase();
-  const status = document.getElementById('statusFilter').value;
+  const status = (typeof _cdValues !== 'undefined' ? _cdValues['statusFilter'] : null)
+    ?? document.getElementById('statusFilter')?.value ?? '';
   const filtered = allPurchases.filter(function(p) {
     const matchSearch = !search ||
       (p.buyer_email || '').toLowerCase().includes(search) ||

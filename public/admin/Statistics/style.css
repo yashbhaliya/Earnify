@@ -3788,3 +3788,106 @@ body.dark-mode #analyticsContent > div[style*="text-align:center"] p,
 body.dark-mode #analyticsContent > div[style*="text-align: center"] p {
   color: #8b949e !important;
 }
+
+/* ══════════════════════════════════════════
+   DROPDOWN FILTERS — LIGHT MODE
+   ══════════════════════════════════════════ */
+
+#resourceFilter,
+.chart-filters,
+#purchasePageSize,
+#wdPageSize {
+  padding: 8px 32px 8px 12px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 8px;
+  background: #fff;
+  color: #1e293b;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  outline: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23475569' d='M6 8L2 4h8z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+}
+
+#resourceFilter:hover,
+.chart-filters:hover,
+#purchasePageSize:hover,
+#wdPageSize:hover {
+  border-color: #667eea;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.15);
+}
+
+#resourceFilter:focus,
+.chart-filters:focus,
+#purchasePageSize:focus,
+#wdPageSize:focus {
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+#resourceFilter option,
+.chart-filters option,
+#purchasePageSize option,
+#wdPageSize option {
+  padding: 8px;
+  background: #fff;
+  color: #1e293b;
+}
+
+/* ══════════════════════════════════════════
+   DROPDOWN FILTERS — DARK MODE
+   ══════════════════════════════════════════ */
+
+html.dark-mode #resourceFilter,
+html.dark-mode .chart-filters,
+html.dark-mode #purchasePageSize,
+html.dark-mode #wdPageSize,
+body.dark-mode #resourceFilter,
+body.dark-mode .chart-filters,
+body.dark-mode #purchasePageSize,
+body.dark-mode #wdPageSize {
+  background: #1c2333 !important;
+  border-color: #30363d !important;
+  color: #e6edf3 !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%238b949e' d='M6 8L2 4h8z'/%3E%3C/svg%3E") !important;
+}
+
+html.dark-mode #resourceFilter:hover,
+html.dark-mode .chart-filters:hover,
+html.dark-mode #purchasePageSize:hover,
+html.dark-mode #wdPageSize:hover,
+body.dark-mode #resourceFilter:hover,
+body.dark-mode .chart-filters:hover,
+body.dark-mode #purchasePageSize:hover,
+body.dark-mode #wdPageSize:hover {
+  border-color: #7c6af7 !important;
+  box-shadow: 0 2px 8px rgba(124, 106, 247, 0.25) !important;
+}
+
+html.dark-mode #resourceFilter:focus,
+html.dark-mode .chart-filters:focus,
+html.dark-mode #purchasePageSize:focus,
+html.dark-mode #wdPageSize:focus,
+body.dark-mode #resourceFilter:focus,
+body.dark-mode .chart-filters:focus,
+body.dark-mode #purchasePageSize:focus,
+body.dark-mode #wdPageSize:focus {
+  border-color: #7c6af7 !important;
+  box-shadow: 0 0 0 3px rgba(124, 106, 247, 0.15) !important;
+}
+
+html.dark-mode #resourceFilter option,
+html.dark-mode .chart-filters option,
+html.dark-mode #purchasePageSize option,
+html.dark-mode #wdPageSize option,
+body.dark-mode #resourceFilter option,
+body.dark-mode .chart-filters option,
+body.dark-mode #purchasePageSize option,
+body.dark-mode #wdPageSize option {
+  background: #1c2333 !important;
+  color: #e6edf3 !important;
+}

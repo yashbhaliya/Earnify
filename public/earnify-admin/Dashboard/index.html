@@ -738,12 +738,13 @@
       background: white;
       border-radius: 16px;
       border: 1px solid rgba(0, 0, 0, 0.05);
-      overflow: hidden;
+      overflow: visible;
       margin-bottom: 28px;
     }
 
     .table-card>div {
       overflow-x: auto;
+      border-radius: 0 0 16px 16px;
     }
 
     .table-header {
@@ -754,6 +755,8 @@
       justify-content: space-between;
       flex-wrap: wrap;
       gap: 8px;
+      position: relative;
+      z-index: 20;
     }
 
     .table-header h3 {
@@ -776,20 +779,6 @@
       align-items: center;
       gap: 8px;
       flex-shrink: 0;
-    }
-
-    .page-size-select {
-      padding: 5px 10px;
-      border: 1.5px solid #e2e8f0;
-      border-radius: 8px;
-      font-size: 12px;
-      font-weight: 600;
-      color: #64748b;
-      background: #f8fafc;
-      cursor: pointer;
-      font-family: inherit;
-      outline: none;
-      transition: border-color 0.2s, color 0.2s;
     }
 
     .page-size-select:hover {
@@ -1026,7 +1015,6 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      flex-wrap: wrap;
       gap: 12px;
     }
 
@@ -1037,28 +1025,66 @@
       flex-wrap: wrap;
     }
 
-    .filter-select {
-      padding: 6px 12px;
-      background: #f8fafc;
+    /* ── Premium Select — filter-select & page-size-select ── */
+    .filter-select,
+    .page-size-select {
+      appearance: none;
+      -webkit-appearance: none;
+      padding: 7px 32px 7px 12px;
+      background: #fff;
       border: 1.5px solid #e2e8f0;
-      border-radius: 8px;
-      color: #64748b;
+      border-radius: 10px;
+      color: #475569;
       font-size: 12px;
       font-weight: 600;
       cursor: pointer;
-      transition: all 0.2s;
       font-family: inherit;
       outline: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+      transition: border-color 0.18s, box-shadow 0.18s, color 0.18s, background-color 0.18s;
+      min-width: 0;
     }
 
-    .filter-select:hover {
+    .filter-select:hover,
+    .page-size-select:hover {
+      border-color: #a5b4fc;
+      color: #667eea;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11' viewBox='0 0 24 24' fill='none' stroke='%23667eea' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+      box-shadow: 0 2px 8px rgba(102,126,234,0.12);
+    }
+
+    .filter-select:focus,
+    .page-size-select:focus {
       border-color: #667eea;
       color: #667eea;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11' viewBox='0 0 24 24' fill='none' stroke='%23667eea' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+      box-shadow: 0 0 0 3px rgba(102,126,234,0.15), 0 1px 3px rgba(0,0,0,0.06);
     }
 
-    .filter-select:focus {
-      border-color: #667eea;
-      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    /* ── Dropdown option list — light mode ── */
+    .filter-select option,
+    .page-size-select option {
+      background: #ffffff;
+      color: #1e293b;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 8px 12px;
+    }
+
+    .filter-select option:checked,
+    .page-size-select option:checked {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: #ffffff;
+      font-weight: 700;
+    }
+
+    .filter-select option:hover,
+    .page-size-select option:hover {
+      background: #f0f4ff;
+      color: #667eea;
     }
 
     .chart-wrap {
@@ -1269,31 +1295,65 @@
         margin-bottom: 16px;
       }
       .table-header {
-        padding: 10px 12px;
-        gap: 6px;
+        padding: 12px 14px;
+        gap: 12px;
         flex-direction: column;
-        align-items: flex-start;
+        align-items: stretch;
+        background: #fff;
+        border-bottom: 1px solid #f1f5f9;
+      }
+      html.dark-mode .table-header,
+      body.dark-mode .table-header {
+        background: #161b22;
+        border-bottom-color: #30363d;
       }
       .table-header h3 {
-        font-size: 13px;
+        font-size: 14px;
         line-height: 1.3;
-      }
-      .table-header-right {
-        width: 100%;
-        justify-content: space-between;
+        display: flex;
+        align-items: center;
         gap: 6px;
+        color: #1e293b;
+        flex-wrap: wrap;
+      }
+      html.dark-mode .table-header h3,
+      body.dark-mode .table-header h3 {
+        color: #e6edf3;
       }
       .table-header span {
         font-size: 11px;
+        color: #94a3b8;
+      }
+      html.dark-mode .table-header span,
+      body.dark-mode .table-header span {
+        color: #484f58;
+      }
+      .table-header-right {
+        width: 100%;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .table-header-right > span {
+        font-size: 11px;
+        color: #94a3b8;
         flex: 1;
         min-width: 0;
         overflow: hidden;
         text-overflow: ellipsis;
+        white-space: nowrap;
       }
-      .page-size-select {
-        font-size: 11px;
-        padding: 4px 8px;
+      html.dark-mode .table-header-right > span {
+        color: #484f58;
+      }
+      .table-header-right .cd-wrap {
         flex-shrink: 0;
+      }
+      .table-header-right .cd-btn {
+        min-width: 85px;
+        font-size: 11px;
+        padding: 6px 10px;
       }
 
       /* Hide desktop table, show mobile cards */
@@ -1366,36 +1426,58 @@
         margin-bottom: 14px;
       }
       .chart-card {
-        padding: 14px;
+        padding: 16px;
         border-radius: 14px;
-        overflow: hidden;
+        overflow: visible;
       }
-      .chart-title { font-size: 13px; }
-      .chart-sub   { font-size: 11px; }
+      .chart-title { font-size: 14px; font-weight: 700; }
+      .chart-sub   { font-size: 11px; margin-top: 4px; }
       .chart-header {
         flex-direction: column;
-        align-items: flex-start;
-        gap: 8px;
-        margin-bottom: 12px;
+        align-items: stretch;
+        gap: 14px;
+        margin-bottom: 16px;
+      }
+      .chart-header > div:first-child {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
       }
       .chart-filters {
-        width: 100%;
         display: flex;
         gap: 8px;
+        width: 100%;
+        flex-wrap: wrap;
       }
-      .filter-select {
+      .chart-filters .cd-wrap {
+        flex: 1;
+        min-width: 0;
+      }
+      .chart-filters .cd-btn {
+        width: 100%;
+        min-width: 0;
+        font-size: 11px;
+        padding: 8px 12px;
+        justify-content: space-between;
+      }
+      .filter-select,
+      .page-size-select {
         flex: 1;
         min-width: 0;
         font-size: 11px;
-        padding: 7px 8px;
+        padding: 8px 28px 8px 10px;
+        background-position: right 8px center;
       }
       .donut-wrap {
-        width: 140px;
-        height: 140px;
-        margin: 0 auto 10px;
+        width: 160px;
+        height: 160px;
+        margin: 0 auto 14px;
       }
-      .donut-center { font-size: 11px; }
-      .legend-item  { font-size: 11px; }
+      .donut-center { font-size: 13px; }
+      .legend-item  { font-size: 11px; padding: 4px 0; }
+      .legend-dot { width: 8px; height: 8px; }
+      .legend-label { gap: 5px; }
+      .legend-val { font-weight: 600; }
       .chart-wrap canvas { max-height: 200px; }
       #barChartWrap {
         overflow-y: auto;
@@ -1440,10 +1522,11 @@
       }
       .page-header h1 { font-size: 16px; }
       .table-header {
-        padding: 8px 10px;
+        padding: 10px 12px;
+        gap: 10px;
       }
       .table-header h3 {
-        font-size: 12px;
+        font-size: 13px;
       }
       .table-header span {
         font-size: 10px;
@@ -1451,6 +1534,31 @@
       .page-size-select {
         font-size: 10px;
         padding: 3px 6px;
+      }
+      .chart-card {
+        padding: 12px;
+        border-radius: 12px;
+      }
+      .chart-title {
+        font-size: 13px;
+      }
+      .chart-sub {
+        font-size: 10px;
+      }
+      .chart-header {
+        gap: 10px;
+        margin-bottom: 12px;
+      }
+      .chart-filters {
+        gap: 6px;
+      }
+      .chart-filters .cd-btn {
+        padding: 6px 8px;
+        font-size: 10px;
+      }
+      .donut-wrap {
+        width: 130px;
+        height: 130px;
       }
     }
 
@@ -1557,80 +1665,28 @@
       border-color: #f87171 !important;
     }
 
-    html.dark-mode .filter-select {
+    html.dark-mode .filter-select,
+    html.dark-mode .page-size-select {
       background: #1c2333 !important;
       border-color: #30363d !important;
       color: #8b949e !important;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11' viewBox='0 0 24 24' fill='none' stroke='%238b949e' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") !important;
+      background-repeat: no-repeat !important;
+      background-position: right 10px center !important;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2) !important;
     }
 
-    html.dark-mode .sb-nm-toggle {
-      background: #1a2030 !important;
-      box-shadow: 5px 5px 10px #0a0e17, -4px -4px 9px #263040 !important;
-    }
-
-    html.dark-mode .sb-nm-knob {
-      left: 53px !important;
-      background: linear-gradient(135deg, #3a4a5c, #2d3748) !important;
-    }
-
-    html.dark-mode .sb-nm-label-light {
-      opacity: 0 !important;
-    }
-
-    html.dark-mode .sb-nm-label-dark {
-      opacity: 1 !important;
-    }
-
-    html.dark-mode .sidebar-footer {
-      border-top-color: #30363d !important;
-    }
-
-    html.dark-mode .admin-badge {
-      background: rgba(124, 106, 247, 0.1) !important;
-    }
-
-    html.dark-mode .admin-badge {
-      background: rgba(124, 106, 247, 0.1) !important;
-    }
-
-    html.dark-mode .admin-name {
-      color: #e6edf3 !important;
-    }
-
-    html.dark-mode .sidebar-brand {
-      border-bottom-color: #30363d !important;
-    }
-
-    html.dark-mode .nav-link {
-      color: #8b949e !important;
-    }
-
-    html.dark-mode .back-link {
+    html.dark-mode .filter-select:hover,
+    html.dark-mode .page-size-select:hover,
+    html.dark-mode .filter-select:focus,
+    html.dark-mode .page-size-select:focus {
+      border-color: #7c6af7 !important;
       color: #a78bfa !important;
-      border-top-color: #30363d !important;
-    }
-
-    html.dark-mode .admin-badge.is-loading .admin-avatar {
-      background: linear-gradient(90deg, #1c2333 25%, #21293d 50%, #1c2333 75%) !important;
-      background-size: 400% 100% !important;
-      animation: shimmer-slide 1.4s infinite linear !important;
-      color: transparent !important;
-    }
-
-    html.dark-mode .admin-badge.is-loading .admin-name,
-    html.dark-mode .admin-badge.is-loading .admin-role {
-      background: linear-gradient(90deg, #1c2333 25%, #21293d 50%, #1c2333 75%) !important;
-      background-size: 400% 100% !important;
-      animation: shimmer-slide 1.4s infinite linear !important;
-      color: transparent !important;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11' viewBox='0 0 24 24' fill='none' stroke='%23a78bfa' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") !important;
+      box-shadow: 0 0 0 3px rgba(124,106,247,0.18) !important;
     }
 
     body.dark-mode .sidebar {
-      background: linear-gradient(180deg, #161b22 0%, #0d1117 100%) !important;
-      border-right-color: #30363d !important;
-    }
-
-    body.dark-mode .sidebar-brand {
       border-bottom-color: #30363d !important;
     }
 
@@ -1835,16 +1891,25 @@
       color: #c4b5fd !important;
     }
 
-    body.dark-mode .filter-select {
+    body.dark-mode .filter-select,
+    body.dark-mode .page-size-select {
       background: #1c2333 !important;
       border-color: #30363d !important;
       color: #8b949e !important;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11' viewBox='0 0 24 24' fill='none' stroke='%238b949e' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") !important;
+      background-repeat: no-repeat !important;
+      background-position: right 10px center !important;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2) !important;
     }
 
     body.dark-mode .filter-select:hover,
-    body.dark-mode .filter-select:focus {
+    body.dark-mode .page-size-select:hover,
+    body.dark-mode .filter-select:focus,
+    body.dark-mode .page-size-select:focus {
       border-color: #7c6af7 !important;
       color: #a78bfa !important;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11' viewBox='0 0 24 24' fill='none' stroke='%23a78bfa' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") !important;
+      box-shadow: 0 0 0 3px rgba(124,106,247,0.18) !important;
     }
 
     /* tables */
@@ -2183,10 +2248,15 @@
       border-color: #f87171 !important;
     }
 
-    html.dark-mode .filter-select {
+    html.dark-mode .filter-select,
+    html.dark-mode .page-size-select {
       background: #1c2333 !important;
       border-color: #30363d !important;
       color: #8b949e !important;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11' viewBox='0 0 24 24' fill='none' stroke='%238b949e' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") !important;
+      background-repeat: no-repeat !important;
+      background-position: right 10px center !important;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2) !important;
     }
 
     html.dark-mode .sb-nm-toggle {
@@ -2276,11 +2346,74 @@
   body.dark-mode #wdPagination button:not([style*='linear-gradient']) { background: #1c2333 !important; border-color: #30363d !important; color: #8b949e !important; }
   body.dark-mode #purchasePagination span,
   body.dark-mode #wdPagination span { color: #484f58 !important; }
-  body.dark-mode #purchasePageSize,
-  body.dark-mode #wdPageSize,
-  body.dark-mode .page-size-select { background: #1c2333 !important; border-color: #30363d !important; color: #8b949e !important; }
   body.dark-mode .table-header h3 { color: #e6edf3 !important; }
   body.dark-mode .table-header-right span { color: #484f58 !important; }
+
+  /* ── Custom Dropdown ── */
+  .cd-wrap { position: relative; display: inline-flex; align-items: center; font-family: inherit; }
+  .cd-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 7px 12px; min-width: 110px;
+    background: #fff; border: 1.5px solid #e2e8f0; border-radius: 10px;
+    color: #475569; font-size: 12px; font-weight: 600; cursor: pointer;
+    font-family: inherit; outline: none; user-select: none;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    transition: border-color .18s, box-shadow .18s, color .18s;
+    white-space: nowrap;
+  }
+  .cd-btn:hover { border-color: #a5b4fc; color: #667eea; box-shadow: 0 2px 8px rgba(102,126,234,0.12); }
+  .cd-btn.open { border-color: #667eea; color: #667eea; box-shadow: 0 0 0 3px rgba(102,126,234,0.15); }
+  .cd-btn svg { flex-shrink: 0; transition: transform .22s; }
+  .cd-btn.open svg { transform: rotate(180deg); }
+  .cd-label { flex: 1; text-align: left; }
+  .cd-list {
+    position: fixed; top: calc(100% + 6px); left: 0; min-width: 100%;
+    background: #fff; border: 1.5px solid #e2e8f0; border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(102,126,234,0.14), 0 2px 8px rgba(0,0,0,0.08);
+    z-index: 99999; overflow: hidden; padding: 4px;
+    animation: cdDrop .18s cubic-bezier(.22,1,.36,1);
+  }
+  @keyframes cdDrop { from { opacity:0; transform:translateY(-6px) scale(.97); } to { opacity:1; transform:none; } }
+  .cd-item {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 12px; border-radius: 8px;
+    font-size: 13px; font-weight: 500; color: #334155;
+    cursor: pointer; transition: background .14s, color .14s;
+    white-space: nowrap;
+  }
+  .cd-item:hover { background: #f0f4ff; color: #667eea; }
+  .cd-item.selected {
+    background: linear-gradient(135deg,#667eea,#764ba2);
+    color: #fff; font-weight: 700;
+  }
+  .cd-item.selected:hover { background: linear-gradient(135deg,#5a6fd6,#6a3f96); }
+  .cd-check { margin-left: auto; opacity: 0; font-size: 11px; }
+  .cd-item.selected .cd-check { opacity: 1; }
+  /* Dark mode */
+  body.dark-mode .cd-btn, html.dark-mode .cd-btn {
+    background: #1c2333 !important; border-color: #30363d !important;
+    color: #8b949e !important; box-shadow: 0 1px 3px rgba(0,0,0,0.2) !important;
+  }
+  body.dark-mode .cd-btn:hover, html.dark-mode .cd-btn:hover {
+    border-color: #7c6af7 !important; color: #a78bfa !important;
+    box-shadow: 0 2px 8px rgba(124,106,247,0.18) !important;
+  }
+  body.dark-mode .cd-btn.open, html.dark-mode .cd-btn.open {
+    border-color: #7c6af7 !important; color: #a78bfa !important;
+    box-shadow: 0 0 0 3px rgba(124,106,247,0.18) !important;
+  }
+  body.dark-mode .cd-list, html.dark-mode .cd-list {
+    background: #1c2333 !important; border-color: #30363d !important;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5), 0 2px 8px rgba(0,0,0,0.3) !important;
+  }
+  body.dark-mode .cd-item, html.dark-mode .cd-item { color: #c9d1d9 !important; }
+  body.dark-mode .cd-item:hover, html.dark-mode .cd-item:hover {
+    background: #21293d !important; color: #a78bfa !important;
+  }
+  body.dark-mode .cd-item.selected, html.dark-mode .cd-item.selected {
+    background: linear-gradient(135deg,#4c3d9e,#3d2f7a) !important;
+    color: #e2d9f3 !important;
+  }
   @media (max-width: 480px) {
     #purchasePagination > div,
     #wdPagination > div {
@@ -2446,12 +2579,18 @@
             <div class="chart-sub">Revenue share by resource</div>
           </div>
           <div class="chart-filters">
-            <select id="resourceFilter" class="filter-select" onchange="filterResourceChart()">
-              <option value="all">All Resources</option>
-              <option value="top5">Top 5</option>
-              <option value="top10" selected>Top 10</option>
-              <option value="top15">Top 15</option>
-            </select>
+            <div class="cd-wrap" id="cdWrap-resourceFilter">
+              <button class="cd-btn" onclick="cdToggle('resourceFilter')" type="button">
+                <span class="cd-label" id="cdLabel-resourceFilter">Top 10</span>
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <div class="cd-list" id="cdList-resourceFilter" style="display:none;">
+                <div class="cd-item" onclick="cdSelect('resourceFilter','all','All Resources')">All Resources<span class="cd-check">✓</span></div>
+                <div class="cd-item" onclick="cdSelect('resourceFilter','top5','Top 5')">Top 5<span class="cd-check">✓</span></div>
+                <div class="cd-item selected" onclick="cdSelect('resourceFilter','top10','Top 10')">Top 10<span class="cd-check">✓</span></div>
+                <div class="cd-item" onclick="cdSelect('resourceFilter','top15','Top 15')">Top 15<span class="cd-check">✓</span></div>
+              </div>
+            </div>
           </div>
         </div>
         <div class="chart-wrap donut-wrap" style="width:220px;height:220px;margin:0 auto 20px;">
@@ -2474,22 +2613,33 @@
           <div class="chart-sub">Day-wise revenue breakdown for selected month</div>
         </div>
         <div class="chart-filters">
-          <select id="monthFilter" class="filter-select" onchange="filterDayWiseChart()">
-            <option value="0">January</option>
-            <option value="1">February</option>
-            <option value="2">March</option>
-            <option value="3">April</option>
-            <option value="4">May</option>
-            <option value="5">June</option>
-            <option value="6">July</option>
-            <option value="7">August</option>
-            <option value="8">September</option>
-            <option value="9">October</option>
-            <option value="10">November</option>
-            <option value="11">December</option>
-          </select>
-          <select id="yearFilter" class="filter-select" onchange="filterDayWiseChart()">
-          </select>
+          <div class="cd-wrap" id="cdWrap-monthFilter">
+            <button class="cd-btn" onclick="cdToggle('monthFilter')" type="button">
+              <span class="cd-label" id="cdLabel-monthFilter">January</span>
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="cd-list" id="cdList-monthFilter" style="display:none;">
+              <div class="cd-item" onclick="cdSelect('monthFilter','0','January')">January<span class="cd-check">✓</span></div>
+              <div class="cd-item" onclick="cdSelect('monthFilter','1','February')">February<span class="cd-check">✓</span></div>
+              <div class="cd-item" onclick="cdSelect('monthFilter','2','March')">March<span class="cd-check">✓</span></div>
+              <div class="cd-item" onclick="cdSelect('monthFilter','3','April')">April<span class="cd-check">✓</span></div>
+              <div class="cd-item" onclick="cdSelect('monthFilter','4','May')">May<span class="cd-check">✓</span></div>
+              <div class="cd-item" onclick="cdSelect('monthFilter','5','June')">June<span class="cd-check">✓</span></div>
+              <div class="cd-item" onclick="cdSelect('monthFilter','6','July')">July<span class="cd-check">✓</span></div>
+              <div class="cd-item" onclick="cdSelect('monthFilter','7','August')">August<span class="cd-check">✓</span></div>
+              <div class="cd-item" onclick="cdSelect('monthFilter','8','September')">September<span class="cd-check">✓</span></div>
+              <div class="cd-item" onclick="cdSelect('monthFilter','9','October')">October<span class="cd-check">✓</span></div>
+              <div class="cd-item" onclick="cdSelect('monthFilter','10','November')">November<span class="cd-check">✓</span></div>
+              <div class="cd-item" onclick="cdSelect('monthFilter','11','December')">December<span class="cd-check">✓</span></div>
+            </div>
+          </div>
+          <div class="cd-wrap" id="cdWrap-yearFilter">
+            <button class="cd-btn" onclick="cdToggle('yearFilter')" type="button">
+              <span class="cd-label" id="cdLabel-yearFilter">2025</span>
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="cd-list" id="cdList-yearFilter" style="display:none;"></div>
+          </div>
         </div>
       </div>
       <div class="chart-wrap">
@@ -2503,13 +2653,19 @@
         <h3>🛒 Recent Purchases</h3>
         <div class="table-header-right">
           <span id="purchaseCount">—</span>
-          <select id="purchasePageSize" class="page-size-select" onchange="changePurchasePageSize()">
-            <option value="10">10 / page</option>
-            <option value="30">30 / page</option>
-            <option value="50">50 / page</option>
-            <option value="100">100 / page</option>
-            <option value="all">All</option>
-          </select>
+          <div class="cd-wrap" id="cdWrap-purchasePageSize">
+            <button class="cd-btn" onclick="cdToggle('purchasePageSize')" type="button">
+              <span class="cd-label" id="cdLabel-purchasePageSize">10 / page</span>
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="cd-list" id="cdList-purchasePageSize" style="display:none;" data-align="right">
+              <div class="cd-item selected" onclick="cdSelect('purchasePageSize','10','10 / page')">10 / page<span class="cd-check">✓</span></div>
+              <div class="cd-item" onclick="cdSelect('purchasePageSize','30','30 / page')">30 / page<span class="cd-check">✓</span></div>
+              <div class="cd-item" onclick="cdSelect('purchasePageSize','50','50 / page')">50 / page<span class="cd-check">✓</span></div>
+              <div class="cd-item" onclick="cdSelect('purchasePageSize','100','100 / page')">100 / page<span class="cd-check">✓</span></div>
+              <div class="cd-item" onclick="cdSelect('purchasePageSize','all','All')">All<span class="cd-check">✓</span></div>
+            </div>
+          </div>
         </div>
       </div>
       <div>
@@ -2596,13 +2752,19 @@
         <h3>💸 Withdrawal Information</h3>
         <div class="table-header-right">
           <span id="wdCount">—</span>
-          <select id="wdPageSize" class="page-size-select" onchange="changeWdPageSize()">
-            <option value="10">10 / page</option>
-            <option value="30">30 / page</option>
-            <option value="50">50 / page</option>
-            <option value="100">100 / page</option>
-            <option value="all">All</option>
-          </select>
+          <div class="cd-wrap" id="cdWrap-wdPageSize">
+            <button class="cd-btn" onclick="cdToggle('wdPageSize')" type="button">
+              <span class="cd-label" id="cdLabel-wdPageSize">10 / page</span>
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="cd-list" id="cdList-wdPageSize" style="display:none;" data-align="right">
+              <div class="cd-item selected" onclick="cdSelect('wdPageSize','10','10 / page')">10 / page<span class="cd-check">✓</span></div>
+              <div class="cd-item" onclick="cdSelect('wdPageSize','30','30 / page')">30 / page<span class="cd-check">✓</span></div>
+              <div class="cd-item" onclick="cdSelect('wdPageSize','50','50 / page')">50 / page<span class="cd-check">✓</span></div>
+              <div class="cd-item" onclick="cdSelect('wdPageSize','100','100 / page')">100 / page<span class="cd-check">✓</span></div>
+              <div class="cd-item" onclick="cdSelect('wdPageSize','all','All')">All<span class="cd-check">✓</span></div>
+            </div>
+          </div>
         </div>
       </div>
       <div>
@@ -2782,6 +2944,88 @@
     (function () {
       const saved = localStorage.getItem(DARK_KEY);
       applyDark(saved === '1');
+    })();
+  </script>
+  <script>
+    /* ── Custom Dropdown Engine ── */
+    const _cdValues = {};
+
+    function cdToggle(id) {
+      const list = document.getElementById('cdList-' + id);
+      const btn  = document.querySelector('#cdWrap-' + id + ' .cd-btn');
+      const open = list.style.display !== 'none';
+      document.querySelectorAll('.cd-list').forEach(l => l.style.display = 'none');
+      document.querySelectorAll('.cd-btn').forEach(b => b.classList.remove('open'));
+      if (!open) {
+        const rect = btn.getBoundingClientRect();
+        const alignRight = list.style.right === '0px' || list.getAttribute('data-align') === 'right';
+        list.style.position = 'fixed';
+        list.style.top = (rect.bottom + 6) + 'px';
+        if (alignRight) {
+          list.style.left = 'auto';
+          list.style.right = (window.innerWidth - rect.right) + 'px';
+        } else {
+          list.style.right = 'auto';
+          list.style.left = rect.left + 'px';
+        }
+        list.style.minWidth = rect.width + 'px';
+        list.style.display = '';
+        btn.classList.add('open');
+      }
+    }
+
+    function cdSelect(id, value, label) {
+      _cdValues[id] = value;
+      document.getElementById('cdLabel-' + id).textContent = label;
+      document.querySelectorAll('#cdList-' + id + ' .cd-item').forEach(el => {
+        const oc = el.getAttribute('onclick') || '';
+        el.classList.toggle('selected', oc.includes("'" + value + "'"));
+      });
+      document.getElementById('cdList-' + id).style.display = 'none';
+      document.querySelector('#cdWrap-' + id + ' .cd-btn').classList.remove('open');
+      const cbs = {
+        resourceFilter: () => filterResourceChart(),
+        monthFilter:    () => filterDayWiseChart(),
+        yearFilter:     () => filterDayWiseChart(),
+        purchasePageSize: () => changePurchasePageSize(),
+        wdPageSize:     () => changeWdPageSize()
+      };
+      if (cbs[id]) cbs[id]();
+    }
+
+    function cdGetValue(id) { return _cdValues[id]; }
+
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.cd-wrap')) {
+        document.querySelectorAll('.cd-list').forEach(l => l.style.display = 'none');
+        document.querySelectorAll('.cd-btn').forEach(b => b.classList.remove('open'));
+      }
+    });
+
+    _cdValues['resourceFilter']   = 'top10';
+    _cdValues['purchasePageSize'] = '10';
+    _cdValues['wdPageSize']       = '10';
+
+    (function initMonthYear() {
+      const now = new Date();
+      const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+      const m = now.getMonth(), y = now.getFullYear();
+      _cdValues['monthFilter'] = String(m);
+      _cdValues['yearFilter']  = String(y);
+      document.getElementById('cdLabel-monthFilter').textContent = months[m];
+      document.getElementById('cdLabel-yearFilter').textContent  = String(y);
+      document.querySelectorAll('#cdList-monthFilter .cd-item').forEach(el => {
+        const oc = el.getAttribute('onclick') || '';
+        el.classList.toggle('selected', oc.includes("'" + m + "'"));
+      });
+      const yList = document.getElementById('cdList-yearFilter');
+      for (let yr = y; yr >= y - 5; yr--) {
+        const d = document.createElement('div');
+        d.className = 'cd-item' + (yr === y ? ' selected' : '');
+        d.innerHTML = yr + '<span class="cd-check">✓</span>';
+        d.setAttribute('onclick', "cdSelect('yearFilter','" + yr + "','" + yr + "')");
+        yList.appendChild(d);
+      }
     })();
   </script>
 </body>

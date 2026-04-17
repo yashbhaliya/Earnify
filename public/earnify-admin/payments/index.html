@@ -1524,28 +1524,63 @@
     font-weight: 600;
     color: #64748b;
   }
-  .payment-page-select {
-    padding: 7px 28px 7px 12px;
-    border: 1.5px solid #e2e8f0;
-    border-radius: 8px;
-    font-size: 13px;
-    font-weight: 600;
-    color: #64748b;
-    background: #f8fafc;
-    cursor: pointer;
-    font-family: inherit;
-    outline: none;
-    appearance: none;
-    -webkit-appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2.5' stroke-linecap='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 8px center;
-    transition: border-color 0.2s, color 0.2s;
+  /* ── Custom Dropdown ── */
+  .cd-wrap { position: relative; display: inline-flex; align-items: center; font-family: inherit; }
+  .cd-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 7px 12px; min-width: 110px;
+    background: #fff; border: 1.5px solid #e2e8f0; border-radius: 10px;
+    color: #475569; font-size: 12px; font-weight: 600; cursor: pointer;
+    font-family: inherit; outline: none; user-select: none;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    transition: border-color .18s, box-shadow .18s, color .18s;
+    white-space: nowrap;
   }
-  .payment-page-select:hover, .payment-page-select:focus {
-    border-color: #667eea;
-    color: #667eea;
-    background-color: #fff;
+  .cd-btn:hover { border-color: #a5b4fc; color: #667eea; box-shadow: 0 2px 8px rgba(102,126,234,0.12); }
+  .cd-btn.open { border-color: #667eea; color: #667eea; box-shadow: 0 0 0 3px rgba(102,126,234,0.15); }
+  .cd-btn svg { flex-shrink: 0; transition: transform .22s; }
+  .cd-btn.open svg { transform: rotate(180deg); }
+  .cd-label { flex: 1; text-align: left; }
+  .cd-list {
+    position: fixed;
+    background: #fff; border: 1.5px solid #e2e8f0; border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(102,126,234,0.14), 0 2px 8px rgba(0,0,0,0.08);
+    z-index: 99999; overflow: hidden; padding: 4px;
+    animation: cdDrop .18s cubic-bezier(.22,1,.36,1);
+  }
+  @keyframes cdDrop { from { opacity:0; transform:translateY(-6px) scale(.97); } to { opacity:1; transform:none; } }
+  .cd-item {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 12px; border-radius: 8px;
+    font-size: 13px; font-weight: 500; color: #334155;
+    cursor: pointer; transition: background .14s, color .14s;
+    white-space: nowrap;
+  }
+  .cd-item:hover { background: #f0f4ff; color: #667eea; }
+  .cd-item.selected { background: linear-gradient(135deg,#667eea,#764ba2); color: #fff; font-weight: 700; }
+  .cd-item.selected:hover { background: linear-gradient(135deg,#5a6fd6,#6a3f96); }
+  .cd-check { margin-left: auto; opacity: 0; font-size: 11px; }
+  .cd-item.selected .cd-check { opacity: 1; }
+  body.dark-mode .cd-btn, html.dark-mode .cd-btn {
+    background: #1c2333 !important; border-color: #30363d !important;
+    color: #8b949e !important; box-shadow: 0 1px 3px rgba(0,0,0,0.2) !important;
+  }
+  body.dark-mode .cd-btn:hover, html.dark-mode .cd-btn:hover {
+    border-color: #7c6af7 !important; color: #a78bfa !important;
+    box-shadow: 0 2px 8px rgba(124,106,247,0.18) !important;
+  }
+  body.dark-mode .cd-btn.open, html.dark-mode .cd-btn.open {
+    border-color: #7c6af7 !important; color: #a78bfa !important;
+    box-shadow: 0 0 0 3px rgba(124,106,247,0.18) !important;
+  }
+  body.dark-mode .cd-list, html.dark-mode .cd-list {
+    background: #1c2333 !important; border-color: #30363d !important;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5), 0 2px 8px rgba(0,0,0,0.3) !important;
+  }
+  body.dark-mode .cd-item, html.dark-mode .cd-item { color: #c9d1d9 !important; }
+  body.dark-mode .cd-item:hover, html.dark-mode .cd-item:hover { background: #21293d !important; color: #a78bfa !important; }
+  body.dark-mode .cd-item.selected, html.dark-mode .cd-item.selected {
+    background: linear-gradient(135deg,#4c3d9e,#3d2f7a) !important; color: #e2d9f3 !important;
   }
   /* Payments pagination */
   #paymentsPagination {
@@ -1574,7 +1609,7 @@
   body.dark-mode .payments-filter-bar,
   html.dark-mode .payments-filter-bar { background: #161b22 !important; border-color: rgba(124,106,247,0.25) !important; }
   body.dark-mode .payments-count { color: #8b949e !important; }
-  body.dark-mode .payment-page-select { background: #1c2333 !important; border-color: #30363d !important; color: #8b949e !important; }
+
   body.dark-mode #paymentsPagination > div { background: #161b22 !important; border-color: rgba(124,106,247,0.25) !important; }
   body.dark-mode #paymentsPagination button:not([style*='linear-gradient']) { background: #1c2333 !important; border-color: #30363d !important; color: #8b949e !important; }
   body.dark-mode #paymentsPagination span { color: #484f58 !important; }
@@ -1584,7 +1619,6 @@
     #paymentsPagination button { padding: 5px 8px !important; font-size: 11px !important; }
     .payments-filter-bar { padding: 8px 12px; }
     .payments-count { font-size: 12px; }
-    .payment-page-select { font-size: 12px; padding: 6px 24px 6px 10px; }
   }
   </style>
 </head>
@@ -1685,13 +1719,19 @@
     <!-- Payments Filter Bar -->
     <div class="payments-filter-bar">
       <span class="payments-count" id="paymentsCount"></span>
-      <select id="paymentPageSize" class="payment-page-select" onchange="changePaymentPageSize()">
-        <option value="10">10 / page</option>
-        <option value="30">30 / page</option>
-        <option value="50">50 / page</option>
-        <option value="100">100 / page</option>
-        <option value="all">All</option>
-      </select>
+      <div class="cd-wrap" id="cdWrap-paymentPageSize">
+        <button class="cd-btn" onclick="cdToggle('paymentPageSize')" type="button">
+          <span class="cd-label" id="cdLabel-paymentPageSize">10 / page</span>
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="cd-list" id="cdList-paymentPageSize" style="display:none;" data-align="right">
+          <div class="cd-item selected" onclick="cdSelect('paymentPageSize','10','10 / page')">10 / page<span class="cd-check">✓</span></div>
+          <div class="cd-item" onclick="cdSelect('paymentPageSize','30','30 / page')">30 / page<span class="cd-check">✓</span></div>
+          <div class="cd-item" onclick="cdSelect('paymentPageSize','50','50 / page')">50 / page<span class="cd-check">✓</span></div>
+          <div class="cd-item" onclick="cdSelect('paymentPageSize','100','100 / page')">100 / page<span class="cd-check">✓</span></div>
+          <div class="cd-item" onclick="cdSelect('paymentPageSize','all','All')">All<span class="cd-check">✓</span></div>
+        </div>
+      </div>
     </div>
 
     <!-- Payment Requests -->
@@ -1821,6 +1861,44 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    /* ── Custom Dropdown Engine ── */
+    const _cdValues = {};
+    function cdToggle(id) {
+      const list = document.getElementById('cdList-' + id);
+      const btn  = document.querySelector('#cdWrap-' + id + ' .cd-btn');
+      const open = list.style.display !== 'none';
+      document.querySelectorAll('.cd-list').forEach(l => l.style.display = 'none');
+      document.querySelectorAll('.cd-btn').forEach(b => b.classList.remove('open'));
+      if (!open) {
+        const rect = btn.getBoundingClientRect();
+        const alignRight = list.getAttribute('data-align') === 'right';
+        list.style.top = (rect.bottom + 6) + 'px';
+        if (alignRight) { list.style.left = 'auto'; list.style.right = (window.innerWidth - rect.right) + 'px'; }
+        else { list.style.right = 'auto'; list.style.left = rect.left + 'px'; }
+        list.style.minWidth = rect.width + 'px';
+        list.style.display = '';
+        btn.classList.add('open');
+      }
+    }
+    function cdSelect(id, value, label) {
+      _cdValues[id] = value;
+      document.getElementById('cdLabel-' + id).textContent = label;
+      document.querySelectorAll('#cdList-' + id + ' .cd-item').forEach(el => {
+        el.classList.toggle('selected', (el.getAttribute('onclick') || '').includes("'" + value + "'"));
+      });
+      document.getElementById('cdList-' + id).style.display = 'none';
+      document.querySelector('#cdWrap-' + id + ' .cd-btn').classList.remove('open');
+      if (id === 'paymentPageSize') changePaymentPageSize();
+    }
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.cd-wrap')) {
+        document.querySelectorAll('.cd-list').forEach(l => l.style.display = 'none');
+        document.querySelectorAll('.cd-btn').forEach(b => b.classList.remove('open'));
+      }
+    });
+    _cdValues['paymentPageSize'] = '10';
+  </script>
   <script src="payments.js?v=15"></script>
   <script>
     const DARK_KEY = 'earnify_dark_mode';

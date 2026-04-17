@@ -19,8 +19,9 @@ let _blogPage = 1;
 let _blogPageSize = 10;
 
 function changeBlogPageSize() {
-  const val = document.getElementById('blogPageSize')?.value;
-  _blogPageSize = val === 'all' ? 'all' : parseInt(val);
+  const val = (typeof _cdValues !== 'undefined' ? _cdValues['blogPageSize'] : null)
+    || document.getElementById('blogPageSize')?.value;
+  _blogPageSize = val === 'all' ? 'all' : parseInt(val) || 10;
   _blogPage = 1;
   _renderBlogGrid();
 }

@@ -61,8 +61,9 @@
   let _payPageSize = 10;
 
   window.changePaymentPageSize = function () {
-    const val = document.getElementById('paymentPageSize')?.value;
-    _payPageSize = val === 'all' ? 'all' : parseInt(val);
+    const val = (typeof _cdValues !== 'undefined' ? _cdValues['paymentPageSize'] : null)
+      || document.getElementById('paymentPageSize')?.value;
+    _payPageSize = val === 'all' ? 'all' : parseInt(val) || 10;
     _payPage = 1;
     renderPayments(allPayments);
   };

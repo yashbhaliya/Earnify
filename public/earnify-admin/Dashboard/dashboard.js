@@ -144,7 +144,7 @@ function goToPurchasePage(page) {
 }
 
 function changePurchasePageSize() {
-  const val = document.getElementById('purchasePageSize')?.value;
+  const val = cdGetValue('purchasePageSize');
   _purchasePageSize = val === 'all' ? 'all' : parseInt(val);
   _purchasePage = 1;
   renderPurchasesTable();
@@ -251,7 +251,7 @@ function goToWdPage(page) {
 }
 
 function changeWdPageSize() {
-  const val = document.getElementById('wdPageSize')?.value;
+  const val = cdGetValue('wdPageSize');
   _wdPageSize = val === 'all' ? 'all' : parseInt(val);
   _wdPage = 1;
   renderWithdrawalsTable();
@@ -315,25 +315,13 @@ function renderDayWiseChart(purchases, selectedMonth, selectedYear) {
 }
 
 function filterDayWiseChart() {
-  const month = parseInt(document.getElementById('monthFilter')?.value);
-  const year  = parseInt(document.getElementById('yearFilter')?.value);
+  const month = parseInt(cdGetValue('monthFilter'));
+  const year  = parseInt(cdGetValue('yearFilter'));
   renderDayWiseChart(_allPurchasesData, month, year);
 }
 
 function initializeDateFilters() {
-  const now = new Date();
-  const ms = document.getElementById('monthFilter');
-  const ys = document.getElementById('yearFilter');
-  if (ms) ms.value = now.getMonth().toString();
-  if (ys) {
-    ys.innerHTML = '';
-    for (let y = now.getFullYear(); y >= now.getFullYear() - 5; y--) {
-      const o = document.createElement('option');
-      o.value = y; o.textContent = y;
-      if (y === now.getFullYear()) o.selected = true;
-      ys.appendChild(o);
-    }
-  }
+  // Values are managed by cdGetValue() / the inline cd-wrap script
 }
 
 function getDoughnutBorderColor() {
@@ -442,7 +430,7 @@ function renderResourceChart(limit = 10) {
 }
 
 function filterResourceChart() {
-  const v = document.getElementById('resourceFilter')?.value || 'top10';
+  const v = cdGetValue('resourceFilter') || 'top10';
   renderResourceChart(v === 'all' ? 'all' : parseInt(v.replace('top','')));
 }
 
@@ -488,9 +476,7 @@ function renderCharts(available, totalGross, totalWithdrawn, platformFees, total
   // Day-wise chart
   _allPurchasesData = purchases;
   initializeDateFilters();
-  const ms = document.getElementById('monthFilter');
-  const ys = document.getElementById('yearFilter');
-  renderDayWiseChart(purchases, ms ? parseInt(ms.value) : new Date().getMonth(), ys ? parseInt(ys.value) : new Date().getFullYear());
+  renderDayWiseChart(purchases, parseInt(cdGetValue('monthFilter')), parseInt(cdGetValue('yearFilter')));
 }
 
 async function loadDashboard() {
