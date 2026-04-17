@@ -69,6 +69,109 @@ function fmtDate(d) {
 }
 
 let allPurchases = [];
+let _filteredRows = [];
+let _statPage = 1;
+let _statPageSize = 10;
+
+function changePageSize() {
+  const val = document.getElementById('pageSizeSelect')?.value;
+  _statPageSize = val === 'all' ? 'all' : parseInt(val);
+  _statPage = 1;
+  renderTable(_filteredRows);
+}
+
+function goToStatPage(page) {
+  const total = _filteredRows.length;
+  const pageSize = _statPageSize === 'all' ? total : _statPageSize;
+  const totalPages = Math.ceil(total / pageSize) || 1;
+  _statPage = Math.max(1, Math.min(page, totalPages));
+  renderTable(_filteredRows);
+}
+
+function _renderPagination(total, pageSize, totalPages, start) {
+  let el = document.getElementById('statPagination');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'statPagination';
+    document.querySelector('.table-card').appendChild(el);
+  }
+  if (_statPageSize === 'all' || totalPages <= 1) { el.innerHTML = ''; return; }
+
+  const btnBase   = 'padding:6px 10px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;border:1.5px solid #e2e8f0;background:#f8fafc;color:#64748b;transition:all .2s;';
+  const btnActive = 'padding:6px 10px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;border:none;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;';
+  const range = 2;
+  let pages = '';
+  for (let p = 1; p <= totalPages; p++) {
+    if (p === 1 || p === totalPages || (p >= _statPage - range && p <= _statPage + range)) {
+      pages += '<button onclick="goToStatPage(' + p + ')" style="' + (p === _statPage ? btnActive : btnBase) + '">' + p + '</button>';
+    } else if (p === _statPage - range - 1 || p === _statPage + range + 1) {
+      pages += '<span style="padding:0 2px;color:#94a3b8;">\u2026</span>';
+    }
+  }
+  el.innerHTML = '<div>'
+    + '<span style="font-size:12px;color:#94a3b8;font-weight:500;">Showing ' + (start + 1) + '\u2013' + Math.min(start + pageSize, total) + ' of ' + total + '</span>'
+    + '<div>'
+    + '<button onclick="goToStatPage(' + (_statPage - 1) + ')" ' + (_statPage === 1 ? 'disabled' : '') + ' style="' + btnBase + 'opacity:' + (_statPage === 1 ? '.4' : '1') + ';">\u2039 Prev</button>'
+    + pages
+    + '<button onclick="goToStatPage(' + (_statPage + 1) + ')" ' + (_statPage === totalPages ? 'disabled' : '') + ' style="' + btnBase + 'opacity:' + (_statPage === totalPages ? '.4' : '1') + ';">Next \u203a</button>'
+    + '</div></div>';
+}
+
+function renderTable(rows) {
+  _filteredRows = rows;
+  const tbody = document.getElementById('purchaseTbody');
+  const rc    = document.getElementById('recordCount');
+  if (!tbody) return;
+
+  const total    = rows.length;
+  const pageSize = _statPageSize === 'all' ? total : _statPageSize;
+  const totalPages = pageSize > 0 ? Math.ceil(total / pageSize) : 1;
+  _statPage = Math.min(_statPage, totalPages || 1);
+  const start = (_statPage - 1) * pageSize;
+  const slice = _statPageSize === 'all' ? rows : rows.slice(start, start + pageSize);
+
+  if (rc) rc.textContent = total + ' record' + (total !== 1 ? 's' : '');
+
+  if (!slice.length) {
+    tbody.innerHTML = '<tr><td colspan="6"><div class="empty-state"><div class="empty-icon">\ud83d\udced</div><p>No records found</p></div></td></tr>';
+    _renderPagination(0, 0, 0, 0);
+    return;
+  }
+
+  tbody.innerHTML = slice.map(function(p, i) {
+    const globalIndex = start + i;
+    const status   = p.status || 'completed';
+    const amount   = parseFloat(p.amount || p.resource_price || 0);
+    const badgeCls = status === 'completed' ? 'badge-completed' : status === 'pending' ? 'badge-pending' : 'badge-failed';
+    const email    = p.buyer_email || '--';
+    const title    = p.resource_title || '--';
+    return '<tr>'
+      + '<td style="color:#94a3b8;font-weight:600;">' + (globalIndex + 1) + '</td>'
+      + '<td style="font-weight:500;color:#1e293b;">' + email + '</td>'
+      + '<td>' + title + '</td>'
+      + '<td style="font-weight:700;color:#10b981;">' + fmt(amount) + '</td>'
+      + '<td><span class="badge ' + badgeCls + '">' + status + '</span></td>'
+      + '<td>' + fmtDate(p.created_at) + '</td>'
+      + '</tr>'
+      + '<tr class="mobile-table-row">'
+      + '<td colspan="6">'
+      + '<div class="mobile-cell">'
+      + '<div class="mobile-left">'
+      + '<div class="mobile-email">' + email + '</div>'
+      + '<div class="mobile-resource">' + title + '</div>'
+      + '</div>'
+      + '<div class="mobile-right">'
+      + '<div class="mobile-amount">' + fmt(amount) + '</div>'
+      + '<span class="badge ' + badgeCls + '" style="font-size:10px;">' + status + '</span>'
+      + '</div>'
+      + '<button class="view-btn" onclick="showPurchaseDetails(' + globalIndex + ')">View</button>'
+      + '</div>'
+      + '</td>'
+      + '</tr>';
+  }).join('');
+
+  _renderPagination(total, pageSize, totalPages, start);
+}
 
 async function loadStats() {
   document.querySelectorAll('.stat-card').forEach(c => c.classList.add('is-shimmer'));
@@ -95,6 +198,7 @@ async function loadStats() {
     setCard('valAvgOrder',  'subAvgOrder',  fmt(avgOrder),       'Per transaction');
     setCard('valBuyers',    'subBuyers',    uniqueBuyers,        'Unique customers');
 
+    _statPage = 1;
     renderTable(allPurchases);
 
   } catch (err) {
@@ -108,50 +212,6 @@ async function loadStats() {
     const rc = document.getElementById('recordCount');
     if (rc) rc.textContent = 'Error';
   }
-}
-
-function renderTable(rows) {
-  const tbody = document.getElementById('purchaseTbody');
-  const rc    = document.getElementById('recordCount');
-  if (!tbody) return;
-  if (rc) rc.textContent = rows.length + ' record' + (rows.length !== 1 ? 's' : '');
-
-  if (!rows.length) {
-    tbody.innerHTML = '<tr><td colspan="6"><div class="empty-state"><div class="empty-icon">\ud83d\udced</div><p>No records found</p></div></td></tr>';
-    return;
-  }
-
-  tbody.innerHTML = rows.map(function(p, i) {
-    const status   = p.status || 'completed';
-    const amount   = parseFloat(p.amount || p.resource_price || 0);
-    const badgeCls = status === 'completed' ? 'badge-completed' : status === 'pending' ? 'badge-pending' : 'badge-failed';
-    const email    = p.buyer_email || '--';
-    const title    = p.resource_title || '--';
-
-    return '<tr>'
-      + '<td style="color:#94a3b8;font-weight:600;">' + (i + 1) + '</td>'
-      + '<td style="font-weight:500;color:#1e293b;">' + email + '</td>'
-      + '<td>' + title + '</td>'
-      + '<td style="font-weight:700;color:#10b981;">' + fmt(amount) + '</td>'
-      + '<td><span class="badge ' + badgeCls + '">' + status + '</span></td>'
-      + '<td>' + fmtDate(p.created_at) + '</td>'
-      + '</tr>'
-      + '<tr class="mobile-table-row">'
-      + '<td colspan="6">'
-      + '<div class="mobile-cell">'
-      + '<div class="mobile-left">'
-      + '<div class="mobile-email">' + email + '</div>'
-      + '<div class="mobile-resource">' + title + '</div>'
-      + '</div>'
-      + '<div class="mobile-right">'
-      + '<div class="mobile-amount">' + fmt(amount) + '</div>'
-      + '<span class="badge ' + badgeCls + '" style="font-size:10px;">' + status + '</span>'
-      + '</div>'
-      + '<button class="view-btn" onclick="showPurchaseDetails(' + i + ')">View</button>'
-      + '</div>'
-      + '</td>'
-      + '</tr>';
-  }).join('');
 }
 
 function showPurchaseDetails(index) {
@@ -189,6 +249,7 @@ function filterTable() {
     const matchStatus = !status || p.status === status;
     return matchSearch && matchStatus;
   });
+  _statPage = 1;
   renderTable(filtered);
 }
 

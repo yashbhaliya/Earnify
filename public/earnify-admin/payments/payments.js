@@ -57,6 +57,23 @@
   /* ── State ── */
   let allPayments = [];
   let selectedIdx = null;
+  let _payPage = 1;
+  let _payPageSize = 10;
+
+  window.changePaymentPageSize = function () {
+    const val = document.getElementById('paymentPageSize')?.value;
+    _payPageSize = val === 'all' ? 'all' : parseInt(val);
+    _payPage = 1;
+    renderPayments(allPayments);
+  };
+
+  window.goToPayPage = function (page) {
+    const total = allPayments.length;
+    const pageSize = _payPageSize === 'all' ? total : _payPageSize;
+    const totalPages = Math.ceil(total / pageSize) || 1;
+    _payPage = Math.max(1, Math.min(page, totalPages));
+    renderPayments(allPayments);
+  };
 
   /* ── Load from Supabase ── */
   function showShimmer() {
@@ -101,18 +118,32 @@
     allPayments = all.filter(w => w.status === 'pending');
     const totalNet = allPayments.reduce((s, p) => s + parseFloat(p.amount || 0) * 0.95, 0);
     renderStats(allPayments.length, totalNet);
+    _payPage = 1;
     renderPayments(allPayments);
   }
 
   /* ── Render cards ── */
   function renderPayments(payments) {
     const grid = document.getElementById('paymentsGrid');
-    if (!payments.length) {
+    const countEl = document.getElementById('paymentsCount');
+    const total = payments.length;
+
+    const pageSize = _payPageSize === 'all' ? total : _payPageSize;
+    const totalPages = pageSize > 0 ? Math.ceil(total / pageSize) : 1;
+    _payPage = Math.min(_payPage, totalPages || 1);
+    const start = (_payPage - 1) * pageSize;
+    const slice = _payPageSize === 'all' ? payments : payments.slice(start, start + pageSize);
+
+    if (countEl) countEl.textContent = total + ' request' + (total !== 1 ? 's' : '');
+
+    if (!slice.length) {
       grid.innerHTML = `<div class="empty-state"><div class="empty-icon">✅</div><h3>All Caught Up!</h3><p>No pending payment requests</p></div>`;
+      _renderPayPagination(0, 0, 0, 0);
       return;
     }
 
-    grid.innerHTML = payments.map((p, i) => {
+    grid.innerHTML = slice.map((p, i) => {
+      const globalIndex = start + i;
       const email = p.user_email || p.email || 'Unknown';
       const gross = parseFloat(p.amount || 0);
       const fee = gross * 0.05;
@@ -140,11 +171,43 @@
             <div class="detail-item"><div class="detail-label">Method</div><div class="detail-value">${method}</div></div>
           </div>
           <div class="payment-actions">
-            <button class="action-btn btn-accept" id="accept-${i}" onclick="openConfirmModal(${i})">✓ Accept</button>
-            <button class="action-btn btn-reject" id="reject-${i}" onclick="openRejectModal(${i})">✕ Reject</button>
+            <button class="action-btn btn-accept" id="accept-${globalIndex}" onclick="openConfirmModal(${globalIndex})">✓ Accept</button>
+            <button class="action-btn btn-reject" id="reject-${globalIndex}" onclick="openRejectModal(${globalIndex})">✕ Reject</button>
           </div>
         </div>`;
     }).join('');
+
+    _renderPayPagination(total, pageSize, totalPages, start);
+  }
+
+  function _renderPayPagination(total, pageSize, totalPages, start) {
+    let el = document.getElementById('paymentsPagination');
+    if (!el) {
+      el = document.createElement('div');
+      el.id = 'paymentsPagination';
+      document.getElementById('paymentsGrid').insertAdjacentElement('afterend', el);
+    }
+    if (_payPageSize === 'all' || totalPages <= 1) { el.innerHTML = ''; return; }
+
+    const btnBase   = 'padding:6px 10px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;border:1.5px solid #e2e8f0;background:#f8fafc;color:#64748b;transition:all .2s;';
+    const btnActive = 'padding:6px 10px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;border:none;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;';
+    const range = 2;
+    let pages = '';
+    for (let p = 1; p <= totalPages; p++) {
+      if (p === 1 || p === totalPages || (p >= _payPage - range && p <= _payPage + range)) {
+        pages += `<button onclick="goToPayPage(${p})" style="${p === _payPage ? btnActive : btnBase}">${p}</button>`;
+      } else if (p === _payPage - range - 1 || p === _payPage + range + 1) {
+        pages += `<span style="padding:0 2px;color:#94a3b8;">…</span>`;
+      }
+    }
+    el.innerHTML = `<div>
+      <span style="font-size:12px;color:#94a3b8;font-weight:500;">Showing ${start + 1}–${Math.min(start + pageSize, total)} of ${total}</span>
+      <div>
+        <button onclick="goToPayPage(${_payPage - 1})" ${_payPage === 1 ? 'disabled' : ''} style="${btnBase}opacity:${_payPage === 1 ? '.4' : '1'};">&#8249; Prev</button>
+        ${pages}
+        <button onclick="goToPayPage(${_payPage + 1})" ${_payPage === totalPages ? 'disabled' : ''} style="${btnBase}opacity:${_payPage === totalPages ? '.4' : '1'};">Next &#8250;</button>
+      </div>
+    </div>`;
   }
 
   /* ── Confirm modal ── */

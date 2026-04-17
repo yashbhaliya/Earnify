@@ -1647,17 +1647,52 @@ body.dark-mode .editor-publish-btn:hover {
 
   /* Section header */
   .section-header {
-    padding: 14px 14px;
+    padding: 12px 14px;
     gap: 8px;
+    flex-wrap: nowrap;
+    align-items: center;
+  }
+
+  .section-title {
+    flex: 1;
+    min-width: 0;
+    gap: 6px;
   }
 
   .section-title h3 {
-    font-size: 14px;
+    font-size: 13px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .blog-count {
+    font-size: 10px;
+    padding: 3px 8px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .section-header-right {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+    flex-wrap: nowrap;
+  }
+
+  .blog-page-select {
+    font-size: 11px;
+    padding: 6px 22px 6px 8px;
+    background-position: right 6px center;
+    width: auto;
   }
 
   .add-blog-btn {
-    padding: 8px 12px;
-    font-size: 12px;
+    padding: 7px 10px;
+    font-size: 11px;
+    white-space: nowrap;
+    gap: 4px;
   }
 
   /* Bulk bar */
@@ -1817,6 +1852,31 @@ body.dark-mode .editor-publish-btn:hover {
 
   .page-header h1 {
     font-size: 16px;
+  }
+
+  .section-header {
+    padding: 10px 10px;
+    gap: 6px;
+  }
+
+  .section-title h3 {
+    font-size: 12px;
+  }
+
+  .blog-count {
+    font-size: 9px;
+    padding: 2px 6px;
+  }
+
+  .blog-page-select {
+    font-size: 10px;
+    padding: 5px 18px 5px 7px;
+    background-position: right 5px center;
+  }
+
+  .add-blog-btn {
+    padding: 6px 8px;
+    font-size: 10px;
   }
 
   .blog-card-actions button {
@@ -2799,7 +2859,7 @@ body.dark-mode .modal-content {
   padding: 0;
   flex-shrink: 0;
   font-family: inherit;
-  background: #f0f2f5;
+  background: white;
   box-shadow: 5px 5px 10px #c8cdd6, -5px -5px 10px #ffffff;
   transition: background .4s, box-shadow .4s;
   outline: none;
@@ -2812,7 +2872,6 @@ body.dark-mode .modal-content {
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #ffffff, #e8ecf0);
   box-shadow: 2px 2px 6px #b0b8c4, -1px -1px 4px #ffffff;
   pointer-events: none;
   transition: left .4s cubic-bezier(.4, 0, .2, 1), background .4s, box-shadow .4s;
@@ -2820,7 +2879,7 @@ body.dark-mode .modal-content {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
+  font-size: 16px;
 }
 
 body.dark-mode .sb-nm-knob::after,
@@ -2849,7 +2908,7 @@ body.dark-mode .sb-nm-knob::before,
 
 .sb-nm-label-light {
   right: 10px;
-  color: #94a3b8;
+  color: #64748b;
   opacity: 1;
 }
 

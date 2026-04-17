@@ -1307,7 +1307,7 @@
       padding: 0;
       flex-shrink: 0;
       font-family: inherit;
-      background: #f0f2f5;
+      background: white;
       box-shadow: 5px 5px 10px #c8cdd6, -5px -5px 10px #ffffff;
       transition: background .4s, box-shadow .4s;
       outline: none;
@@ -1320,7 +1320,6 @@
       width: 24px;
       height: 24px;
       border-radius: 50%;
-      background: linear-gradient(135deg, #ffffff, #e8ecf0);
       box-shadow: 2px 2px 6px #b0b8c4, -1px -1px 4px #ffffff;
       pointer-events: none;
       transition: left .4s cubic-bezier(.4, 0, .2, 1), background .4s, box-shadow .4s;
@@ -1328,7 +1327,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 12px;
+      font-size: 16px;
     }
 
 
@@ -1348,7 +1347,7 @@
 
     .sb-nm-label-light {
       right: 10px;
-      color: #94a3b8;
+      color: #64748b;
       opacity: 1;
     }
 
@@ -1508,6 +1507,85 @@
       flex-shrink: 0 !important;
     }
   }
+  /* Payments filter bar */
+  .payments-filter-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 16px;
+    padding: 10px 16px;
+    background: white;
+    border-radius: 12px;
+    border: 1px solid rgba(0,0,0,0.05);
+  }
+  .payments-count {
+    font-size: 13px;
+    font-weight: 600;
+    color: #64748b;
+  }
+  .payment-page-select {
+    padding: 7px 28px 7px 12px;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #64748b;
+    background: #f8fafc;
+    cursor: pointer;
+    font-family: inherit;
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2.5' stroke-linecap='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .payment-page-select:hover, .payment-page-select:focus {
+    border-color: #667eea;
+    color: #667eea;
+    background-color: #fff;
+  }
+  /* Payments pagination */
+  #paymentsPagination {
+    font-family: inherit;
+    margin-top: 16px;
+  }
+  #paymentsPagination > div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    background: white;
+    border-radius: 12px;
+    border: 1px solid rgba(0,0,0,0.05);
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  #paymentsPagination > div > div {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-wrap: wrap;
+  }
+  #paymentsPagination button:hover:not([disabled]) { border-color: #667eea !important; color: #667eea !important; }
+  /* Dark mode */
+  body.dark-mode .payments-filter-bar,
+  html.dark-mode .payments-filter-bar { background: #161b22 !important; border-color: rgba(124,106,247,0.25) !important; }
+  body.dark-mode .payments-count { color: #8b949e !important; }
+  body.dark-mode .payment-page-select { background: #1c2333 !important; border-color: #30363d !important; color: #8b949e !important; }
+  body.dark-mode #paymentsPagination > div { background: #161b22 !important; border-color: rgba(124,106,247,0.25) !important; }
+  body.dark-mode #paymentsPagination button:not([style*='linear-gradient']) { background: #1c2333 !important; border-color: #30363d !important; color: #8b949e !important; }
+  body.dark-mode #paymentsPagination span { color: #484f58 !important; }
+  @media (max-width: 480px) {
+    #paymentsPagination > div { flex-direction: column; align-items: flex-start; }
+    #paymentsPagination > div > div { width: 100%; justify-content: center; }
+    #paymentsPagination button { padding: 5px 8px !important; font-size: 11px !important; }
+    .payments-filter-bar { padding: 8px 12px; }
+    .payments-count { font-size: 12px; }
+    .payment-page-select { font-size: 12px; padding: 6px 24px 6px 10px; }
+  }
   </style>
 </head>
 
@@ -1603,6 +1681,18 @@
     </div>
 
 
+
+    <!-- Payments Filter Bar -->
+    <div class="payments-filter-bar">
+      <span class="payments-count" id="paymentsCount"></span>
+      <select id="paymentPageSize" class="payment-page-select" onchange="changePaymentPageSize()">
+        <option value="10">10 / page</option>
+        <option value="30">30 / page</option>
+        <option value="50">50 / page</option>
+        <option value="100">100 / page</option>
+        <option value="all">All</option>
+      </select>
+    </div>
 
     <!-- Payment Requests -->
     <div class="payments-grid" id="paymentsGrid">

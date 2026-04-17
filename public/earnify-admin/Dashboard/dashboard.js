@@ -111,9 +111,8 @@ function renderPurchasesTable() {
     return;
   }
 
-  const isDark = document.body.classList.contains('dark-mode');
-  const btnBase = `padding:6px 12px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;border:1.5px solid #e2e8f0;background:#f8fafc;color:#64748b;transition:all .2s;`;
-  const btnActive = `padding:6px 12px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;border:none;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;`;
+  const btnBase   = `padding:6px 10px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;border:1.5px solid #e2e8f0;background:#f8fafc;color:#64748b;transition:all .2s;`;
+  const btnActive = `padding:6px 10px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;border:none;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;`;
 
   let pages = '';
   const range = 2;
@@ -121,14 +120,14 @@ function renderPurchasesTable() {
     if (p === 1 || p === totalPages || (p >= _purchasePage - range && p <= _purchasePage + range)) {
       pages += `<button onclick="goToPurchasePage(${p})" style="${p === _purchasePage ? btnActive : btnBase}">${p}</button>`;
     } else if (p === _purchasePage - range - 1 || p === _purchasePage + range + 1) {
-      pages += `<span style="padding:0 4px;color:#94a3b8;">…</span>`;
+      pages += `<span style="padding:0 2px;color:#94a3b8;">…</span>`;
     }
   }
 
   paginationEl.innerHTML = `
-    <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 18px;border-top:1px solid #f1f5f9;flex-wrap:wrap;gap:8px;">
+    <div>
       <span style="font-size:12px;color:#94a3b8;font-weight:500;">Showing ${start + 1}–${Math.min(start + pageSize, total)} of ${total}</span>
-      <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+      <div>
         <button onclick="goToPurchasePage(${_purchasePage - 1})" ${_purchasePage === 1 ? 'disabled' : ''} style="${btnBase}opacity:${_purchasePage === 1 ? '.4' : '1'};">‹ Prev</button>
         ${pages}
         <button onclick="goToPurchasePage(${_purchasePage + 1})" ${_purchasePage === totalPages ? 'disabled' : ''} style="${btnBase}opacity:${_purchasePage === totalPages ? '.4' : '1'};">Next ›</button>
@@ -219,8 +218,8 @@ function renderWithdrawalsTable() {
     return;
   }
 
-  const btnBase   = `padding:6px 12px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;border:1.5px solid #e2e8f0;background:#f8fafc;color:#64748b;transition:all .2s;`;
-  const btnActive = `padding:6px 12px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;border:none;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;`;
+  const btnBase   = `padding:6px 10px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;border:1.5px solid #e2e8f0;background:#f8fafc;color:#64748b;transition:all .2s;`;
+  const btnActive = `padding:6px 10px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;border:none;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;`;
 
   let pages = '';
   const range = 2;
@@ -228,14 +227,14 @@ function renderWithdrawalsTable() {
     if (p === 1 || p === totalPages || (p >= _wdPage - range && p <= _wdPage + range)) {
       pages += `<button onclick="goToWdPage(${p})" style="${p === _wdPage ? btnActive : btnBase}">${p}</button>`;
     } else if (p === _wdPage - range - 1 || p === _wdPage + range + 1) {
-      pages += `<span style="padding:0 4px;color:#94a3b8;">…</span>`;
+      pages += `<span style="padding:0 2px;color:#94a3b8;">…</span>`;
     }
   }
 
   paginationEl.innerHTML = `
-    <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 18px;border-top:1px solid #f1f5f9;flex-wrap:wrap;gap:8px;">
+    <div>
       <span style="font-size:12px;color:#94a3b8;font-weight:500;">Showing ${start + 1}–${Math.min(start + pageSize, total)} of ${total}</span>
-      <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+      <div>
         <button onclick="goToWdPage(${_wdPage - 1})" ${_wdPage === 1 ? 'disabled' : ''} style="${btnBase}opacity:${_wdPage === 1 ? '.4' : '1'};">&#8249; Prev</button>
         ${pages}
         <button onclick="goToWdPage(${_wdPage + 1})" ${_wdPage === totalPages ? 'disabled' : ''} style="${btnBase}opacity:${_wdPage === totalPages ? '.4' : '1'};">Next &#8250;</button>

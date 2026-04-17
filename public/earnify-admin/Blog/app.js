@@ -14,6 +14,101 @@ const supabaseAdmin = window.supabase.createClient(SUPABASE_URL, SUPABASE_SERVIC
 let editingId = null;
 const _blogMap = {};
 const _mainArticleMap = {};
+let _allBlogs = [];
+let _blogPage = 1;
+let _blogPageSize = 10;
+
+function changeBlogPageSize() {
+  const val = document.getElementById('blogPageSize')?.value;
+  _blogPageSize = val === 'all' ? 'all' : parseInt(val);
+  _blogPage = 1;
+  _renderBlogGrid();
+}
+
+function goToBlogPage(page) {
+  const total = _allBlogs.length;
+  const pageSize = _blogPageSize === 'all' ? total : _blogPageSize;
+  const totalPages = Math.ceil(total / pageSize) || 1;
+  _blogPage = Math.max(1, Math.min(page, totalPages));
+  _renderBlogGrid();
+}
+
+function _renderBlogGrid() {
+  const grid = document.getElementById('blogGrid');
+  const blogs = _allBlogs;
+  const total = blogs.length;
+
+  const pageSize = _blogPageSize === 'all' ? total : _blogPageSize;
+  const totalPages = pageSize > 0 ? Math.ceil(total / pageSize) : 1;
+  _blogPage = Math.min(_blogPage, totalPages || 1);
+  const start = (_blogPage - 1) * pageSize;
+  const slice = _blogPageSize === 'all' ? blogs : blogs.slice(start, start + pageSize);
+
+  if (!slice.length) {
+    grid.innerHTML = `<div class="empty-state"><div class="empty-icon">✍️</div><h3>No Blog Posts Yet</h3><p>Click "Add Blog Post" to create your first post!</p></div>`;
+    _renderBlogPagination(0, 0, 0, 0);
+    return;
+  }
+
+  grid.innerHTML = slice.map(b => {
+    const slug = b.slug || generateSlug(b.title);
+    const permalink = `/public/Blog/post/?permalink=${slug}`;
+    return `
+    <div class="blog-card" id="card-${b.id}">
+      <div class="blog-card-img">
+        ${b.image_url ? `<img src="${b.image_url}" alt="" onerror="this.style.display='none'">` : ''}
+      </div>
+      <div class="blog-card-body">
+        <div class="blog-card-title">${b.title}</div>
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+          <span class="blog-category">${b.category || 'General'}</span>
+          <span class="blog-status-badge ${b.is_published === true ? 'status-published' : 'status-unpublished'}">${b.is_published === true ? '🟢 Published' : '🔴 Unpublished'}</span>
+        </div>
+        <div class="blog-card-actions">
+          <button class="btn-view-blog" onclick="window.open('${permalink}','_blank')">View</button>
+          <button class="btn-edit-blog" onclick="openEditModal(_blogMap[${b.id}])">Edit</button>
+          ${b.is_published === true
+            ? `<button class="btn-unpublish-blog" onclick="togglePublish(${b.id}, false)">Unpublish</button>`
+            : `<button class="btn-publish-blog" onclick="togglePublish(${b.id}, true)">Publish</button>`
+          }
+          <button class="btn-delete-blog" onclick="deleteBlog(${b.id})">Delete</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  _renderBlogPagination(total, pageSize, totalPages, start);
+}
+
+function _renderBlogPagination(total, pageSize, totalPages, start) {
+  let el = document.getElementById('blogPagination');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'blogPagination';
+    document.querySelector('.blog-section').appendChild(el);
+  }
+  if (_blogPageSize === 'all' || totalPages <= 1) { el.innerHTML = ''; return; }
+
+  const btnBase   = 'padding:6px 10px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;border:1.5px solid #e2e8f0;background:#f8fafc;color:#64748b;transition:all .2s;';
+  const btnActive = 'padding:6px 10px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;border:none;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;';
+  const range = 2;
+  let pages = '';
+  for (let p = 1; p <= totalPages; p++) {
+    if (p === 1 || p === totalPages || (p >= _blogPage - range && p <= _blogPage + range)) {
+      pages += `<button onclick="goToBlogPage(${p})" style="${p === _blogPage ? btnActive : btnBase}">${p}</button>`;
+    } else if (p === _blogPage - range - 1 || p === _blogPage + range + 1) {
+      pages += `<span style="padding:0 2px;color:#94a3b8;">…</span>`;
+    }
+  }
+  el.innerHTML = `<div>
+    <span style="font-size:12px;color:#94a3b8;font-weight:500;">Showing ${start + 1}–${Math.min(start + pageSize, total)} of ${total}</span>
+    <div>
+      <button onclick="goToBlogPage(${_blogPage - 1})" ${_blogPage === 1 ? 'disabled' : ''} style="${btnBase}opacity:${_blogPage === 1 ? '.4' : '1'};">&#8249; Prev</button>
+      ${pages}
+      <button onclick="goToBlogPage(${_blogPage + 1})" ${_blogPage === totalPages ? 'disabled' : ''} style="${btnBase}opacity:${_blogPage === totalPages ? '.4' : '1'};">Next &#8250;</button>
+    </div>
+  </div>`;
+}
 
 // ── RICH TEXT EDITOR HELPERS ──
 function rte(cmd) {
@@ -471,49 +566,27 @@ async function loadBlogs() {
 
     if (error) throw error;
 
-    const count = blogs ? blogs.length : 0;
-    document.getElementById('blogCount').textContent = `${count} post${count !== 1 ? 's' : ''}`;
-
     if (!blogs || blogs.length === 0) {
+      _allBlogs = [];
+      document.getElementById('blogCount').textContent = '0 posts';
       grid.innerHTML = `
         <div class="empty-state">
           <div class="empty-icon">✍️</div>
           <h3>No Blog Posts Yet</h3>
           <p>Click "Add Blog Post" to create your first post!</p>
         </div>`;
+      const pag = document.getElementById('blogPagination');
+      if (pag) pag.innerHTML = '';
       return;
     }
 
-    // Check if we have skeleton from initial load (keep showing until data replaces it)
-
     blogs.forEach(b => { _blogMap[b.id] = b; });
+    _allBlogs = blogs;
 
-    grid.innerHTML = blogs.map(b => {
-      const slug = b.slug || generateSlug(b.title);
-      const permalink = `/public/Blog/post/?permalink=${slug}`;
-      return `
-      <div class="blog-card" id="card-${b.id}">
-        <div class="blog-card-img">
-          ${b.image_url ? `<img src="${b.image_url}" alt="" onerror="this.style.display='none'">` : ''}
-        </div>
-        <div class="blog-card-body">
-          <div class="blog-card-title">${b.title}</div>
-          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-            <span class="blog-category">${b.category || 'General'}</span>
-            <span class="blog-status-badge ${b.is_published === true ? 'status-published' : 'status-unpublished'}">${b.is_published === true ? '🟢 Published' : '🔴 Unpublished'}</span>
-          </div>
-          <div class="blog-card-actions">
-            <button class="btn-view-blog" onclick="window.open('${permalink}','_blank')">View</button>
-            <button class="btn-edit-blog" onclick="openEditModal(_blogMap[${b.id}])">Edit</button>
-            ${b.is_published === true
-              ? `<button class="btn-unpublish-blog" onclick="togglePublish(${b.id}, false)">Unpublish</button>`
-              : `<button class="btn-publish-blog" onclick="togglePublish(${b.id}, true)">Publish</button>`
-            }
-            <button class="btn-delete-blog" onclick="deleteBlog(${b.id})">Delete</button>
-          </div>
-        </div>
-      </div>`;
-    }).join('');
+    const count = blogs.length;
+    document.getElementById('blogCount').textContent = `${count} post${count !== 1 ? 's' : ''}`;
+    _blogPage = 1;
+    _renderBlogGrid();
   } catch (err) {
     const msg = err?.message || err?.error_description || JSON.stringify(err);
     console.error('Error loading blogs:', msg, err);

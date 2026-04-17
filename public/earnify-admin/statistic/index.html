@@ -538,26 +538,30 @@
     }
 
     .table-header {
-      padding: 24px 28px;
+      padding: 20px 24px;
       border-bottom: 1px solid #f1f5f9;
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
-      gap: 16px;
+      gap: 12px;
     }
 
     .table-header h3 {
       font-size: 17px;
       font-weight: 700;
       color: #1e293b;
+      white-space: nowrap;
+      flex-shrink: 0;
     }
 
     .table-controls {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
       flex-wrap: wrap;
+      flex: 1;
+      justify-content: flex-end;
     }
 
     .search-box {
@@ -569,15 +573,26 @@
       border: 1.5px solid #e2e8f0;
       border-radius: 10px;
       font-size: 13px;
+      min-width: 0;
+      flex: 1;
+      max-width: 260px;
+      transition: border-color 0.2s;
+    }
+
+    .search-box:focus-within {
+      border-color: #667eea;
+      background: #fff;
     }
 
     .search-box input {
       background: none;
       border: none;
       outline: none;
-      width: 150px;
+      width: 100%;
+      min-width: 0;
       color: #1e293b;
       font-family: inherit;
+      font-size: 13px;
     }
 
     .search-box input::placeholder {
@@ -595,17 +610,41 @@
       cursor: pointer;
       transition: all 0.2s;
       font-family: inherit;
+      outline: none;
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2.5' stroke-linecap='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      padding-right: 30px;
+      white-space: nowrap;
+      flex-shrink: 0;
     }
 
-    .filter-btn:hover {
+    .filter-btn:hover,
+    .filter-btn:focus {
       border-color: #667eea;
       color: #667eea;
+      background-color: #fff;
     }
 
     .record-count {
       font-size: 12px;
       color: #94a3b8;
-      font-weight: 500;
+      font-weight: 600;
+      white-space: nowrap;
+      flex-shrink: 0;
+      background: #f1f5f9;
+      padding: 6px 12px;
+      border-radius: 20px;
+    }
+
+    /* ── Controls row layout helpers ── */
+    .controls-row-1 {
+      display: contents;
+    }
+    .controls-row-2 {
+      display: contents;
     }
 
     table {
@@ -877,44 +916,64 @@
       }
 
       .table-header {
-        padding: 12px 12px 10px;
+        padding: 12px 14px;
         gap: 8px;
+        flex-direction: column;
+        align-items: stretch;
       }
 
       .table-header h3 {
-        font-size: 14px;
+        font-size: 15px;
       }
 
+      /* Controls: 2-row layout on mobile */
       .table-controls {
         width: 100%;
+        display: flex;
         flex-direction: column;
-        align-items: stretch;
         gap: 8px;
+        justify-content: flex-start;
       }
 
-      .search-box {
+      /* Row 1: search full width */
+      .controls-row-1 {
+        display: flex;
         width: 100%;
+      }
+
+      .controls-row-1 .search-box {
+        max-width: 100%;
+        width: 100%;
+        flex: 1;
         padding: 9px 12px;
-        box-sizing: border-box;
-      }
-
-      .search-box input {
-        width: 100%;
         font-size: 14px;
-        /* prevent iOS zoom */
       }
 
-      .filter-btn {
-        width: 100%;
-        padding: 9px 12px;
-        text-align: left;
+      .controls-row-1 .search-box input {
         font-size: 14px;
-        box-sizing: border-box;
       }
 
-      .record-count {
+      /* Row 2: two selects + count on one line */
+      .controls-row-2 {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        width: 100%;
+      }
+
+      .controls-row-2 .filter-btn {
+        flex: 1;
+        min-width: 0;
+        padding: 9px 24px 9px 10px;
+        font-size: 13px;
+        background-position: right 8px center;
+      }
+
+      .controls-row-2 .record-count {
         font-size: 11px;
-        text-align: right;
+        padding: 5px 10px;
+        white-space: nowrap;
+        flex-shrink: 0;
       }
 
       /* Hide desktop table, show mobile cards */
@@ -1089,6 +1148,16 @@
         font-size: 13px;
       }
 
+      .controls-row-2 .filter-btn {
+        font-size: 11px;
+        padding: 8px 20px 8px 8px;
+      }
+
+      .controls-row-2 .record-count {
+        font-size: 10px;
+        padding: 4px 8px;
+      }
+
       .main {
         padding: 10px 8px 80px;
       }
@@ -1188,6 +1257,29 @@
     html.dark-mode .filter-btn {
       background: #1c2333 !important;
       border-color: #30363d !important;
+      color: #8b949e !important;
+    }
+
+    html.dark-mode .search-box {
+      background: #1c2333 !important;
+      border-color: #30363d !important;
+    }
+
+    html.dark-mode .search-box input {
+      color: #e6edf3 !important;
+    }
+
+    html.dark-mode .filter-btn {
+      background: #1c2333 !important;
+      border-color: #30363d !important;
+      color: #8b949e !important;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238b949e' stroke-width='2.5' stroke-linecap='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") !important;
+      background-repeat: no-repeat !important;
+      background-position: right 10px center !important;
+    }
+
+    html.dark-mode .record-count {
+      background: #1c2333 !important;
       color: #8b949e !important;
     }
 
@@ -1369,6 +1461,9 @@
       background: #1c2333 !important;
       border-color: #30363d !important;
       color: #8b949e !important;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238b949e' stroke-width='2.5' stroke-linecap='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") !important;
+      background-repeat: no-repeat !important;
+      background-position: right 10px center !important;
     }
 
     body.dark-mode .filter-btn:hover,
@@ -1380,6 +1475,11 @@
     body.dark-mode select.filter-btn option {
       background: #1c2333;
       color: #e6edf3;
+    }
+
+    body.dark-mode .record-count {
+      background: #1c2333 !important;
+      color: #8b949e !important;
     }
 
     /* table rows */
@@ -1551,7 +1651,7 @@
       padding: 0;
       flex-shrink: 0;
       font-family: inherit;
-      background: #f0f2f5;
+      background: white;
       box-shadow: 5px 5px 10px #c8cdd6, -5px -5px 10px #ffffff;
       transition: background .4s, box-shadow .4s;
       outline: none;
@@ -1564,7 +1664,6 @@
       width: 24px;
       height: 24px;
       border-radius: 50%;
-      background: linear-gradient(135deg, #ffffff, #e8ecf0);
       box-shadow: 2px 2px 6px #b0b8c4, -1px -1px 4px #ffffff;
       pointer-events: none;
       transition: left .4s cubic-bezier(.4, 0, .2, 1), background .4s, box-shadow .4s;
@@ -1572,7 +1671,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 12px;
+      font-size: 16px;
     }
 
 
@@ -1593,7 +1692,7 @@
 
     .sb-nm-label-light {
       right: 10px;
-      color: #94a3b8;
+      color: #64748b;
       opacity: 1;
     }
 
@@ -1653,6 +1752,33 @@
       background: inherit !important;
       flex-shrink: 0 !important;
     }
+  }
+  /* Pagination */
+  #statPagination { font-family: inherit; }
+  #statPagination > div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    border-top: 1px solid #f1f5f9;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  #statPagination > div > div {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-wrap: wrap;
+  }
+  #statPagination button:hover:not([disabled]) { border-color: #667eea !important; color: #667eea !important; }
+  body.dark-mode #statPagination > div { border-top-color: #30363d !important; }
+  body.dark-mode #statPagination button:not([style*='linear-gradient']) { background: #1c2333 !important; border-color: #30363d !important; color: #8b949e !important; }
+  body.dark-mode #statPagination span { color: #484f58 !important; }
+  body.dark-mode #pageSizeSelect { background: #1c2333 !important; border-color: #30363d !important; color: #8b949e !important; }
+  @media (max-width: 480px) {
+    #statPagination > div { flex-direction: column;  padding: 10px 12px; }
+    #statPagination > div > div { width: 100%; justify-content: center; }
+    #statPagination button { padding: 5px 8px !important; font-size: 11px !important; }
   }
   </style>
 </head>
@@ -1792,17 +1918,28 @@
       <div class="table-header">
         <h3>🛒 Recent Purchases</h3>
         <div class="table-controls">
-          <div class="search-box">
-            <span>🔍</span>
-            <input type="text" id="searchInput" placeholder="Search email or resource..." oninput="filterTable()">
+          <div class="controls-row-1">
+            <div class="search-box">
+              <span>🔍</span>
+              <input type="text" id="searchInput" placeholder="Search email or resource..." oninput="filterTable()">
+            </div>
           </div>
-          <select id="statusFilter" class="filter-btn" onchange="filterTable()">
-            <option value="">All Status</option>
-            <option value="completed">✅ Completed</option>
-            <option value="pending">⏳ Pending</option>
-            <option value="failed">❌ Failed</option>
-          </select>
-          <span class="record-count" id="recordCount">Loading...</span>
+          <div class="controls-row-2">
+            <select id="statusFilter" class="filter-btn" onchange="filterTable()">
+              <option value="">All Status</option>
+              <option value="completed">✅ Completed</option>
+              <option value="pending">⏳ Pending</option>
+              <option value="failed">❌ Failed</option>
+            </select>
+            <select id="pageSizeSelect" class="filter-btn" onchange="changePageSize()">
+              <option value="10">10 / page</option>
+              <option value="30">30 / page</option>
+              <option value="50">50 / page</option>
+              <option value="100">100 / page</option>
+              <option value="all">All</option>
+            </select>
+            <span class="record-count" id="recordCount">Loading...</span>
+          </div>
         </div>
       </div>
       <div>
