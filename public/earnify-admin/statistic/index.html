@@ -1696,7 +1696,8 @@
     position: fixed;
     background: #fff; border: 1.5px solid #e2e8f0; border-radius: 12px;
     box-shadow: 0 8px 32px rgba(102,126,234,0.14), 0 2px 8px rgba(0,0,0,0.08);
-    z-index: 99999; overflow: hidden; padding: 4px;
+    z-index: 99999; overflow-y: auto; overflow-x: hidden; padding: 4px;
+    max-height: calc(100vh - 80px);
     animation: cdDrop .18s cubic-bezier(.22,1,.36,1);
   }
   @keyframes cdDrop { from { opacity:0; transform:translateY(-6px) scale(.97); } to { opacity:1; transform:none; } }
@@ -2002,13 +2003,23 @@
       document.querySelectorAll('.cd-list').forEach(l => l.style.display = 'none');
       document.querySelectorAll('.cd-btn').forEach(b => b.classList.remove('open'));
       if (!open) {
+        if (list.parentNode !== document.body) document.body.appendChild(list);
         const rect = btn.getBoundingClientRect();
         const alignRight = list.getAttribute('data-align') === 'right';
-        list.style.top = (rect.bottom + 6) + 'px';
-        if (alignRight) { list.style.left = 'auto'; list.style.right = (window.innerWidth - rect.right) + 'px'; }
-        else { list.style.right = 'auto'; list.style.left = rect.left + 'px'; }
+        list.style.position = 'fixed';
+        list.style.left = alignRight ? 'auto' : rect.left + 'px';
+        list.style.right = alignRight ? (window.innerWidth - rect.right) + 'px' : 'auto';
         list.style.minWidth = rect.width + 'px';
         list.style.display = '';
+        const listH = list.offsetHeight;
+        const spaceBelow = window.innerHeight - rect.bottom - 8;
+        if (spaceBelow < listH && rect.top > listH) {
+          list.style.top = 'auto';
+          list.style.bottom = (window.innerHeight - rect.top + 6) + 'px';
+        } else {
+          list.style.bottom = 'auto';
+          list.style.top = (rect.bottom + 6) + 'px';
+        }
         btn.classList.add('open');
       }
     }
@@ -2029,6 +2040,11 @@
         document.querySelectorAll('.cd-btn').forEach(b => b.classList.remove('open'));
       }
     });
+    // Close on .main scroll so dropdown doesn't float away
+    document.querySelector('.main').addEventListener('scroll', function() {
+      document.querySelectorAll('.cd-list').forEach(l => l.style.display = 'none');
+      document.querySelectorAll('.cd-btn').forEach(b => b.classList.remove('open'));
+    }, { passive: true });
     _cdValues['statusFilter']   = '';
     _cdValues['pageSizeSelect'] = '10';
   </script>

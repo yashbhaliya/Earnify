@@ -563,7 +563,80 @@
     .pr-sk-price { height:15px; width:42px; }
     .pr-sk-btn   { height:30px; width:78px; border-radius:8px; }
 
-    /* Mobile: stack price + download below title */
+    /* ── Custom Dropdown (cd-wrap) ── */
+    .cd-wrap { position: relative; display: inline-flex; align-items: center; font-family: inherit; }
+    .cd-btn {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 8px 14px; min-width: 130px;
+      background: #fff; border: 1.5px solid #e2e8f0; border-radius: 10px;
+      color: #475569; font-size: 13px; font-weight: 600; cursor: pointer;
+      font-family: inherit; outline: none; user-select: none;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+      transition: border-color .18s, box-shadow .18s, color .18s;
+      white-space: nowrap;
+    }
+    .cd-btn:hover { border-color: #a5b4fc; color: #667eea; box-shadow: 0 2px 8px rgba(102,126,234,0.12); }
+    .cd-btn.open { border-color: #667eea; color: #667eea; box-shadow: 0 0 0 3px rgba(102,126,234,0.15); }
+    .cd-btn svg { flex-shrink: 0; transition: transform .22s; }
+    .cd-btn.open svg { transform: rotate(180deg); }
+    .cd-label { flex: 1; text-align: left; }
+    .cd-list {
+      position: fixed;
+      background: #fff; border: 1.5px solid #e2e8f0; border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(102,126,234,0.14), 0 2px 8px rgba(0,0,0,0.08);
+      z-index: 99999; overflow: hidden; padding: 4px;
+      animation: cdDrop .18s cubic-bezier(.22,1,.36,1);
+    }
+    @keyframes cdDrop { from { opacity:0; transform:translateY(-6px) scale(.97); } to { opacity:1; transform:none; } }
+    .cd-item {
+      display: flex; align-items: center; gap: 9px;
+      padding: 9px 13px; border-radius: 8px;
+      font-size: 13px; font-weight: 500; color: #334155;
+      cursor: pointer; transition: background .14s, color .14s;
+      white-space: nowrap;
+    }
+    .cd-item:hover { background: #f0f4ff; color: #667eea; }
+    .cd-item.selected { background: linear-gradient(135deg,#667eea,#764ba2); color: #fff; font-weight: 700; }
+    .cd-item.selected:hover { background: linear-gradient(135deg,#5a6fd6,#6a3f96); }
+    .cd-check { margin-left: auto; opacity: 0; font-size: 11px; }
+    .cd-item.selected .cd-check { opacity: 1; }
+    body.dark-mode .cd-btn, html.dark-mode .cd-btn {
+      background: #1c2333 !important; border-color: #30363d !important;
+      color: #8b949e !important; box-shadow: 0 1px 3px rgba(0,0,0,0.2) !important;
+    }
+    body.dark-mode .cd-btn:hover, html.dark-mode .cd-btn:hover {
+      border-color: #7c6af7 !important; color: #a78bfa !important;
+      box-shadow: 0 2px 8px rgba(124,106,247,0.18) !important;
+    }
+    body.dark-mode .cd-btn.open, html.dark-mode .cd-btn.open {
+      border-color: #7c6af7 !important; color: #a78bfa !important;
+      box-shadow: 0 0 0 3px rgba(124,106,247,0.18) !important;
+    }
+    body.dark-mode .cd-list, html.dark-mode .cd-list {
+      background: #1c2333 !important; border-color: #30363d !important;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5), 0 2px 8px rgba(0,0,0,0.3) !important;
+    }
+    body.dark-mode .cd-item, html.dark-mode .cd-item { color: #c9d1d9 !important; }
+    body.dark-mode .cd-item:hover, html.dark-mode .cd-item:hover { background: #21293d !important; color: #a78bfa !important; }
+    body.dark-mode .cd-item.selected, html.dark-mode .cd-item.selected {
+      background: linear-gradient(135deg,#4c3d9e,#3d2f7a) !important; color: #e2d9f3 !important;
+    }
+    /* Pagination */
+    #resPagination > div {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 16px; background: white; border-radius: 12px;
+      border: 1px solid rgba(0,0,0,0.06); flex-wrap: wrap; gap: 8px;
+    }
+    #resPagination > div > div { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+    #resPagination button:hover:not([disabled]) { border-color: #667eea !important; color: #667eea !important; }
+    body.dark-mode #resPagination > div, html.dark-mode #resPagination > div {
+      background: #161b22 !important; border-color: rgba(124,106,247,0.25) !important;
+    }
+    body.dark-mode #resPagination button:not([style*='linear-gradient']),
+    html.dark-mode #resPagination button:not([style*='linear-gradient']) {
+      background: #1c2333 !important; border-color: #30363d !important; color: #8b949e !important;
+    }
+    body.dark-mode #resPagination span, html.dark-mode #resPagination span { color: #484f58 !important; }
     @media (max-width: 640px) {
       .dash-section-head {
         flex-direction: column;
@@ -722,6 +795,19 @@
             </button>
           </div>
           <div class="add-buttons-group">
+            <div class="cd-wrap" id="cdWrap-resPageSize">
+              <button class="cd-btn" onclick="cdToggle('resPageSize')" type="button">
+                <span class="cd-label" id="cdLabel-resPageSize">10 / page</span>
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <div class="cd-list" id="cdList-resPageSize" style="display:none;" data-align="right">
+                <div class="cd-item selected" onclick="cdResPageSize('10','10 / page')">10 / page<span class="cd-check">&#10003;</span></div>
+                <div class="cd-item" onclick="cdResPageSize('30','30 / page')">30 / page<span class="cd-check">&#10003;</span></div>
+                <div class="cd-item" onclick="cdResPageSize('50','50 / page')">50 / page<span class="cd-check">&#10003;</span></div>
+                <div class="cd-item" onclick="cdResPageSize('100','100 / page')">100 / page<span class="cd-check">&#10003;</span></div>
+                <div class="cd-item" onclick="cdResPageSize('all','All')">All<span class="cd-check">&#10003;</span></div>
+              </div>
+            </div>
             <button class="add-resource-btn" onclick="openAddPicker()">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
               Add Resource
@@ -729,26 +815,28 @@
           </div>
         </div>
         <div class="resource-filter">
-          <div class="custom-select" onclick="toggleDropdown()">
-            <img src="/file/all.jpg" class="select-icon" id="selectedIcon">
-            <span id="selectedText">All Resources</span>
-            <span class="arrow">&#9660;</span>
-          </div>
-          <div class="dropdown" id="dropdownMenu">
-            <div onclick="selectOption('all','All Resources','/file/pdf.jpg')">
-              <img src="/file/pdf.jpg"> All Resources
-            </div>
-            <div onclick="selectOption('pdf','PDF Notes','/file/pdf.jpg')">
-              <img src="/file/pdf.jpg"> PDF Notes
-            </div>
-            <div onclick="selectOption('excel','Excel Templates','/file/excel.jpg')">
-              <img src="/file/excel.jpg"> Excel Templates
-            </div>
-            <div onclick="selectOption('exam','Exam Materials','/file/exam.jpg')">
-              <img src="/file/exam.jpg"> Exam Materials
-            </div>
-            <div onclick="selectOption('freelance','Freelance Services','/file/service.jpg')">
-              <img src="/file/service.jpg"> Freelance Services
+          <div class="cd-wrap" id="cdWrap-resourceFilter">
+            <button class="cd-btn" onclick="cdToggle('resourceFilter')" type="button">
+              <img src="/file/all.jpg" id="cdFilterIcon" style="width:18px;height:18px;border-radius:4px;object-fit:cover;flex-shrink:0;">
+              <span class="cd-label" id="cdLabel-resourceFilter">All Resources</span>
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="cd-list" id="cdList-resourceFilter" style="display:none;">
+              <div class="cd-item selected" onclick="cdFilterSelect('all','All Resources','/file/all.jpg')">
+                <img src="/file/all.jpg" style="width:18px;height:18px;border-radius:4px;object-fit:cover;flex-shrink:0;"> All Resources<span class="cd-check">&#10003;</span>
+              </div>
+              <div class="cd-item" onclick="cdFilterSelect('pdf','PDF Notes','/file/pdf.jpg')">
+                <img src="/file/pdf.jpg" style="width:18px;height:18px;border-radius:4px;object-fit:cover;flex-shrink:0;"> PDF Notes<span class="cd-check">&#10003;</span>
+              </div>
+              <div class="cd-item" onclick="cdFilterSelect('excel','Excel Templates','/file/excel.jpg')">
+                <img src="/file/excel.jpg" style="width:18px;height:18px;border-radius:4px;object-fit:cover;flex-shrink:0;"> Excel Templates<span class="cd-check">&#10003;</span>
+              </div>
+              <div class="cd-item" onclick="cdFilterSelect('exam','Exam Materials','/file/exam.jpg')">
+                <img src="/file/exam.jpg" style="width:18px;height:18px;border-radius:4px;object-fit:cover;flex-shrink:0;"> Exam Materials<span class="cd-check">&#10003;</span>
+              </div>
+              <div class="cd-item" onclick="cdFilterSelect('freelance','Freelance Services','/file/service.jpg')">
+                <img src="/file/service.jpg" style="width:18px;height:18px;border-radius:4px;object-fit:cover;flex-shrink:0;"> Freelance Services<span class="cd-check">&#10003;</span>
+              </div>
             </div>
           </div>
         </div>
@@ -759,6 +847,7 @@
             <p>Click the buttons above to add your first resource!</p>
           </div>
         </div>
+        <div id="resPagination" style="font-family:inherit;margin-top:16px;"></div>
       </div>
     </div>
 
@@ -1407,6 +1496,106 @@
     // Apply initial button styles on page load
     document.addEventListener('DOMContentLoaded', function() {
       switchView('resources');
+    });
+  </script>
+  <script>
+    /* ── cd-wrap Engine ── */
+    window._resPageSize = 10;
+    window._resPage = 1;
+    window._resAllData = [];
+
+    function cdToggle(id) {
+      const list = document.getElementById('cdList-' + id);
+      const btn  = document.querySelector('#cdWrap-' + id + ' .cd-btn');
+      const open = list.style.display !== 'none';
+      document.querySelectorAll('.cd-list').forEach(l => l.style.display = 'none');
+      document.querySelectorAll('.cd-btn').forEach(b => b.classList.remove('open'));
+      if (!open) {
+        // Move list to body so overflow:hidden on .main never clips it
+        if (list.parentNode !== document.body) document.body.appendChild(list);
+        const rect = btn.getBoundingClientRect();
+        const alignRight = list.getAttribute('data-align') === 'right';
+        list.style.position = 'fixed';
+        list.style.top = (rect.bottom + 6) + 'px';
+        if (alignRight) { list.style.left = 'auto'; list.style.right = (window.innerWidth - rect.right) + 'px'; }
+        else { list.style.right = 'auto'; list.style.left = rect.left + 'px'; }
+        list.style.minWidth = rect.width + 'px';
+        list.style.display = '';
+        btn.classList.add('open');
+      }
+    }
+    function cdFilterSelect(value, label, imgSrc) {
+      document.getElementById('cdLabel-resourceFilter').textContent = label;
+      document.getElementById('cdFilterIcon').src = imgSrc;
+      document.querySelectorAll('#cdList-resourceFilter .cd-item').forEach(el => {
+        el.classList.toggle('selected', (el.getAttribute('onclick') || '').includes("'" + value + "'"));
+      });
+      document.getElementById('cdList-resourceFilter').style.display = 'none';
+      document.querySelector('#cdWrap-resourceFilter .cd-btn').classList.remove('open');
+      window._resPage = 1;
+      if (typeof selectOption === 'function') selectOption(value, label, imgSrc);
+      else if (typeof window.showTab === 'function') window.showTab(value);
+    }
+    function cdResPageSize(value, label) {
+      document.getElementById('cdLabel-resPageSize').textContent = label;
+      document.querySelectorAll('#cdList-resPageSize .cd-item').forEach(el => {
+        el.classList.toggle('selected', (el.getAttribute('onclick') || '').includes("'" + value + "'"));
+      });
+      document.getElementById('cdList-resPageSize').style.display = 'none';
+      document.querySelector('#cdWrap-resPageSize .cd-btn').classList.remove('open');
+      window._resPageSize = value === 'all' ? 'all' : parseInt(value);
+      window._resPage = 1;
+      window._renderResPage();
+    }
+    window._renderResPage = function() {
+      const grid = document.getElementById('allGrid');
+      const pagEl = document.getElementById('resPagination');
+      const data = window._resAllData;
+      if (!data || !data.length) { if (pagEl) pagEl.innerHTML = ''; return; }
+      const total = data.length;
+      const ps = window._resPageSize === 'all' ? total : window._resPageSize;
+      const totalPages = Math.ceil(total / ps) || 1;
+      window._resPage = Math.min(window._resPage, totalPages);
+      const start = (window._resPage - 1) * ps;
+      const slice = window._resPageSize === 'all' ? data : data.slice(start, start + ps);
+      grid.innerHTML = slice.map(r => `
+<div class="row">
+  <div class="table-title">
+    <span class="icon">${getIcon(r.type)}</span>
+    <div><h4>${r.title}</h4><p>${r.description}</p></div>
+  </div>
+  <div class="price">₹${r.price}</div>
+  <div class="actions">
+    <button class="btn-view" onclick="openFile(${r.id})">Open</button>
+    <button class="btn-edit" onclick="editResource(${r.id})">Edit</button>
+    <button class="btn-delete" onclick="deleteResource(${r.id})">Delete</button>
+  </div>
+</div>`).join('');
+      if (!pagEl) return;
+      if (window._resPageSize === 'all' || totalPages <= 1) { pagEl.innerHTML = ''; return; }
+      const btnBase   = 'padding:6px 10px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;border:1.5px solid #e2e8f0;background:#f8fafc;color:#64748b;transition:all .2s;';
+      const btnActive = 'padding:6px 10px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;border:none;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;';
+      const range = 2; let pages = '';
+      for (let p = 1; p <= totalPages; p++) {
+        if (p === 1 || p === totalPages || (p >= window._resPage - range && p <= window._resPage + range))
+          pages += `<button onclick="window._resPage=${p};window._renderResPage()" style="${p===window._resPage?btnActive:btnBase}">${p}</button>`;
+        else if (p === window._resPage - range - 1 || p === window._resPage + range + 1)
+          pages += `<span style="padding:0 2px;color:#94a3b8;">…</span>`;
+      }
+      pagEl.innerHTML = `<div>
+        <span style="font-size:12px;color:#94a3b8;font-weight:500;">Showing ${start+1}–${Math.min(start+ps,total)} of ${total}</span>
+        <div>
+          <button onclick="window._resPage=Math.max(1,window._resPage-1);window._renderResPage()" ${window._resPage===1?'disabled':''} style="${btnBase}opacity:${window._resPage===1?'.4':'1'};">&#8249; Prev</button>
+          ${pages}
+          <button onclick="window._resPage=Math.min(${totalPages},window._resPage+1);window._renderResPage()" ${window._resPage===totalPages?'disabled':''} style="${btnBase}opacity:${window._resPage===totalPages?'.4':'1'};">Next &#8250;</button>
+        </div>
+      </div>`;
+    };
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.cd-wrap')) {
+        document.querySelectorAll('.cd-list').forEach(l => l.style.display = 'none');
+        document.querySelectorAll('.cd-btn').forEach(b => b.classList.remove('open'));
+      }
     });
   </script>
 

@@ -474,7 +474,12 @@ async function loadResources(type) {
     // </div>
     //   `).join('');
     hideSelectSkeleton(filterEl);
-    grid.innerHTML = resources.map((r, index) => `
+    if (type === 'all') {
+      window._resAllData = resources;
+      window._resPage = 1;
+      window._renderResPage();
+    } else {
+      grid.innerHTML = resources.map((r, index) => `
 <div class="row">
 
   <div class="table-title">
@@ -495,6 +500,7 @@ async function loadResources(type) {
 
 </div>
 `).join('');
+    }
   } catch (error) {
     hideSelectSkeleton(filterEl);
     console.error('Error loading resources:', error);
