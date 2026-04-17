@@ -162,7 +162,6 @@
       border-bottom: 2px solid #f8fafc;
       display: flex; align-items: center; gap: 10px;
     }
-    .w-card-title span { font-size: 20px; }
 
     /* ── Form ── */
     .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
@@ -765,6 +764,19 @@
     <div class="w-card">
       <div class="w-card-title" style="justify-content:space-between;">
         <span style="display:flex;align-items:center;gap:10px;"><span>📋</span> Withdrawal History</span>
+        <div class="cd-wrap" id="cdWrap-wdPageSize">
+          <button class="cd-btn" onclick="cdToggle('wdPageSize')" type="button">
+            <span class="cd-label" id="cdLabel-wdPageSize">10 / page</span>
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="cd-list" id="cdList-wdPageSize" style="display:none;">
+            <div class="cd-item selected" onclick="cdWdPageSize('10','10 / page')">10 / page<span class="cd-check">&#10003;</span></div>
+            <div class="cd-item" onclick="cdWdPageSize('30','30 / page')">30 / page<span class="cd-check">&#10003;</span></div>
+            <div class="cd-item" onclick="cdWdPageSize('50','50 / page')">50 / page<span class="cd-check">&#10003;</span></div>
+            <div class="cd-item" onclick="cdWdPageSize('100','100 / page')">100 / page<span class="cd-check">&#10003;</span></div>
+            <div class="cd-item" onclick="cdWdPageSize('all','All')">All<span class="cd-check">&#10003;</span></div>
+          </div>
+        </div>
       </div>
       <!-- History Shimmer -->
       <div id="historyShimmer">
@@ -800,6 +812,9 @@
           <p>Your withdrawal requests will appear here</p>
         </div>
       </div>
+    </div>
+
+      <div id="wdPagination" style="font-family:inherit;margin-top:16px;"></div>
     </div>
 
   </div><!-- /main -->
@@ -1112,7 +1127,20 @@
       }
 
       window._withdrawalList = list;
+      window._wdPage = 1;
+      _renderWdPage();
+    }
 
+    function _renderWdPage() {
+      const list = window._withdrawalList || [];
+      const container = document.getElementById('historyContainer');
+      const pagEl = document.getElementById('wdPagination');
+      const total = list.length;
+      const ps = window._wdPageSize === 'all' ? total : (window._wdPageSize || 10);
+      const totalPages = Math.ceil(total / ps) || 1;
+      window._wdPage = Math.min(window._wdPage, totalPages);
+      const start = (window._wdPage - 1) * ps;
+      const slice = window._wdPageSize === 'all' ? list : list.slice(start, start + ps);
       container.innerHTML = `
         <div class="history-wrap">
           <table class="history-table">
@@ -1329,5 +1357,71 @@
   </script>
   
   <script src="../super-admin-btn.js"></script>
+  <style>
+    .cd-wrap { position: relative; display: inline-flex; align-items: center; font-family: inherit; }
+    .cd-btn { display: inline-flex; align-items: center; gap: 6px; padding: 7px 12px; min-width: 100px; background: #fff; border: 1.5px solid #e2e8f0; border-radius: 10px; color: #475569 !important; font-size: 12px; font-weight: 600; cursor: pointer; font-family: inherit; outline: none; user-select: none; box-shadow: 0 1px 3px rgba(0,0,0,0.06); transition: border-color .18s, box-shadow .18s; white-space: nowrap; }
+    .cd-btn:hover { border-color: #a5b4fc; color: #667eea !important; }
+    .cd-btn.open { border-color: #667eea; color: #667eea !important; box-shadow: 0 0 0 3px rgba(102,126,234,0.15); }
+    .cd-btn svg { flex-shrink: 0; transition: transform .22s; }
+    .cd-btn.open svg { transform: rotate(180deg); }
+    .cd-label { flex: 1; text-align: left; }
+    .cd-list { position: fixed; background: #fff; border: 1.5px solid #e2e8f0; border-radius: 12px; box-shadow: 0 8px 32px rgba(102,126,234,0.14), 0 2px 8px rgba(0,0,0,0.08); z-index: 99999; overflow: hidden; padding: 4px; animation: cdDrop .18s cubic-bezier(.22,1,.36,1); }
+    @keyframes cdDrop { from { opacity:0; transform:translateY(-6px) scale(.97); } to { opacity:1; transform:none; } }
+    .cd-item { display: flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 8px; font-size: 13px; font-weight: 500; color: #334155; cursor: pointer; transition: background .14s, color .14s; white-space: nowrap; }
+    .cd-item:hover { background: #f0f4ff; color: #667eea; }
+    .cd-item.selected { background: linear-gradient(135deg,#667eea,#764ba2); color: #fff; font-weight: 700; }
+    .cd-item.selected:hover { background: linear-gradient(135deg,#5a6fd6,#6a3f96); }
+    .cd-check { margin-left: auto; opacity: 0; font-size: 11px; }
+    .cd-item.selected .cd-check { opacity: 1; }
+    body.dark-mode .cd-btn, html.dark-mode .cd-btn { background: #1c2333 !important; border-color: #30363d !important; color: #8b949e !important; }
+    body.dark-mode .cd-btn.open, html.dark-mode .cd-btn.open { border-color: #7c6af7 !important; color: #a78bfa !important; }
+    body.dark-mode .cd-list, html.dark-mode .cd-list { background: #1c2333 !important; border-color: #30363d !important; box-shadow: 0 8px 32px rgba(0,0,0,0.5) !important; }
+    body.dark-mode .cd-item, html.dark-mode .cd-item { color: #c9d1d9 !important; }
+    body.dark-mode .cd-item:hover, html.dark-mode .cd-item:hover { background: #21293d !important; color: #a78bfa !important; }
+    body.dark-mode .cd-item.selected, html.dark-mode .cd-item.selected { background: linear-gradient(135deg,#4c3d9e,#3d2f7a) !important; color: #e2d9f3 !important; }
+  </style>
+  <script>
+    window._wdPageSize = 10;
+    window._wdPage = 1;
+    function cdToggle(id) {
+      const list = document.getElementById('cdList-' + id);
+      const btn  = document.querySelector('#cdWrap-' + id + ' .cd-btn');
+      const open = list.style.display !== 'none';
+      document.querySelectorAll('.cd-list').forEach(l => l.style.display = 'none');
+      document.querySelectorAll('.cd-btn').forEach(b => b.classList.remove('open'));
+      if (!open) {
+        if (list.parentNode !== document.body) document.body.appendChild(list);
+        const rect = btn.getBoundingClientRect();
+        list.style.position = 'fixed';
+        list.style.left = 'auto';
+        list.style.right = (window.innerWidth - rect.right) + 'px';
+        list.style.top = (rect.bottom + 6) + 'px';
+        list.style.minWidth = rect.width + 'px';
+        list.style.display = '';
+        btn.classList.add('open');
+      }
+    }
+    function cdWdPageSize(value, label) {
+      document.getElementById('cdLabel-wdPageSize').textContent = label;
+      document.querySelectorAll('#cdList-wdPageSize .cd-item').forEach(el => {
+        el.classList.toggle('selected', (el.getAttribute('onclick') || '').includes("'" + value + "'"));
+      });
+      document.getElementById('cdList-wdPageSize').style.display = 'none';
+      document.querySelector('#cdWrap-wdPageSize .cd-btn').classList.remove('open');
+      window._wdPageSize = value === 'all' ? 'all' : parseInt(value);
+      window._wdPage = 1;
+      _renderWdPage();
+    }
+    function _cdCloseAll() {
+      document.querySelectorAll('.cd-list').forEach(l => l.style.display = 'none');
+      document.querySelectorAll('.cd-btn').forEach(b => b.classList.remove('open'));
+    }
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.cd-wrap') && !e.target.closest('.cd-list')) _cdCloseAll();
+    });
+    document.querySelector('.main').addEventListener('scroll', _cdCloseAll, { passive: true });
+    window.addEventListener('scroll', _cdCloseAll, { passive: true });
+    document.addEventListener('touchmove', _cdCloseAll, { passive: true });
+  </script>
 </body>
 </html>

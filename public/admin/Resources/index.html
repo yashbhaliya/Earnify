@@ -425,31 +425,47 @@
       border-color: #7c6af7;
       color: #a78bfa;
     }
-    .pr-filter-strip {
-      display: flex;
-      gap: 8px;
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
-      padding-bottom: 2px;
-    }
-    .pr-filter-strip::-webkit-scrollbar { display: none; }
-    .dash-section-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 24px;
-      gap: 16px;
-    }
-    .purchased-heading {
-      font-size: 20px;
-      font-weight: 800;
-      color: #1e293b;
-      margin: 0;
-    }
-    body.dark-mode .purchased-heading {
-      color: #e6edf3;
-    }
+      .pr-filter-strip {
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 8px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        padding: 4px 0;
+        flex-shrink: 1;
+        min-width: 0;
+        width: 100%;
+        touch-action: pan-x;
+      }
+     .pr-filter-strip::-webkit-scrollbar { display: none; }
+     .dash-section-head {
+       display: flex;
+       justify-content: space-between;
+       align-items: center;
+       margin-bottom: 24px;
+       gap: 16px;
+       flex-wrap: nowrap;
+     }
+     @media (max-width: 1024px) {
+       .dash-section-head {
+         flex-wrap: wrap;
+       }
+     }
+     .purchased-heading {
+       font-size: 20px;
+       font-weight: 800;
+       color: #1e293b;
+       margin: 0;
+       flex-shrink: 1;
+       min-width: 0;
+       overflow: hidden;
+       text-overflow: ellipsis;
+       white-space: nowrap;
+     }
+     body.dark-mode .purchased-heading {
+       color: #e6edf3;
+     }
     .pr-filter {
       padding: 8px 16px;
       border-radius: 50px;
@@ -569,14 +585,14 @@
       display: inline-flex; align-items: center; gap: 7px;
       padding: 8px 14px; min-width: 130px;
       background: #fff; border: 1.5px solid #e2e8f0; border-radius: 10px;
-      color: #475569; font-size: 13px; font-weight: 600; cursor: pointer;
+      color: #475569 !important; font-size: 13px; font-weight: 600; cursor: pointer;
       font-family: inherit; outline: none; user-select: none;
       box-shadow: 0 1px 3px rgba(0,0,0,0.06);
       transition: border-color .18s, box-shadow .18s, color .18s;
       white-space: nowrap;
     }
-    .cd-btn:hover { border-color: #a5b4fc; color: #667eea; box-shadow: 0 2px 8px rgba(102,126,234,0.12); }
-    .cd-btn.open { border-color: #667eea; color: #667eea; box-shadow: 0 0 0 3px rgba(102,126,234,0.15); }
+    .cd-btn:hover { border-color: #a5b4fc; color: #667eea !important; box-shadow: 0 2px 8px rgba(102,126,234,0.12); }
+    .cd-btn.open { border-color: #667eea; color: #667eea !important; box-shadow: 0 0 0 3px rgba(102,126,234,0.15); }
     .cd-btn svg { flex-shrink: 0; transition: transform .22s; }
     .cd-btn.open svg { transform: rotate(180deg); }
     .cd-label { flex: 1; text-align: left; }
@@ -600,6 +616,7 @@
     .cd-item.selected:hover { background: linear-gradient(135deg,#5a6fd6,#6a3f96); }
     .cd-check { margin-left: auto; opacity: 0; font-size: 11px; }
     .cd-item.selected .cd-check { opacity: 1; }
+    .cd-item img { width: 18px !important; height: 18px !important; border-radius: 4px !important; object-fit: cover !important; flex-shrink: 0 !important; display: inline-block !important; }
     body.dark-mode .cd-btn, html.dark-mode .cd-btn {
       background: #1c2333 !important; border-color: #30363d !important;
       color: #8b949e !important; box-shadow: 0 1px 3px rgba(0,0,0,0.2) !important;
@@ -637,31 +654,276 @@
       background: #1c2333 !important; border-color: #30363d !important; color: #8b949e !important;
     }
     body.dark-mode #resPagination span, html.dark-mode #resPagination span { color: #484f58 !important; }
-    @media (max-width: 640px) {
-      .dash-section-head {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 12px;
-        margin-bottom: 20px;
-      }
-      .purchased-heading {
-        font-size: 18px;
-        margin-bottom: 4px;
-      }
-      .pr-filter-strip {
-        width: 100%;
-        padding: 4px 0;
-      }
-      .pr-card { flex-wrap: wrap; gap: 10px; }
-      .pr-info { width: calc(100% - 60px); }
-      .pr-title { white-space: normal; }
-      .pr-right {
-        width: 100%; justify-content: space-between;
-        padding-top: 8px; border-top: 1px solid #f1f5f9;
-      }
-      body.dark-mode .pr-right { border-top-color: #30363d; }
-      .pr-dl-btn { flex: 1; text-align: center; padding: 9px 10px; font-size: 13px; }
+    #prPagination > div {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 16px; background: white; border-radius: 12px;
+      border: 1px solid rgba(0,0,0,0.06); flex-wrap: wrap; gap: 8px;
     }
+    #prPagination > div > div { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+    #prPagination button:hover:not([disabled]) { border-color: #667eea !important; color: #667eea !important; }
+    body.dark-mode #prPagination > div, html.dark-mode #prPagination > div {
+      background: #161b22 !important; border-color: rgba(124,106,247,0.25) !important;
+    }
+    body.dark-mode #prPagination button:not([style*='linear-gradient']),
+    html.dark-mode #prPagination button:not([style*='linear-gradient']) {
+      background: #1c2333 !important; border-color: #30363d !important; color: #8b949e !important;
+    }
+    body.dark-mode #prPagination span, html.dark-mode #prPagination span { color: #484f58 !important; }
+      @media (max-width: 768px) {
+        .dash-section-head {
+          flex-direction: column;
+          align-items: stretch;
+          gap: 12px;
+          margin-bottom: 20px;
+        }
+        #purchasedSection .dash-section-head > div:last-child {
+          display: flex !important;
+          align-items: center !important;
+          gap: 10px !important;
+          flex-wrap: nowrap !important;
+          flex: 1 1 0% !important;
+          min-width: 0 !important;
+          width: 100% !important;
+        }
+        #purchasedSection .dash-section-head > div:last-child > .pr-filter-strip {
+          flex: 1 1 0% !important;
+          min-width: 0 !important;
+          max-width: 100% !important;
+          overflow-x: auto !important;
+        }
+         #purchasedSection .dash-section-head > div:last-child > .cd-wrap {
+           flex: 0 0 auto !important;
+         }
+        .purchased-heading {
+          font-size: 18px;
+          margin-bottom: 4px;
+        }
+        .pr-filter-strip {
+          display: flex !important;
+          width: 100% !important;
+          padding: 0 !important;
+          overflow-x: auto !important;
+          -webkit-overflow-scrolling: touch !important;
+          scrollbar-width: none !important;
+          gap: 8px !important;
+          flex-shrink: 0 !important;
+        }
+        .pr-filter-strip::-webkit-scrollbar { display: none !important; }
+        .pr-filter {
+          flex-shrink: 0 !important;
+          white-space: nowrap !important;
+          font-size: 12px !important;
+          padding: 6px 14px !important;
+        }
+        .pr-card { flex-wrap: wrap; gap: 10px; }
+        .pr-info { width: calc(100% - 60px); }
+        .pr-title { white-space: normal; }
+        .pr-right {
+          width: 100%; justify-content: space-between;
+          padding-top: 8px; border-top: 1px solid #f1f5f9;
+        }
+        body.dark-mode .pr-right { border-top-color: #30363d; }
+        .pr-dl-btn { flex: 1; text-align: center; padding: 9px 10px; font-size: 13px; }
+      }
+     /* ── sh-filter-row always visible (desktop + mobile) ── */
+     .sh-filter-row {
+       display: flex !important;
+       align-items: center !important;
+       gap: 8px !important;
+       margin-bottom: 10px !important;
+     }
+     .sh-add-btn-mobile {
+       display: inline-flex !important;
+       flex-shrink: 0 !important;
+       padding: 9px 12px !important;
+       font-size: 13px !important;
+       white-space: nowrap !important;
+     }
+     .sh-filter-row .cd-wrap {
+       flex: 1 !important;
+       min-width: 0 !important;
+     }
+     .sh-filter-row .cd-btn {
+       /* width: 100% !important; */
+       font-size: 12px !important;
+       padding: 8px 10px !important;
+       min-width: 0 !important;
+     }
+     /* ── resource-filter always visible ── */
+     .resource-filter {
+       display: flex !important;
+       align-items: center !important;
+       gap: 8px !important;
+       margin-bottom: 10px !important;
+       position: relative !important;
+       z-index: 10 !important;
+     }
+     .resource-filter .custom-select {
+       flex: 1 !important;
+       min-width: 0 !important;
+     }
+     .resource-filter .dropdown {
+       z-index: 9999 !important;
+     }
+     .resource-grid {
+       position: relative;
+       z-index: 1;
+     }
+     /* ── Section-header: desktop layout ── */
+     @media (min-width: 769px) {
+       .section-header {
+         display: flex !important;
+         align-items: center !important;
+         justify-content: space-between !important;
+         margin-bottom: 24px !important;
+         gap: 16px !important;
+       }
+       .section-title {
+         display: flex !important;
+         align-items: center !important;
+         gap: 8px !important;
+         flex-wrap: nowrap !important;
+         min-width: 0 !important;
+       }
+       .section-title h2 {
+         font-size: 20px !important;
+         white-space: nowrap !important;
+       }
+       .sh-add-btn-mobile { display: none !important; }
+       .sh-page-size {
+         display: inline-flex !important;
+         flex-shrink: 0 !important;
+       }
+        .sh-page-size .cd-btn {
+          min-width: 90px !important;
+          font-size: 11px !important;
+          padding: 6px 10px !important;
+        }
+        /* Desktop: ensure filter strip container doesn't wrap and grows */
+        #purchasedSection .dash-section-head > div:last-child {
+          flex-wrap: nowrap !important;
+          flex: 1 1 0% !important;
+          min-width: 0 !important;
+        }
+        #purchasedSection .dash-section-head > div:last-child > .pr-filter-strip {
+          flex: 1 1 0% !important;
+          min-width: 0 !important;
+          overflow-x: auto !important;
+        }
+       .add-buttons-group {
+         display: flex !important;
+         align-items: center !important;
+         gap: 8px !important;
+         flex-shrink: 0 !important;
+       }
+       .view-toggle { display: none !important; }
+     }
+     /* Mobile (≤768px): 2-row layout */
+     @media (max-width: 768px) {
+       .section-header {
+         flex-direction: column !important;
+         align-items: stretch !important;
+         gap: 8px !important;
+         margin-bottom: 10px !important;
+       }
+       .view-toggle { display: none !important; }
+       .add-buttons-group { display: none !important; }
+       .section-title {
+         display: flex !important;
+         align-items: center !important;
+         gap: 8px !important;
+         flex-wrap: nowrap !important;
+         width: 100% !important;
+         min-width: 0 !important;
+       }
+       .section-title h2 {
+         font-size: 15px !important;
+         white-space: nowrap !important;
+         overflow: hidden !important;
+         text-overflow: ellipsis !important;
+         flex-shrink: 1 !important;
+         min-width: 0 !important;
+       }
+       .resource-count {
+         flex-shrink: 0 !important;
+         font-size: 11px !important;
+         padding: 3px 8px !important;
+       }
+       .section-title .sh-page-size {
+         display: inline-flex !important;
+         margin-left: auto !important;
+         flex-shrink: 0 !important;
+       }
+        .section-title .sh-page-size .cd-btn {
+          min-width: 90px !important;
+          font-size: 11px !important;
+          padding: 6px 10px !important;
+        }
+        #purchasedSection #cdWrap-prPageSize .cd-btn {
+          min-width: 90px !important;
+          font-size: 11px !important;
+          padding: 6px 10px !important;
+        }
+         .sh-filter-row { display: flex !important; }
+       .resource-filter {
+         display: flex !important;
+         margin-bottom: 10px !important;
+       }
+        }
+      @media (max-width: 480px) {
+        .section-title h2 { font-size: 13px !important; }
+        .section-title .sh-page-size .cd-btn { min-width: 80px !important; font-size: 10px !important; padding: 5px 8px !important; }
+        #purchasedSection #cdWrap-prPageSize .cd-btn { min-width: 80px !important; font-size: 10px !important; padding: 5px 8px !important; }
+        .sh-add-btn-mobile { padding: 8px 10px !important; font-size: 12px !important; }
+      }
+      /* Mobile (≤768px): override for 2-row layout */
+     @media (max-width: 768px) {
+       .section-header {
+         flex-direction: column !important;
+         align-items: stretch !important;
+         gap: 8px !important;
+         margin-bottom: 10px !important;
+       }
+       .view-toggle { display: none !important; }
+       .add-buttons-group { display: none !important; }
+       .section-title {
+         display: flex !important;
+         align-items: center !important;
+         gap: 8px !important;
+         flex-wrap: nowrap !important;
+         width: 100% !important;
+         min-width: 0 !important;
+       }
+       .section-title h2 {
+         font-size: 15px !important;
+         white-space: nowrap !important;
+         overflow: hidden !important;
+         text-overflow: ellipsis !important;
+         flex-shrink: 1 !important;
+         min-width: 0 !important;
+       }
+       .resource-count {
+         flex-shrink: 0 !important;
+         font-size: 11px !important;
+         padding: 3px 8px !important;
+       }
+       .section-title .sh-page-size {
+         display: inline-flex !important;
+         margin-left: auto !important;
+         flex-shrink: 0 !important;
+       }
+       .section-title .sh-page-size .cd-btn {
+         min-width: 90px !important;
+         font-size: 11px !important;
+         padding: 6px 10px !important;
+       }
+      }
+      @media (max-width: 480px) {
+        .section-title h2 { font-size: 13px !important; }
+        .section-title .sh-page-size .cd-btn { min-width: 80px !important; font-size: 10px !important; padding: 5px 8px !important; }
+        #purchasedSection #cdWrap-prPageSize .cd-btn { min-width: 80px !important; font-size: 10px !important; padding: 5px 8px !important; }
+        .sh-add-btn-mobile { padding: 8px 10px !important; font-size: 12px !important; }
+      }
 
 
   </style> 
@@ -782,6 +1044,19 @@
           <div class="section-title">
             <h2>All Resources</h2>
             <span class="resource-count" id="allCount">0 items</span>
+            <div class="cd-wrap sh-page-size" id="cdWrap-resPageSize">
+              <button class="cd-btn" onclick="cdToggle('resPageSize')" type="button">
+                <span class="cd-label" id="cdLabel-resPageSize">10 / page</span>
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+               <div class="cd-list" id="cdList-resPageSize" style="display:none;" data-align="right">
+                <div class="cd-item selected" onclick="cdResPageSize('10','10 / page')">10 / page<span class="cd-check">&#10003;</span></div>
+                <div class="cd-item" onclick="cdResPageSize('30','30 / page')">30 / page<span class="cd-check">&#10003;</span></div>
+                <div class="cd-item" onclick="cdResPageSize('50','50 / page')">50 / page<span class="cd-check">&#10003;</span></div>
+                <div class="cd-item" onclick="cdResPageSize('100','100 / page')">100 / page<span class="cd-check">&#10003;</span></div>
+                <div class="cd-item" onclick="cdResPageSize('all','All')">All<span class="cd-check">&#10003;</span></div>
+              </div>
+            </div>
           </div>
           <div class="view-toggle">
             <button class="view-btn active" onclick="setView('grid')">
@@ -795,26 +1070,17 @@
             </button>
           </div>
           <div class="add-buttons-group">
-            <div class="cd-wrap" id="cdWrap-resPageSize">
-              <button class="cd-btn" onclick="cdToggle('resPageSize')" type="button">
-                <span class="cd-label" id="cdLabel-resPageSize">10 / page</span>
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
-              </button>
-              <div class="cd-list" id="cdList-resPageSize" style="display:none;" data-align="right">
-                <div class="cd-item selected" onclick="cdResPageSize('10','10 / page')">10 / page<span class="cd-check">&#10003;</span></div>
-                <div class="cd-item" onclick="cdResPageSize('30','30 / page')">30 / page<span class="cd-check">&#10003;</span></div>
-                <div class="cd-item" onclick="cdResPageSize('50','50 / page')">50 / page<span class="cd-check">&#10003;</span></div>
-                <div class="cd-item" onclick="cdResPageSize('100','100 / page')">100 / page<span class="cd-check">&#10003;</span></div>
-                <div class="cd-item" onclick="cdResPageSize('all','All')">All<span class="cd-check">&#10003;</span></div>
-              </div>
-            </div>
             <button class="add-resource-btn" onclick="openAddPicker()">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
               Add Resource
             </button>
           </div>
         </div>
-        <div class="resource-filter">
+        <div class="resource-filter sh-filter-row">
+          <button class="add-resource-btn sh-add-btn-mobile" onclick="openAddPicker()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add Resource
+          </button>
           <div class="cd-wrap" id="cdWrap-resourceFilter">
             <button class="cd-btn" onclick="cdToggle('resourceFilter')" type="button">
               <img src="/file/all.jpg" id="cdFilterIcon" style="width:18px;height:18px;border-radius:4px;object-fit:cover;flex-shrink:0;">
@@ -861,8 +1127,8 @@
           </div>
         </div>
         <div class="resource-filter">
-          <div class="custom-select" onclick="toggleDropdownById('dropdownMenuPdf')" <img src="/file/pdf.jpg"
-            class="select-icon" id="selectedIconPdf">
+          <div class="custom-select" onclick="toggleDropdownById('dropdownMenuPdf')">
+            <img src="/file/pdf.jpg" class="select-icon" id="selectedIconPdf">
             <span id="selectedTextPdf">PDF Notes</span>
             <span class="arrow">&#9660;</span>
           </div>
@@ -909,7 +1175,7 @@
           </div>
         </div>
         <div class="resource-filter">
-          <div class="custom-select" onclick="toggleDropdownExcel()" <img src="/file/excel.jpg" class="select-icon">
+          <div class="custom-select" onclick="toggleDropdownExcel()"><img src="/file/excel.jpg" class="select-icon">
             <span>Excel Templates</span>
             <span class="arrow">&#9660;</span>
           </div>
@@ -956,7 +1222,7 @@
           </div>
         </div>
         <div class="resource-filter">
-          <div class="custom-select" onclick="toggleDropdownExam()" <img src="/file/exam.jpg" class="select-icon">
+          <div class="custom-select" onclick="toggleDropdownExam()"><img src="/file/exam.jpg" class="select-icon">
             <span>Exam Materials</span>
             <span class="arrow">&#9660;</span>
           </div>
@@ -1003,8 +1269,8 @@
           </div>
         </div>
         <div class="resource-filter">
-          <div class="custom-select" onclick="toggleDropdownFreelance()" <img src="/file/service.jpg"
-            class="select-icon">
+          <div class="custom-select" onclick="toggleDropdownFreelance()">
+            <img src="/file/service.jpg" class="select-icon">
             <span>Freelance Services</span>
             <span class="arrow">&#9660;</span>
           </div>
@@ -1045,15 +1311,31 @@
     <div id="purchasedSection" style="display:none;padding-bottom:30px;">
       <div class="dash-section-head">
         <h2 class="purchased-heading">🛒 My Purchased Resources</h2>
-        <div class="pr-filter-strip">
-          <button class="pr-filter active" onclick="filterPurchased('all',this)">All</button>
-          <button class="pr-filter" onclick="filterPurchased('pdf',this)">📄 PDF</button>
-          <button class="pr-filter" onclick="filterPurchased('excel',this)">📊 Excel</button>
-          <button class="pr-filter" onclick="filterPurchased('exam',this)">📝 Exam</button>
-          <button class="pr-filter" onclick="filterPurchased('freelance',this)">💼 Services</button>
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+          <div class="pr-filter-strip">
+            <button class="pr-filter active" onclick="filterPurchased('all',this)">All</button>
+            <button class="pr-filter" onclick="filterPurchased('pdf',this)">📄 PDF</button>
+            <button class="pr-filter" onclick="filterPurchased('excel',this)">📊 Excel</button>
+            <button class="pr-filter" onclick="filterPurchased('exam',this)">📝 Exam</button>
+            <button class="pr-filter" onclick="filterPurchased('freelance',this)">💼 Services</button>
+          </div>
+          <div class="cd-wrap" id="cdWrap-prPageSize">
+            <button class="cd-btn" onclick="cdToggle('prPageSize')" type="button">
+              <span class="cd-label" id="cdLabel-prPageSize">10 / page</span>
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="cd-list" id="cdList-prPageSize" style="display:none;" data-align="right">
+              <div class="cd-item selected" onclick="cdPrPageSize('10','10 / page')">10 / page<span class="cd-check">&#10003;</span></div>
+              <div class="cd-item" onclick="cdPrPageSize('30','30 / page')">30 / page<span class="cd-check">&#10003;</span></div>
+              <div class="cd-item" onclick="cdPrPageSize('50','50 / page')">50 / page<span class="cd-check">&#10003;</span></div>
+              <div class="cd-item" onclick="cdPrPageSize('100','100 / page')">100 / page<span class="cd-check">&#10003;</span></div>
+              <div class="cd-item" onclick="cdPrPageSize('all','All')">All<span class="cd-check">&#10003;</span></div>
+            </div>
+          </div>
         </div>
       </div>
       <div id="purchasedGrid" style="display:grid;gap:16px;margin-top:16px;"></div>
+      <div id="prPagination" style="font-family:inherit;margin-top:16px;"></div>
     </div>
 
   </div>
@@ -1388,6 +1670,9 @@
 
     /* ── View Switcher ── */
     let _allPurchased = [];
+    let _filteredPurchased = [];
+    window._prPageSize = 10;
+    window._prPage = 1;
 
     function switchView(view) {
       const btnRes       = document.getElementById('btnAllResources');
@@ -1432,7 +1717,9 @@
         console.error('[Purchased] load error =>', e);
         _allPurchased = [];
       }
-      renderPurchased(_allPurchased);
+      _filteredPurchased = _allPurchased;
+      window._prPage = 1;
+      renderPurchased(_filteredPurchased);
     }
 
     function showPrSkeleton() {
@@ -1457,20 +1744,34 @@
       btn.classList.add('active');
       showPrSkeleton();
       setTimeout(() => {
-        renderPurchased(type === 'all' ? _allPurchased : _allPurchased.filter(p => p.resources?.type === type));
+        _filteredPurchased = type === 'all' ? _allPurchased : _allPurchased.filter(p => p.resources?.type === type);
+        window._prPage = 1;
+        renderPurchased(_filteredPurchased);
       }, 300);
     }
 
     function renderPurchased(list) {
+      _filteredPurchased = list;
       const grid = document.getElementById('purchasedGrid');
+      const pagEl = document.getElementById('prPagination');
       const valid = list.filter(p => p.resources);
+
       if (!valid.length) {
         const isDark = document.body.classList.contains('dark-mode');
         grid.innerHTML = `<div style="text-align:center;padding:60px 20px;"><div style="font-size:48px;margin-bottom:12px;">🛒</div><div style="font-size:16px;font-weight:700;color:${isDark?'#e6edf3':'#1e293b'};margin-bottom:6px;">No Purchases Yet</div><div style="font-size:13px;color:${isDark?'#484f58':'#94a3b8'};">Resources you purchase will appear here.</div></div>`;
+        if (pagEl) pagEl.innerHTML = '';
         return;
       }
+
+      const total = valid.length;
+      const ps = window._prPageSize === 'all' ? total : window._prPageSize;
+      const totalPages = Math.ceil(total / ps) || 1;
+      window._prPage = Math.min(window._prPage, totalPages);
+      const start = (window._prPage - 1) * ps;
+      const slice = window._prPageSize === 'all' ? valid : valid.slice(start, start + ps);
+
       const icons = { pdf: '📄', excel: '📊', exam: '📝', freelance: '💼' };
-      grid.innerHTML = valid.map(p => {
+      grid.innerHTML = slice.map(p => {
         const r    = p.resources;
         const icon = icons[r.type] || '📦';
         const date = new Date(p.created_at).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
@@ -1490,6 +1791,26 @@
           </div>
         </div>`;
       }).join('');
+
+      if (!pagEl) return;
+      if (window._prPageSize === 'all' || totalPages <= 1) { pagEl.innerHTML = ''; return; }
+      const btnBase   = 'padding:6px 10px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;border:1.5px solid #e2e8f0;background:#f8fafc;color:#64748b;transition:all .2s;';
+      const btnActive = 'padding:6px 10px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;border:none;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;';
+      const range = 2; let pages = '';
+      for (let p = 1; p <= totalPages; p++) {
+        if (p===1||p===totalPages||(p>=window._prPage-range&&p<=window._prPage+range))
+          pages += `<button onclick="window._prPage=${p};renderPurchased(_filteredPurchased)" style="${p===window._prPage?btnActive:btnBase}">${p}</button>`;
+        else if (p===window._prPage-range-1||p===window._prPage+range+1)
+          pages += `<span style="padding:0 2px;color:#94a3b8;">…</span>`;
+      }
+      pagEl.innerHTML = `<div>
+        <span style="font-size:12px;color:#94a3b8;font-weight:500;">Showing ${start+1}–${Math.min(start+ps,total)} of ${total}</span>
+        <div>
+          <button onclick="window._prPage=Math.max(1,window._prPage-1);renderPurchased(_filteredPurchased)" ${window._prPage===1?'disabled':''} style="${btnBase}opacity:${window._prPage===1?'.4':'1'};">&#8249; Prev</button>
+          ${pages}
+          <button onclick="window._prPage=Math.min(${totalPages},window._prPage+1);renderPurchased(_filteredPurchased)" ${window._prPage===totalPages?'disabled':''} style="${btnBase}opacity:${window._prPage===totalPages?'.4':'1'};">Next &#8250;</button>
+        </div>
+      </div>`;
     }
   </script>
   <script>
@@ -1504,26 +1825,47 @@
     window._resPage = 1;
     window._resAllData = [];
 
+    // Track open dropdown for scroll repositioning
+    window._cdOpenId = null;
+    window._cdOpenBtn = null;
+
+    function cdCloseAll() {
+      document.querySelectorAll('.cd-list').forEach(l => l.style.display = 'none');
+      document.querySelectorAll('.cd-btn').forEach(b => b.classList.remove('open'));
+      window._cdOpenId = null;
+      window._cdOpenBtn = null;
+    }
+
+    function cdPositionList(list, btn) {
+      const rect = btn.getBoundingClientRect();
+      const alignRight = list.getAttribute('data-align') === 'right';
+      list.style.position = 'fixed';
+      list.style.top = (rect.bottom + 6) + 'px';
+      if (alignRight) { list.style.left = 'auto'; list.style.right = (window.innerWidth - rect.right) + 'px'; }
+      else { list.style.right = 'auto'; list.style.left = rect.left + 'px'; }
+      list.style.minWidth = rect.width + 'px';
+    }
+
     function cdToggle(id) {
       const list = document.getElementById('cdList-' + id);
       const btn  = document.querySelector('#cdWrap-' + id + ' .cd-btn');
       const open = list.style.display !== 'none';
-      document.querySelectorAll('.cd-list').forEach(l => l.style.display = 'none');
-      document.querySelectorAll('.cd-btn').forEach(b => b.classList.remove('open'));
+      cdCloseAll();
       if (!open) {
         // Move list to body so overflow:hidden on .main never clips it
         if (list.parentNode !== document.body) document.body.appendChild(list);
-        const rect = btn.getBoundingClientRect();
-        const alignRight = list.getAttribute('data-align') === 'right';
-        list.style.position = 'fixed';
-        list.style.top = (rect.bottom + 6) + 'px';
-        if (alignRight) { list.style.left = 'auto'; list.style.right = (window.innerWidth - rect.right) + 'px'; }
-        else { list.style.right = 'auto'; list.style.left = rect.left + 'px'; }
-        list.style.minWidth = rect.width + 'px';
+        cdPositionList(list, btn);
         list.style.display = '';
         btn.classList.add('open');
+        window._cdOpenId = id;
+        window._cdOpenBtn = btn;
       }
     }
+
+    // Close dropdown on scroll (fixes dropdown scrolling with page)
+    document.querySelector('.main').addEventListener('scroll', function() {
+      if (window._cdOpenId) cdCloseAll();
+    }, { passive: true });
     function cdFilterSelect(value, label, imgSrc) {
       document.getElementById('cdLabel-resourceFilter').textContent = label;
       document.getElementById('cdFilterIcon').src = imgSrc;
@@ -1546,6 +1888,17 @@
       window._resPageSize = value === 'all' ? 'all' : parseInt(value);
       window._resPage = 1;
       window._renderResPage();
+    }
+    function cdPrPageSize(value, label) {
+      document.getElementById('cdLabel-prPageSize').textContent = label;
+      document.querySelectorAll('#cdList-prPageSize .cd-item').forEach(el => {
+        el.classList.toggle('selected', (el.getAttribute('onclick') || '').includes("'" + value + "'"));
+      });
+      document.getElementById('cdList-prPageSize').style.display = 'none';
+      document.querySelector('#cdWrap-prPageSize .cd-btn').classList.remove('open');
+      window._prPageSize = value === 'all' ? 'all' : parseInt(value);
+      window._prPage = 1;
+      renderPurchased(_filteredPurchased);
     }
     window._renderResPage = function() {
       const grid = document.getElementById('allGrid');
@@ -1592,9 +1945,8 @@
       </div>`;
     };
     document.addEventListener('click', function(e) {
-      if (!e.target.closest('.cd-wrap')) {
-        document.querySelectorAll('.cd-list').forEach(l => l.style.display = 'none');
-        document.querySelectorAll('.cd-btn').forEach(b => b.classList.remove('open'));
+      if (!e.target.closest('.cd-wrap') && !e.target.closest('.cd-list')) {
+        cdCloseAll();
       }
     });
   </script>

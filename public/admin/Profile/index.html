@@ -1247,7 +1247,21 @@ animation: cardShimmer 1.8s infinite;
         </div>
       </div>
       <div class="profile-card" id="recentResourcesCard" style="margin-top: 30px;">
-        <h2>📚 My Recent Resources</h2>
+        <h2 style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">📚 My Recent Resources
+          <div class="cd-wrap" id="cdWrap-resLimit">
+            <button class="cd-btn" onclick="cdToggle('resLimit')" type="button">
+              <span class="cd-label" id="cdLabel-resLimit">10 / page</span>
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="cd-list" id="cdList-resLimit" style="display:none;" data-align="right">
+              <div class="cd-item selected" onclick="cdResLimit('10','10 / page')">10 / page<span class="cd-check">&#10003;</span></div>
+              <div class="cd-item" onclick="cdResLimit('30','30 / page')">30 / page<span class="cd-check">&#10003;</span></div>
+              <div class="cd-item" onclick="cdResLimit('50','50 / page')">50 / page<span class="cd-check">&#10003;</span></div>
+              <div class="cd-item" onclick="cdResLimit('100','100 / page')">100 / page<span class="cd-check">&#10003;</span></div>
+              <div class="cd-item" onclick="cdResLimit('all','All')">All<span class="cd-check">&#10003;</span></div>
+            </div>
+          </div>
+        </h2>
         <div id="recentResourcesList">
           <div style="text-align: center; padding: 40px; color: #64748b;">
             Loading resources...
@@ -1542,6 +1556,7 @@ animation: cardShimmer 1.8s infinite;
 
     function loadRecentResources(resources) {
       const container = document.getElementById('recentResourcesList');
+      window._allRecentResources = resources; // store for re-render
 
       // Show shimmer while loading
       if (resources === null) {
@@ -1592,8 +1607,9 @@ animation: cardShimmer 1.8s infinite;
         freelance: '<img src="/file/service.jpg" style="width:32px;height:32px;object-fit:contain;border-radius:6px;">'
       };
 
-      // Show last 5 resources
-      const recentResources = resources.slice(-5).reverse();
+      // Show last N resources based on selected page size
+      const limit = window._resLimit === 'all' ? resources.length : (window._resLimit || 10);
+      const recentResources = resources.slice(-limit).reverse();
 
       container.innerHTML = recentResources.map(resource => `
       <div class="resource-item">
@@ -1773,6 +1789,92 @@ animation: cardShimmer 1.8s infinite;
  
   
   <script src="../super-admin-btn.js"></script>
+
+  <style>
+    /* ── cd-wrap dropdown ── */
+    .cd-wrap { position: relative; display: inline-flex; align-items: center; font-family: inherit; }
+    .cd-btn {
+      display: inline-flex; align-items: center; gap: 6px; padding: 7px 12px; min-width: 100px;
+      background: #fff; border: 1.5px solid #e2e8f0; border-radius: 10px;
+      color: #475569 !important; font-size: 12px; font-weight: 600; cursor: pointer;
+      font-family: inherit; outline: none; user-select: none;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+      transition: border-color .18s, box-shadow .18s; white-space: nowrap;
+    }
+    .cd-btn:hover { border-color: #a5b4fc; color: #667eea !important; }
+    .cd-btn.open { border-color: #667eea; color: #667eea !important; box-shadow: 0 0 0 3px rgba(102,126,234,0.15); }
+    .cd-btn svg { flex-shrink: 0; transition: transform .22s; }
+    .cd-btn.open svg { transform: rotate(180deg); }
+    .cd-label { flex: 1; text-align: left; }
+    .cd-list {
+      position: fixed; background: #fff; border: 1.5px solid #e2e8f0; border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(102,126,234,0.14), 0 2px 8px rgba(0,0,0,0.08);
+      z-index: 99999; overflow: hidden; padding: 4px;
+      animation: cdDrop .18s cubic-bezier(.22,1,.36,1);
+    }
+    @keyframes cdDrop { from { opacity:0; transform:translateY(-6px) scale(.97); } to { opacity:1; transform:none; } }
+    .cd-item {
+      display: flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 8px;
+      font-size: 13px; font-weight: 500; color: #334155;
+      cursor: pointer; transition: background .14s, color .14s; white-space: nowrap;
+    }
+    .cd-item:hover { background: #f0f4ff; color: #667eea; }
+    .cd-item.selected { background: linear-gradient(135deg,#667eea,#764ba2); color: #fff; font-weight: 700; }
+    .cd-item.selected:hover { background: linear-gradient(135deg,#5a6fd6,#6a3f96); }
+    .cd-check { margin-left: auto; opacity: 0; font-size: 11px; }
+    .cd-item.selected .cd-check { opacity: 1; }
+    body.dark-mode .cd-btn, html.dark-mode .cd-btn { background: #1c2333 !important; border-color: #30363d !important; color: #8b949e !important; }
+    body.dark-mode .cd-btn.open, html.dark-mode .cd-btn.open { border-color: #7c6af7 !important; color: #a78bfa !important; }
+    body.dark-mode .cd-list, html.dark-mode .cd-list { background: #1c2333 !important; border-color: #30363d !important; box-shadow: 0 8px 32px rgba(0,0,0,0.5) !important; }
+    body.dark-mode .cd-item, html.dark-mode .cd-item { color: #c9d1d9 !important; }
+    body.dark-mode .cd-item:hover, html.dark-mode .cd-item:hover { background: #21293d !important; color: #a78bfa !important; }
+    body.dark-mode .cd-item.selected, html.dark-mode .cd-item.selected { background: linear-gradient(135deg,#4c3d9e,#3d2f7a) !important; color: #e2d9f3 !important; }
+  </style>
+  <script>
+    window._resLimit = 10;
+    function cdToggle(id) {
+      const list = document.getElementById('cdList-' + id);
+      const btn  = document.querySelector('#cdWrap-' + id + ' .cd-btn');
+      const open = list.style.display !== 'none';
+      document.querySelectorAll('.cd-list').forEach(l => l.style.display = 'none');
+      document.querySelectorAll('.cd-btn').forEach(b => b.classList.remove('open'));
+      if (!open) {
+        if (list.parentNode !== document.body) document.body.appendChild(list);
+        const rect = btn.getBoundingClientRect();
+        list.style.position = 'fixed';
+        list.style.left = 'auto';
+        list.style.right = (window.innerWidth - rect.right) + 'px';
+        list.style.top = (rect.bottom + 6) + 'px';
+        list.style.minWidth = rect.width + 'px';
+        list.style.display = '';
+        btn.classList.add('open');
+      }
+    }
+    function cdResLimit(value, label) {
+      document.getElementById('cdLabel-resLimit').textContent = label;
+      document.querySelectorAll('#cdList-resLimit .cd-item').forEach(el => {
+        el.classList.toggle('selected', (el.getAttribute('onclick') || '').includes("'" + value + "'"));
+      });
+      document.getElementById('cdList-resLimit').style.display = 'none';
+      document.querySelector('#cdWrap-resLimit .cd-btn').classList.remove('open');
+      window._resLimit = value === 'all' ? 'all' : parseInt(value);
+      if (window._allRecentResources) loadRecentResources(window._allRecentResources);
+    }
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.cd-wrap') && !e.target.closest('.cd-list')) {
+        document.querySelectorAll('.cd-list').forEach(l => l.style.display = 'none');
+        document.querySelectorAll('.cd-btn').forEach(b => b.classList.remove('open'));
+      }
+    });
+    function _cdCloseAll() {
+      document.querySelectorAll('.cd-list').forEach(function(l){ l.style.display = 'none'; });
+      document.querySelectorAll('.cd-btn').forEach(function(b){ b.classList.remove('open'); });
+      window._cdOpenBtn = null; window._cdOpenList = null;
+    }
+    document.querySelector('.main').addEventListener('scroll', _cdCloseAll, { passive: true });
+    window.addEventListener('scroll', _cdCloseAll, { passive: true });
+    document.addEventListener('touchmove', _cdCloseAll, { passive: true });
+  </script>
 </body>
 
 </html>
