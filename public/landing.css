@@ -107,6 +107,14 @@ body {
   color: #2563EB;
 }
 
+.nav-links a.nav-active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 700;
+}
+
 .admin-btn {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white !important;
@@ -2568,6 +2576,13 @@ html.dark-mode .logo b,
 body.dark-mode .logo b { color: #a78bfa !important; }
 html.dark-mode .nav-links a,
 body.dark-mode .nav-links a { color: #c9d1d9 !important; }
+html.dark-mode .nav-links a.nav-active,
+body.dark-mode .nav-links a.nav-active {
+  background: linear-gradient(135deg, #a78bfa 0%, #c084fc 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+}
 html.dark-mode .search-box input,
 body.dark-mode .search-box input {
   background: #161b22 !important;

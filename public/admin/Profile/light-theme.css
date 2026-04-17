@@ -155,9 +155,7 @@ body:not(.dark-mode) .wi-label {
 }
 
 body:not(.dark-mode) .btn-edit {
-  background: white !important;
-  color: #166534 !important;
-  border-color: #16a34a !important;
+  background:linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 
 body:not(.dark-mode) .btn-edit:hover {
@@ -165,9 +163,7 @@ body:not(.dark-mode) .btn-edit:hover {
 }
 
 body:not(.dark-mode) .btn-logout {
-  background: white !important;
-  color: #991b1b !important;
-  border-color: #ef4444 !important;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)
 }
 
 body:not(.dark-mode) .btn-logout:hover {

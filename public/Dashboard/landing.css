@@ -108,6 +108,14 @@ body.dark-mode .navbar.scrolled {
 
 .nav-links a:hover { color: #2563eb; }
 
+.nav-links a.nav-active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 700;
+}
+
 /* ── Hamburger (hidden on desktop) ── */
 .mobile-menu-btn {
   display: none;

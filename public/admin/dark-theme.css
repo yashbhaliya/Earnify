@@ -156,7 +156,7 @@ html.dark-mode body .skill-tags .glass-card {
 /* ── Stats Bar — keep gradient, just tweak text ── */
 body.dark-mode,
 html.dark-mode body .stats-bar {
-  background: linear-gradient(135deg, #7c6af7 0%, #5b4fcf 100%) !important;
+ linear-gradient(135deg, #667eea 0%, #764ba2 100%)
 }
 
 /* ── How It Works ── */
@@ -235,7 +235,7 @@ html.dark-mode body .seller-cta {
 
 body.dark-mode,
 html.dark-mode body .cta-box {
-  background: linear-gradient(135deg, #7c6af7 0%, #5b4fcf 100%) !important;
+  background:linear-gradient(135deg, #667eea 0%, #764ba2 100%)
   box-shadow: 0 20px 60px rgba(124, 106, 247, 0.35) !important;
 }
 
@@ -2241,7 +2241,7 @@ html.dark-mode body .section-title h2 {
 
 body.dark-mode .resource-count,
 html.dark-mode body .resource-count {
-  background: linear-gradient(135deg, #7c6af7, #5b4fcf) !important;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)
 }
 
 /* ── View toggle buttons ── */

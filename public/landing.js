@@ -24,6 +24,16 @@ function initializeSmoothScrolling() {
       }
     });
   }
+
+  // Highlight navbar link when #resources section is in view
+  const resourcesSection = document.getElementById('resources');
+  const resourcesLink = document.querySelector('.nav-links a[href="./#resources"], .nav-links a[href="#resources"]');
+  if (resourcesSection && resourcesLink) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => resourcesLink.classList.toggle('nav-active', e.isIntersecting));
+    }, { threshold: 0.15 });
+    observer.observe(resourcesSection);
+  }
 }
 
 function loadSiteSettings() {
@@ -291,12 +301,12 @@ function displayResources(resources, userPurchases = []) {
     grid.innerHTML = q
       ? `<div style="text-align:center;color:#666;grid-column:1/-1;padding:40px 20px;">
            <div style="font-size:48px;margin-bottom:12px;">🔍</div>
-           <p style="font-size:16px;font-weight:600;color:#1e293b;">No results for "${q}"</p>
+           <p style="font-size:16px;font-weight:600;">No results for "${q}"</p>
            <p style="font-size:13px;color:#94a3b8;margin-top:6px;">Try a different keyword or clear the search.</p>
          </div>`
       : '<p style="text-align:center;color:#666;grid-column:1/-1;">No resources available yet.</p>';
     const pag = document.querySelector('.pagination');
-    if (pag) pag.innerHTML = '';
+    if (pag) { pag.innerHTML = ''; pag.style.display = 'none'; }
     return;
   }
 

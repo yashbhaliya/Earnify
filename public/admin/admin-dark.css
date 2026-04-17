@@ -415,7 +415,7 @@ body.dark-mode,
 html.dark-mode body .pr-filter.active,
 body.dark-mode,
 html.dark-mode body .pr-filter:hover {
-  background: linear-gradient(135deg, #7c6af7, #5b4fcf) !important;
+linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: #fff !important;
   border-color: transparent !important;
 }

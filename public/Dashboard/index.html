@@ -137,7 +137,7 @@
       <div class="nav-links">
         <a href="../#resources">Resources</a>
         <a href="../About/">About</a>
-        <a href="../Dashboard/" style="color:#fbbf24;">Dashboard</a>
+        <a href="../Dashboard/" class="nav-active">Dashboard</a>
         <div class="sb-nm-wrap" id="navNmWrap">
           <button class="sb-nm-toggle" id="sbNmToggle" onclick="toggleDarkMode()" title="Toggle dark/light mode">
             <span class="sb-nm-knob" id="sbNmKnob">☀️</span>
@@ -248,6 +248,19 @@
       <!-- Section head + filters -->
       <div class="dash-section-head">
         <h2><i class="fas fa-box-open"></i> My Purchases</h2>
+        <div class="cd-wrap" id="cdWrap-dashPageSize">
+          <button class="cd-btn" onclick="cdToggle('dashPageSize')" type="button">
+            <span class="cd-label" id="cdLabel-dashPageSize">10 / page</span>
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="cd-list" id="cdList-dashPageSize" style="display:none;" data-align="right">
+            <div class="cd-item selected" onclick="cdDashPageSize('10','10 / page')">10 / page<span class="cd-check">&#10003;</span></div>
+            <div class="cd-item" onclick="cdDashPageSize('30','30 / page')">30 / page<span class="cd-check">&#10003;</span></div>
+            <div class="cd-item" onclick="cdDashPageSize('50','50 / page')">50 / page<span class="cd-check">&#10003;</span></div>
+            <div class="cd-item" onclick="cdDashPageSize('100','100 / page')">100 / page<span class="cd-check">&#10003;</span></div>
+            <div class="cd-item" onclick="cdDashPageSize('all','All')">All<span class="cd-check">&#10003;</span></div>
+          </div>
+        </div>
         <div class="dash-filters">
           <button class="dash-filter-btn active" onclick="filterPurchases('all',this)">All</button>
           <button class="dash-filter-btn" onclick="filterPurchases('pdf',this)">📄 PDF</button>
@@ -270,6 +283,7 @@
 
       <!-- Table -->
       <div class="purchases-grid" id="purchases"></div>
+      <div id="dashPagination" style="font-family:inherit;margin-top:16px;"></div>
 
     </div>
   </div>
@@ -353,6 +367,106 @@
   <script src="landing.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="../dark-theme.js"></script>
+
+  <style>
+    /* cd-wrap dropdown */
+    .cd-wrap { position: relative; display: inline-flex; align-items: center; font-family: inherit; }
+    .cd-btn {
+      display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; min-width: 110px;
+      background: #fff; border: 1.5px solid #e2e8f0; border-radius: 10px;
+      color: #475569 !important; font-size: 12px; font-weight: 600; cursor: pointer;
+      font-family: inherit; outline: none; user-select: none;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06); transition: border-color .18s, box-shadow .18s; white-space: nowrap;
+    }
+    .cd-btn:hover { border-color: #a5b4fc; color: #667eea !important; box-shadow: 0 2px 8px rgba(102,126,234,0.12); }
+    .cd-btn.open { border-color: #667eea; color: #667eea !important; box-shadow: 0 0 0 3px rgba(102,126,234,0.15); }
+    .cd-btn svg { flex-shrink: 0; transition: transform .22s; }
+    .cd-btn.open svg { transform: rotate(180deg); }
+    .cd-label { flex: 1; text-align: left; }
+    .cd-list {
+      position: fixed; background: #fff; border: 1.5px solid #e2e8f0; border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(102,126,234,0.14), 0 2px 8px rgba(0,0,0,0.08);
+      z-index: 99999; overflow-y: auto; padding: 4px; max-height: calc(100vh - 80px);
+      animation: cdDrop .18s cubic-bezier(.22,1,.36,1);
+    }
+    @keyframes cdDrop { from { opacity:0; transform:translateY(-6px) scale(.97); } to { opacity:1; transform:none; } }
+    .cd-item {
+      display: flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 8px;
+      font-size: 13px; font-weight: 500; color: #334155;
+      cursor: pointer; transition: background .14s, color .14s; white-space: nowrap;
+    }
+    .cd-item:hover { background: #f0f4ff; color: #667eea; }
+    .cd-item.selected { background: linear-gradient(135deg,#667eea,#764ba2); color: #fff; font-weight: 700; }
+    .cd-check { margin-left: auto; opacity: 0; font-size: 11px; }
+    .cd-item.selected .cd-check { opacity: 1; }
+    body.dark-mode .cd-btn { background: #1c2333 !important; border-color: #30363d !important; color: #8b949e !important; }
+    body.dark-mode .cd-btn:hover { border-color: #7c6af7 !important; color: #a78bfa !important; }
+    body.dark-mode .cd-btn.open { border-color: #7c6af7 !important; color: #a78bfa !important; box-shadow: 0 0 0 3px rgba(124,106,247,0.18) !important; }
+    body.dark-mode .cd-list { background: #1c2333 !important; border-color: #30363d !important; box-shadow: 0 8px 32px rgba(0,0,0,0.5) !important; }
+    body.dark-mode .cd-item { color: #c9d1d9 !important; }
+    body.dark-mode .cd-item:hover { background: #21293d !important; color: #a78bfa !important; }
+    body.dark-mode .cd-item.selected { background: linear-gradient(135deg,#4c3d9e,#3d2f7a) !important; color: #e2d9f3 !important; }
+    /* dash-section-head layout — h2 takes remaining space, cd-wrap and filters align right */
+    .dash-section-head h2 { flex: 1; min-width: 0; }
+    /* pagination */
+    #dashPagination > div {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 16px; background: white; border-radius: 12px;
+      border: 1px solid rgba(0,0,0,0.06); flex-wrap: wrap; gap: 8px;
+    }
+    #dashPagination > div > div { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+    #dashPagination button:hover:not([disabled]) { border-color: #667eea !important; color: #667eea !important; }
+    body.dark-mode #dashPagination > div { background: #161b22 !important; border-color: rgba(124,106,247,0.25) !important; }
+    body.dark-mode #dashPagination button:not([style*='linear-gradient']) { background: #1c2333 !important; border-color: #30363d !important; color: #8b949e !important; }
+    body.dark-mode #dashPagination span { color: #484f58 !important; }
+  </style>
+  <script>
+    window._dashPageSize = 10;
+    window._dashPage = 1;
+    function cdToggle(id) {
+      const list = document.getElementById('cdList-' + id);
+      const btn  = document.querySelector('#cdWrap-' + id + ' .cd-btn');
+      const open = list.style.display !== 'none';
+      document.querySelectorAll('.cd-list').forEach(l => l.style.display = 'none');
+      document.querySelectorAll('.cd-btn').forEach(b => b.classList.remove('open'));
+      if (!open) {
+        if (list.parentNode !== document.body) document.body.appendChild(list);
+        const rect = btn.getBoundingClientRect();
+        const alignRight = list.getAttribute('data-align') === 'right';
+        list.style.position = 'fixed';
+        list.style.left = alignRight ? 'auto' : rect.left + 'px';
+        list.style.right = alignRight ? (window.innerWidth - rect.right) + 'px' : 'auto';
+        list.style.minWidth = rect.width + 'px';
+        list.style.display = '';
+        const listH = list.offsetHeight;
+        const spaceBelow = window.innerHeight - rect.bottom - 8;
+        list.style.top = (spaceBelow < listH && rect.top > listH) ? 'auto' : (rect.bottom + 6) + 'px';
+        list.style.bottom = (spaceBelow < listH && rect.top > listH) ? (window.innerHeight - rect.top + 6) + 'px' : 'auto';
+        btn.classList.add('open');
+      }
+    }
+    function cdDashPageSize(value, label) {
+      document.getElementById('cdLabel-dashPageSize').textContent = label;
+      document.querySelectorAll('#cdList-dashPageSize .cd-item').forEach(el => {
+        el.classList.toggle('selected', (el.getAttribute('onclick') || '').includes("'" + value + "'"));
+      });
+      document.getElementById('cdList-dashPageSize').style.display = 'none';
+      document.querySelector('#cdWrap-dashPageSize .cd-btn').classList.remove('open');
+      window._dashPageSize = value === 'all' ? 'all' : parseInt(value);
+      window._dashPage = 1;
+      _renderDashPage();
+    }
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.cd-wrap')) {
+        document.querySelectorAll('.cd-list').forEach(l => l.style.display = 'none');
+        document.querySelectorAll('.cd-btn').forEach(b => b.classList.remove('open'));
+      }
+    });
+    window.addEventListener('scroll', function() {
+      document.querySelectorAll('.cd-list').forEach(l => l.style.display = 'none');
+      document.querySelectorAll('.cd-btn').forEach(b => b.classList.remove('open'));
+    }, { passive: true });
+  </script>
 
 
 </body>
@@ -532,14 +646,31 @@
             <p>You haven't made any purchases. Browse our resources to get started!</p>
             <a href="../#resources" class="empty-cta"><i class="fas fa-shopping-bag"></i> Browse Resources</a>
           </div>`;
+      const pagEl = document.getElementById('dashPagination');
+      if (pagEl) pagEl.innerHTML = '';
       return;
     }
 
-    const rows = valid.map((p, i) => {
+    window._dashAllPurchases = valid;
+    window._dashPage = 1;
+    _renderDashPage();
+  }
+
+  function _renderDashPage() {
+    const valid = window._dashAllPurchases || [];
+    const total = valid.length;
+    const ps = window._dashPageSize === 'all' ? total : window._dashPageSize;
+    const totalPages = Math.ceil(total / ps) || 1;
+    window._dashPage = Math.min(window._dashPage, totalPages);
+    const start = (window._dashPage - 1) * ps;
+    const slice = window._dashPageSize === 'all' ? valid : valid.slice(start, start + ps);
+
+    const rows = slice.map((p, i) => {
       const r = p.resources;
       const cls = tc(r.type);
       const icon = typeIcons[r.type] || '📦';
       const date = new Date(p.created_at).toLocaleDateString('en-IN', { year: 'numeric', month: 'short', day: 'numeric' });
+      const globalIdx = start + i;
       return `
           <tr>
             <td>
@@ -558,13 +689,13 @@
                 ${r.fileurl
           ? `<a href="${r.fileurl}" target="_blank" download class="pc-btn download"><i class="fas fa-download"></i> Download</a>`
           : `<button disabled class="pc-btn download"><i class="fas fa-download"></i> Download</button>`}
-                <button onclick="openModal(${i})" class="pc-btn view"><i class="fas fa-eye"></i> View</button>
+                <button onclick="openModal(${globalIdx})" class="pc-btn view"><i class="fas fa-eye"></i> View</button>
               </div>
             </td>
           </tr>`;
     }).join('');
 
-    container.innerHTML = `
+    document.getElementById('purchases').innerHTML = `
         <table class="purchases-table">
           <thead><tr>
             <th><i class="fas fa-box"></i> Resource</th>
@@ -576,6 +707,28 @@
         </table>`;
 
     window._purchaseList = valid;
+
+    // Pagination
+    const pagEl = document.getElementById('dashPagination');
+    if (!pagEl) return;
+    if (window._dashPageSize === 'all' || totalPages <= 1) { pagEl.innerHTML = ''; return; }
+    const btnBase   = 'padding:6px 10px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;border:1.5px solid #e2e8f0;background:#f8fafc;color:#64748b;transition:all .2s;';
+    const btnActive = 'padding:6px 10px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;border:none;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;';
+    const range = 2; let pages = '';
+    for (let p = 1; p <= totalPages; p++) {
+      if (p===1||p===totalPages||(p>=window._dashPage-range&&p<=window._dashPage+range))
+        pages += `<button onclick="window._dashPage=${p};_renderDashPage()" style="${p===window._dashPage?btnActive:btnBase}">${p}</button>`;
+      else if (p===window._dashPage-range-1||p===window._dashPage+range+1)
+        pages += `<span style="padding:0 2px;color:#94a3b8;">…</span>`;
+    }
+    pagEl.innerHTML = `<div>
+      <span style="font-size:12px;color:#94a3b8;font-weight:500;">Showing ${start+1}–${Math.min(start+ps,total)} of ${total}</span>
+      <div>
+        <button onclick="window._dashPage=Math.max(1,window._dashPage-1);_renderDashPage()" ${window._dashPage===1?'disabled':''} style="${btnBase}opacity:${window._dashPage===1?'.4':'1'};">&#8249; Prev</button>
+        ${pages}
+        <button onclick="window._dashPage=Math.min(${totalPages},window._dashPage+1);_renderDashPage()" ${window._dashPage===totalPages?'disabled':''} style="${btnBase}opacity:${window._dashPage===totalPages?'.4':'1'};">Next &#8250;</button>
+      </div>
+    </div>`;
   }
 
   /* ── Modal ── */

@@ -97,7 +97,7 @@ body.light-mode .page-header {
 }
 
 body.dark-mode .page-header {
-  background: linear-gradient(135deg, #7c6af7 0%, #5b4fcf 100%) !important;
+  linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 
 body.dark-mode .header-text h1 {
@@ -368,7 +368,7 @@ body:not(.dark-mode) .section-header {
 /* Section title */
 body.dark-mode .section-title h2 { color: #e6edf3 !important; }
 body.dark-mode .resource-count {
-  background: linear-gradient(135deg, #7c6af7 0%, #5b4fcf 100%) !important;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)
 }
 
 /* Section header */
