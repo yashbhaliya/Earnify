@@ -48,6 +48,7 @@
     { "src": "/Dashboard/?$", "dest": "/public/Dashboard/index.html" },
     { "src": "/Dashboard/(.*)", "dest": "/public/Dashboard/$1" },
     { "src": "/Detail/?$",   "dest": "/public/Detail/index.html" },
+    { "src": "/Detail/(.*\\.(js|css|json|png|jpg|jpeg|gif|svg|ico))", "dest": "/public/Detail/$1" },
     { "src": "/Detail/(.*)", "dest": "/public/Detail/index.html" },
     { "src": "/FAQ/?$",      "dest": "/public/FAQ/index.html" },
     { "src": "/FAQ/(.*)",    "dest": "/public/FAQ/$1" },

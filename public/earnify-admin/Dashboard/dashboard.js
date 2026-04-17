@@ -46,6 +46,217 @@ function fmtDate(d) {
 let _donutChart = null, _barChart = null, _dayWiseChart = null;
 let _allPurchasesData = [];
 let _barChartData = [];
+let _purchasePage = 1;
+let _purchasePageSize = 10;
+let _wdPage = 1;
+let _wdPageSize = 10;
+
+function renderPurchasesTable() {
+  const tbody = document.getElementById('purchaseTbody');
+  const pcEl  = document.getElementById('purchaseCount');
+  const completedPurchases = window.purchasesData || [];
+  const total = completedPurchases.length;
+
+  const pageSize = _purchasePageSize === 'all' ? total : _purchasePageSize;
+  const totalPages = pageSize > 0 ? Math.ceil(total / pageSize) : 1;
+  _purchasePage = Math.min(_purchasePage, totalPages || 1);
+
+  const start = (_purchasePage - 1) * pageSize;
+  const slice = _purchasePageSize === 'all' ? completedPurchases : completedPurchases.slice(start, start + pageSize);
+
+  if (pcEl) pcEl.textContent = `${total} records`;
+
+  if (!tbody) return;
+  tbody.closest('table')?.querySelector('thead')?.classList.remove('is-loading');
+
+  if (!slice.length) {
+    tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><div class="empty-icon">📭</div><p>No purchases yet</p></div></td></tr>`;
+  } else {
+    tbody.innerHTML = slice.map((p, i) => {
+      const globalIndex = start + i;
+      const email  = esc(p.buyer_email || '—');
+      const res    = esc(p.resource_title || '—');
+      const amount = fmt(p.resource_price || p.amount || 0);
+      return `
+        <tr class="mobile-table-row" data-index="${globalIndex}">
+          <td colspan="6">
+            <div class="mobile-cell">
+              <span class="mobile-email">${email}</span>
+              <span class="mobile-amount">${amount}</span>
+              <button class="view-btn" onclick="showPurchaseDetails(${globalIndex})">View</button>
+            </div>
+          </td>
+        </tr>
+        <tr data-index="${globalIndex}">
+          <td>${globalIndex + 1}</td>
+          <td>${email}</td>
+          <td>${res}</td>
+          <td style="font-weight:700;color:#1e293b;">${amount}</td>
+          <td><span class="badge badge-completed">completed</span></td>
+          <td>${fmtDate(p.created_at)}</td>
+        </tr>`;
+    }).join('');
+  }
+
+  // Pagination controls
+  let paginationEl = document.getElementById('purchasePagination');
+  if (!paginationEl) {
+    paginationEl = document.createElement('div');
+    paginationEl.id = 'purchasePagination';
+    tbody.closest('.table-card').appendChild(paginationEl);
+  }
+
+  if (_purchasePageSize === 'all' || totalPages <= 1) {
+    paginationEl.innerHTML = '';
+    return;
+  }
+
+  const isDark = document.body.classList.contains('dark-mode');
+  const btnBase = `padding:6px 12px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;border:1.5px solid #e2e8f0;background:#f8fafc;color:#64748b;transition:all .2s;`;
+  const btnActive = `padding:6px 12px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;border:none;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;`;
+
+  let pages = '';
+  const range = 2;
+  for (let p = 1; p <= totalPages; p++) {
+    if (p === 1 || p === totalPages || (p >= _purchasePage - range && p <= _purchasePage + range)) {
+      pages += `<button onclick="goToPurchasePage(${p})" style="${p === _purchasePage ? btnActive : btnBase}">${p}</button>`;
+    } else if (p === _purchasePage - range - 1 || p === _purchasePage + range + 1) {
+      pages += `<span style="padding:0 4px;color:#94a3b8;">…</span>`;
+    }
+  }
+
+  paginationEl.innerHTML = `
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 18px;border-top:1px solid #f1f5f9;flex-wrap:wrap;gap:8px;">
+      <span style="font-size:12px;color:#94a3b8;font-weight:500;">Showing ${start + 1}–${Math.min(start + pageSize, total)} of ${total}</span>
+      <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+        <button onclick="goToPurchasePage(${_purchasePage - 1})" ${_purchasePage === 1 ? 'disabled' : ''} style="${btnBase}opacity:${_purchasePage === 1 ? '.4' : '1'};">‹ Prev</button>
+        ${pages}
+        <button onclick="goToPurchasePage(${_purchasePage + 1})" ${_purchasePage === totalPages ? 'disabled' : ''} style="${btnBase}opacity:${_purchasePage === totalPages ? '.4' : '1'};">Next ›</button>
+      </div>
+    </div>`;
+}
+
+function goToPurchasePage(page) {
+  const total = (window.purchasesData || []).length;
+  const pageSize = _purchasePageSize === 'all' ? total : _purchasePageSize;
+  const totalPages = Math.ceil(total / pageSize) || 1;
+  _purchasePage = Math.max(1, Math.min(page, totalPages));
+  renderPurchasesTable();
+}
+
+function changePurchasePageSize() {
+  const val = document.getElementById('purchasePageSize')?.value;
+  _purchasePageSize = val === 'all' ? 'all' : parseInt(val);
+  _purchasePage = 1;
+  renderPurchasesTable();
+}
+
+function renderWithdrawalsTable() {
+  const tbody = document.getElementById('wdTbody');
+  const wdEl  = document.getElementById('wdCount');
+  const allWd = window.withdrawalsData || [];
+  const total = allWd.length;
+
+  const pageSize = _wdPageSize === 'all' ? total : _wdPageSize;
+  const totalPages = pageSize > 0 ? Math.ceil(total / pageSize) : 1;
+  _wdPage = Math.min(_wdPage, totalPages || 1);
+
+  const start = (_wdPage - 1) * pageSize;
+  const slice = _wdPageSize === 'all' ? allWd : allWd.slice(start, start + pageSize);
+
+  if (wdEl) wdEl.textContent = `${total} requests`;
+  if (!tbody) return;
+  tbody.closest('table')?.querySelector('thead')?.classList.remove('is-loading');
+
+  if (!slice.length) {
+    tbody.innerHTML = `<tr><td colspan="8"><div class="empty-state"><div class="empty-icon">📭</div><p>No withdrawal requests yet</p></div></td></tr>`;
+  } else {
+    tbody.innerHTML = slice.map((w, i) => {
+      const globalIndex = start + i;
+      const gross = parseFloat(w.amount || 0);
+      const fee   = gross * 0.05;
+      const net   = gross - fee;
+      const reasonCell = w.reject_reason
+        ? `<button onclick="showRejectReason('${w.reject_reason.replace(/'/g,"&#39;").replace(/"/g,'&quot;')}')" style="padding:4px 12px;border:1.5px solid #667eea;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;background:linear-gradient(135deg,#667eea,#764ba2);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">View</button>`
+        : `<span style="color:#cbd5e1;">—</span>`;
+      return `
+        <tr class="mobile-table-row mobile-withdrawal-row" data-index="${globalIndex}">
+          <td colspan="8">
+            <div class="mobile-cell">
+              <span class="mobile-email">${esc(w.user_email)}</span>
+              <span class="mobile-amount">${fmt(net)}</span>
+              <button class="view-btn" onclick="showWithdrawalDetails(${globalIndex})">View</button>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;padding:0 16px 10px;">
+              <span class="badge ${badgeClass(w.status)}" style="font-size:10px;">${esc(w.status)}</span>
+              <span style="font-size:11px;color:#94a3b8;">${fmtDate(w.created_at)}</span>
+            </div>
+          </td>
+        </tr>
+        <tr data-index="${globalIndex}">
+          <td>${globalIndex + 1}</td>
+          <td>${esc(w.user_email)}</td>
+          <td style="font-weight:700;color:#1e293b;">${fmt(gross)}</td>
+          <td style="font-weight:700;color:#667eea;">${fmt(net)}</td>
+          <td style="color:#ef4444;">-${fmt(fee)}</td>
+          <td><span class="badge ${badgeClass(w.status)}"${w.status === 'pending' ? ' style="cursor:pointer;" onclick="location.href=\'/earnify-admin/payments/\'" title="Click to review"' : ''}>${w.status}</span></td>
+          <td>${reasonCell}</td>
+          <td>${fmtDate(w.created_at)}</td>
+        </tr>`;
+    }).join('');
+  }
+
+  // Pagination controls
+  let paginationEl = document.getElementById('wdPagination');
+  if (!paginationEl) {
+    paginationEl = document.createElement('div');
+    paginationEl.id = 'wdPagination';
+    tbody.closest('.table-card').appendChild(paginationEl);
+  }
+
+  if (_wdPageSize === 'all' || totalPages <= 1) {
+    paginationEl.innerHTML = '';
+    return;
+  }
+
+  const btnBase   = `padding:6px 12px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;border:1.5px solid #e2e8f0;background:#f8fafc;color:#64748b;transition:all .2s;`;
+  const btnActive = `padding:6px 12px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;border:none;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;`;
+
+  let pages = '';
+  const range = 2;
+  for (let p = 1; p <= totalPages; p++) {
+    if (p === 1 || p === totalPages || (p >= _wdPage - range && p <= _wdPage + range)) {
+      pages += `<button onclick="goToWdPage(${p})" style="${p === _wdPage ? btnActive : btnBase}">${p}</button>`;
+    } else if (p === _wdPage - range - 1 || p === _wdPage + range + 1) {
+      pages += `<span style="padding:0 4px;color:#94a3b8;">…</span>`;
+    }
+  }
+
+  paginationEl.innerHTML = `
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 18px;border-top:1px solid #f1f5f9;flex-wrap:wrap;gap:8px;">
+      <span style="font-size:12px;color:#94a3b8;font-weight:500;">Showing ${start + 1}–${Math.min(start + pageSize, total)} of ${total}</span>
+      <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+        <button onclick="goToWdPage(${_wdPage - 1})" ${_wdPage === 1 ? 'disabled' : ''} style="${btnBase}opacity:${_wdPage === 1 ? '.4' : '1'};">&#8249; Prev</button>
+        ${pages}
+        <button onclick="goToWdPage(${_wdPage + 1})" ${_wdPage === totalPages ? 'disabled' : ''} style="${btnBase}opacity:${_wdPage === totalPages ? '.4' : '1'};">Next &#8250;</button>
+      </div>
+    </div>`;
+}
+
+function goToWdPage(page) {
+  const total = (window.withdrawalsData || []).length;
+  const pageSize = _wdPageSize === 'all' ? total : _wdPageSize;
+  const totalPages = Math.ceil(total / pageSize) || 1;
+  _wdPage = Math.max(1, Math.min(page, totalPages));
+  renderWithdrawalsTable();
+}
+
+function changeWdPageSize() {
+  const val = document.getElementById('wdPageSize')?.value;
+  _wdPageSize = val === 'all' ? 'all' : parseInt(val);
+  _wdPage = 1;
+  renderWithdrawalsTable();
+}
 
 function renderDayWiseChart(purchases, selectedMonth, selectedYear) {
   const canvas = document.getElementById('dayWiseChart');
@@ -366,81 +577,14 @@ async function loadDashboard() {
     document.querySelectorAll('.chart-card.is-loading').forEach(c => c.classList.remove('is-loading'));
 
     // Purchases table
-    const tbody = document.getElementById('purchaseTbody');
-    const pcEl  = document.getElementById('purchaseCount');
-    if (pcEl) pcEl.textContent = `${completedCount} records`;
-    if (tbody) {
-      tbody.closest('table')?.querySelector('thead')?.classList.remove('is-loading');
-      tbody.innerHTML = !completedPurchases.length
-        ? `<tr><td colspan="6"><div class="empty-state"><div class="empty-icon">📭</div><p>No purchases yet</p></div></td></tr>`
-        : completedPurchases.map((p, i) => {
-            const email  = esc(p.buyer_email || '—');
-            const res    = esc(p.resource_title || '—');
-            const amount = fmt(p.resource_price || p.amount || 0);
-            return `
-              <tr class="mobile-table-row" data-index="${i}">
-                <td colspan="6">
-                  <div class="mobile-cell">
-                    <span class="mobile-email">${email}</span>
-                    <span class="mobile-amount">${amount}</span>
-                    <button class="view-btn" onclick="showPurchaseDetails(${i})">View</button>
-                  </div>
-                </td>
-              </tr>
-              <tr data-index="${i}">
-                <td>${i+1}</td>
-                <td>${email}</td>
-                <td>${res}</td>
-                <td style="font-weight:700;color:#1e293b;">${amount}</td>
-                <td><span class="badge badge-completed">completed</span></td>
-                <td>${fmtDate(p.created_at)}</td>
-              </tr>`;
-          }).join('');
-      window.purchasesData = completedPurchases;
-    }
+    window.purchasesData = completedPurchases;
+    _purchasePage = 1;
+    renderPurchasesTable();
 
     // Withdrawals table
-    const wdTbody = document.getElementById('wdTbody');
-    const wdEl    = document.getElementById('wdCount');
-    if (wdEl) wdEl.textContent = `${myWithdrawals.length} requests`;
-    if (wdTbody) {
-      wdTbody.closest('table')?.querySelector('thead')?.classList.remove('is-loading');
-      wdTbody.innerHTML = !myWithdrawals.length
-        ? `<tr><td colspan="8"><div class="empty-state"><div class="empty-icon">📭</div><p>No withdrawal requests yet</p></div></td></tr>`
-        : myWithdrawals.map((w, i) => {
-            const gross = parseFloat(w.amount || 0);
-            const fee   = gross * 0.05;
-            const net   = gross - fee;
-            const reasonCell = w.reject_reason
-              ? `<button onclick="showRejectReason('${w.reject_reason.replace(/'/g,"&#39;").replace(/"/g,'&quot;')}')\" style="padding:4px 12px;border:1.5px solid #667eea;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;background:linear-gradient(135deg,#667eea,#764ba2);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">View</button>`
-              : `<span style="color:#cbd5e1;">—</span>`;
-            return `
-              <tr class="mobile-table-row mobile-withdrawal-row" data-index="${i}">
-                <td colspan="8">
-                  <div class="mobile-cell">
-                    <span class="mobile-email">${esc(w.user_email)}</span>
-                    <span class="mobile-amount">${fmt(net)}</span>
-                    <button class="view-btn" onclick="showWithdrawalDetails(${i})">View</button>
-                  </div>
-                  <div style="display:flex;align-items:center;gap:8px;padding:0 16px 10px;">
-                    <span class="badge ${badgeClass(w.status)}" style="font-size:10px;">${esc(w.status)}</span>
-                    <span style="font-size:11px;color:#94a3b8;">${fmtDate(w.created_at)}</span>
-                  </div>
-                </td>
-              </tr>
-              <tr data-index="${i}">
-                <td>${i+1}</td>
-                <td>${esc(w.user_email)}</td>
-                <td style="font-weight:700;color:#1e293b;">${fmt(gross)}</td>
-                <td style="font-weight:700;color:#667eea;">${fmt(net)}</td>
-                <td style="color:#ef4444;">-${fmt(fee)}</td>
-                <td><span class="badge ${badgeClass(w.status)}"${w.status==='pending'?' style="cursor:pointer;" onclick="location.href=\'/earnify-admin/payments/\'" title="Click to review"':''}>${w.status}</span></td>
-                <td>${reasonCell}</td>
-                <td>${fmtDate(w.created_at)}</td>
-              </tr>`;
-          }).join('');
-      window.withdrawalsData = myWithdrawals;
-    }
+    window.withdrawalsData = myWithdrawals;
+    _wdPage = 1;
+    renderWithdrawalsTable();
 
     // Sidebar
     document.querySelector('.admin-badge')?.classList.remove('is-loading');

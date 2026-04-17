@@ -27,13 +27,13 @@ window.toggleDarkMode = function () {
 // Apply immediately on script load
 (function () {
   const stored = localStorage.getItem(DARK_KEY);
-  applyDarkMode(stored !== '0');
+  applyDarkMode(stored === '1');
 })();
 
 // Re-apply on DOMContentLoaded to ensure body class is set
 document.addEventListener('DOMContentLoaded', function () {
   const stored = localStorage.getItem(DARK_KEY);
-  applyDarkMode(stored !== '0');
+  applyDarkMode(stored === '1');
   // Allow background transitions only after initial paint to prevent flash
   requestAnimationFrame(function () {
     requestAnimationFrame(function () {

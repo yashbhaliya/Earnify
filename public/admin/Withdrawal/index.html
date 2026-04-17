@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="../admin-dark.css">
   <script>
     !function(){
-      var d = localStorage.getItem("earnify_dark_mode") !== "0";
+      var d = localStorage.getItem("earnify_dark_mode") === "1";
       document.documentElement.classList.toggle("dark-mode", d);
       if (d) document.documentElement.style.background = "#0d1117";
       else document.documentElement.style.background = "";

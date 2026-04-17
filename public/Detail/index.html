@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <script>!function(){var s=localStorage.getItem('earnify_dark_mode');var d=s!=='0';document.documentElement.classList.toggle('dark-mode',d);document.documentElement.style.background=d?'#0d1117':'';document.documentElement.style.colorScheme=d?'dark':'light';document.addEventListener('DOMContentLoaded',function(){document.body.classList.toggle('dark-mode',d);});}();</script>
+  <script>!function(){var s=localStorage.getItem('earnify_dark_mode');var d=s==='1';document.documentElement.classList.toggle('dark-mode',d);document.documentElement.style.background=d?'#0d1117':'';document.documentElement.style.colorScheme=d?'dark':'light';document.addEventListener('DOMContentLoaded',function(){document.body.classList.toggle('dark-mode',d);});}();</script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
     rel="stylesheet">
   <meta charset="UTF-8">
@@ -162,6 +162,7 @@
               <div class="email" id="userEmail">user@email.com</div>
             </div>
             <a href="../admin/Profile/"><span>👤</span> View Profile</a>
+            <a href="../admin/Statistics/"><span>📊</span> Statistic</a>
             <a href="../admin/Resources/"><span>➕</span> Add Resources</a>
             <a onclick="logout()"><span>🚪</span> Logout</a>
           </div>

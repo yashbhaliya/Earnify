@@ -10,7 +10,7 @@
     rel="stylesheet">
   <link rel="stylesheet" href="./style.css">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script>!function(){var s=localStorage.getItem('earnify_dark_mode');var d=s===null||s==='1';document.documentElement.classList.toggle('dark-mode',d);document.documentElement.style.background=d?'#0d1117':'#f8fafc';}();</script>
+  <script>!function(){var s=localStorage.getItem('earnify_dark_mode');var d=s==='1';document.documentElement.classList.toggle('dark-mode',d);document.documentElement.style.background=d?'#0d1117':'#f8fafc';}();</script>
   <style>html{background:#f8fafc;}html.dark-mode{background:#0d1117 !important;}</style>
   <link rel="stylesheet" href="/dark-theme.css">
   <style>
@@ -478,7 +478,7 @@
     }
     (function () {
       const saved = localStorage.getItem(DARK_KEY);
-      applyDark(saved === null ? true : saved === '1');
+      applyDark(saved === '1');
     })();
   </script>
   <script src="/dark-theme.js"></script>

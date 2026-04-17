@@ -40,10 +40,10 @@
   };
 
   // Apply immediately so html+body are in sync before paint
-  applyDarkMode(localStorage.getItem(DARK_KEY) !== '0');
+  applyDarkMode(localStorage.getItem(DARK_KEY) === '1');
 
   // Re-apply on DOMContentLoaded to catch body and knob
   document.addEventListener('DOMContentLoaded', function () {
-    applyDarkMode(localStorage.getItem(DARK_KEY) !== '0');
+    applyDarkMode(localStorage.getItem(DARK_KEY) === '1');
   });
 })();
