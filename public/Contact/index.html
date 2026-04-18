@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <script>!function(){var d=localStorage.getItem('earnify_dark_mode')==='1';document.documentElement.classList.toggle('dark-mode',d);if(d){document.documentElement.style.background='#0d1117';document.documentElement.style.colorScheme='dark';}var s=document.createElement('style');s.id='mob-nav-flash-fix';s.textContent=d?'.mob-nav{background:#0d1117!important;border-top-color:#30363d!important;transition:none!important}.mob-nav-item{color:#8b949e!important;transition:none!important}.mob-nav-item svg{stroke:#8b949e!important;transition:none!important}':'.mob-nav{background:#ffffff!important;border-top-color:#e8edf5!important;transition:none!important}.mob-nav-item{color:#94a3b8!important;transition:none!important}';document.head.appendChild(s);document.addEventListener('DOMContentLoaded',function(){document.body.classList.toggle('dark-mode',d);setTimeout(function(){var el=document.getElementById('mob-nav-flash-fix');if(el)el.remove();},400);});}();</script>
- <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script>!function () { var d = localStorage.getItem('earnify_dark_mode') === '1'; document.documentElement.classList.toggle('dark-mode', d); if (d) { document.documentElement.style.background = '#0d1117'; document.documentElement.style.colorScheme = 'dark'; } var s = document.createElement('style'); s.id = 'mob-nav-flash-fix'; s.textContent = d ? '.mob-nav{background:#0d1117!important;border-top-color:#30363d!important;transition:none!important}.mob-nav-item{color:#8b949e!important;transition:none!important}.mob-nav-item svg{stroke:#8b949e!important;transition:none!important}' : '.mob-nav{background:#ffffff!important;border-top-color:#e8edf5!important;transition:none!important}.mob-nav-item{color:#94a3b8!important;transition:none!important}'; document.head.appendChild(s); document.addEventListener('DOMContentLoaded', function () { document.body.classList.toggle('dark-mode', d); setTimeout(function () { var el = document.getElementById('mob-nav-flash-fix'); if (el) el.remove(); }, 400); }); }();</script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Contact Us - Earnify</title>
@@ -12,27 +14,116 @@
   <link rel="stylesheet" href="pages.css">
   <link rel="stylesheet" href="../dark-theme.css">
   <style>
-    #navNmWrap{display:flex;align-items:center;}
-    .sb-nm-toggle{position:relative;width:80px;height:32px;border-radius:50px;border:none;cursor:pointer;padding:0;flex-shrink:0;font-family:inherit;background:#f0f2f5;box-shadow:4px 4px 8px #b8bec7,-4px -4px 8px #ffffff;transition:background .4s,box-shadow .4s;outline:none;}
-    body.dark-mode .sb-nm-toggle{background:#1e2535;box-shadow:4px 4px 8px #0d1117,-3px -3px 7px #2d3a4a;}
-    .sb-nm-knob{position:absolute;top:4px;left:4px;width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#ffffff,#e8ecf0);box-shadow:2px 2px 5px #b8bec7,-1px -1px 4px #ffffff;pointer-events:none;display:flex;align-items:center;justify-content:center;font-size:13px;line-height:1;transition:left .4s cubic-bezier(.4,0,.2,1),background .4s,box-shadow .4s;z-index:2;}
-    body.dark-mode .sb-nm-knob{left:52px;background:linear-gradient(135deg,#3a4a5c,#2d3748);box-shadow:2px 2px 5px #0d1117,-1px -1px 4px #3a4a5c;}
-    .sb-nm-label{position:absolute;top:50%;transform:translateY(-50%);font-size:9px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;pointer-events:none;z-index:1;transition:opacity .3s;white-space:nowrap;}
-    .sb-nm-label-light{right:9px;color:#94a3b8;opacity:1;}
-    .sb-nm-label-dark{left:9px;color:#a78bfa;opacity:0;}
-    body.dark-mode .sb-nm-label-light{opacity:0;}
-    body.dark-mode .sb-nm-label-dark{opacity:1;}
-    @media(max-width:768px){#navNmWrap{display:none!important;}#mobileNmToggle{display:flex!important;}}
+    #navNmWrap {
+      display: flex;
+      align-items: center;
+    }
+
+    .sb-nm-toggle {
+      position: relative;
+      width: 80px;
+      height: 32px;
+      border-radius: 50px;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      flex-shrink: 0;
+      font-family: inherit;
+      background: white;
+      box-shadow: 4px 4px 8px #b8bec7, -4px -4px 8px #ffffff;
+      transition: background .4s, box-shadow .4s;
+      outline: none;
+    }
+
+    body.dark-mode .sb-nm-toggle {
+      background: #1e2535;
+      box-shadow: 4px 4px 8px #0d1117, -3px -3px 7px #2d3a4a;
+    }
+
+    .sb-nm-knob {
+      position: absolute;
+      top: 4px;
+      left: 4px;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      box-shadow: 2px 2px 5px #b8bec7, -1px -1px 4px #ffffff;
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      line-height: 1;
+      transition: left .4s cubic-bezier(.4, 0, .2, 1), background .4s, box-shadow .4s;
+      z-index: 2;
+    }
+
+    body.dark-mode .sb-nm-knob {
+      left: 52px;
+      background: linear-gradient(135deg, #3a4a5c, #2d3748);
+      box-shadow: 2px 2px 5px #0d1117, -1px -1px 4px #3a4a5c;
+    }
+
+    .sb-nm-label {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: .6px;
+      text-transform: uppercase;
+      pointer-events: none;
+      z-index: 1;
+      transition: opacity .3s;
+      white-space: nowrap;
+    }
+
+    .sb-nm-label-light {
+      right: 9px;
+      color: #64748b;
+      opacity: 1;
+    }
+
+    .sb-nm-label-dark {
+      left: 9px;
+      color: #a78bfa;
+      opacity: 0;
+    }
+
+    body.dark-mode .sb-nm-label-light {
+      opacity: 0;
+    }
+
+    body.dark-mode .sb-nm-label-dark {
+      opacity: 1;
+    }
+
+    @media(max-width:768px) {
+      #navNmWrap {
+        display: none !important;
+      }
+
+      #mobileNmToggle {
+        display: flex !important;
+      }
+    }
   </style>
 </head>
+
 <body>
   <nav class="navbar">
     <div class="container">
       <div class="nav-header">
-        <a href="../" style="text-decoration: none;"><h1 class="logo">💰 <span class="logo-text">Earnify</span></h1></a>
+        <a href="../" style="text-decoration: none;">
+          <h1 class="logo">💰 <span class="logo-text">Earnify</span></h1>
+        </a>
         <div style="display:flex;align-items:center;gap:10px;">
           <div id="mobileNmToggle" style="display:none;align-items:center;">
-            <button class="sb-nm-toggle" id="mobileNmBtn" onclick="toggleDarkMode()" title="Toggle dark/light mode"><span class="sb-nm-knob" id="mobileNmKnob" style="display:flex;align-items:center;justify-content:center;font-size:14px;line-height:1;">🌙</span><span class="sb-nm-label sb-nm-label-light">LIGHT</span><span class="sb-nm-label sb-nm-label-dark">DARK</span></button>
+            <button class="sb-nm-toggle" id="mobileNmBtn" onclick="toggleDarkMode()"
+              title="Toggle dark/light mode"><span class="sb-nm-knob" id="mobileNmKnob"
+                style="display:flex;align-items:center;justify-content:center;font-size:14px;line-height:1;">🌙</span><span
+                class="sb-nm-label sb-nm-label-light">LIGHT</span><span
+                class="sb-nm-label sb-nm-label-dark">DARK</span></button>
           </div>
           <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
             <span class="hamburger"></span>
@@ -45,10 +136,13 @@
         <a href="../">Home</a>
         <a href="../About/">About</a>
         <a href="../Dashboard/">Dashboard</a>
-        <div id="navNmWrap" style="display:flex;align-items:center;"><button class="sb-nm-toggle" id="sbNmToggle" onclick="toggleDarkMode()" title="Toggle dark/light mode"><span class="sb-nm-knob" id="sbNmKnob">☀️</span><span class="sb-nm-label sb-nm-label-light">LIGHT</span><span class="sb-nm-label sb-nm-label-dark">DARK</span></button></div>
+        <div id="navNmWrap" style="display:flex;align-items:center;"><button class="sb-nm-toggle" id="sbNmToggle"
+            onclick="toggleDarkMode()" title="Toggle dark/light mode"><span class="sb-nm-knob"
+              id="sbNmKnob">☀️</span><span class="sb-nm-label sb-nm-label-light">LIGHT</span><span
+              class="sb-nm-label sb-nm-label-dark">DARK</span></button></div>
       </div>
     </div>
-    
+
     <!-- Mobile Sidebar -->
     <div class="mobile-sidebar" id="mobileSidebar">
       <div class="mobile-sidebar-header">
@@ -60,8 +154,10 @@
         <a href="../#resources" onclick="toggleMobileMenu()">📚 Resources</a>
         <a href="../Dashboard/" onclick="toggleMobileMenu()">📊 Dashboard</a>
         <div class="mobile-sidebar-divider"></div>
-        <button id="mobileLoginBtn" class="mobile-sidebar-btn" onclick="showLoginModal(); toggleMobileMenu();">🔐 Login</button>
-        <button id="mobileSignupBtn" class="mobile-sidebar-btn" onclick="showSignupModal(); toggleMobileMenu();">✨ Sign Up</button>
+        <button id="mobileLoginBtn" class="mobile-sidebar-btn" onclick="showLoginModal(); toggleMobileMenu();">🔐
+          Login</button>
+        <button id="mobileSignupBtn" class="mobile-sidebar-btn" onclick="showSignupModal(); toggleMobileMenu();">✨ Sign
+          Up</button>
         <div id="mobileUserMenu" class="mobile-user-section" style="display:none;">
           <div class="mobile-user-info">
             <div class="mobile-user-avatar">👤</div>
@@ -80,17 +176,17 @@
   </nav>
 
   <div class="hero-wrapper">
-  <section class="hero">
-    <img src="../file/hero.png" alt="">
-    <div class="container">
-      <div class="hero-badge">
-        <span class="hero-badge-dot"></span>
-        <span>Get in Touch</span>
+    <section class="hero">
+      <img src="../file/hero.png" alt="">
+      <div class="container">
+        <div class="hero-badge">
+          <span class="hero-badge-dot"></span>
+          <span>Get in Touch</span>
+        </div>
+        <h1>Contact <span class="hero-gradient-text">Us</span></h1>
+        <p>We'd love to hear from you</p>
       </div>
-      <h1>Contact <span class="hero-gradient-text">Us</span></h1>
-      <p>We'd love to hear from you</p>
-    </div>
-  </section>
+    </section>
   </div>
 
   <section class="page-content" id="contactContainer">
@@ -100,8 +196,10 @@
     <div class="container">
       <div class="footer-grid">
         <div class="footer-col">
-          <h3 class="footer-logo"><a href="../" class="footer-logo-link">💰 <span class="footer-logo-text">Earnify</span></a></h3>
-          <p class="footer-desc">Your trusted learning marketplace for premium study materials, templates, and professional services.</p>
+          <h3 class="footer-logo"><a href="../" class="footer-logo-link">💰 <span
+                class="footer-logo-text">Earnify</span></a></h3>
+          <p class="footer-desc">Your trusted learning marketplace for premium study materials, templates, and
+            professional services.</p>
         </div>
         <div class="footer-col">
           <h4>Quick Links</h4>
@@ -133,22 +231,43 @@
 
   <nav class="mob-nav">
     <a href="../" class="mob-nav-item" id="mnHome">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+        stroke-linejoin="round">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+        <polyline points="9 22 9 12 15 12 15 22" />
+      </svg>
       <span>Home</span>
     </a>
     <a href="../#resources" class="mob-nav-item" id="mnResources">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+        stroke-linejoin="round">
+        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15" />
+      </svg>
       <span>Resources</span>
     </a>
     <a href="../admin/Resources/" class="mob-nav-add" id="mnAdd">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+        <line x1="12" y1="5" x2="12" y2="19" />
+        <line x1="5" y1="12" x2="19" y2="12" />
+      </svg>
     </a>
     <a href="../Blog/" class="mob-nav-item" id="mnBlog">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+        stroke-linejoin="round">
+        <path d="M12 20h9" />
+        <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4z" />
+      </svg>
       <span>Blog</span>
     </a>
     <a href="../Dashboard/" class="mob-nav-item" id="mnDash">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+        stroke-linejoin="round">
+        <rect x="3" y="3" width="7" height="7" />
+        <rect x="14" y="3" width="7" height="7" />
+        <rect x="3" y="14" width="7" height="7" />
+        <rect x="14" y="14" width="7" height="7" />
+      </svg>
       <span>Dashboard</span>
     </a>
   </nav>
@@ -156,4 +275,5 @@
   <script src="landing.js"></script>
   <script src="../dark-theme.js"></script>
 </body>
+
 </html>

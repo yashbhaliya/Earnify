@@ -428,10 +428,7 @@ html.dark-mode body .trust-item p {
 }
 
 /* ── FAQ ── */
-body.dark-mode,
-html.dark-mode body .faq-section {
-  background: #0d1117 !important;
-}
+
 
 body.dark-mode,
 html.dark-mode body .faq-item-home {
@@ -900,24 +897,21 @@ html.dark-mode body .hero p {
 /* Page background */
 html.dark-mode .page-content,
 body.dark-mode .page-content {
-  background: linear-gradient(160deg, #0d1117 0%, #0d1117 100%) !important;
-}
-
-/* Content boxes */
-body.dark-mode,
-html.dark-mode body .content-box {
   background: #161b22 !important;
-  border-bottom-color: #30363d !important;
 }
 
-body.dark-mode,
-html.dark-mode body .content-box:nth-child(even) {
-  background: #0d1117 !important;
-}
-
-body.dark-mode,
+/* Content boxes — all same, no hover */
+body.dark-mode .content-box,
+html.dark-mode body .content-box,
+body.dark-mode .content-box:hover,
+html.dark-mode body .content-box:hover,
+body.dark-mode .content-box:nth-child(even),
+html.dark-mode body .content-box:nth-child(even),
+body.dark-mode .content-box:nth-child(even):hover,
 html.dark-mode body .content-box:nth-child(even):hover {
   background: #161b22 !important;
+  border-bottom-color: #21293d !important;
+  transition: none !important;
 }
 
 body.dark-mode,
@@ -1069,7 +1063,20 @@ html.dark-mode body .shimmer-box::before {
    ══════════════════════════════════════════ */
 html.dark-mode .page-content,
 body.dark-mode .page-content {
-  background: #0d1117 !important;
+  background: #161b22 !important;
+}
+
+body.dark-mode .content-box,
+html.dark-mode body .content-box,
+body.dark-mode .content-box:hover,
+html.dark-mode body .content-box:hover,
+body.dark-mode .content-box:nth-child(even),
+html.dark-mode body .content-box:nth-child(even),
+body.dark-mode .content-box:nth-child(even):hover,
+html.dark-mode body .content-box:nth-child(even):hover {
+  background: #161b22 !important;
+  border-bottom-color: #21293d !important;
+  transition: none !important;
 }
 
 body.dark-mode,
@@ -1106,12 +1113,7 @@ html.dark-mode body .faq-category-title {
 /* ══════════════════════════════════════════
    TERMS & PRIVACY PAGES
    ══════════════════════════════════════════ */
-html.dark-mode .terms-layout,
-html.dark-mode .privacy-layout,
-body.dark-mode .terms-layout,
-body.dark-mode .privacy-layout {
-  background: #0d1117 !important;
-}
+
 
 /* TOC Sidebar */
 body.dark-mode,
