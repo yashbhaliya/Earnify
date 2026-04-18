@@ -4095,7 +4095,7 @@ body.dark-mode .profile-card h2 {
 }
 
 body.dark-mode .profile-page-header {
-  background: linear-gradient(135deg, #7c6af7 0%, #5b4fcf 100%) !important;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)
 }
 
 body.dark-mode .profile-name {
@@ -8335,7 +8335,7 @@ body.dark-mode .profile-card h2 {
 }
 
 body.dark-mode .profile-page-header {
-  background: linear-gradient(135deg, #7c6af7 0%, #5b4fcf 100%) !important;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
 }
 
 body.dark-mode .profile-name {

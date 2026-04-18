@@ -545,6 +545,12 @@
     .empty-state .empty-icon {
       font-size: 64px;
       margin-bottom: 16px;
+      color: #cbd5e1;
+    }
+
+    .empty-state .empty-icon svg {
+      display: block;
+      margin: 0 auto;
     }
 
     .empty-state h3 {
@@ -1530,7 +1536,7 @@
     display: inline-flex; align-items: center; gap: 6px;
     padding: 7px 12px; min-width: 110px;
     background: #fff; border: 1.5px solid #e2e8f0; border-radius: 10px;
-    color: #475569 !important; font-size: 12px; font-weight: 600; cursor: pointer;
+    font-size: 12px; font-weight: 600; cursor: pointer;
     font-family: inherit; outline: none; user-select: none;
     box-shadow: 0 1px 3px rgba(0,0,0,0.06);
     transition: border-color .18s, box-shadow .18s, color .18s;
@@ -1630,7 +1636,7 @@
 
   <!-- Sidebar -->
   <div class="sidebar" id="sidebar">
-    <div class="sidebar-brand">
+    <div class="sidebar-brand" onclick="window.location.href='https://earnify-gamma.vercel.app/'" style="cursor:pointer;">
       <h2><span>💰</span><span class="brand-text">Earnify Admin</span></h2>
       <p>Platform Management</p>
     </div>
@@ -1670,6 +1676,7 @@
           <div class="admin-role">Super Admin</div>
         </div>
       </div>
+      <a href="https://earnify-gamma.vercel.app/" style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:9px;background:linear-gradient(135deg,rgb(102,126,234) 0%,rgb(118,75,162) 100%) !important;color:rgb(255,255,255) !important;border:none;border-radius:8px;font-weight:600;font-size:13px;cursor:pointer;text-decoration:none;margin-bottom:8px;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.88'" onmouseout="this.style.opacity='1'">🏠 Go to Home</a>
       <button class="logout-btn" onclick="logout()">🚪 Logout</button>
     </div>
   </div>

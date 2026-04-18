@@ -846,7 +846,7 @@ html.dark-mode body .method-pill {
 
 body.dark-mode,
 html.dark-mode body .method-pill.active {
-  background: linear-gradient(135deg, #7c6af7, #5b4fcf) !important;
+  background:linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;  
   color: #fff !important;
   border-color: transparent !important;
 }

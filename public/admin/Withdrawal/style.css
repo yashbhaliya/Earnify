@@ -299,7 +299,7 @@ html.dark-mode .shimmer-card-header {
 
 /* Hero banner */
 html.dark-mode .hero-banner {
-  background: linear-gradient(135deg, #7c6af7 0%, #5b4fcf 100%) !important;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)
 }
 
 /* Form inputs */

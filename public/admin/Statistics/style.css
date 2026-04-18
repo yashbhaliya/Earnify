@@ -3722,7 +3722,7 @@ body.dark-mode #analyticsContent .modern-table {
 }
 html.dark-mode #analyticsContent .modern-table thead,
 body.dark-mode #analyticsContent .modern-table thead {
-  background: linear-gradient(135deg, #7c6af7 0%, #5b4fcf 100%) !important;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)
 }
 html.dark-mode #analyticsContent .modern-table th,
 body.dark-mode #analyticsContent .modern-table th {
