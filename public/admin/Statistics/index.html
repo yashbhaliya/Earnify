@@ -43,18 +43,30 @@
       color: #ef4444;
     }
     .logout-link {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 8px !important;
+      width: 100% !important;
+      padding: 12px 16px !important;
       background: white !important;
       color: #1e293b !important;
       border: 2px solid #ef4444 !important;
       border-radius: 10px !important;
       font-weight: 600 !important;
-      transition: all 0.3s !important;
+      font-size: 14px !important;
+      cursor: pointer !important;
+      text-decoration: none !important;
+      text-align: center !important;
+      box-sizing: border-box !important;
+      transition: all 0.3s ease !important;
     }
     .logout-link:hover {
-      background: #fee2e2 !important;
-      color: #dc2626 !important;
+      background: rgb(251, 156, 156) !important;
+      color: white !important;
       border-color: #dc2626 !important;
       transform: translateY(-2px) !important;
+      box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3) !important;
     }
     .sidebar.active .sidebar-close-btn {
       display: block;
@@ -1132,9 +1144,9 @@
 <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
 
 <div class="sidebar">
-  <div class="sidebar-header">
+  <div class="sidebar-header" onclick="window.location.href='https://earnify-gamma.vercel.app/'" style="cursor:pointer;">
     <h2>Earnify Admin</h2>
-    <button class="sidebar-close-btn" onclick="toggleSidebar()">&times;</button>
+    <button class="sidebar-close-btn" onclick="event.stopPropagation();toggleSidebar()">&times;</button>
   </div>
   <a href="/admin/Resources/" onclick="closeMobileSidebar()" class="nav-link">📚 Resources</a>
   <a href="/admin/Statistics/" onclick="closeMobileSidebar()" class="nav-link active-link">📈 Statistics</a>

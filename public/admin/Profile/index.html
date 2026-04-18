@@ -820,21 +820,38 @@ animation: cardShimmer 1.8s infinite;
       width: 32px;
       height: 32px;
       border-radius: 8px;
-      background: #f8fafc;
-      border: none;
+      background: red;
+      border: 1.5px solid #e2e8f0;
       font-size: 18px;
-      color: #64748b;
+      color: #475569;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
       transition: all .2s;
       flex-shrink: 0;
+      font-weight: 700;
+      line-height: 1;
     }
 
     .wi-detail-close:hover {
       background: #fee2e2;
+      border-color: #fca5a5;
       color: #dc2626;
+    }
+
+    body.dark-mode .wi-detail-close,
+    html.dark-mode .wi-detail-close {
+      background: #1c2333 !important;
+      border-color: #30363d !important;
+      color: #8b949e !important;
+    }
+
+    body.dark-mode .wi-detail-close:hover,
+    html.dark-mode .wi-detail-close:hover {
+      background: rgba(248,113,113,0.15) !important;
+      border-color: #f87171 !important;
+      color: #f87171 !important;
     }
 
     .wi-detail-body {
@@ -1064,9 +1081,9 @@ animation: cardShimmer 1.8s infinite;
   <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
 
   <div class="sidebar">
-    <div class="sidebar-header">
+    <div class="sidebar-header" onclick="window.location.href='https://earnify-gamma.vercel.app/'" style="cursor:pointer;">
       <h2>Earnify Admin</h2>
-      <button class="sidebar-close-btn" onclick="toggleSidebar()">&times;</button>
+      <button class="sidebar-close-btn" onclick="event.stopPropagation();toggleSidebar()">&times;</button>
     </div>
     <a href="/admin/Resources/" onclick="closeMobileSidebar()" class="nav-link">📚 Resources</a>
     <a href="/admin/Statistics/" onclick="closeMobileSidebar()" class="nav-link">📈 Statistics</a>
@@ -1661,6 +1678,17 @@ animation: cardShimmer 1.8s infinite;
 
     function openWiDetail(method) {
       const meta = wiMeta[method];
+
+      // ── If not set → open edit form directly focused on this field ──
+      const isSet = method === 'bank'
+        ? (_wiCache.bank || _wiCache.ifsc)
+        : _wiCache[method];
+
+      if (!isSet) {
+        openWiModalForMethod(method);
+        return;
+      }
+
       const iconEl = document.getElementById('wiDetailIcon');
       const titleEl = document.getElementById('wiDetailTitle');
       const bodyEl = document.getElementById('wiDetailBody');
@@ -1685,6 +1713,38 @@ animation: cardShimmer 1.8s infinite;
 
       document.getElementById('wiDetailPopup').classList.add('open');
       document.body.style.overflow = 'hidden';
+    }
+
+    // Opens wiModal pre-filled and scrolls/focuses the specific method field
+    async function openWiModalForMethod(method) {
+      await openWiModal();
+      // Hide all form groups, show only the relevant one(s)
+      const allGroups = document.querySelectorAll('#wiModalContent .wi-form-group');
+      allGroups.forEach(g => g.style.display = 'none');
+
+      const fieldMap = {
+        upi:   ['wi-input-upi'],
+        bank:  ['wi-input-bank', 'wi-input-ifsc'],
+        gpay:  ['wi-input-gpay'],
+        paytm: ['wi-input-paytm'],
+      };
+      const fields = fieldMap[method] || [];
+      fields.forEach(id => {
+        const input = document.getElementById(id);
+        if (input) {
+          input.closest('.wi-form-group').style.display = '';
+        }
+      });
+
+      // Update modal title to reflect the specific method
+      const meta = wiMeta[method];
+      document.querySelector('#wiModalContent h2').textContent = meta.icon + ' Set ' + meta.title;
+
+      // Focus first field
+      if (fields[0]) setTimeout(() => document.getElementById(fields[0])?.focus(), 100);
+
+      // Store which method we're editing so save restores all groups
+      document.getElementById('wiModal').dataset.focusMethod = method;
     }
 
     function closeWiDetail() {
@@ -1729,6 +1789,10 @@ animation: cardShimmer 1.8s infinite;
     }
 
     function closeWiModal() {
+      // Restore all form groups in case only one was shown
+      document.querySelectorAll('#wiModalContent .wi-form-group').forEach(g => g.style.display = '');
+      document.querySelector('#wiModalContent h2').innerHTML = '\uD83D\uDCB3 Edit Withdrawal Info';
+      delete document.getElementById('wiModal').dataset.focusMethod;
       document.getElementById('wiModal').style.display = 'none';
     }
 
