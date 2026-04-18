@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <script>!function () { var d = localStorage.getItem('earnify_dark_mode') === '1'; document.documentElement.classList.toggle('dark-mode', d); if (d) { document.documentElement.style.background = '#0d1117'; document.documentElement.style.colorScheme = 'dark'; } var s = document.createElement('style'); s.id = 'mob-nav-flash-fix'; s.textContent = d ? '.mob-nav{background:#0d1117!important;border-top-color:#30363d!important;transition:none!important}.mob-nav-item{color:#8b949e!important;transition:none!important}.mob-nav-item svg{stroke:#8b949e!important;transition:none!important}' : '.mob-nav{background:#ffffff!important;border-top-color:#e8edf5!important;transition:none!important}.mob-nav-item{color:#94a3b8!important;transition:none!important}'; document.head.appendChild(s); document.addEventListener('DOMContentLoaded', function () { document.body.classList.toggle('dark-mode', d); setTimeout(function () { var el = document.getElementById('mob-nav-flash-fix'); if (el) el.remove(); }, 400); }); }();</script>
+  <script>!function () { var d = localStorage.getItem('earnify_dark_mode') === '1'; document.documentElement.classList.toggle('dark-mode', d); if (d) { document.documentElement.style.background = '#0d1117'; document.documentElement.style.colorScheme = 'dark'; } var s = document.createElement('style'); s.id = 'mob-nav-flash-fix'; s.textContent = d ? '.mob-nav{background:#0d1117!important;border-top-color:#30363d!important;transition:none!important}.mob-nav-item{color:#8b949e!important;transition:none!important}.mob-nav-item svg{stroke:#8b949e!important;transition:none!important}' : '.mob-nav{background:#ffffff!important;border-top-color:#e8edf5!important;transition:none!important}.mob-nav-item{color:#94a3b8!important;transition:none!important}'; document.head.appendChild(s); document.addEventListener('DOMContentLoaded', function () { document.body.classList.toggle('dark-mode', d); var k=document.getElementById('sbNmKnob'); if(k) k.textContent=d?'☀️':'🌙'; var mk=document.getElementById('mobileNmKnob'); if(mk) mk.textContent=d?'☀️':'🌙'; setTimeout(function () { var el = document.getElementById('mob-nav-flash-fix'); if (el) el.remove(); }, 400); }); }();</script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
     rel="stylesheet">
   <meta charset="UTF-8">
@@ -35,7 +35,8 @@
       outline: none;
     }
 
-    body.dark-mode .sb-nm-toggle {
+    body.dark-mode .sb-nm-toggle,
+    html.dark-mode .sb-nm-toggle {
       background: #1e2535;
       box-shadow: 4px 4px 8px #0d1117, -3px -3px 7px #2d3a4a;
     }
@@ -58,7 +59,8 @@
       z-index: 2;
     }
 
-    body.dark-mode .sb-nm-knob {
+    body.dark-mode .sb-nm-knob,
+    html.dark-mode .sb-nm-knob {
       left: 52px;
       background: linear-gradient(135deg, #3a4a5c, #2d3748);
       box-shadow: 2px 2px 5px #0d1117, -1px -1px 4px #3a4a5c;
@@ -90,11 +92,13 @@
       opacity: 0;
     }
 
-    body.dark-mode .sb-nm-label-light {
+    body.dark-mode .sb-nm-label-light,
+    html.dark-mode .sb-nm-label-light {
       opacity: 0;
     }
 
-    body.dark-mode .sb-nm-label-dark {
+    body.dark-mode .sb-nm-label-dark,
+    html.dark-mode .sb-nm-label-dark {
       opacity: 1;
     }
 
@@ -121,7 +125,7 @@
           <div id="mobileNmToggle" style="display:none;align-items:center;">
             <button class="sb-nm-toggle" id="mobileNmBtn" onclick="toggleDarkMode()"
               title="Toggle dark/light mode"><span class="sb-nm-knob" id="mobileNmKnob"
-                style="display:flex;align-items:center;justify-content:center;font-size:14px;line-height:1;">🌙</span><span
+                style="display:flex;align-items:center;justify-content:center;font-size:14px;line-height:1;"></span><span
                 class="sb-nm-label sb-nm-label-light">LIGHT</span><span
                 class="sb-nm-label sb-nm-label-dark">DARK</span></button>
           </div>
@@ -138,7 +142,7 @@
         <a href="../Dashboard/">Dashboard</a>
         <div id="navNmWrap" style="display:flex;align-items:center;"><button class="sb-nm-toggle" id="sbNmToggle"
             onclick="toggleDarkMode()" title="Toggle dark/light mode"><span class="sb-nm-knob"
-              id="sbNmKnob">☀️</span><span class="sb-nm-label sb-nm-label-light">LIGHT</span><span
+              id="sbNmKnob"></span><span class="sb-nm-label sb-nm-label-light">LIGHT</span><span
               class="sb-nm-label sb-nm-label-dark">DARK</span></button></div>
       </div>
     </div>
