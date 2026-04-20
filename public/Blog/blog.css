@@ -1,4 +1,4 @@
-/* ══════════════════════════════════════
+﻿/* ══════════════════════════════════════
    BLOG PAGE — Premium Style
 ══════════════════════════════════════ */
 
@@ -443,13 +443,14 @@
   border: 1px solid #e8edf5;
   box-shadow: 0 4px 16px rgba(0,0,0,0.06);
   cursor: pointer;
-  transition: transform 0.24s, box-shadow 0.24s;
+  transition: transform 0.24s, box-shadow 0.24s, border-color 0.24s;
   display: flex;
   flex-direction: column;
 }
 .blog-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 16px 40px rgba(102,126,234,0.16);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(102,126,234,0.13);
+  border-color: #c7d2fe;
 }
 .blog-card-img {
   width: 100%;
@@ -468,7 +469,7 @@
   transition: transform 0.4s ease;
 }
 .blog-card:hover .blog-card-img img {
-  transform: scale(1.05);
+  transform: scale(1.01);
 }
 .blog-card-body {
   padding: 15px;

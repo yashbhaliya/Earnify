@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
   <meta charset="UTF-8">
@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="mobile-responsive.css">
   <link rel="stylesheet" href="/admin/admin-bottom-nav.css">
   <link rel="stylesheet" href="/admin/admin-dark.css">
-  <script>!function(){var d=localStorage.getItem("earnify_dark_mode")==="1";document.documentElement.classList.toggle("dark-mode",d);if(d){document.documentElement.style.background="#0d1117";document.documentElement.style.colorScheme="dark";}var s=document.createElement("style");s.id="stats-flash-fix";s.textContent=d?".main{background:#0d1117!important}.sidebar{background:linear-gradient(180deg,#161b22,#0d1117)!important;border-right-color:#30363d!important}.stat-card,.analytics-section,.shimmer-stat-card{background:#161b22!important;border-color:#30363d!important}.sb-nm-toggle{background:#1e2535!important;box-shadow:4px 4px 8px #0d1117,-3px -3px 7px #2d3a4a!important;transition:none!important}.sb-nm-knob{left:52px!important;background:#2d3748!important;box-shadow:2px 2px 5px #0d1117,-1px -1px 4px #3a4a5c!important;transition:none!important}":".main{background:rgba(255,255,255,0.8)!important}.sb-nm-knob{left:4px!important}";document.head.appendChild(s);document.addEventListener("DOMContentLoaded",function(){document.body.classList.toggle("dark-mode",d);var k=document.getElementById("sbNmKnob");if(k){k.textContent=d?"🌙":"☀️";k.style.left=d?"52px":"4px";}setTimeout(function(){var t=document.getElementById("sbNmToggle");var kb=document.getElementById("sbNmKnob");if(t)t.style.transition="";if(kb)kb.style.transition="";},100);});}();</script>
+  <script>!function(){var d=localStorage.getItem("earnify_dark_mode")==="1";document.documentElement.classList.toggle("dark-mode",d);if(d){document.documentElement.style.background="#0d1117";document.documentElement.style.colorScheme="dark";}var s=document.createElement("style");s.id="stats-flash-fix";s.textContent=d?".main{background:#0d1117!important}.sidebar{background:linear-gradient(180deg,#161b22,#0d1117)!important;border-right-color:#30363d!important}.stat-card,.analytics-section,.shimmer-stat-card{background:#161b22!important;border-color:#30363d!important}.sb-nm-knob{left:52px!important;background:#2d3748!important}.sb-nm-toggle{background:#1e2535!important}":".main{background:rgba(255,255,255,0.8)!important}.sb-nm-knob{left:4px!important}";document.head.appendChild(s);document.addEventListener("DOMContentLoaded",function(){document.body.classList.toggle("dark-mode",d);var k=document.getElementById("sbNmKnob");if(k)k.textContent=d?"🌙":"☀️";setTimeout(function(){var el=document.getElementById("stats-flash-fix");if(el)el.remove();},400);});}();</script>
   <style>
     .sidebar-header {
       display: flex;
@@ -43,30 +43,18 @@
       color: #ef4444;
     }
     .logout-link {
-      display: flex !important;
-      align-items: center !important;
-      justify-content: center !important;
-      gap: 8px !important;
-      width: 100% !important;
-      padding: 12px 16px !important;
       background: white !important;
       color: #1e293b !important;
       border: 2px solid #ef4444 !important;
       border-radius: 10px !important;
       font-weight: 600 !important;
-      font-size: 14px !important;
-      cursor: pointer !important;
-      text-decoration: none !important;
-      text-align: center !important;
-      box-sizing: border-box !important;
-      transition: all 0.3s ease !important;
+      transition: all 0.3s !important;
     }
     .logout-link:hover {
-      background: rgb(251, 156, 156) !important;
-      color: white !important;
+      background: #fee2e2 !important;
+      color: #dc2626 !important;
       border-color: #dc2626 !important;
       transform: translateY(-2px) !important;
-      box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3) !important;
     }
     .sidebar.active .sidebar-close-btn {
       display: block;
@@ -1144,9 +1132,9 @@
 <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
 
 <div class="sidebar">
-  <div class="sidebar-header" onclick="window.location.href='https://earnify-gamma.vercel.app/'" style="cursor:pointer;">
+  <div class="sidebar-header">
     <h2>Earnify Admin</h2>
-    <button class="sidebar-close-btn" onclick="event.stopPropagation();toggleSidebar()">&times;</button>
+    <button class="sidebar-close-btn" onclick="toggleSidebar()">&times;</button>
   </div>
   <a href="/admin/Resources/" onclick="closeMobileSidebar()" class="nav-link">📚 Resources</a>
   <a href="/admin/Statistics/" onclick="closeMobileSidebar()" class="nav-link active-link">📈 Statistics</a>
