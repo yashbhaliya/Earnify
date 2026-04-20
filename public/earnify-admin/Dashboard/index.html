@@ -4,7 +4,16 @@
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <script>!function () { var s = localStorage.getItem('earnify_dark_mode'); var d = s === '1'; document.documentElement.classList.toggle('dark-mode', d); document.documentElement.style.background = d ? '#0d1117' : '#f8fafc'; if(d){document.write('<style>*,*::before,*::after{transition:none!important;}#sbNmKnob{left:53px!important;background:linear-gradient(135deg,#3a4a5c,#2d3748)!important;box-shadow:2px 2px 6px #0a0e17,-1px -1px 4px #3a4a5c!important;}#sbNmToggle{background:#1a2030!important;box-shadow:5px 5px 10px #0a0e17,-4px -4px 9px #263040!important;}.sb-nm-label-light{opacity:0!important;}.sb-nm-label-dark{opacity:1!important;}.sb-nm-wrap{border-top-color:#30363d!important;}.back-link{color:#a78bfa!important;border-top-color:#30363d!important;}.sidebar{background:linear-gradient(180deg,#161b22 0%,#0d1117 100%)!important;border-right-color:#30363d!important;}.sidebar-brand{border-bottom-color:#30363d!important;}.nav-link{color:#8b949e!important;}.sidebar-footer{border-top-color:#30363d!important;}.admin-badge{background:rgba(124,106,247,0.1)!important;}.admin-name{color:#e6edf3!important;}.logout-btn{background:#161b22!important;color:#f87171!important;border-color:#f87171!important;}.table-card{background:#161b22!important;border-color:rgba(124,106,247,0.5)!important;}.table-header{border-bottom-color:#30363d!important;}.table-header h3{color:#e6edf3!important;}thead{background:linear-gradient(135deg,#667eea,#764ba2)!important;}td{background:#161b22!important;border-bottom-color:#21293d!important;border-right-color:#30363d!important;}</style>');} }();</script>
+  <script>
+    (function(){
+      var d = localStorage.getItem('earnify_dark_mode') === '1';
+      if(d){
+        document.documentElement.classList.add('dark-mode');
+        document.documentElement.style.background = '#0d1117';
+        document.write('<style>*{transition:none!important;}html.dark-mode,html.dark-mode body{background:#0d1117!important;color:#e6edf3!important;}html.dark-mode .main{background:#0d1117!important;}html.dark-mode .sidebar{background:linear-gradient(180deg,#161b22 0%,#0d1117 100%)!important;border-right-color:#30363d!important;}html.dark-mode .stat-card:nth-child(n+2){background:#161b22!important;border:1px solid rgba(124,106,247,0.5)!important;}html.dark-mode .chart-card{background:#161b22!important;border:1px solid rgba(124,106,247,0.5)!important;}html.dark-mode .table-card{background:#161b22!important;border:1px solid rgba(124,106,247,0.5)!important;}html.dark-mode td{background:#161b22!important;color:#8b949e!important;border-bottom-color:#21293d!important;border-right-color:#30363d!important;}html.dark-mode .table-header h3{color:#e6edf3!important;}html.dark-mode .chart-title{color:#e6edf3!important;}html.dark-mode .donut-center{color:#e6edf3!important;}html.dark-mode .legend-val{color:#e6edf3!important;}html.dark-mode .nav-link{color:#8b949e!important;}html.dark-mode .admin-badge{background:rgba(124,106,247,0.1)!important;}html.dark-mode .admin-name{color:#e6edf3!important;}html.dark-mode .logout-btn{background:#161b22!important;color:#f87171!important;border-color:#f87171!important;}html.dark-mode .cd-btn{background:#1c2333!important;border-color:#30363d!important;color:#8b949e!important;}html.dark-mode #sbNmToggle{background:#1a2030!important;}html.dark-mode .sb-nm-knob{left:53px!important;background:linear-gradient(135deg,#3a4a5c,#2d3748)!important;}html.dark-mode .sb-nm-label-light{opacity:0!important;}html.dark-mode .sb-nm-label-dark{opacity:1!important;}</style>');
+      }
+    })();
+  </script>
   <style>
     html {
       background: #f8fafc;
@@ -1314,7 +1323,7 @@
       }
       .stat-card:nth-child(n+2) .stat-sub {
         font-size: 9px;
-        white-space: nowrap;
+        /* white-space: nowrap; */
         overflow: hidden;
         text-overflow: ellipsis;
       }
@@ -1380,10 +1389,6 @@
       .table-header span {
         font-size: 11px;
       }
-      html.dark-mode .table-header span,
-      body.dark-mode .table-header span {
-        color: #484f58;
-      }
       .table-header-right {
         width: 100%;
         justify-content: flex-start;
@@ -1399,9 +1404,6 @@
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
-      }
-      html.dark-mode .table-header-right > span {
-        color: #484f58;
       }
       .table-header-right .cd-wrap {
         flex-shrink: 0;
@@ -2216,6 +2218,8 @@
       content: "🌙";
       display: none;
     }
+    .sb-nm-knob.is-dark::before { display: none; }
+    .sb-nm-knob.is-dark::after  { display: block; }
 
     .sb-nm-label {
       position: absolute;
@@ -2341,8 +2345,10 @@
       left: 53px !important;
       background: linear-gradient(135deg, #3a4a5c, #2d3748) !important;
     }
-    html.dark-mode .sb-nm-knob::before { display: none !important; }
-    html.dark-mode .sb-nm-knob::after { display: block !important; }
+    html.dark-mode .sb-nm-knob::before,
+    body.dark-mode .sb-nm-knob::before { display: none !important; }
+    html.dark-mode .sb-nm-knob::after,
+    body.dark-mode .sb-nm-knob::after  { display: block !important; }
 
     html.dark-mode .sb-nm-label-light {
       opacity: 0 !important;
@@ -2417,9 +2423,7 @@
   body.dark-mode #purchasePagination > div,
   body.dark-mode #wdPagination > div { border-top-color: #30363d !important; }
   body.dark-mode #purchasePagination button:not([style*='linear-gradient']),
-  body.dark-mode #wdPagination button:not([style*='linear-gradient']) { background: #1c2333 !important; border-color: #30363d !important; color: #8b949e !important; }
-  body.dark-mode #purchasePagination span,
-  body.dark-mode #wdPagination span { color: #484f58 !important; }
+  body.dark-mode #wdPagination button:not([style*='linear-gradient']) { background: #1c2333 !important; border-color: #30363d !important; color: #8b949e !important; }  
   body.dark-mode .table-header h3 { color: #e6edf3 !important; }
 
   /* -- Custom Dropdown -- */
@@ -2516,7 +2520,7 @@
   <!-- Sidebar -->
   <div class="sidebar" id="sidebar">
     <div class="sidebar-brand" onclick="window.location.href='https://earnify-gamma.vercel.app/'" style="cursor:pointer;">
-      <h2><span>⚡</span><span class="brand-text">Earnify Admin</span></h2>
+      <h2><span>💰</span><span class="brand-text">Earnify Admin</span></h2>
       <p>Platform Management</p>
     </div>
 
@@ -2996,53 +3000,25 @@
   <script src="dashboard.js?v=20260413a"></script>
   <script>
     const DARK_KEY = 'earnify_dark_mode';
+
     function applyDark(dark) {
       document.documentElement.classList.toggle('dark-mode', dark);
       document.body.classList.toggle('dark-mode', dark);
       document.documentElement.style.background = dark ? '#0d1117' : '';
       document.documentElement.style.colorScheme = dark ? 'dark' : 'light';
-      syncToggleBtn(dark);
-    }
-    function syncToggleBtn(dark) {
+      // Toggle knob
       const knob = document.getElementById('sbNmKnob');
-      const toggle = document.getElementById('sbNmToggle');
-      const labelLight = document.querySelector('.sb-nm-label-light');
-      const labelDark  = document.querySelector('.sb-nm-label-dark');
-      if (!knob) return;
-      if (dark) {
-        knob.style.cssText = 'left:53px;background:linear-gradient(135deg,#3a4a5c,#2d3748);box-shadow:2px 2px 6px #0a0e17,-1px -1px 4px #3a4a5c;';
-        if (toggle) { toggle.style.background='#1a2030'; toggle.style.boxShadow='5px 5px 10px #0a0e17,-4px -4px 9px #263040'; }
-        if (labelLight) labelLight.style.opacity='0';
-        if (labelDark)  labelDark.style.opacity='1';
-      } else {
-        knob.style.cssText = 'left:5px;background:"";box-shadow:2px 2px 6px #b0b8c4,-1px -1px 4px #ffffff;';
-        if (toggle) { toggle.style.background=''; toggle.style.boxShadow=''; }
-        if (labelLight) labelLight.style.opacity='1';
-        if (labelDark)  labelDark.style.opacity='0';
-      }
+      if (knob) knob.classList.toggle('is-dark', dark);
     }
+
     function toggleDarkMode() {
-      const isDark = !document.body.classList.contains('dark-mode');
+      const isDark = !document.documentElement.classList.contains('dark-mode');
       localStorage.setItem(DARK_KEY, isDark ? '1' : '0');
       applyDark(isDark);
     }
-    (function () {
-      const saved = localStorage.getItem(DARK_KEY);
-      applyDark(saved === '1');
-    })();
-    // Re-sync after DOM fully ready in case knob wasn't available above
-    document.addEventListener('DOMContentLoaded', function() {
-      syncToggleBtn(localStorage.getItem(DARK_KEY) === '1');
-      // Re-enable all transitions after initial paint
-      var knob = document.getElementById('sbNmKnob');
-      if (knob) setTimeout(function(){ knob.style.transition = ''; }, 50);
-      setTimeout(function() {
-        var s = document.createElement('style');
-        s.textContent = '*,*::before,*::after{transition:revert!important;}';
-        document.head.appendChild(s);
-        setTimeout(function(){ s.remove(); }, 100);
-      }, 100);
-    });
+
+    // Apply on load
+    applyDark(localStorage.getItem(DARK_KEY) === '1');
   </script>
   <script>
     /* -- Custom Dropdown Engine -- */
