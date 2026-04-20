@@ -95,22 +95,7 @@
     }
 
     .profile-container.shimmer-loading::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.5) 50%, rgba(255,255,255,0) 100%);
-      animation: containerShimmer 1.5s infinite;
-      z-index: 100;
-      pointer-events: none;
-    }
-
-    body.dark-mode .profile-container.shimmer-loading::after {
-      background: linear-gradient(90deg, rgba(13,17,23,0) 0%, rgba(48,54,61,0.5) 50%, rgba(13,17,23,0) 100%);
-    }
-
-    @keyframes containerShimmer {
-      0% { transform: translateX(-100%); }
-      100% { transform: translateX(100%); }
+      display: none;
     }
 
     .profile-grid {
@@ -334,22 +319,21 @@
     }
 
     @keyframes shimmer {
-      0% {
-        background-position: -800px 0;
-      }
-
-      100% {
-        background-position: 800px 0;
-      }
+      0%   { background-position: -800px 0; }
+      100% { background-position:  800px 0; }
     }
 
     .shimmer-gradient {
-      background: linear-gradient(90deg, #f0f0f0 0%, #e0e0e0 50%, #f0f0f0 100%);
+      background: linear-gradient(90deg, #e8edf5 25%, #d0d8e8 50%, #e8edf5 75%);
       background-size: 800px 100%;
       animation: shimmer 1.6s infinite linear;
     }
 
-    .mobile-profile-header {
+    body.dark-mode .shimmer-gradient,
+    html.dark-mode .shimmer-gradient {
+      background: linear-gradient(90deg, #1c2333 25%, #21293d 50%, #1c2333 75%) !important;
+      background-size: 800px 100% !important;
+    }
       display: none;
     }
 
@@ -462,22 +446,7 @@
       opacity: 0.5;
     }
 
-    /* Shimmer Animation */
-    @keyframes shimmer {
-      0% {
-        background-position: -1000px 0;
-      }
-
-      100% {
-        background-position: 1000px 0;
-      }
-    }
-
-    .shimmer-gradient {
-      background: linear-gradient(90deg, #f0f0f0 0%, #e0e0e0 50%, #f0f0f0 100%);
-      background-size: 1000px 100%;
-      animation: shimmer 2s infinite linear;
-    }
+    /* Shimmer Animation - defined above */
 
     .shimmer-profile-avatar {
       width: 120px;
@@ -598,14 +567,7 @@
     }
     body.profile-loading .profile-grid .profile-card::after,
     html.profile-loading body .profile-grid .profile-card::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      z-index: 10;
-      background: linear-gradient(90deg, rgba(240, 240, 240, 0) 0%, rgba(255, 255, 255, 0.55) 50%, rgba(240, 240, 240, 0) 100%);
-      transform: translateX(-100%);
-animation: cardShimmer 1.8s infinite;
+      display: none;
     }
 
     /* Shimmer for cards outside profile-grid */
@@ -620,26 +582,11 @@ animation: cardShimmer 1.8s infinite;
     html.profile-loading body #withdrawalInfoCard::after,
     body.profile-loading #recentResourcesCard::after,
     html.profile-loading body #recentResourcesCard::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      z-index: 10;
-      background: linear-gradient(90deg, rgba(240, 240, 240, 0) 0%, rgba(255, 255, 255, 0.55) 50%, rgba(240, 240, 240, 0) 100%);
-      transform: translateX(-100%);
-      animation: cardShimmer 1.8s infinite;
-    }
-    body.dark-mode.profile-loading #withdrawalInfoCard::after,
-    html.dark-mode body.profile-loading #withdrawalInfoCard::after,
-    body.dark-mode.profile-loading #recentResourcesCard::after,
-    html.dark-mode body.profile-loading #recentResourcesCard::after {
-      background: linear-gradient(90deg, rgba(28, 35, 51, 0) 0%, rgba(66, 77, 95, 0.35) 50%, rgba(28, 35, 51, 0) 100%);
+      display: none;
     }
 
     @keyframes cardShimmer {
-      100% {
-        transform: translateX(100%);
-      }
+      100% { transform: translateX(100%); }
     }
 
     @media (max-width: 768px) {
@@ -1120,26 +1067,20 @@ animation: cardShimmer 1.8s infinite;
     <div class="profile-container" id="profileContainer">
 
       <!-- Mobile-only header bar -->
-      <div class="mobile-profile-header">
-        <button class="mobile-menu-toggle page-header-toggle" onclick="toggleSidebar()">
-          <div class="hamburger"></div>
-          <div class="hamburger"></div>
-          <div class="hamburger"></div>
-        </button>
-        <h2>My Profile</h2>
-        <button class="admin-dark-btn theme-toggle-btn" onclick="toggleDarkMode()" title="Toggle dark mode" style="margin-left:auto;display: none;">🌙</button>
-      </div>
+      <div class="mobile-profile-header" style="display:none;"></div>
 
-      <div class="profile-page-header">
-        <div style="display:flex;align-items:center;gap:14px;">
-          <button class="mobile-menu-toggle page-header-toggle" onclick="toggleSidebar()" style="display:none;">
-            <div class="hamburger"></div>
-            <div class="hamburger"></div>
-            <div class="hamburger"></div>
-          </button>
-          <h1>My Profile</h1>
+      <div class="page-header">
+        <div class="header-content">
+          <div style="display:flex;align-items:center;gap:14px;">
+            <button class="mobile-menu-toggle page-header-toggle" onclick="toggleSidebar()" style="display:none;">
+              <div class="hamburger"></div>
+              <div class="hamburger"></div>
+              <div class="hamburger"></div>
+            </button>
+            <h1 style="margin:0;">My Profile</h1>
+          </div>
+          <p class="subtitle">Manage your account information and settings</p>
         </div>
-        <p style="display: flex;">Manage your account information and settings</p>
       </div>
 
       <div class="profile-grid">

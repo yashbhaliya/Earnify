@@ -669,61 +669,22 @@
       background: #1c2333 !important; border-color: #30363d !important; color: #8b949e !important;
     }
     body.dark-mode #prPagination span, html.dark-mode #prPagination span { color: #484f58 !important; }
+      /* ── pr-filter: desktop pills / mobile dropdown ── */
+      .pr-filter-strip-desktop { display: flex; }
+      .pr-filter-dropdown-mobile { display: none; }
       @media (max-width: 768px) {
-        .dash-section-head {
-          flex-direction: column;
-          align-items: stretch;
-          gap: 12px;
-          margin-bottom: 20px;
-        }
-        #purchasedSection .dash-section-head > div:last-child {
-          display: flex !important;
-          align-items: center !important;
-          gap: 10px !important;
-          flex-wrap: nowrap !important;
-          flex: 1 1 0% !important;
-          min-width: 0 !important;
-          width: 100% !important;
-        }
-        #purchasedSection .dash-section-head > div:last-child > .pr-filter-strip {
-          flex: 1 1 0% !important;
-          min-width: 0 !important;
-          max-width: 100% !important;
-          overflow-x: auto !important;
-        }
-         #purchasedSection .dash-section-head > div:last-child > .cd-wrap {
-           flex: 0 0 auto !important;
-         }
-        .purchased-heading {
-          font-size: 18px;
-          margin-bottom: 4px;
-        }
-        .pr-filter-strip {
-          display: flex !important;
-          width: 100% !important;
-          padding: 0 !important;
-          overflow-x: auto !important;
-          -webkit-overflow-scrolling: touch !important;
-          scrollbar-width: none !important;
-          gap: 8px !important;
-          flex-shrink: 0 !important;
-        }
-        .pr-filter-strip::-webkit-scrollbar { display: none !important; }
-        .pr-filter {
-          flex-shrink: 0 !important;
-          white-space: nowrap !important;
-          font-size: 12px !important;
-          padding: 6px 14px !important;
-        }
+        .pr-filter-strip-desktop { display: none !important; }
+        .pr-filter-dropdown-mobile { display: inline-flex !important; flex: 1; min-width: 0; }
+        .pr-filter-dropdown-mobile .cd-btn { width: 100%; }
+        .purchased-heading { font-size: 18px; }
         .pr-card { flex-wrap: wrap; gap: 10px; }
         .pr-info { width: calc(100% - 60px); }
         .pr-title { white-space: normal; }
-        .pr-right {
-          width: 100%; justify-content: space-between;
-          padding-top: 8px; border-top: 1px solid #f1f5f9;
-        }
+        .pr-right { width: 100%; justify-content: space-between; padding-top: 8px; border-top: 1px solid #f1f5f9; }
         body.dark-mode .pr-right { border-top-color: #30363d; }
         .pr-dl-btn { flex: 1; text-align: center; padding: 9px 10px; font-size: 13px; }
+        .dash-section-head { flex-direction: column; align-items: stretch; gap: 12px; margin-bottom: 20px; }
+        .dash-section-head > div:last-child { display: flex !important; align-items: center !important; gap: 10px !important; flex-wrap: nowrap !important; width: 100% !important; }
       }
      /* ── sh-filter-row always visible (desktop + mobile) ── */
      .sh-filter-row {
@@ -1312,12 +1273,27 @@
       <div class="dash-section-head">
         <h2 class="purchased-heading">🛒 My Purchased Resources</h2>
         <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-          <div class="pr-filter-strip">
+          <!-- Desktop: pill buttons -->
+          <div class="pr-filter-strip pr-filter-strip-desktop">
             <button class="pr-filter active" onclick="filterPurchased('all',this)">All</button>
             <button class="pr-filter" onclick="filterPurchased('pdf',this)">📄 PDF</button>
             <button class="pr-filter" onclick="filterPurchased('excel',this)">📊 Excel</button>
             <button class="pr-filter" onclick="filterPurchased('exam',this)">📝 Exam</button>
             <button class="pr-filter" onclick="filterPurchased('freelance',this)">💼 Services</button>
+          </div>
+          <!-- Mobile: dropdown -->
+          <div class="cd-wrap pr-filter-dropdown-mobile" id="cdWrap-prFilter">
+            <button class="cd-btn" onclick="cdToggle('prFilter')" type="button">
+              <span class="cd-label" id="cdLabel-prFilter">All</span>
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="cd-list" id="cdList-prFilter" style="display:none;">
+              <div class="cd-item selected" onclick="cdPrFilter('all','All')">All<span class="cd-check">&#10003;</span></div>
+              <div class="cd-item" onclick="cdPrFilter('pdf','📄 PDF')">📄 PDF<span class="cd-check">&#10003;</span></div>
+              <div class="cd-item" onclick="cdPrFilter('excel','📊 Excel')">📊 Excel<span class="cd-check">&#10003;</span></div>
+              <div class="cd-item" onclick="cdPrFilter('exam','📝 Exam')">📝 Exam<span class="cd-check">&#10003;</span></div>
+              <div class="cd-item" onclick="cdPrFilter('freelance','💼 Services')">💼 Services<span class="cd-check">&#10003;</span></div>
+            </div>
           </div>
           <div class="cd-wrap" id="cdWrap-prPageSize">
             <button class="cd-btn" onclick="cdToggle('prPageSize')" type="button">
@@ -1899,6 +1875,27 @@
       window._prPageSize = value === 'all' ? 'all' : parseInt(value);
       window._prPage = 1;
       renderPurchased(_filteredPurchased);
+    }
+    function cdPrFilter(value, label) {
+      // update dropdown label & selected state
+      document.getElementById('cdLabel-prFilter').textContent = label;
+      document.querySelectorAll('#cdList-prFilter .cd-item').forEach(el => {
+        el.classList.toggle('selected', (el.getAttribute('onclick') || '').includes("'" + value + "'"));
+      });
+      document.getElementById('cdList-prFilter').style.display = 'none';
+      document.querySelector('#cdWrap-prFilter .cd-btn').classList.remove('open');
+      // also sync pill buttons
+      const pill = document.querySelector('.pr-filter-strip-desktop .pr-filter[onclick*="\'' + value + '\'"]');
+      if (pill) {
+        document.querySelectorAll('.pr-filter').forEach(b => b.classList.remove('active'));
+        pill.classList.add('active');
+        showPrSkeleton();
+        setTimeout(() => {
+          _filteredPurchased = value === 'all' ? _allPurchased : _allPurchased.filter(p => p.resources?.type === value);
+          window._prPage = 1;
+          renderPurchased(_filteredPurchased);
+        }, 300);
+      }
     }
     window._renderResPage = function() {
       const grid = document.getElementById('allGrid');

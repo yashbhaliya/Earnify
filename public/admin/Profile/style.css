@@ -2846,6 +2846,8 @@ body:not(.dark-mode) #viewContent span {
   color: rgba(255, 255, 255, 0.9);
   font-size: 16px;
   font-weight: 500;
+  margin-top: 10px;
+  display: flex;
 }
 
 .resource-section {
@@ -8653,3 +8655,88 @@ html.dark-mode .sb-nm-knob {
 html.dark-mode .sb-nm-label-light { opacity: 0 !important; }
 html.dark-mode .sb-nm-label-dark  { opacity: 1 !important; }
 html.dark-mode .sb-nm-wrap { border-top-color: #30363d !important; }
+
+
+/* ══════════════════════════════════════════
+   SHIMMER FIX — remove white glare, use
+   background-position animation instead
+   Works in both light and dark mode
+   ══════════════════════════════════════════ */
+
+/* Remove the white-glare ::before pseudo-elements */
+.shimmer-card::before,
+.shimmer-stat-card::before,
+.shimmer-table-row::before {
+  display: none !important;
+  content: none !important;
+}
+
+@keyframes shimmer-slide {
+  0%   { background-position: -800px 0; }
+  100% { background-position:  800px 0; }
+}
+
+/* Light mode shimmer elements */
+.shimmer-icon,
+.shimmer-title,
+.shimmer-description,
+.shimmer-price,
+.shimmer-button,
+.shimmer-stat-icon,
+.shimmer-stat-title,
+.shimmer-stat-number,
+.shimmer-stat-label,
+.shimmer-table-cell,
+.shimmer-gradient {
+  background: linear-gradient(90deg, #e8edf5 25%, #d0d8e8 50%, #e8edf5 75%) !important;
+  background-size: 800px 100% !important;
+  animation: shimmer-slide 1.6s infinite linear !important;
+  border-radius: 6px;
+}
+
+/* Dark mode shimmer elements */
+body.dark-mode .shimmer-icon,
+body.dark-mode .shimmer-title,
+body.dark-mode .shimmer-description,
+body.dark-mode .shimmer-price,
+body.dark-mode .shimmer-button,
+body.dark-mode .shimmer-stat-icon,
+body.dark-mode .shimmer-stat-title,
+body.dark-mode .shimmer-stat-number,
+body.dark-mode .shimmer-stat-label,
+body.dark-mode .shimmer-table-cell,
+body.dark-mode .shimmer-gradient,
+html.dark-mode .shimmer-icon,
+html.dark-mode .shimmer-title,
+html.dark-mode .shimmer-description,
+html.dark-mode .shimmer-price,
+html.dark-mode .shimmer-button,
+html.dark-mode .shimmer-stat-icon,
+html.dark-mode .shimmer-stat-title,
+html.dark-mode .shimmer-stat-number,
+html.dark-mode .shimmer-stat-label,
+html.dark-mode .shimmer-table-cell,
+html.dark-mode .shimmer-gradient {
+  background: linear-gradient(90deg, #1c2333 25%, #21293d 50%, #1c2333 75%) !important;
+  background-size: 800px 100% !important;
+  animation: shimmer-slide 1.6s infinite linear !important;
+}
+
+/* Dark mode card backgrounds for shimmer containers */
+body.dark-mode .shimmer-card,
+html.dark-mode .shimmer-card {
+  background: #161b22 !important;
+  border-color: #30363d !important;
+}
+
+body.dark-mode .shimmer-stat-card,
+html.dark-mode .shimmer-stat-card {
+  background: #161b22 !important;
+  border-color: #30363d !important;
+}
+
+body.dark-mode .shimmer-table-row td,
+html.dark-mode .shimmer-table-row td {
+  background: #161b22 !important;
+  border-bottom-color: #21293d !important;
+}

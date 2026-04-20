@@ -264,6 +264,7 @@
 
     .subtitle {
         font-size: 14px !important;
+        display: none !important;
     }
 
     .stats-overview {
