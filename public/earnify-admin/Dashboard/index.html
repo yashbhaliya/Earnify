@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <script>!function () { var s = localStorage.getItem('earnify_dark_mode'); var d = s === '1'; document.documentElement.classList.toggle('dark-mode', d); document.documentElement.style.background = d ? '#0d1117' : '#f8fafc'; }();</script>
+  <script>!function () { var s = localStorage.getItem('earnify_dark_mode'); var d = s === '1'; document.documentElement.classList.toggle('dark-mode', d); document.documentElement.style.background = d ? '#0d1117' : '#f8fafc'; if(d){document.write('<style>*,*::before,*::after{transition:none!important;}#sbNmKnob{left:53px!important;background:linear-gradient(135deg,#3a4a5c,#2d3748)!important;box-shadow:2px 2px 6px #0a0e17,-1px -1px 4px #3a4a5c!important;}#sbNmToggle{background:#1a2030!important;box-shadow:5px 5px 10px #0a0e17,-4px -4px 9px #263040!important;}.sb-nm-label-light{opacity:0!important;}.sb-nm-label-dark{opacity:1!important;}.sb-nm-wrap{border-top-color:#30363d!important;}.back-link{color:#a78bfa!important;border-top-color:#30363d!important;}.sidebar{background:linear-gradient(180deg,#161b22 0%,#0d1117 100%)!important;border-right-color:#30363d!important;}.sidebar-brand{border-bottom-color:#30363d!important;}.nav-link{color:#8b949e!important;}.sidebar-footer{border-top-color:#30363d!important;}.admin-badge{background:rgba(124,106,247,0.1)!important;}.admin-name{color:#e6edf3!important;}.logout-btn{background:#161b22!important;color:#f87171!important;border-color:#f87171!important;}.table-card{background:#161b22!important;border-color:rgba(124,106,247,0.5)!important;}.table-header{border-bottom-color:#30363d!important;}.table-header h3{color:#e6edf3!important;}thead{background:linear-gradient(135deg,#667eea,#764ba2)!important;}td{background:#161b22!important;border-bottom-color:#21293d!important;border-right-color:#30363d!important;}</style>');} }();</script>
   <style>
     html {
       background: #f8fafc;
@@ -998,6 +998,7 @@
       flex-direction: column;
       align-items: stretch;
       box-sizing: border-box;
+      min-height: 380px;
     }
 
     .chart-header {
@@ -2618,7 +2619,7 @@
         </div>
         <div class="chart-wrap donut-wrap">
           <canvas id="donutChart"></canvas>
-          <div class="donut-center" id="donutCenter">—</div>
+          <div class="donut-center" id="donutCenter" style="visibility:hidden;">—</div>
         </div>
         <div class="donut-legend" id="donutLegend"></div>
       </div>
@@ -2643,7 +2644,7 @@
         </div>
         <div class="chart-wrap donut-wrap" style="width:220px;height:220px;margin:0 auto 20px;position:relative;">
           <canvas id="resourceDonutChart"></canvas>
-          <div class="donut-center" id="resourceDonutCenter">—</div>
+          <div class="donut-center" id="resourceDonutCenter" style="visibility:hidden;">—</div>
         </div>
         <div class="donut-legend" id="resourceDonutLegend" style="max-height:260px;overflow-y:auto;overflow-x:hidden;padding-right:8px;margin-right:-4px;"></div>
         <div id="resourceDonutEmpty" style="display:none;text-align:center;padding:40px 20px;">
@@ -2696,7 +2697,7 @@
       <div class="table-header">
         <h3>🛒 Recent Purchases</h3>
         <div class="table-header-right">
-          <span id="purchaseCount">—</span>
+        <span id="purchaseCount" style="visibility:hidden;">—</span>
           <div class="cd-wrap" id="cdWrap-purchasePageSize">
             <button class="cd-btn" onclick="cdToggle('purchasePageSize')" type="button">
               <span class="cd-label" id="cdLabel-purchasePageSize">10 / page</span>
@@ -2795,7 +2796,7 @@
       <div class="table-header">
         <h3>💳 Withdrawal Information</h3>
         <div class="table-header-right">
-          <span id="wdCount">—</span>
+          <span id="wdCount" style="visibility:hidden;">—</span>
           <div class="cd-wrap" id="cdWrap-wdPageSize">
             <button class="cd-btn" onclick="cdToggle('wdPageSize')" type="button">
               <span class="cd-label" id="cdLabel-wdPageSize">10 / page</span>
@@ -2979,6 +2980,25 @@
       document.body.classList.toggle('dark-mode', dark);
       document.documentElement.style.background = dark ? '#0d1117' : '';
       document.documentElement.style.colorScheme = dark ? 'dark' : 'light';
+      syncToggleBtn(dark);
+    }
+    function syncToggleBtn(dark) {
+      const knob = document.getElementById('sbNmKnob');
+      const toggle = document.getElementById('sbNmToggle');
+      const labelLight = document.querySelector('.sb-nm-label-light');
+      const labelDark  = document.querySelector('.sb-nm-label-dark');
+      if (!knob) return;
+      if (dark) {
+        knob.style.cssText = 'left:53px;background:linear-gradient(135deg,#3a4a5c,#2d3748);box-shadow:2px 2px 6px #0a0e17,-1px -1px 4px #3a4a5c;';
+        if (toggle) { toggle.style.background='#1a2030'; toggle.style.boxShadow='5px 5px 10px #0a0e17,-4px -4px 9px #263040'; }
+        if (labelLight) labelLight.style.opacity='0';
+        if (labelDark)  labelDark.style.opacity='1';
+      } else {
+        knob.style.cssText = 'left:5px;background:"";box-shadow:2px 2px 6px #b0b8c4,-1px -1px 4px #ffffff;';
+        if (toggle) { toggle.style.background=''; toggle.style.boxShadow=''; }
+        if (labelLight) labelLight.style.opacity='1';
+        if (labelDark)  labelDark.style.opacity='0';
+      }
     }
     function toggleDarkMode() {
       const isDark = !document.body.classList.contains('dark-mode');
@@ -2989,6 +3009,19 @@
       const saved = localStorage.getItem(DARK_KEY);
       applyDark(saved === '1');
     })();
+    // Re-sync after DOM fully ready in case knob wasn't available above
+    document.addEventListener('DOMContentLoaded', function() {
+      syncToggleBtn(localStorage.getItem(DARK_KEY) === '1');
+      // Re-enable all transitions after initial paint
+      var knob = document.getElementById('sbNmKnob');
+      if (knob) setTimeout(function(){ knob.style.transition = ''; }, 50);
+      setTimeout(function() {
+        var s = document.createElement('style');
+        s.textContent = '*,*::before,*::after{transition:revert!important;}';
+        document.head.appendChild(s);
+        setTimeout(function(){ s.remove(); }, 100);
+      }, 100);
+    });
   </script>
   <script>
     /* -- Custom Dropdown Engine -- */

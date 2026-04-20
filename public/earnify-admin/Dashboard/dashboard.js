@@ -64,7 +64,7 @@ function renderPurchasesTable() {
   const start = (_purchasePage - 1) * pageSize;
   const slice = _purchasePageSize === 'all' ? completedPurchases : completedPurchases.slice(start, start + pageSize);
 
-  if (pcEl) pcEl.textContent = `${total} records`;
+  if (pcEl) { pcEl.textContent = `${total} records`; pcEl.style.visibility = 'visible'; }
 
   if (!tbody) return;
   tbody.closest('table')?.querySelector('thead')?.classList.remove('is-loading');
@@ -163,7 +163,7 @@ function renderWithdrawalsTable() {
   const start = (_wdPage - 1) * pageSize;
   const slice = _wdPageSize === 'all' ? allWd : allWd.slice(start, start + pageSize);
 
-  if (wdEl) wdEl.textContent = `${total} requests`;
+  if (wdEl) { wdEl.textContent = `${total} requests`; wdEl.style.visibility = 'visible'; }
   if (!tbody) return;
   tbody.closest('table')?.querySelector('thead')?.classList.remove('is-loading');
 
@@ -392,7 +392,7 @@ function renderResourceChart(limit = 10) {
     }
   });
 
-  if (center) center.innerHTML = `${fmt(total)}<br><span style="font-size:10px;color:#94a3b8;font-weight:500;">Total Revenue</span>`;
+  if (center) { center.style.visibility = 'visible'; center.innerHTML = `${fmt(total)}<br><span style="font-size:10px;color:#94a3b8;font-weight:500;">Total Revenue</span>`; }
 
   if (legend) {
     const PREVIEW = 5;
@@ -449,7 +449,7 @@ function renderCharts(available, totalGross, totalWithdrawn, platformFees, total
       }
     });
     const center = document.getElementById('donutCenter');
-    if (center) center.innerHTML = `${fmt(totalGross)}<br><span style="font-size:10px;color:#94a3b8;font-weight:500;">Total Earned</span>`;
+    if (center) { center.style.visibility = 'visible'; center.innerHTML = `${fmt(totalGross)}<br><span style="font-size:10px;color:#94a3b8;font-weight:500;">Total Earned</span>`; }
     const legend = document.getElementById('donutLegend');
     if (legend) legend.innerHTML = labels.map((l, i) => {
       const pct = totalGross > 0 ? ((values[i] / totalGross) * 100).toFixed(1) : 0;
