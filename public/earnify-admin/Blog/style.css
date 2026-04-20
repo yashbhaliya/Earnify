@@ -375,7 +375,7 @@ body {
 
 /* ── Blog Section ── */
 .blog-section {
-  /* background: white; */
+  background: white;
   border-radius: 16px;
   /* border: 1px solid rgba(0,0,0,0.05); */
   overflow: hidden;
@@ -2944,4 +2944,161 @@ body.dark-mode .sb-nm-label-light {
 html.dark-mode .sb-nm-label-dark,
 body.dark-mode .sb-nm-label-dark {
   opacity: 1 !important;
+}
+
+/* ══════════════════════════════════════════
+   BLOG ADMIN — DARK MODE
+   ══════════════════════════════════════════ */
+
+html.dark-mode .blog-section,
+body.dark-mode .blog-section {
+  background: #161b22 !important;
+  border-color: rgba(124,106,247,0.2) !important;
+}
+
+html.dark-mode .section-header,
+body.dark-mode .section-header {
+  background: #161b22 !important;
+  border-bottom-color: #30363d !important;
+}
+
+html.dark-mode .section-title h3,
+body.dark-mode .section-title h3 {
+  color: #e6edf3 !important;
+}
+
+html.dark-mode .blog-grid,
+body.dark-mode .blog-grid {
+  background: #161b22 !important;
+}
+
+html.dark-mode .blog-card,
+body.dark-mode .blog-card {
+  background: #1c2333 !important;
+  border-color: #30363d !important;
+}
+
+html.dark-mode .blog-card:hover,
+body.dark-mode .blog-card:hover {
+  border-color: rgba(124,106,247,0.4) !important;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4) !important;
+}
+
+html.dark-mode .blog-card-body,
+body.dark-mode .blog-card-body {
+  background: #1c2333 !important;
+}
+
+html.dark-mode .blog-card-title,
+body.dark-mode .blog-card-title {
+  color: #e6edf3 !important;
+}
+
+html.dark-mode .blog-card-excerpt,
+body.dark-mode .blog-card-excerpt {
+  color: #8b949e !important;
+}
+
+html.dark-mode .blog-card-meta,
+body.dark-mode .blog-card-meta {
+  color: #484f58 !important;
+  border-top-color: #30363d !important;
+}
+
+html.dark-mode .blog-card-actions,
+body.dark-mode .blog-card-actions {
+  background: #1c2333 !important;
+  border-top-color: #30363d !important;
+}
+
+html.dark-mode .blog-card-img,
+body.dark-mode .blog-card-img {
+  background: #21293d !important;
+}
+
+html.dark-mode .btn-view,
+body.dark-mode .btn-view,
+html.dark-mode .btn-view-blog,
+body.dark-mode .btn-view-blog {
+  background: rgba(102,126,234,0.12) !important;
+  border-color: rgba(102,126,234,0.3) !important;
+  color: #a78bfa !important;
+}
+
+html.dark-mode .btn-edit,
+body.dark-mode .btn-edit,
+html.dark-mode .btn-edit-blog,
+body.dark-mode .btn-edit-blog {
+  background: rgba(245,158,11,0.12) !important;
+  border-color: rgba(245,158,11,0.3) !important;
+  color: #fcd34d !important;
+}
+
+html.dark-mode .btn-unpublish,
+body.dark-mode .btn-unpublish,
+html.dark-mode .btn-unpublish-blog,
+body.dark-mode .btn-unpublish-blog,
+html.dark-mode .btn-publish-blog,
+body.dark-mode .btn-publish-blog {
+  background: rgba(16,185,129,0.12) !important;
+  border-color: rgba(16,185,129,0.3) !important;
+  color: #6ee7b7 !important;
+}
+
+html.dark-mode .btn-delete,
+body.dark-mode .btn-delete,
+html.dark-mode .btn-delete-blog,
+body.dark-mode .btn-delete-blog {
+  background: rgba(239,68,68,0.12) !important;
+  border-color: rgba(239,68,68,0.3) !important;
+  color: #fca5a5 !important;
+}
+
+/* Status badges */
+html.dark-mode .status-published,
+body.dark-mode .status-published {
+  background: rgba(16,185,129,0.15) !important;
+  color: #6ee7b7 !important;
+}
+
+html.dark-mode .status-unpublished,
+body.dark-mode .status-unpublished {
+  background: rgba(239,68,68,0.12) !important;
+  color: #fca5a5 !important;
+}
+
+html.dark-mode .status-draft,
+body.dark-mode .status-draft {
+  background: rgba(100,116,139,0.15) !important;
+  color: #94a3b8 !important;
+}
+
+/* Category badge */
+html.dark-mode .blog-category,
+body.dark-mode .blog-category {
+  background: rgba(102,126,234,0.15) !important;
+  color: #a78bfa !important;
+}
+
+html.dark-mode .blog-status-badge,
+body.dark-mode .blog-status-badge {
+  background: rgba(100,116,139,0.15) !important;
+  color: #94a3b8 !important;
+}
+
+/* Delete modal dark */
+html.dark-mode #blogDeleteModal > div,
+body.dark-mode #blogDeleteModal > div {
+  background: #161b22 !important;
+  border: 1px solid #30363d !important;
+}
+
+html.dark-mode #blogDeleteModal h3,
+body.dark-mode #blogDeleteModal h3 {
+  color: #e6edf3 !important;
+}
+
+html.dark-mode #blogDeleteModal p,
+body.dark-mode #blogDeleteModal p {
+  color: #8b949e !important;
 }

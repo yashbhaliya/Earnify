@@ -88,7 +88,7 @@
         <div class="ps-details"><span class="sh" style="height:44px;"></span><span class="sh" style="height:44px;"></span><span class="sh" style="height:44px;"></span><span class="sh" style="height:44px;"></span></div>
         <div class="ps-actions"><span class="sh" style="height:44px;flex:1;border-radius:10px;"></span><span class="sh" style="height:44px;flex:1;border-radius:10px;"></span></div>
       </div>`;
-    document.getElementById('paymentsGrid').innerHTML = cardHtml + cardHtml + cardHtml;
+    document.getElementById('paymentsGrid').innerHTML = cardHtml + cardHtml;
   }
 
   function renderStats(pending, amount) {
@@ -138,7 +138,7 @@
     if (countEl) countEl.textContent = total + ' request' + (total !== 1 ? 's' : '');
 
     if (!slice.length) {
-      grid.innerHTML = `<div class="empty-state"><div class="empty-icon"><svg xmlns="http://www.w3.org/2000/svg" width="90" height="90" viewBox="0 0 100 100"><circle cx="50" cy="50" r="44" fill="none" stroke="#22c55e" stroke-width="7" stroke-linecap="round" stroke-dasharray="230 50"/><polyline points="27,52 42,68 73,34" fill="none" stroke="#22c55e" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><h3>All Caught Up!</h3><p>No pending payment requests</p></div>`;
+      grid.innerHTML = `<div class="empty-state" style="background-color: white;"><div class="empty-icon" ><svg xmlns="http://www.w3.org/2000/svg" width="90" height="90" viewBox="0 0 100 100"><circle cx="50" cy="50" r="44" fill="none" stroke="#22c55e" stroke-width="7" stroke-linecap="round" stroke-dasharray="230 50"/><polyline points="27,52 42,68 73,34" fill="none" stroke="#22c55e" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><h3>All Caught Up!</h3><p>No pending payment requests</p></div>`;
       _renderPayPagination(0, 0, 0, 0);
       return;
     }

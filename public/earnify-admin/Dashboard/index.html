@@ -1484,7 +1484,28 @@
       .chart-card {
         padding: 16px;
         border-radius: 14px;
-        overflow: visible;
+        overflow: hidden;
+        min-width: 0;
+        width: 100%;
+        box-sizing: border-box;
+      }
+      .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 11px;
+        min-width: 0;
+        width: 100%;
+      }
+      .legend-label {
+        flex: 1;
+        min-width: 0;
+        overflow: hidden;
+      }
+      .legend-val {
+        font-size: 11px;
+        white-space: nowrap;
+        flex-shrink: 0;
       }
       .chart-title { font-size: 14px; font-weight: 700; }
       .chart-sub   { font-size: 11px; margin-top: 2px; }
