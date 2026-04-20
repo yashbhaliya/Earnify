@@ -1163,14 +1163,14 @@
       scrollbar-color: rgba(102,126,234,0.4) transparent;
     }
     #resourceDonutLegend::-webkit-scrollbar {
-      width: 3px;
+      width: 4px;
     }
     #resourceDonutLegend::-webkit-scrollbar-track {
       background: transparent;
     }
     #resourceDonutLegend::-webkit-scrollbar-thumb {
       background: transparent;
-      border-radius: 3px;
+      border-radius: 4px;
       transition: background 0.3s;
     }
     #resourceDonutLegend:hover::-webkit-scrollbar-thumb {
@@ -1528,6 +1528,19 @@
         max-height: 280px;
         -webkit-overflow-scrolling: touch;
       }
+      #resourceDonutLegend {
+        max-height: 220px !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+        padding-right: 8px !important;
+        margin-right: -4px !important;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: thin;
+        scrollbar-color: rgba(102,126,234,0.4) transparent;
+      }
+      #resourceDonutLegend::-webkit-scrollbar { width: 4px; }
+      #resourceDonutLegend::-webkit-scrollbar-track { background: transparent; }
+      #resourceDonutLegend::-webkit-scrollbar-thumb { background: rgba(102,126,234,0.4); border-radius: 4px; }
     }
 
     /* -- Extra small screens (= 380px) -- */
@@ -2632,7 +2645,7 @@
           <canvas id="resourceDonutChart"></canvas>
           <div class="donut-center" id="resourceDonutCenter">—</div>
         </div>
-        <div class="donut-legend" id="resourceDonutLegend" style="max-height:260px;overflow-y:auto;overflow-x:hidden;padding-right:4px;"></div>
+        <div class="donut-legend" id="resourceDonutLegend" style="max-height:260px;overflow-y:auto;overflow-x:hidden;padding-right:8px;margin-right:-4px;"></div>
         <div id="resourceDonutEmpty" style="display:none;text-align:center;padding:40px 20px;">
           <div style="font-size:40px;opacity:.25;margin-bottom:10px;">??</div>
           <div style="font-size:13px;color:#94a3b8;font-weight:600;">No resource data available</div>
