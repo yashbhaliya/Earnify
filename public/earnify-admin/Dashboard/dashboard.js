@@ -1,4 +1,4 @@
-// On Live Server (5500) use Vercel production API, on Node server (5000) use local
+﻿// On Live Server (5500) use Vercel production API, on Node server (5000) use local
 const API_BASE = (location.hostname === '127.0.0.1' || location.hostname === 'localhost')
   ? (location.port === '5500' ? 'https://earnify-gamma.vercel.app' : 'http://127.0.0.1:5000')
   : location.origin;
@@ -70,7 +70,7 @@ function renderPurchasesTable() {
   tbody.closest('table')?.querySelector('thead')?.classList.remove('is-loading');
 
   if (!slice.length) {
-    tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><div class="empty-icon">📭</div><p>No purchases yet</p></div></td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><div class="empty-icon">🔭</div><p>No purchases yet</p></div></td></tr>`;
   } else {
     tbody.innerHTML = slice.map((p, i) => {
       const globalIndex = start + i;
@@ -168,7 +168,7 @@ function renderWithdrawalsTable() {
   tbody.closest('table')?.querySelector('thead')?.classList.remove('is-loading');
 
   if (!slice.length) {
-    tbody.innerHTML = `<tr><td colspan="8"><div class="empty-state"><div class="empty-icon">📭</div><p>No withdrawal requests yet</p></div></td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="8"><div class="empty-state"><div class="empty-icon">🔭</div><p>No withdrawal requests yet</p></div></td></tr>`;
   } else {
     tbody.innerHTML = slice.map((w, i) => {
       const globalIndex = start + i;
@@ -289,7 +289,7 @@ function renderDayWiseChart(purchases, selectedMonth, selectedYear) {
     const empty = document.createElement('div');
     empty.className = 'dw-empty';
     empty.innerHTML = `<div style="text-align:center;padding:52px 20px;">
-      <div style="font-size:52px;opacity:.3;margin-bottom:14px;">📭</div>
+      <div style="font-size:52px;opacity:.3;margin-bottom:14px;">🔭</div>
       <div style="font-size:15px;font-weight:700;color:#1e293b;margin-bottom:6px;">No Revenue for ${monthName}</div>
       <div style="font-size:13px;color:#94a3b8;">No completed sales recorded for this month.</div>
     </div>`;
@@ -304,7 +304,7 @@ function renderDayWiseChart(purchases, selectedMonth, selectedYear) {
       datasets: [{ label: 'Revenue', data: daily.slice(1),
         backgroundColor: (c) => { const {ctx:cx,chartArea:ca} = c.chart; if(!ca) return '#EF5835'; const g=cx.createLinearGradient(0,ca.top,0,ca.bottom); g.addColorStop(0,'#EF5835'); g.addColorStop(1,'#E29F17'); return g; },
         borderColor:'transparent', borderWidth:0, borderRadius:8, borderSkipped:false }] },
-    options: { responsive:true, maintainAspectRatio:true,
+    options: { responsive:true, maintainAspectRatio:false,
       plugins:{ legend:{display:false}, tooltip:{callbacks:{label:c=>` ${fmt(c.raw)}`,title:c=>`Day ${c[0].label}`}} },
       scales:{
         x:{grid:{display:false},ticks:{font:{size:10},color:'#94a3b8',maxRotation:0,autoSkip:true,maxTicksLimit:31},title:{display:true,text:'Day of Month',color:'#64748b',font:{size:12,weight:'600'}}},
@@ -402,17 +402,14 @@ function renderResourceChart(limit = 10) {
 
     const makeRow = (r, i) => {
       const pct = grandTotal > 0 ? ((r.revenue / grandTotal) * 100).toFixed(1) : 0;
-      const lbl = r.name.length > 22 ? r.name.substring(0, 22) + '\u2026' : r.name;
-      return `<div class="legend-item" style="padding:7px 0;border-bottom:1px solid var(--legend-divider,#f1f5f9);">
-        <span class="legend-label" style="gap:6px;min-width:0;overflow:hidden;">
-          <span style="font-size:10px;font-weight:700;color:#94a3b8;flex-shrink:0;min-width:16px;">${i + 1}.</span>
-          <span class="legend-dot" style="background:${r.color};width:9px;height:9px;border-radius:50%;flex-shrink:0;"></span>
-          <span style="font-size:12px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${lbl}</span>
-        </span>
-        <span style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
-          <span class="legend-val" style="font-size:12px;font-weight:700;">${fmt(r.revenue)}</span>
-          <span style="font-size:10px;color:#94a3b8;font-weight:500;">${pct}%</span>
-          <span style="font-size:10px;color:#94a3b8;">${r.purchases}x</span>
+      return `<div class="legend-item" style="padding:7px 0;border-bottom:1px solid var(--legend-divider,#f1f5f9);display:flex;align-items:center;gap:6px;">
+        <span style="font-size:10px;font-weight:700;color:#94a3b8;flex-shrink:0;min-width:18px;">${i + 1}.</span>
+        <span style="background:${r.color};width:9px;height:9px;border-radius:50%;flex-shrink:0;"></span>
+        <span style="font-size:12px;font-weight:600;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${r.name}">${r.name}</span>
+        <span style="display:flex;align-items:center;gap:5px;flex-shrink:0;">
+          <span class="legend-val" style="font-size:12px;font-weight:700;white-space:nowrap;">${fmt(r.revenue)}</span>
+          <span style="font-size:10px;color:#94a3b8;font-weight:500;white-space:nowrap;">${pct}%</span>
+          <span style="font-size:10px;color:#94a3b8;white-space:nowrap;">${r.purchases}x</span>
         </span>
       </div>`;
     };
@@ -662,3 +659,5 @@ document.getElementById('detailsModal')?.addEventListener('click', e => {
 });
 
 loadDashboard();
+
+
