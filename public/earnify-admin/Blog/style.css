@@ -1604,7 +1604,7 @@ body.dark-mode .editor-publish-btn:hover {
 
   /* Page header */
   .page-header {
-    padding: 14px 16px;
+    padding: 12px 14px;
     border-radius: 12px;
     gap: 8px;
     flex-wrap: nowrap;
@@ -1614,20 +1614,18 @@ body.dark-mode .editor-publish-btn:hover {
   .page-header > div:first-child {
     flex: 1;
     min-width: 0;
+    gap: 10px;
   }
 
   .page-header h1 {
-    font-size: 16px;
+    font-size: 15px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
 
   .page-header p {
-    font-size: 11px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    display: none;
   }
 
   .header-meta {

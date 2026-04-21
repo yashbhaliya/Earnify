@@ -590,7 +590,7 @@
     <!-- User Profile Section -->
     <div class="sidebar-user" id="sidebarUser" style="display: none;">
       <div class="user-info">
-        <div class="user-avatar" id="sidebarAvatar">??</div>
+        <div class="user-avatar" id="sidebarAvatar">👤</div>
         <div class="user-details">
           <div class="user-name" id="sidebarUserName">User</div>
           <div class="user-email" id="sidebarUserEmail">user@email.com</div>
@@ -1342,6 +1342,25 @@
     }
 
     (async function () {
+      // Pre-populate sidebar user synchronously from localStorage (no flash)
+      const _cu = JSON.parse(localStorage.getItem('currentUser') || '{}');
+      const _token = localStorage.getItem('adminToken');
+      let _preEmail = _cu.email || '';
+      if (!_preEmail && _token) {
+        try { const p = JSON.parse(atob(_token.split('.')[1].replace(/-/g,'+').replace(/_/g,'/'))); _preEmail = p.email || ''; } catch(e) {}
+      }
+      if (_preEmail) {
+        const _preName = _cu.user_metadata?.name || _cu.user_metadata?.full_name || _cu.name || _preEmail.split('@')[0];
+        const sidebarUser = document.getElementById('sidebarUser');
+        if (sidebarUser) { sidebarUser.style.display = 'flex'; sidebarUser.style.flexDirection = 'column'; sidebarUser.style.gap = '5px'; }
+        const el_name = document.getElementById('sidebarUserName');
+        const el_email = document.getElementById('sidebarUserEmail');
+        const el_avatar = document.getElementById('sidebarAvatar');
+        if (el_name) el_name.textContent = _preName;
+        if (el_email) el_email.textContent = _preEmail;
+        if (el_avatar) el_avatar.textContent = _preName.charAt(0).toUpperCase();
+      }
+
       const user = await getCurrentUser();
       if (!user) return;
       const sidebarUser = document.getElementById('sidebarUser');

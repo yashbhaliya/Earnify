@@ -198,17 +198,16 @@
 
     <!-- Page Header -->
     <div class="page-header">
-      <div style="display:flex;align-items:center;gap:16px;flex:1;">
-        <button class="mobile-toggle" onclick="toggleSidebar()">
+      <div style="display:flex;align-items:center;gap:10px;flex:1;min-width:0;">
+        <button class="mobile-toggle" onclick="toggleSidebar()" style="flex-shrink:0;">
           <span></span><span></span><span></span>
         </button>
-        <div>
+        <div style="min-width:0;">
           <h1>✍️ Blog Manager</h1>
           <p>Create, edit and manage your blog posts</p>
         </div>
       </div>
       <div class="header-meta">
-        <button class="dark-toggle" id="darkToggleBtn" onclick="toggleDarkMode()" title="Toggle dark mode">🌙</button>
         <button class="refresh-btn" onclick="loadBlogs()">🔄 Refresh</button>
       </div>
     </div>
@@ -638,8 +637,6 @@
     const DARK_KEY = 'earnify_dark_mode';
     function applyDark(dark) {
       document.body.classList.toggle('dark-mode', dark);
-      const btn = document.getElementById('darkToggleBtn');
-      if (btn) btn.textContent = dark ? '☀️' : '🌙';
     }
     function toggleDarkMode() {
       const isDark = !document.body.classList.contains('dark-mode');
