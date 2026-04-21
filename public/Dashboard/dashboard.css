@@ -132,7 +132,7 @@
   align-items: center;
   gap: 14px;
   box-shadow: 0 4px 20px rgba(102, 126, 234, 0.10);
-  border: 1px solid #e8edf5;
+  border: 1.5px solid #d1d9e6;
   transition: transform 0.2s, box-shadow 0.2s;
 }
 
@@ -262,7 +262,7 @@
 .purchases-grid {
   background: white;
   border-radius: 18px;
-  border: 1px solid #e8edf5;
+  border: 1.5px solid #d1d9e6;
   box-shadow: 0 2px 16px rgba(102, 126, 234, 0.08);
   overflow: hidden;
 }
@@ -629,7 +629,9 @@
 }
 
 .sh {
-  background: #e2e8f0;
+  background: linear-gradient(90deg, #e2e8f0 25%, #cbd5e1 50%, #e2e8f0 75%);
+  background-size: 400px 100%;
+  animation: shimMove 1.8s infinite linear;
   border-radius: 6px;
   margin-bottom: 10px;
 }
@@ -1439,6 +1441,19 @@ html.dark-mode .dm-field-label {
 
 body.dark-mode .dm-field-val,
 html.dark-mode .dm-field-val {
+  color: #e6edf3 !important;
+}
+
+body.dark-mode .dm-field-val.price,
+html.dark-mode .dm-field-val.price {
+  color: #a78bfa !important;
+}
+
+body.dark-mode .dm-field-val.mono,
+html.dark-mode .dm-field-val.mono {
+  color: #8b949e !important;
+}
+ield-val {
   color: #e6edf3 !important;
 }
 
