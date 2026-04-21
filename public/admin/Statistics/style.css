@@ -816,11 +816,7 @@ button:last-child:hover {
 }
 
 
-.sidebar-user {
-  margin-top: auto;
-  padding: 20px;
-  border-top: 2px solid #e2e8f0;
-}
+.sidebar-user { margin-top: auto; padding: 20px; border-top: 2px solid #e2e8f0; background: #f8fafc; }
 
 .user-info {
   display: flex;
@@ -846,8 +842,7 @@ button:last-child:hover {
   overflow: hidden;
 }
 
-.user-name {
-  color: #f1f5f9;
+.user-name {`r`n  color: #1e293b;
   font-weight: 600;
   font-size: 14px;
   white-space: nowrap;
@@ -902,8 +897,7 @@ button:last-child:hover {
   overflow: hidden;
 }
 
-.user-name {
-  color: #f1f5f9;
+.user-name {`r`n  color: #1e293b;
   font-weight: 600;
   font-size: 14px;
   white-space: nowrap;
@@ -1072,8 +1066,7 @@ button:last-child:hover {
   overflow: hidden;
 }
 
-.user-name {
-  color: #f1f5f9;
+.user-name {`r`n  color: #1e293b;
   font-weight: 600;
   font-size: 14px;
   white-space: nowrap;
@@ -1916,15 +1909,7 @@ button:last-child:hover {
 }
 
 /* Sidebar User Profile */
-.sidebar-user {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 20px;
-  background: #ffffff;
-  border-top: 2px solid #e2e8f0;
-}
+.sidebar-user { margin-top: auto; padding: 20px; border-top: 2px solid #e2e8f0; background: #f8fafc; }
 
 .user-info {
   display: flex;
