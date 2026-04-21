@@ -770,6 +770,3 @@ if (document.getElementById("totalUsers")) loadDashboard();
 if (document.getElementById("activeRate")) loadAnalytics();
 if (document.getElementById("totalRecords")) loadSettings();
 if (document.getElementById("purchaseTableBody")) loadPurchaseStatistics();
-
-
-

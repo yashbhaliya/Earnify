@@ -3891,3 +3891,28 @@ body.dark-mode #wdPageSize option {
   background: #1c2333 !important;
   color: #e6edf3 !important;
 }
+/* Fix for resource tag text truncation in mobile detail modal */
+@media (max-width: 768px) {
+  .detail-resources .resource-tag {
+    font-size: 10px !important;
+    padding: 4px 8px !important;
+    max-width: none !important;
+    white-space: normal !important;
+    word-break: break-word !important;
+    overflow: visible !important;
+    text-overflow: unset !important;
+    line-height: 1.3 !important;
+    display: inline-block !important;
+    width: auto !important;
+    min-height: auto !important;
+    height: auto !important;
+  }
+}
+
+/* Dark mode fix for resource tags in detail modal */
+html.dark-mode .detail-resources .resource-tag,
+body.dark-mode .detail-resources .resource-tag {
+  background: #1c2333 !important;
+  color: #a78bfa !important;
+  border-color: #30363d !important;
+}

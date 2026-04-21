@@ -1,4 +1,4 @@
-﻿/* ══════════════════════════════════════
+/* ══════════════════════════════════════
    BLOG PAGE — Premium Style
 ══════════════════════════════════════ */
 
@@ -134,27 +134,49 @@
   height: 100%;
   transition: transform 0.55s cubic-bezier(0.4,0,0.2,1);
 }
+
 .hero-slide {
   position: relative;
   min-width: 100%;
   height: 100%;
   cursor: pointer;
   flex-shrink: 0;
+  overflow: hidden;
 }
 .hero-slide-bg {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit:inherit;
+  object-fit: cover;
   object-position: center;
-  transition: transform 0.6s ease;
+
+  animation: smoothZoom 5s ease-in-out infinite;
+  will-change: transform;
 }
-.hero-slide:hover .hero-slide-bg { transform: scale(1.03); }
+
+/* KEYFRAMES */
+@keyframes smoothZoom {
+  0% {
+    transform: scale(1.05);
+  }
+  50% {
+    transform: scale(1.18);
+  }
+  100% {
+    transform: scale(1.05);
+  }
+}
 .hero-slide-overlay {
   position: absolute;
   inset: 0;
   background: linear-gradient(to bottom, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.45) 55%, rgba(0,0,0,0.82) 100%);
+  transition: background 0.5s ease;
+  z-index: 1;
+}
+
+.hero-slide:hover .hero-slide-overlay {
+  background: linear-gradient(to bottom, rgba(0,0,0,0.03) 0%, rgba(0,0,0,0.3) 55%, rgba(0,0,0,0.68) 100%);
 }
 .hero-slide-content {
   position: absolute;
@@ -440,17 +462,16 @@
   background: #fff;
   border-radius: 18px;
   overflow: hidden;
-  border: 1px solid #e8edf5;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  border: 1.5px solid #e8edf5;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
   cursor: pointer;
-  transition: transform 0.24s, box-shadow 0.24s, border-color 0.24s;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
   display: flex;
   flex-direction: column;
 }
 .blog-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(102,126,234,0.13);
-  border-color: #c7d2fe;
+  border-color: #a5b4fc;
+  box-shadow: 0 8px 28px rgba(102,126,234,0.15);
 }
 .blog-card-img {
   width: 100%;
@@ -806,6 +827,7 @@
   height: 520px;
   border-radius: 20px;
   margin-bottom: 56px;
+  margin-top: 20px;
 }
 
 /* Card skeleton */
@@ -893,13 +915,60 @@ html.dark-mode .skel-line,
 body.dark-mode .skel-hero,
 body.dark-mode .skel-card-img,
 body.dark-mode .skel-line {
-  background: linear-gradient(90deg, #1c2333 25%, #21293d 50%, #1c2333 75%) !important;
+  background: linear-gradient(90deg, #21293d 25%, #30363d 50%, #21293d 75%) !important;
   background-size: 600px 100% !important;
   transition: none !important;
+  border: 1px solid #30363d !important;
 }
 html.dark-mode .skel-card,
 body.dark-mode .skel-card {
   background: #161b22 !important;
   border-color: #30363d !important;
   transition: none !important;
+}
+/* Enhanced dark mode shimmer animation */
+@keyframes skel-shimmer-dark {
+  0%   { background-position: -600px 0; }
+  100% { background-position: 600px 0; }
+}
+
+html.dark-mode .skel-hero,
+html.dark-mode .skel-card-img,
+html.dark-mode .skel-line,
+body.dark-mode .skel-hero,
+body.dark-mode .skel-card-img,
+body.dark-mode .skel-line {
+  background: linear-gradient(90deg, #21293d 25%, #3a4a5c 50%, #21293d 75%) !important;
+  background-size: 600px 100% !important;
+  animation: skel-shimmer-dark 1.4s infinite linear !important;
+  border: 1px solid #30363d !important;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.2) !important;
+}
+
+/* Ensure skeleton is visible in dark mode */
+html.dark-mode .skel-hero,
+body.dark-mode .skel-hero {
+  background: linear-gradient(90deg, #21293d 25%, #3a4a5c 50%, #21293d 75%) !important;
+  border: 2px solid #30363d !important;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.3), inset 0 1px 3px rgba(255,255,255,0.05) !important;
+}
+
+/* Better spacing for mainArticleWrap in dark mode */
+html.dark-mode #mainArticleWrap,
+body.dark-mode #mainArticleWrap {
+  margin-top: 40px !important;
+}
+
+@media (max-width: 768px) {
+  html.dark-mode #mainArticleWrap,
+  body.dark-mode #mainArticleWrap {
+    margin-top: 24px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  html.dark-mode #mainArticleWrap,
+  body.dark-mode #mainArticleWrap {
+    margin-top: 16px !important;
+  }
 }
