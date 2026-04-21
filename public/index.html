@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="landing.css">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com"></script>
+
   <style>
     
 
@@ -767,6 +767,21 @@
         <button class="filter-btn" onclick="filterResources('freelance')"><img src="/file/service.jpg" alt="Services">
           Services</button>
       </div>
+
+      <!-- Mobile dropdown (shown only on mobile via CSS) -->
+      <div class="filter-dropdown-wrap" id="filterDropdownWrap">
+        <button class="filter-dropdown-btn" id="filterDropdownBtn" onclick="toggleFilterDropdown()">
+          <span class="fdb-left" id="filterDropdownLabel">All</span>
+          <span class="fdb-arrow">▼</span>
+        </button>
+        <div class="filter-dropdown-list" id="filterDropdownList">
+          <button class="filter-dropdown-item active" onclick="selectFilter('all', 'All', null)">All</button>
+          <button class="filter-dropdown-item" onclick="selectFilter('pdf', 'PDF Notes', '/file/pdf.jpg')"><img src="/file/pdf.jpg" alt="PDF"> PDF Notes</button>
+          <button class="filter-dropdown-item" onclick="selectFilter('excel', 'Excel', '/file/excel.jpg')"><img src="/file/excel.jpg" alt="Excel"> Excel</button>
+          <button class="filter-dropdown-item" onclick="selectFilter('exam', 'Exam Prep', '/file/exam.jpg')"><img src="/file/exam.jpg" alt="Exam"> Exam Prep</button>
+          <button class="filter-dropdown-item" onclick="selectFilter('freelance', 'Services', '/file/service.jpg')"><img src="/file/service.jpg" alt="Services"> Services</button>
+        </div>
+      </div>
       <div id="resourcesGrid" class="resources-grid"></div>
       <div class="pagination"></div>
     </div>
@@ -1240,6 +1255,36 @@
   <script src="toast.js"></script>
   <script src="landing.js"></script>
   <script src="dark-theme.js"></script>
+
+  <script>
+    function toggleFilterDropdown() {
+      const btn = document.getElementById('filterDropdownBtn');
+      const list = document.getElementById('filterDropdownList');
+      btn.classList.toggle('open');
+      list.classList.toggle('open');
+    }
+
+    function selectFilter(type, label, imgSrc) {
+      const lbl = document.getElementById('filterDropdownLabel');
+      lbl.innerHTML = imgSrc
+        ? `<img src="${imgSrc}" style="width:18px;height:18px;object-fit:contain;border-radius:4px;"> ${label}`
+        : label;
+      document.querySelectorAll('.filter-dropdown-item').forEach(el => el.classList.remove('active'));
+      event.currentTarget.classList.add('active');
+      document.getElementById('filterDropdownBtn').classList.remove('open');
+      document.getElementById('filterDropdownList').classList.remove('open');
+      filterResources(type);
+    }
+
+    document.addEventListener('click', function(e) {
+      const wrap = document.getElementById('filterDropdownWrap');
+      if (wrap && !wrap.contains(e.target)) {
+        document.getElementById('filterDropdownBtn')?.classList.remove('open');
+        document.getElementById('filterDropdownList')?.classList.remove('open');
+      }
+    });
+  </script>
+
   <script>
     const supabaseUrl = 'https://emnrgsgerfjvndexomro.supabase.co';
     const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVtbnJnc2dlcmZqdm5kZXhvbXJvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI0MjAyMTAsImV4cCI6MjA4Nzk5NjIxMH0.uXr8lipxLbB4D_5JwQkpLzc-HudQw23tOFBfV4C6hqY';
