@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -116,6 +116,21 @@
     }
   </style>
 
+<!-- mob-nav-theme-fix -->
+  <style>
+    html:not(.dark-mode) .mob-nav, body:not(.dark-mode) .mob-nav {
+      background: #ffffff !important;
+      border-top: 1px solid #e8edf5 !important;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.08) !important;
+    }
+    html.dark-mode .mob-nav, body.dark-mode .mob-nav {
+      background: #0d1117 !important;
+      border-top: 1px solid #30363d !important;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.6) !important;
+    }
+    .mob-nav, .mob-nav * { transition: none !important; }
+  </style>
+<!-- /mob-nav-theme-fix -->
 </head>
 
 <body>
