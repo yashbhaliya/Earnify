@@ -53,7 +53,7 @@ function _renderBlogGrid() {
 
   grid.innerHTML = slice.map(b => {
     const slug = b.slug || generateSlug(b.title);
-    const permalink = `/public/Blog/post/?permalink=${slug}`;
+    const permalink = `/Blog/post/?permalink=${slug}`;
     return `
     <div class="blog-card" id="card-${b.id}">
       <div class="blog-card-img">

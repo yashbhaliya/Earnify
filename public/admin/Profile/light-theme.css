@@ -159,7 +159,7 @@ body:not(.dark-mode) .btn-edit {
 }
 
 body:not(.dark-mode) .btn-edit:hover {
-  background: #dcfce7 !important;
+  color: white !important;
 }
 
 body:not(.dark-mode) .btn-logout {
@@ -167,7 +167,7 @@ body:not(.dark-mode) .btn-logout {
 }
 
 body:not(.dark-mode) .btn-logout:hover {
-  background: #fee2e2 !important;
+  color: white !important;
 }
 
 body:not(.dark-mode) .shimmer-gradient {
