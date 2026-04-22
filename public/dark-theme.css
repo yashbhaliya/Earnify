@@ -1757,7 +1757,7 @@ html.dark-mode body .dash-banner-left p {
 /* Stat cards */
 body.dark-mode,
 html.dark-mode body .stat-card {
-  /* background: #161b22 !important; */
+  background: #161b22 !important;
   border-color: #30363d !important;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35) !important;
 }
