@@ -975,11 +975,12 @@
       font-family: inherit;
       background: white;
       box-shadow: 4px 4px 8px #b8bec7, -4px -4px 8px #ffffff;
-      transition: background 0.4s, box-shadow 0.4s;
+      transition: background 0.4s;
     }
+    html.dark-mode .sb-nm-toggle,
     body.dark-mode .sb-nm-toggle {
-      background: #1e2535;
-      box-shadow: 4px 4px 8px #0d1117, -3px -3px 7px #2d3a4a;
+      background: #1e2535 !important;
+      box-shadow: 4px 4px 8px #0d1117, -3px -3px 7px #2d3a4a !important;
     }
     .sb-nm-knob {
       position: absolute;
@@ -996,13 +997,14 @@
       font-size: 16px;
       line-height: 1;
       pointer-events: none;
-      transition: left 0.4s cubic-bezier(.4,0,.2,1), background 0.4s, box-shadow 0.4s;
+      transition: left 0.4s cubic-bezier(.4,0,.2,1), background 0.4s;
       z-index: 2;
     }
+    html.dark-mode .sb-nm-knob,
     body.dark-mode .sb-nm-knob {
-      left: 52px;
-      background: #2d3748;
-      box-shadow: 2px 2px 5px #0d1117, -1px -1px 4px #3a4a5c;
+      left: 52px !important;
+      background: #2d3748 !important;
+      box-shadow: 2px 2px 5px #0d1117, -1px -1px 4px #3a4a5c !important;
     }
     .sb-nm-label {
       position: absolute;
