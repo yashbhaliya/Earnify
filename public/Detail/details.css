@@ -72,8 +72,8 @@ body {
 }
 
 .admin-btn:hover {
+ background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   transform: translateY(-1px);
-  box-shadow: 0 4px 14px rgba(102, 126, 234, 0.35);
 }
 
 .user-menu {

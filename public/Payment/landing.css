@@ -89,9 +89,8 @@ body {
 }
 
 .admin-btn:hover {
-  background: #1D4ED8;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  transform: translateY(-1px);
 }
 
 .hero {
