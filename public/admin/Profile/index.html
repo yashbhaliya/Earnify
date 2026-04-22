@@ -1041,7 +1041,7 @@
       <!-- Neumorphic Theme Toggle -->
     <div class="sb-nm-wrap">
       <button class="sb-nm-toggle" id="sbNmToggle" onclick="toggleDarkMode()" title="Toggle dark/light mode">
-        <span class="sb-nm-knob" id="sbNmKnob">☀️</span>
+        <span class="sb-nm-knob" id="sbNmKnob"></span>
         <span class="sb-nm-label sb-nm-label-light">LIGHT</span>
         <span class="sb-nm-label sb-nm-label-dark">DARK</span>
       </button>
@@ -1064,6 +1064,7 @@
     </div>
 
   </div>
+<script>!function(){var k=document.getElementById('sbNmKnob');if(k)k.textContent=localStorage.getItem('earnify_dark_mode')==='1'?'🌙':'☀️';}();</script>
 
   <div class="main">
     <div class="profile-container" id="profileContainer">
