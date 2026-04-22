@@ -265,6 +265,118 @@
   <link rel="stylesheet" href="./Blog/blog.css">
   <link rel="stylesheet" href="dark-theme.css">
   <style>
+    /* ── Filter Dropdown (mobile only) ── */
+    .filter-dropdown-wrap { display: none; }
+    @media (max-width: 768px) {
+      .filter-tabs { display: none !important; }
+      .filter-dropdown-wrap {
+        display: block;
+        margin-bottom: 24px;
+        position: relative;
+      }
+      .filter-dropdown-btn {
+        width: 100%;
+        padding: 13px 18px;
+        border-radius: 14px;
+        border: 2px solid #e2e8f0;
+        font-size: 15px;
+        font-weight: 600;
+        background: #fff;
+        color: #1a1a2e;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        box-shadow: 0 2px 10px rgba(102,126,234,0.10);
+        transition: border-color 0.2s;
+        font-family: inherit;
+      }
+      .filter-dropdown-btn.open {
+        border-color: #667eea;
+        border-radius: 14px 14px 0 0;
+      }
+      .filter-dropdown-btn .fdb-left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      #fdbSelectedThumb img {
+        width: 22px;
+        height: 22px;
+        border-radius: 6px;
+        object-fit: contain;
+        display: block;
+      }
+      .filter-dropdown-btn .fdb-arrow {
+        transition: transform 0.25s;
+        color: #667eea;
+        flex-shrink: 0;
+      }
+      .filter-dropdown-btn.open .fdb-arrow {
+        transform: rotate(180deg);
+      }
+      .filter-dropdown-list {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0; right: 0;
+        background: #fff;
+        border: 2px solid #667eea;
+        border-top: none;
+        border-radius: 0 0 14px 14px;
+        z-index: 100;
+        overflow: hidden;
+        box-shadow: 0 8px 24px rgba(102,126,234,0.15);
+      }
+      .filter-dropdown-list.open { display: block; }
+      .filter-dropdown-option {
+        padding: 12px 18px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 14px;
+        font-weight: 600;
+        color: #475569;
+        cursor: pointer;
+        transition: background 0.15s;
+      }
+      .filter-dropdown-option:hover {
+        background: rgba(102,126,234,0.08);
+        color: #667eea;
+      }
+      .filter-dropdown-option.active {
+        background: linear-gradient(135deg,#667eea,#764ba2);
+        color: #fff;
+      }
+      .filter-dropdown-option img {
+        width: 24px;
+        height: 24px;
+        border-radius: 6px;
+        object-fit: contain;
+        flex-shrink: 0;
+      }
+      html.dark-mode .filter-dropdown-btn,
+      body.dark-mode .filter-dropdown-btn {
+        background: #1e2535;
+        border-color: #30363d;
+        color: #e2e8f0;
+      }
+      html.dark-mode .filter-dropdown-list,
+      body.dark-mode .filter-dropdown-list {
+        background: #1e2535;
+        border-color: #667eea;
+      }
+      html.dark-mode .filter-dropdown-option,
+      body.dark-mode .filter-dropdown-option {
+        color: #94a3b8;
+      }
+      html.dark-mode .filter-dropdown-option:hover,
+      body.dark-mode .filter-dropdown-option:hover {
+        background: rgba(102,126,234,0.15);
+        color: #a78bfa;
+      }
+    }
     /* ── Navbar Neumorphic Toggle ── */
     #navNmWrap {
       display: flex;
@@ -807,6 +919,22 @@
         <button class="filter-btn" onclick="filterResources('freelance')"><img src="/file/service.jpg" alt="Services">
           Services</button>
       </div>
+      <div class="filter-dropdown-wrap" id="filterDropdownWrap">
+        <button class="filter-dropdown-btn" id="filterDropdownBtn" onclick="toggleFilterDropdown()">
+          <span class="fdb-left">
+            <span id="fdbSelectedThumb"></span>
+            <span id="fdbSelectedLabel">All Resources</span>
+          </span>
+          <svg class="fdb-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="filter-dropdown-list" id="filterDropdownList">
+          <div class="filter-dropdown-option active" data-value="all" data-label="All Resources" onclick="selectFilterOption(this)">&#128452; All Resources</div>
+          <div class="filter-dropdown-option" data-value="pdf" data-label="PDF Notes" onclick="selectFilterOption(this)"><img src="/file/pdf.jpg" alt="PDF"> PDF Notes</div>
+          <div class="filter-dropdown-option" data-value="excel" data-label="Excel" onclick="selectFilterOption(this)"><img src="/file/excel.jpg" alt="Excel"> Excel</div>
+          <div class="filter-dropdown-option" data-value="exam" data-label="Exam Prep" onclick="selectFilterOption(this)"><img src="/file/exam.jpg" alt="Exam"> Exam Prep</div>
+          <div class="filter-dropdown-option" data-value="freelance" data-label="Services" onclick="selectFilterOption(this)"><img src="/file/service.jpg" alt="Services"> Services</div>
+        </div>
+      </div>
       <div id="resourcesGrid" class="resources-grid"></div>
       <div class="pagination"></div>
     </div>
@@ -1272,6 +1400,31 @@
       }
     })();
     function closeMobNav() { }
+    function toggleFilterDropdown() {
+      var btn = document.getElementById('filterDropdownBtn');
+      var list = document.getElementById('filterDropdownList');
+      btn.classList.toggle('open');
+      list.classList.toggle('open');
+    }
+    function selectFilterOption(el) {
+      document.querySelectorAll('.filter-dropdown-option').forEach(function(o){ o.classList.remove('active'); });
+      el.classList.add('active');
+      var thumb = document.getElementById('fdbSelectedThumb');
+      var img = el.querySelector('img');
+      if (img) { thumb.innerHTML = '<img src="' + img.src + '" alt="" style="width:22px;height:22px;border-radius:6px;object-fit:contain;">'; }
+      else { thumb.innerHTML = '&#128452;'; }
+      document.getElementById('fdbSelectedLabel').textContent = el.dataset.label;
+      document.getElementById('filterDropdownBtn').classList.remove('open');
+      document.getElementById('filterDropdownList').classList.remove('open');
+      filterResources(el.dataset.value);
+    }
+    document.addEventListener('click', function(e) {
+      var wrap = document.getElementById('filterDropdownWrap');
+      if (wrap && !wrap.contains(e.target)) {
+        document.getElementById('filterDropdownBtn').classList.remove('open');
+        document.getElementById('filterDropdownList').classList.remove('open');
+      }
+    });
   </script>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
