@@ -2123,8 +2123,13 @@
       font-family: inherit;
       background: white;
       box-shadow: 5px 5px 10px #c8cdd6, -5px -5px 10px #ffffff;
-      transition: background .4s, box-shadow .4s;
+      transition: background .4s;
       outline: none;
+    }
+    html.dark-mode .sb-nm-toggle,
+    body.dark-mode .sb-nm-toggle {
+      background: #1a2030 !important;
+      box-shadow: 5px 5px 10px #0a0e17, -4px -4px 9px #263040 !important;
     }
 
     .sb-nm-toggle:focus-visible {
@@ -2141,12 +2146,18 @@
       background: #ffffff;
       box-shadow: 2px 2px 6px #b0b8c4, -1px -1px 4px #ffffff;
       pointer-events: none;
-      transition: left .4s cubic-bezier(.4, 0, .2, 1), background .4s, box-shadow .4s;
+      transition: left .4s cubic-bezier(.4, 0, .2, 1), background .4s;
       z-index: 2;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 16px;
+    }
+    html.dark-mode .sb-nm-knob,
+    body.dark-mode .sb-nm-knob {
+      left: 53px !important;
+      background: linear-gradient(135deg, #3a4a5c, #2d3748) !important;
+      box-shadow: 2px 2px 6px #0a0e17, -1px -1px 4px #3a4a5c !important;
     }
     .sb-nm-knob::before {
       content: "☀️";
@@ -2156,6 +2167,10 @@
       content: "🌙";
       display: none;
     }
+    html.dark-mode .sb-nm-knob::before,
+    body.dark-mode .sb-nm-knob::before { display: none !important; }
+    html.dark-mode .sb-nm-knob::after,
+    body.dark-mode .sb-nm-knob::after  { display: block !important; }
 
     .sb-nm-label {
       position: absolute;
@@ -2287,8 +2302,6 @@
       background: linear-gradient(135deg, #3a4a5c, #2d3748) !important;
       box-shadow: 2px 2px 6px #0a0e17, -1px -1px 4px #3a4a5c !important;
     }
-    html.dark-mode .sb-nm-knob::before { display: none !important; }
-    html.dark-mode .sb-nm-knob::after  { display: block !important; }
 
     html.dark-mode .sb-nm-label-light {
       opacity: 0 !important;
