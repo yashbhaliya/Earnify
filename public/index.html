@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+  <script>!function(){var li=localStorage.getItem('userLoggedIn')==='true'||localStorage.getItem('adminToken')!==null;if(li){var s=document.createElement('style');s.id='home-auth-flash-fix';s.textContent='#loginBtn,#signupBtn{display:none!important}#userMenu{display:flex!important}';document.head.appendChild(s);}}();</script>
   <script>!function () { var d = localStorage.getItem('earnify_dark_mode') === '1'; document.documentElement.classList.toggle('dark-mode', d); if (d) { document.documentElement.style.background = '#0d1117'; document.documentElement.style.colorScheme = 'dark'; } var s = document.createElement('style'); s.id = 'mob-nav-flash-fix'; s.textContent = d ? '.mob-nav{background:#0d1117!important;border-top-color:#30363d!important;transition:none!important}.mob-nav-item{color:#8b949e!important;transition:none!important}.mob-nav-item svg{stroke:#8b949e!important;transition:none!important}' : '.mob-nav{background:#ffffff!important;border-top-color:#e8edf5!important;transition:none!important}.mob-nav-item{color:#94a3b8!important;transition:none!important}'; document.head.appendChild(s); document.addEventListener('DOMContentLoaded', function () { document.body.classList.toggle('dark-mode', d); setTimeout(function(){ var el=document.getElementById('mob-nav-flash-fix'); if(el) el.remove(); }, 400); }); }();</script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -470,6 +471,45 @@
     </div>
     <div class="mobile-sidebar-overlay" id="mobileSidebarOverlay" onclick="toggleMobileMenu()"></div>
   </nav>
+
+  <!-- Navbar auth state: runs synchronously after nav HTML exists in DOM -->
+  <script>
+    !function() {
+      try {
+        var loggedIn = localStorage.getItem('userLoggedIn') === 'true' || localStorage.getItem('adminToken') !== null;
+        var loginBtn  = document.getElementById('loginBtn');
+        var signupBtn = document.getElementById('signupBtn');
+        var userMenu  = document.getElementById('userMenu');
+        if (loggedIn) {
+          if (loginBtn)  loginBtn.style.display  = 'none';
+          if (signupBtn) signupBtn.style.display = 'none';
+          if (userMenu)  userMenu.style.display  = 'flex';
+          var cu    = JSON.parse(localStorage.getItem('currentUser') || '{}');
+          var name  = (cu.user_metadata && cu.user_metadata.name) || (cu.email && cu.email.split('@')[0]) || 'User';
+          var email = cu.email || '';
+          var el;
+          el = document.getElementById('userName');         if (el) el.textContent = name;
+          el = document.getElementById('userDisplayName');  if (el) el.textContent = name;
+          el = document.getElementById('userEmail');        if (el) el.textContent = email;
+          el = document.getElementById('userAvatarInitial');if (el) el.textContent = name.charAt(0).toUpperCase();
+          el = document.getElementById('mobileUserName');   if (el) el.textContent = name;
+          el = document.getElementById('mobileUserEmail');  if (el) el.textContent = email;
+          var mobileLoginBtn  = document.getElementById('mobileLoginBtn');
+          var mobileSignupBtn = document.getElementById('mobileSignupBtn');
+          var mobileUserMenu  = document.getElementById('mobileUserMenu');
+          if (mobileLoginBtn)  mobileLoginBtn.style.display  = 'none';
+          if (mobileSignupBtn) mobileSignupBtn.style.display = 'none';
+          if (mobileUserMenu)  mobileUserMenu.style.display  = 'block';
+        } else {
+          if (loginBtn)  loginBtn.style.display  = 'inline-block';
+          if (signupBtn) signupBtn.style.display = 'inline-block';
+          if (userMenu)  userMenu.style.display  = 'none';
+        }
+        var fix = document.getElementById('home-auth-flash-fix');
+        if (fix) fix.remove();
+      } catch(e) {}
+    }();
+  </script>
 
   <div class="hero-wrapper">
     <main class="hero-gradient">

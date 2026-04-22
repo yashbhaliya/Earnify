@@ -208,13 +208,18 @@
           </button>
           <div id="userDropdown" class="user-dropdown">
             <div class="user-dropdown-header">
-              <div class="name" id="userDisplayName">User</div>
-              <div class="email" id="userEmail">user@email.com</div>
+              <div class="udh-avatar" id="userAvatarInitial">U</div>
+              <div class="udh-info">
+                <div class="udh-name" id="userDisplayName">User</div>
+                <div class="udh-badge">Member</div>
+                <div class="udh-email" id="userEmail">user@email.com</div>
+              </div>
             </div>
-            <a href="../admin/Resources/"><span>➕</span> Add Resources</a>
-            <a href="../admin/Statistics/"><span>📊</span> View Statistics</a>
-            <a href="../admin/Profile/"><span>👤</span> View Profile</a>
-            <a onclick="logout()"><span>🚪</span> Logout</a>
+            <a href="../admin/Statistics/"><i class="fas fa-chart-bar"></i> My Statistics</a>
+            <a href="../admin/Resources/"><i class="fas fa-plus"></i> Add Resources</a>
+            <a href="../admin/Profile/"><i class="fas fa-user"></i> View Profile</a>
+            <div class="udh-divider"></div>
+            <a onclick="logout()" class="udh-logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
           </div>
         </div>
       </div>
@@ -245,6 +250,25 @@
     </div>
     <div class="mobile-sidebar-overlay" id="mobileSidebarOverlay" onclick="toggleMobileMenu()"></div>
   </nav>
+
+  <!-- Navbar auth state: populate user info synchronously after nav exists -->
+  <script>
+    !function() {
+      try {
+        var cu   = JSON.parse(localStorage.getItem('currentUser') || '{}');
+        var name = (cu.user_metadata && cu.user_metadata.name) || (cu.email && cu.email.split('@')[0]) || 'User';
+        var email = cu.email || '';
+        var el;
+        el = document.getElementById('userName');         if (el) el.textContent = name;
+        el = document.getElementById('userDisplayName');  if (el) el.textContent = name;
+        el = document.getElementById('userEmail');        if (el) el.textContent = email;
+        el = document.getElementById('userAvatarInitial');if (el) el.textContent = name.charAt(0).toUpperCase();
+        el = document.getElementById('mobileUserName');   if (el) el.textContent = name;
+        el = document.getElementById('mobileUserEmail');  if (el) el.textContent = email;
+        el = document.getElementById('bannerName');       if (el) el.textContent = name;
+      } catch(e) {}
+    }();
+  </script>
 
   <div class="dashboard-wrapper">
 
@@ -488,10 +512,11 @@
         currentUser = user;
         const dName = user.user_metadata?.name || user.email?.split('@')[0] || 'there';
         const dEmail = user.email || '';
-        document.getElementById('bannerName').textContent = dName;
+    document.getElementById('bannerName').textContent = dName;
         document.getElementById('userName').textContent = dName;
         document.getElementById('userDisplayName').textContent = dName;
         document.getElementById('userEmail').textContent = dEmail;
+        const avi1 = document.getElementById('userAvatarInitial'); if(avi1) avi1.textContent = dName.charAt(0).toUpperCase();
         document.getElementById('mobileUserName').textContent = dName;
         document.getElementById('mobileUserEmail').textContent = dEmail;
         loadPurchases();
@@ -508,6 +533,7 @@
     document.getElementById('userName').textContent = dName;
     document.getElementById('userDisplayName').textContent = dName;
     document.getElementById('userEmail').textContent = dEmail;
+    const avi2 = document.getElementById('userAvatarInitial'); if (avi2) avi2.textContent = dName.charAt(0).toUpperCase();
     document.getElementById('mobileUserName').textContent = dName;
     document.getElementById('mobileUserEmail').textContent = dEmail;
     loadPurchases();

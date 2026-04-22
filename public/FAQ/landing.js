@@ -74,6 +74,7 @@ document.addEventListener('click', (e) => {
 
 function showLoginModal() {
   document.getElementById('loginModal').style.display = 'flex';
+  if (typeof _amTab === 'function') _amTab('login');
 }
 
 function closeLoginModal() {
@@ -81,11 +82,12 @@ function closeLoginModal() {
 }
 
 function showSignupModal() {
-  document.getElementById('signupModal').style.display = 'flex';
+  document.getElementById('loginModal').style.display = 'flex';
+  if (typeof _amTab === 'function') _amTab('signup');
 }
 
 function closeSignupModal() {
-  document.getElementById('signupModal').style.display = 'none';
+  document.getElementById('loginModal').style.display = 'none';
 }
 
 function switchToSignup() {

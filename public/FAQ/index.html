@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+  <script>!function(){var li=localStorage.getItem('userLoggedIn')==='true'||localStorage.getItem('adminToken')!==null;if(li){var s=document.createElement('style');s.id='faq-auth-flash-fix';s.textContent='#loginBtn,#signupBtn{display:none!important}#userMenu{display:flex!important}';document.head.appendChild(s);}}();</script>
   <script>!function () { var d = localStorage.getItem('earnify_dark_mode') === '1'; document.documentElement.classList.toggle('dark-mode', d); if (d) { document.documentElement.style.background = '#0d1117'; document.documentElement.style.colorScheme = 'dark'; } var s = document.createElement('style'); s.id = 'mob-nav-flash-fix'; s.textContent = d ? '.mob-nav{background:#0d1117!important;border-top-color:#30363d!important;transition:none!important}.mob-nav-item{color:#8b949e!important;transition:none!important}.mob-nav-item svg{stroke:#8b949e!important;transition:none!important}' : '.mob-nav{background:#ffffff!important;border-top-color:#e8edf5!important;transition:none!important}.mob-nav-item{color:#94a3b8!important;transition:none!important}'; document.head.appendChild(s); document.addEventListener('DOMContentLoaded', function () { document.body.classList.toggle('dark-mode', d); var k=document.getElementById('sbNmKnob'); if(k) k.textContent=d?'☀️':'🌙'; var mk=document.getElementById('mobileNmKnob'); if(mk) mk.textContent=d?'☀️':'🌙'; setTimeout(function () { var el = document.getElementById('mob-nav-flash-fix'); if (el) el.remove(); }, 400); }); }();</script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
     rel="stylesheet">
@@ -13,6 +14,7 @@
   <link rel="stylesheet" href="../landing.css">
   <link rel="stylesheet" href="pages.css">
   <link rel="stylesheet" href="../dark-theme.css">
+  <link rel="stylesheet" href="../auth-modal.css">
   <style>
     .sb-nm-toggle {
       position: relative;
@@ -135,11 +137,35 @@
         <a href="../">Home</a>
         <a href="../About/">About</a>
         <a href="../FAQ/" class="nav-active">FAQ</a>
-        <a href="../Dashboard/">Dashboard</a>
+        <a href="../Dashboard/" onclick="goToDashboard(event)">Dashboard</a>
+        <button id="loginBtn" class="admin-btn" onclick="showLoginModal()">Login</button>
+        <button id="signupBtn" class="admin-btn" onclick="showSignupModal()">Sign Up</button>
         <div id="navNmWrap" style="display:flex;align-items:center;"><button class="sb-nm-toggle" id="sbNmToggle"
             onclick="toggleDarkMode()" title="Toggle dark/light mode"><span class="sb-nm-knob"
               id="sbNmKnob">🌙</span><span class="sb-nm-label sb-nm-label-light">LIGHT</span><span
               class="sb-nm-label sb-nm-label-dark">DARK</span></button></div>
+        <div id="userMenu" class="user-menu" style="display:none;">
+          <button class="user-menu-btn" onclick="toggleUserDropdown()">
+            <span class="user-avatar">👤</span>
+            <span id="userName">User</span>
+            <span style="font-size:10px;">▼</span>
+          </button>
+          <div id="userDropdown" class="user-dropdown">
+            <div class="user-dropdown-header">
+              <div class="udh-avatar" id="userAvatarInitial">U</div>
+              <div class="udh-info">
+                <div class="udh-name" id="userDisplayName">User</div>
+                <div class="udh-badge">Member</div>
+                <div class="udh-email" id="userEmail">user@email.com</div>
+              </div>
+            </div>
+            <a href="../admin/Statistics/"><i class="fas fa-chart-bar"></i> My Statistics</a>
+            <a href="../admin/Resources/"><i class="fas fa-plus"></i> Add Resources</a>
+            <a href="../admin/Profile/"><i class="fas fa-user"></i> View Profile</a>
+            <div class="udh-divider"></div>
+            <a onclick="logout()" class="udh-logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+          </div>
+        </div>
       </div>
     </div>
     <div class="mobile-sidebar" id="mobileSidebar">
@@ -172,6 +198,44 @@
     </div>
     <div class="mobile-sidebar-overlay" id="mobileSidebarOverlay" onclick="toggleMobileMenu()"></div>
   </nav>
+
+  <script>
+    !function() {
+      try {
+        var loggedIn = localStorage.getItem('userLoggedIn') === 'true' || localStorage.getItem('adminToken') !== null;
+        var loginBtn  = document.getElementById('loginBtn');
+        var signupBtn = document.getElementById('signupBtn');
+        var userMenu  = document.getElementById('userMenu');
+        if (loggedIn) {
+          if (loginBtn)  loginBtn.style.display  = 'none';
+          if (signupBtn) signupBtn.style.display = 'none';
+          if (userMenu)  userMenu.style.display  = 'flex';
+          var cu    = JSON.parse(localStorage.getItem('currentUser') || '{}');
+          var name  = (cu.user_metadata && cu.user_metadata.name) || (cu.email && cu.email.split('@')[0]) || 'User';
+          var email = cu.email || '';
+          var el;
+          el = document.getElementById('userName');         if (el) el.textContent = name;
+          el = document.getElementById('userDisplayName');  if (el) el.textContent = name;
+          el = document.getElementById('userEmail');        if (el) el.textContent = email;
+          el = document.getElementById('userAvatarInitial');if (el) el.textContent = name.charAt(0).toUpperCase();
+          el = document.getElementById('mobileUserName');   if (el) el.textContent = name;
+          el = document.getElementById('mobileUserEmail');  if (el) el.textContent = email;
+          var mobileLoginBtn  = document.getElementById('mobileLoginBtn');
+          var mobileSignupBtn = document.getElementById('mobileSignupBtn');
+          var mobileUserMenu  = document.getElementById('mobileUserMenu');
+          if (mobileLoginBtn)  mobileLoginBtn.style.display  = 'none';
+          if (mobileSignupBtn) mobileSignupBtn.style.display = 'none';
+          if (mobileUserMenu)  mobileUserMenu.style.display  = 'block';
+        } else {
+          if (loginBtn)  loginBtn.style.display  = 'inline-block';
+          if (signupBtn) signupBtn.style.display = 'inline-block';
+          if (userMenu)  userMenu.style.display  = 'none';
+        }
+        var fix = document.getElementById('faq-auth-flash-fix');
+        if (fix) fix.remove();
+      } catch(e) {}
+    }();
+  </script>
 
   <div class="hero-wrapper">
     <section class="hero">
@@ -268,7 +332,62 @@
       <span>Dashboard</span>
     </a>
   </nav>
+  <div id="loginModal" class="auth-modal-overlay">
+    <div class="auth-modal-box">
+      <div class="am-left">
+        <div class="am-brand"><div class="am-logo-box">💰</div><span class="am-brand-name">Earnify</span></div>
+        <div class="am-left-body">
+          <div class="am-headline"><h2>Turn Skills into Income 🚀</h2><p>Sell notes, templates &amp; services. Buy what you need. All in one place.</p></div>
+          <div class="am-stats"><div class="am-stat"><div class="am-stat-num">500+</div><div class="am-stat-lbl">Resources</div></div><div class="am-stat"><div class="am-stat-num">1,200+</div><div class="am-stat-lbl">Buyers</div></div><div class="am-stat"><div class="am-stat-num">5%</div><div class="am-stat-lbl">Fee Only</div></div></div>
+          <div class="am-features"><div class="am-feature"><div class="am-feature-icon">✅</div><div class="am-feature-text"><strong>Free to list your resources</strong></div></div><div class="am-feature"><div class="am-feature-icon">⚡</div><div class="am-feature-text"><strong>Instant access after purchase</strong></div></div><div class="am-feature"><div class="am-feature-icon">🔒</div><div class="am-feature-text"><strong>Secure payments via Razorpay</strong></div></div><div class="am-feature"><div class="am-feature-icon">💸</div><div class="am-feature-text"><strong>Only 5% fee on withdrawal</strong></div></div></div>
+          <div class="am-testimonial"><div class="am-stars">★★★★★</div><p class="am-quote">&ldquo;Earned my first ₹5,000 in two weeks selling my notes!&rdquo;</p><div class="am-author"><div class="am-avatar">B</div><div class="am-author-info"><strong>Bhaliya Yash</strong><span>Student &bull; Verified Seller</span></div></div></div>
+        </div>
+        <div class="am-trust"><div class="am-trust-item">🔒 AES-256 Encrypted</div><div class="am-trust-item">✅ 1,200+ Users</div><div class="am-trust-item">🏦 Razorpay Secured</div><div class="am-trust-item">⚡ Instant Delivery</div></div>
+      </div>
+      <div class="am-right">
+        <button class="am-close" onclick="closeLoginModal()">&times;</button>
+        <div class="am-form-inner">
+          <div class="am-tabs"><button class="am-tab active" id="amTabLogin" onclick="_amTab('login')">Login</button><button class="am-tab" id="amTabSignup" onclick="_amTab('signup')">Sign Up</button></div>
+          <div id="amErr" class="am-msg error"></div>
+          <div id="amOk" class="am-msg success"></div>
+          <div id="amLoginForm">
+            <div class="am-header"><h2>Welcome back 👋</h2><p>Login to access your resources, earnings &amp; dashboard.</p></div>
+            <form onsubmit="handleLogin(event)">
+              <div class="am-input-group"><label>Email Address</label><input class="am-input" type="email" id="loginEmail" placeholder="you@example.com" required autocomplete="email"></div>
+              <div class="am-input-group"><div class="am-label-row"><label>Password</label><a href="#" class="am-forgot">Forgot password?</a></div><div class="am-pw-wrap"><input class="am-input" type="password" id="loginPassword" placeholder="Enter your password" required autocomplete="current-password"><button type="button" class="am-toggle-pass" onclick="_amTogglePw('loginPassword',this)"><svg class="eye-on" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg><svg class="eye-off" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg></button></div></div>
+              <button type="submit" class="am-submit-btn">🚀 Log In to Earnify</button>
+            </form>
+            <p class="am-switch">New to Earnify? <a onclick="_amTab('signup')">Create a free account</a></p>
+          </div>
+          <div id="amSignupForm" style="display:none;">
+            <div class="am-header"><h2>Join Earnify 🎉</h2><p>Free account. Start earning from your knowledge today.</p></div>
+            <form onsubmit="handleSignup(event)">
+              <div class="am-input-group"><label>Full Name</label><input class="am-input" type="text" id="signupName" placeholder="Your full name" required autocomplete="name"></div>
+              <div class="am-input-group"><label>Email Address</label><input class="am-input" type="email" id="signupEmail" placeholder="you@example.com" required autocomplete="email"></div>
+              <div class="am-input-group"><label>Password</label><div class="am-pw-wrap"><input class="am-input" type="password" id="signupPassword" placeholder="Min 6 characters" required autocomplete="new-password"><button type="button" class="am-toggle-pass" onclick="_amTogglePw('signupPassword',this)"><svg class="eye-on" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg><svg class="eye-off" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg></button></div></div>
+              <div class="am-input-group"><label>Confirm Password</label><input class="am-input" type="password" id="signupConfirmPassword" placeholder="Re-enter your password" required autocomplete="new-password"></div>
+              <button type="submit" class="am-submit-btn">✨ Create Free Account</button>
+            </form>
+            <p class="am-switch">Already have an account? <a onclick="_amTab('login')">Log in here</a></p>
+          </div>
+          <div class="am-security">🔒 Secured with AES-256 encryption</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="signupModal" style="display:none;"></div>
+  <script>
+    function _amTab(t){document.getElementById('amLoginForm').style.display=t==='login'?'block':'none';document.getElementById('amSignupForm').style.display=t==='signup'?'block':'none';document.getElementById('amTabLogin').classList.toggle('active',t==='login');document.getElementById('amTabSignup').classList.toggle('active',t==='signup');}
+    function _amTogglePw(id,btn){var i=document.getElementById(id);i.type=i.type==='password'?'text':'password';btn.querySelector('.eye-on').style.display=i.type==='text'?'none':'';btn.querySelector('.eye-off').style.display=i.type==='text'?'':'none';}
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const supabaseUrl = 'https://emnrgsgerfjvndexomro.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVtbnJnc2dlcmZqdm5kZXhvbXJvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI0MjAyMTAsImV4cCI6MjA4Nzk5NjIxMH0.uXr8lipxLbB4D_5JwQkpLzc-HudQw23tOFBfV4C6hqY';
+    const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+  </script>
   <script src="faq.js"></script>
+  <script src="landing.js"></script>
   <script src="../dark-theme.js"></script>
   <script>
     function toggleMobileMenu() {

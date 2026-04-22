@@ -3,6 +3,8 @@
 
 <head>
   <script>!function(){var s=localStorage.getItem('earnify_dark_mode');var d=s==='1';document.documentElement.classList.toggle('dark-mode',d);document.documentElement.style.background=d?'#0d1117':'';document.documentElement.style.colorScheme=d?'dark':'light';document.addEventListener('DOMContentLoaded',function(){document.body.classList.toggle('dark-mode',d);});}();</script>
+  <!-- Auth flash-fix: inject CSS before first paint to prevent Login/Signup flash -->
+  <script>!function(){var li=localStorage.getItem('userLoggedIn')==='true'||localStorage.getItem('adminToken')!==null;if(li){var s=document.createElement('style');s.id='detail-auth-flash-fix';s.textContent='#loginBtn,#signupBtn{display:none!important}#userMenu{display:flex!important}';document.head.appendChild(s);}}();</script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
     rel="stylesheet">
   <meta charset="UTF-8">
@@ -138,17 +140,18 @@
             </button>
           </div>
           <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
-          <span class="hamburger"></span>
-          <span class="hamburger"></span>
-          <span class="hamburger"></span>
-        </button>
+            <span class="hamburger"></span>
+            <span class="hamburger"></span>
+            <span class="hamburger"></span>
+          </button>
+        </div>
       </div>
       <div class="nav-links" id="navLinks">
         <a href="../">Home</a>
         <a href="../#resources">Resources</a>
         <a href="../Dashboard/">Dashboard</a>
         <button id="loginBtn" class="admin-btn" onclick="showLoginModal()">Login</button>
-        <button id="signupBtn" class="admin-btn" onclick="showSignupModal()">Sign Up</button>
+        <button id="signupBtn" class="admin-btn" onclick="showSignupModal()">SignUp</button>
         <div id="navNmWrap" style="display:flex;align-items:center;"><button class="sb-nm-toggle" id="sbNmToggle"
             onclick="toggleDarkMode()" title="Toggle dark/light mode"><span class="sb-nm-knob"
               id="sbNmKnob"></span><span class="sb-nm-label sb-nm-label-light">LIGHT</span><span
@@ -161,13 +164,18 @@
           </button>
           <div id="userDropdown" class="user-dropdown">
             <div class="user-dropdown-header">
-              <div class="name" id="userDisplayName">User</div>
-              <div class="email" id="userEmail">user@email.com</div>
+              <div class="udh-avatar" id="userAvatarInitial">U</div>
+              <div class="udh-info">
+                <div class="udh-name" id="userDisplayName">User</div>
+                <div class="udh-badge">Member</div>
+                <div class="udh-email" id="userEmail">user@email.com</div>
+              </div>
             </div>
-            <a href="../admin/Profile/"><span>👤</span> View Profile</a>
-            <a href="../admin/Statistics/"><span>📊</span> Statistic</a>
-            <a href="../admin/Resources/"><span>➕</span> Add Resources</a>
-            <a onclick="logout()"><span>🚪</span> Logout</a>
+            <a href="../admin/Statistics/"><i class="fas fa-chart-bar"></i> My Statistics</a>
+            <a href="../admin/Resources/"><i class="fas fa-plus"></i> Add Resources</a>
+            <a href="../admin/Profile/"><i class="fas fa-user"></i> View Profile</a>
+            <div class="udh-divider"></div>
+            <a onclick="logout()" class="udh-logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
           </div>
         </div>
       </div>
@@ -204,6 +212,46 @@
     </div>
     <div class="mobile-sidebar-overlay" id="mobileSidebarOverlay" onclick="toggleMobileMenu()"></div>
   </nav>
+
+  <!-- Navbar auth state: runs synchronously after nav HTML exists in DOM -->
+  <script>
+    !function() {
+      try {
+        var loggedIn = localStorage.getItem('userLoggedIn') === 'true' || localStorage.getItem('adminToken') !== null;
+        var loginBtn  = document.getElementById('loginBtn');
+        var signupBtn = document.getElementById('signupBtn');
+        var userMenu  = document.getElementById('userMenu');
+        if (loggedIn) {
+          if (loginBtn)  loginBtn.style.display  = 'none';
+          if (signupBtn) signupBtn.style.display = 'none';
+          if (userMenu)  userMenu.style.display  = 'flex';
+          var cu    = JSON.parse(localStorage.getItem('currentUser') || '{}');
+          var name  = (cu.user_metadata && cu.user_metadata.name) || (cu.email && cu.email.split('@')[0]) || 'User';
+          var email = cu.email || '';
+          var el;
+          el = document.getElementById('userName');         if (el) el.textContent = name;
+          el = document.getElementById('userDisplayName');  if (el) el.textContent = name;
+          el = document.getElementById('userEmail');        if (el) el.textContent = email;
+          el = document.getElementById('userAvatarInitial');if (el) el.textContent = name.charAt(0).toUpperCase();
+          el = document.getElementById('mobileUserName');   if (el) el.textContent = name;
+          el = document.getElementById('mobileUserEmail');  if (el) el.textContent = email;
+          var mobileLoginBtn  = document.getElementById('mobileLoginBtn');
+          var mobileSignupBtn = document.getElementById('mobileSignupBtn');
+          var mobileUserMenu  = document.getElementById('mobileUserMenu');
+          if (mobileLoginBtn)  mobileLoginBtn.style.display  = 'none';
+          if (mobileSignupBtn) mobileSignupBtn.style.display = 'none';
+          if (mobileUserMenu)  mobileUserMenu.style.display  = 'block';
+        } else {
+          if (loginBtn)  loginBtn.style.display  = 'inline-block';
+          if (signupBtn) signupBtn.style.display = 'inline-block';
+          if (userMenu)  userMenu.style.display  = 'none';
+        }
+        /* Remove the head CSS flash-fix now that inline styles are set */
+        var fix = document.getElementById('detail-auth-flash-fix');
+        if (fix) fix.remove();
+      } catch(e) {}
+    }();
+  </script>
 
   <div class="details-wrapper">
     <div class="container">
