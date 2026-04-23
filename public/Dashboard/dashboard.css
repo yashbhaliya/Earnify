@@ -710,6 +710,29 @@
     font-size: 1.2rem;
   }
 
+  /* Section head: h2 + cd-wrap inline, filter select on new row */
+  .dash-section-head {
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .dash-section-head > h2 {
+    flex: 1;
+    min-width: 0;
+    order: 1;
+  }
+
+  .dash-section-head > .cd-wrap {
+    order: 2;
+    flex-shrink: 0;
+  }
+
+  .dash-section-head > .dash-filter-select-wrap {
+    order: 3;
+    flex-basis: 100%;
+  }
+
   .dash-filters {
     display: none;
   }
@@ -741,64 +764,103 @@
     cursor: pointer;
     appearance: none;
     -webkit-appearance: none;
+    flex: 1;
   }
 
+  /* No horizontal scroll — card layout */
   .purchases-grid {
-    overflow-x: unset;
+    overflow: hidden;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    border-radius: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
   }
 
-  .purchases-table {
-    min-width: unset;
+  /* Hide thead entirely */
+  .purchases-table thead {
+    display: none;
+  }
+
+  /* Table becomes block */
+  .purchases-table,
+  .purchases-table tbody {
+    display: block;
     width: 100%;
   }
 
-  /* Hide Date col on mobile */
-  .purchases-table thead th:nth-child(3),
+  /* Each row = a card */
+  .purchases-table tbody tr {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: white;
+    border-radius: 14px;
+    border: 1.5px solid #d1d9e6;
+    box-shadow: 0 2px 10px rgba(102,126,234,0.07);
+    padding: 12px 14px;
+    border-bottom: 1.5px solid #d1d9e6;
+  }
+
+  /* Hide price & date cols — show only resource + actions */
+  .purchases-table tbody td:nth-child(2),
   .purchases-table tbody td:nth-child(3) {
     display: none;
   }
 
-  /* Resource cell */
+  /* Resource cell fills remaining space */
+  .purchases-table tbody td:nth-child(1) {
+    flex: 1;
+    min-width: 0;
+    padding: 0;
+  }
+
+  /* Actions cell shrinks to content */
+  .purchases-table tbody td:nth-child(4) {
+    padding: 0;
+    flex-shrink: 0;
+  }
+
   .td-resource {
-    min-width: unset;
-  }
-
-  .td-resource-top {
-    gap: 3px;
-  }
-
-  .td-icon {
-    width: 32px;
-    height: 32px;
-    font-size: 0.95rem;
+    min-width: 0;
   }
 
   .td-title {
     font-size: 0.82rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
-  /* Actions col: hide Download in table only, keep visible in modal */
+  .td-icon {
+    width: 34px;
+    height: 34px;
+    font-size: 0.95rem;
+    flex-shrink: 0;
+  }
+
+  .td-resource-top {
+    min-width: 0;
+    gap: 3px;
+  }
+
   .purchases-table .pc-btn.download {
     display: none;
   }
 
   .td-actions {
     gap: 4px;
-    justify-content: flex-end;
   }
 
   .pc-btn.view {
     padding: 8px 14px;
     font-size: 0.78rem;
-     color: #8b5cf6;
-  border: 1px solid transparent;
-  background: linear-gradient(white, white) padding-box,
-    linear-gradient(135deg, #8b5cf6, #7c3aed) border-box;
-  }
-
-  /* Price col: tighter */
-  .td-price {
-    font-size: 0.9rem;
+    color: #8b5cf6;
+    border: 1px solid transparent;
+    background: linear-gradient(white, white) padding-box,
+      linear-gradient(135deg, #8b5cf6, #7c3aed) border-box;
   }
 }
 
@@ -1266,6 +1328,15 @@ body.dark-mode .dash-filter-select,
 html.dark-mode .dash-filter-select {
   color: #e6edf3 !important;
   background: transparent !important;
+}
+
+/* Purchases table — dark mode card rows on mobile */
+@media (max-width: 640px) {
+  body.dark-mode .purchases-table tbody tr,
+  html.dark-mode .purchases-table tbody tr {
+    background: #161b22 !important;
+    border-color: rgba(124,106,247,0.25) !important;
+  }
 }
 
 /* Purchases table */
