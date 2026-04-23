@@ -155,6 +155,7 @@ body:not(.dark-mode) .wi-label {
 }
 
 body:not(.dark-mode) .btn-edit {
+  color: white !important;
   background:linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 

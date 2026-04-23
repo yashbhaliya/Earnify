@@ -218,6 +218,26 @@
     }
     .submit-btn:hover { opacity: .92; transform: translateY(-2px); }
 
+    /* ── Field inline error ── */
+    .field-error {
+      font-size: 12px; font-weight: 600; color: #ef4444;
+      margin-top: 5px; display: none;
+    }
+    .form-group input.input-error,
+    .form-group textarea.input-error {
+      border-color: #ef4444 !important;
+      background: #fff5f5 !important;
+    }
+    html.dark-mode .form-group input.input-error,
+    html.dark-mode .form-group textarea.input-error,
+    body.dark-mode .form-group input.input-error,
+    body.dark-mode .form-group textarea.input-error {
+      border-color: #f87171 !important;
+      background: rgba(239,68,68,0.08) !important;
+    }
+    html.dark-mode .field-error,
+    body.dark-mode .field-error { color: #f87171 !important; }
+
     /* ── History table ── */
     .history-wrap { overflow-x: auto; }
     .history-table { width: 100%; border-collapse: collapse; min-width: 520px; }
@@ -716,13 +736,14 @@
         <span style="display:flex;align-items:center;gap:10px;"><span>📝</span> New Withdrawal Request</span>
         <a href="/admin/Profile/" style="display:inline-flex;align-items:center;gap:6px;padding:7px 14px;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border-radius:10px;font-size:12px;font-weight:700;text-decoration:none;white-space:nowrap;transition:opacity .2s;" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">💳 Withdrawal Info</a>
       </div>
-      <form onsubmit="submitWithdrawal(event)">
+      <form onsubmit="submitWithdrawal(event)" novalidate>
 
         <div class="form-group" style="margin-bottom:16px;">
           <label>Amount (₹)</label>
-          <input type="number" id="withdrawAmount" placeholder="Min ₹100" min="100" required oninput="updateAmountPreview()">
+          <input type="number" id="withdrawAmount" placeholder="Min ₹100" min="100" oninput="updateAmountPreview();clearFieldError('withdrawAmount')">
           <div id="amountPreview" style="display:none; margin-top:8px; background:#f8fafc; border:1px solid #e8edf5; border-radius:12px; padding:14px; font-size:13px; font-family:monospace;"></div>
           <div id="amountError" style="display:none; margin-top:6px; font-size:12px; color:#ef4444; font-weight:600;"></div>
+          <div class="field-error" id="err-withdrawAmount"></div>
         </div>
 
         <div class="form-group" style="margin-bottom:16px;">
@@ -739,7 +760,8 @@
         <!-- UPI fields -->
         <div id="fields-upi" class="form-group" style="margin-bottom:16px;">
           <label>UPI ID</label>
-          <input type="text" id="upi_id" placeholder="yourname@upi">
+          <input type="text" id="upi_id" placeholder="yourname@upi" oninput="clearFieldError('upi_id')">
+          <div class="field-error" id="err-upi_id"></div>
         </div>
 
         <!-- Bank Transfer fields -->
@@ -747,11 +769,13 @@
           <div class="form-grid">
             <div class="form-group">
               <label>Account Number</label>
-              <input type="text" id="bank_account" placeholder="Enter account number">
+              <input type="text" id="bank_account" placeholder="Enter account number" oninput="clearFieldError('bank_account')">
+              <div class="field-error" id="err-bank_account"></div>
             </div>
             <div class="form-group">
               <label>IFSC Code</label>
-              <input type="text" id="bank_ifsc" placeholder="e.g. SBIN0001234">
+              <input type="text" id="bank_ifsc" placeholder="e.g. SBIN0001234" oninput="clearFieldError('bank_ifsc')">
+              <div class="field-error" id="err-bank_ifsc"></div>
             </div>
           </div>
         </div>
@@ -759,11 +783,13 @@
         <!-- Paytm / GPay fields -->
         <div id="fields-paytm" class="form-group" style="display:none; margin-bottom:16px;">
           <label>Mobile Number / UPI ID</label>
-          <input type="text" id="paytm_id" placeholder="10-digit mobile or UPI ID">
+          <input type="text" id="paytm_id" placeholder="10-digit mobile or UPI ID" oninput="clearFieldError('paytm_id')">
+          <div class="field-error" id="err-paytm_id"></div>
         </div>
         <div id="fields-gpay" class="form-group" style="display:none; margin-bottom:16px;">
           <label>Mobile Number / UPI ID</label>
-          <input type="text" id="gpay_id" placeholder="10-digit mobile or UPI ID">
+          <input type="text" id="gpay_id" placeholder="10-digit mobile or UPI ID" oninput="clearFieldError('gpay_id')">
+          <div class="field-error" id="err-gpay_id"></div>
         </div>
 
         <div class="form-group" style="margin-bottom:20px;">
@@ -1150,6 +1176,16 @@
       const list = window._withdrawalList || [];
       const container = document.getElementById('historyContainer');
       const pagEl = document.getElementById('wdPagination');
+      if (!list.length) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-icon">📭</div>
+            <h3>No Withdrawals Yet</h3>
+            <p>Your withdrawal requests will appear here</p>
+          </div>`;
+        if (pagEl) pagEl.innerHTML = '';
+        return;
+      }
       const total = list.length;
       const ps = window._wdPageSize === 'all' ? total : (window._wdPageSize || 10);
       const totalPages = Math.ceil(total / ps) || 1;
@@ -1243,24 +1279,79 @@
 
     let _pendingPayload = null;
 
+    function showFieldError(inputId, msg) {
+      const input = document.getElementById(inputId);
+      const errEl = document.getElementById('err-' + inputId);
+      if (input) input.classList.add('input-error');
+      if (errEl) { errEl.textContent = msg; errEl.style.display = 'block'; }
+    }
+    function clearFieldError(inputId) {
+      const input = document.getElementById(inputId);
+      const errEl = document.getElementById('err-' + inputId);
+      if (input) input.classList.remove('input-error');
+      if (errEl) { errEl.textContent = ''; errEl.style.display = 'none'; }
+    }
+    function clearAllFieldErrors() {
+      ['withdrawAmount','upi_id','bank_account','bank_ifsc','paytm_id','gpay_id'].forEach(clearFieldError);
+      const ae = document.getElementById('amountError');
+      if (ae) ae.style.display = 'none';
+    }
+
     async function submitWithdrawal(e) {
       e.preventDefault();
-      const amount = parseFloat(document.getElementById('withdrawAmount').value);
+      clearAllFieldErrors();
+
+      const amtRaw = document.getElementById('withdrawAmount').value.trim();
+      const amount = parseFloat(amtRaw);
       const method = document.getElementById('paymentMethod').value;
       const note   = document.getElementById('withdrawNote').value.trim();
       const user   = await getCurrentUser();
+
+      let hasError = false;
+
+      if (!amtRaw) {
+        showFieldError('withdrawAmount', 'Amount is required');
+        hasError = true;
+      } else if (isNaN(amount) || amount <= 0) {
+        showFieldError('withdrawAmount', 'Please enter a valid amount');
+        hasError = true;
+      } else if (amount < 100) {
+        showFieldError('withdrawAmount', 'Minimum withdrawal amount is ₹100');
+        hasError = true;
+      } else if (amount > _availableBalance) {
+        showFieldError('withdrawAmount', `Amount exceeds available balance of ₹${_availableBalance.toFixed(0)}`);
+        hasError = true;
+      }
+
+      if (method === 'upi') {
+        if (!document.getElementById('upi_id').value.trim()) {
+          showFieldError('upi_id', 'UPI ID is required'); hasError = true;
+        }
+      } else if (method === 'bank') {
+        if (!document.getElementById('bank_account').value.trim()) {
+          showFieldError('bank_account', 'Account number is required'); hasError = true;
+        }
+        if (!document.getElementById('bank_ifsc').value.trim()) {
+          showFieldError('bank_ifsc', 'IFSC code is required'); hasError = true;
+        }
+      } else if (method === 'paytm') {
+        if (!document.getElementById('paytm_id').value.trim()) {
+          showFieldError('paytm_id', 'Paytm number / UPI ID is required'); hasError = true;
+        }
+      } else if (method === 'gpay') {
+        if (!document.getElementById('gpay_id').value.trim()) {
+          showFieldError('gpay_id', 'GPay number / UPI ID is required'); hasError = true;
+        }
+      }
+
+      if (hasError) return;
+      if (!user) { showToast('User not logged in', 'error'); return; }
 
       let account = '';
       if (method === 'upi')   account = document.getElementById('upi_id').value.trim();
       if (method === 'bank')  account = `AC:${document.getElementById('bank_account').value.trim()} IFSC:${document.getElementById('bank_ifsc').value.trim()}`;
       if (method === 'paytm') account = document.getElementById('paytm_id').value.trim();
       if (method === 'gpay')  account = document.getElementById('gpay_id').value.trim();
-
-      if (amount < 100)  { showToast('Minimum withdrawal is ₹100', 'error'); return; }
-      if (!account)      { showToast('Please fill in your account details', 'error'); return; }
-      if (!user)         { showToast('User not logged in', 'error'); return; }
-
-      if (amount > _availableBalance) { showToast(`Amount exceeds available balance of ₹${_availableBalance.toFixed(0)}`, 'error'); return; }
 
       const fee       = +(amount * PLATFORM_FEE).toFixed(2);
       const netAmount = +(amount - fee).toFixed(2);
@@ -1301,6 +1392,7 @@
         closeConfirm();
         showToast('✅ Withdrawal request submitted!');
         document.querySelector('#withdrawalForm form').reset();
+        clearAllFieldErrors();
         document.querySelectorAll('.method-pill').forEach((p,i) => p.classList.toggle('active', i===0));
         document.getElementById('paymentMethod').value = 'upi';
         ['upi','bank','paytm','gpay'].forEach(m => {
@@ -1393,12 +1485,12 @@
   <script src="../super-admin-btn.js"></script>
   <style>
     .cd-wrap { position: relative; display: inline-flex; align-items: center; font-family: inherit; }
-    .cd-btn { display: inline-flex; align-items: center; gap: 6px; padding: 7px 12px; min-width: 100px; background: #fff; border: 1.5px solid #e2e8f0; border-radius: 10px;  font-size: 12px; font-weight: 600; cursor: pointer; font-family: inherit; outline: none; user-select: none; box-shadow: 0 1px 3px rgba(0,0,0,0.06); transition: border-color .18s, box-shadow .18s; white-space: nowrap; }
-    .cd-btn:hover { border-color: #a5b4fc; color: #667eea !important; }
-    .cd-btn.open { border-color: #667eea; color: #667eea !important; box-shadow: 0 0 0 3px rgba(102,126,234,0.15); }
-    .cd-btn svg { flex-shrink: 0; transition: transform .22s; }
+    .cd-btn { display: inline-flex; align-items: center; gap: 6px; padding: 7px 12px; min-width: 100px; background: #fff !important; border: 1.5px solid #e2e8f0 !important; border-radius: 10px; font-size: 12px; font-weight: 600; cursor: pointer; font-family: inherit; outline: none; user-select: none; box-shadow: 0 1px 3px rgba(0,0,0,0.06) !important; transition: border-color .18s, box-shadow .18s, color .18s; white-space: nowrap; color: #334155 !important; transform: none !important; }
+    .cd-btn:hover { border-color: #a5b4fc !important; color: #667eea !important; box-shadow: 0 2px 8px rgba(102,126,234,0.12) !important; transform: none !important; }
+    .cd-btn.open { border-color: #667eea !important; color: #667eea !important; box-shadow: 0 0 0 3px rgba(102,126,234,0.15) !important; }
+    .cd-btn svg { flex-shrink: 0; transition: transform .22s; color: inherit; }
     .cd-btn.open svg { transform: rotate(180deg); }
-    .cd-label { flex: 1; text-align: left; }
+    .cd-label { flex: 1; text-align: left; color: inherit; }
     .cd-list { position: fixed; background: #fff; border: 1.5px solid #e2e8f0; border-radius: 12px; box-shadow: 0 8px 32px rgba(102,126,234,0.14), 0 2px 8px rgba(0,0,0,0.08); z-index: 99999; overflow: hidden; padding: 4px; animation: cdDrop .18s cubic-bezier(.22,1,.36,1); }
     @keyframes cdDrop { from { opacity:0; transform:translateY(-6px) scale(.97); } to { opacity:1; transform:none; } }
     .cd-item { display: flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 8px; font-size: 13px; font-weight: 500; color: #334155; cursor: pointer; transition: background .14s, color .14s; white-space: nowrap; }
@@ -1407,8 +1499,9 @@
     .cd-item.selected:hover { background: linear-gradient(135deg,#5a6fd6,#6a3f96); }
     .cd-check { margin-left: auto; opacity: 0; font-size: 11px; }
     .cd-item.selected .cd-check { opacity: 1; }
-    body.dark-mode .cd-btn, html.dark-mode .cd-btn { background: #1c2333 !important; border-color: #30363d !important; color: #8b949e !important; }
-    body.dark-mode .cd-btn.open, html.dark-mode .cd-btn.open { border-color: #7c6af7 !important; color: #a78bfa !important; }
+    body.dark-mode .cd-btn, html.dark-mode .cd-btn { background: #1c2333 !important; border-color: #30363d !important; color: #8b949e !important; box-shadow: 0 1px 3px rgba(0,0,0,0.2) !important; transform: none !important; }
+    body.dark-mode .cd-btn:hover, html.dark-mode .cd-btn:hover { border-color: #7c6af7 !important; color: #a78bfa !important; transform: none !important; }
+    body.dark-mode .cd-btn.open, html.dark-mode .cd-btn.open { border-color: #7c6af7 !important; color: #a78bfa !important; box-shadow: 0 0 0 3px rgba(124,106,247,0.18) !important; }
     body.dark-mode .cd-list, html.dark-mode .cd-list { background: #1c2333 !important; border-color: #30363d !important; box-shadow: 0 8px 32px rgba(0,0,0,0.5) !important; }
     body.dark-mode .cd-item, html.dark-mode .cd-item { color: #c9d1d9 !important; }
     body.dark-mode .cd-item:hover, html.dark-mode .cd-item:hover { background: #21293d !important; color: #a78bfa !important; }
