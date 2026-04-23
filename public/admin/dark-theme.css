@@ -1581,13 +1581,7 @@ html.dark-mode body .dash-filter-btn.active {
   color: #fff !important;
 }
 
-/* Mobile filter select */
-body.dark-mode,
-html.dark-mode body .dash-filter-select-wrap {
-  background: #161b22 !important;
-  border-color: #30363d !important;
-  color: #a78bfa !important;
-}
+
 
 body.dark-mode,
 html.dark-mode body .dash-filter-select {

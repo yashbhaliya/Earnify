@@ -362,16 +362,27 @@
           <button class="dash-filter-btn" onclick="filterPurchases('exam',this)">📝 Exam</button>
           <button class="dash-filter-btn" onclick="filterPurchases('freelance',this)">💼 Services</button>
         </div>
-        <div class="dash-filter-select-wrap">
-          <i class="fas fa-filter"></i>
-          <select class="dash-filter-select" onchange="filterBySelect(this.value)">
+        <div class="dash-filter-select-wrap cd-wrap" id="cdWrap-dashFilter">
+          <button class="cd-btn" onclick="cdToggle('dashFilter')" type="button">
+            <i class="fas fa-filter" style="font-size:0.78rem;color:#667eea;"></i>
+            <span class="cd-label" id="cdLabel-dashFilter">All Types</span>
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="cd-list" id="cdList-dashFilter" style="display:none;" data-align="left">
+            <div class="cd-item selected" onclick="cdDashFilter('all','All Types')">All Types<span class="cd-check">&#10003;</span></div>
+            <div class="cd-item" onclick="cdDashFilter('pdf','📄 PDF')">📄 PDF<span class="cd-check">&#10003;</span></div>
+            <div class="cd-item" onclick="cdDashFilter('excel','📊 Excel')">📊 Excel<span class="cd-check">&#10003;</span></div>
+            <div class="cd-item" onclick="cdDashFilter('exam','📝 Exam')">📝 Exam<span class="cd-check">&#10003;</span></div>
+            <div class="cd-item" onclick="cdDashFilter('freelance','💼 Services')">💼 Services<span class="cd-check">&#10003;</span></div>
+          </div>
+          <!-- hidden select kept for JS filterBySelect sync -->
+          <select class="dash-filter-select" style="display:none;" onchange="filterBySelect(this.value)">
             <option value="all">All Types</option>
             <option value="pdf">📄 PDF</option>
             <option value="excel">📊 Excel</option>
             <option value="exam">📝 Exam</option>
             <option value="freelance">💼 Services</option>
           </select>
-          <i class="fas fa-chevron-down"></i>
         </div>
       </div>
 
@@ -498,6 +509,19 @@
       window._dashPage = 1;
       _renderDashPage();
     }
+    function cdDashFilter(value, label) {
+      document.getElementById('cdLabel-dashFilter').textContent = label;
+      document.querySelectorAll('#cdList-dashFilter .cd-item').forEach(el => {
+        el.classList.toggle('selected', (el.getAttribute('onclick') || '').includes("'" + value + "'"));
+      });
+      document.getElementById('cdList-dashFilter').style.display = 'none';
+      document.querySelector('#cdWrap-dashFilter .cd-btn').classList.remove('open');
+      // Sync hidden select
+      const sel = document.querySelector('.dash-filter-select');
+      if (sel) sel.value = value;
+      // Trigger filter
+      filterBySelect(value);
+    }
     document.addEventListener('click', function(e) {
       if (!e.target.closest('.cd-wrap')) {
         document.querySelectorAll('.cd-list').forEach(l => l.style.display = 'none');
@@ -575,6 +599,13 @@
     document.querySelectorAll('.dash-filter-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     document.querySelector('.dash-filter-select').value = type;
+    // Sync custom cd dropdown label
+    const labelMap = { all: 'All Types', pdf: '📄 PDF', excel: '📊 Excel', exam: '📝 Exam', freelance: '💼 Services' };
+    const cdLabel = document.getElementById('cdLabel-dashFilter');
+    if (cdLabel) cdLabel.textContent = labelMap[type] || 'All Types';
+    document.querySelectorAll('#cdList-dashFilter .cd-item').forEach(el => {
+      el.classList.toggle('selected', (el.getAttribute('onclick') || '').includes("'" + type + "'"));
+    });
     renderPurchases(type === 'all' ? allPurchases : allPurchases.filter(p => p.resources?.type === type));
   }
 
