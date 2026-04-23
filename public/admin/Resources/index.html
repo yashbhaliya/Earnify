@@ -1854,8 +1854,25 @@
       document.getElementById('cdList-resourceFilter').style.display = 'none';
       document.querySelector('#cdWrap-resourceFilter .cd-btn').classList.remove('open');
       window._resPage = 1;
-      if (typeof selectOption === 'function') selectOption(value, label, imgSrc);
-      else if (typeof window.showTab === 'function') window.showTab(value);
+      // Filter within the #all section (stay in current view, don't navigate to another tab)
+      const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+      const userEmail = currentUser.email;
+      if (!userEmail) return;
+      const baseURL = (location.hostname === '127.0.0.1' || location.hostname === 'localhost')
+        ? (location.port === '5500' ? 'https://earnify-gamma.vercel.app' : 'http://localhost:5000')
+        : location.origin;
+      fetch(baseURL + '/api/resources')
+        .then(r => r.json())
+        .then(all => {
+          let resources = all.filter(r => r.user_email === userEmail);
+          if (value !== 'all') resources = resources.filter(r => r.type === value);
+          const countEl = document.getElementById('allCount');
+          if (countEl) countEl.textContent = resources.length + ' item' + (resources.length !== 1 ? 's' : '');
+          window._resAllData = resources;
+          window._resPage = 1;
+          window._renderResPage();
+        })
+        .catch(console.error);
     }
     function cdResPageSize(value, label) {
       document.getElementById('cdLabel-resPageSize').textContent = label;
@@ -1880,25 +1897,22 @@
       renderPurchased(_filteredPurchased);
     }
     function cdPrFilter(value, label) {
-      // update dropdown label & selected state
       document.getElementById('cdLabel-prFilter').textContent = label;
       document.querySelectorAll('#cdList-prFilter .cd-item').forEach(el => {
         el.classList.toggle('selected', (el.getAttribute('onclick') || '').includes("'" + value + "'"));
       });
       document.getElementById('cdList-prFilter').style.display = 'none';
       document.querySelector('#cdWrap-prFilter .cd-btn').classList.remove('open');
-      // also sync pill buttons
+      // sync pill buttons if visible
       const pill = document.querySelector('.pr-filter-strip-desktop .pr-filter[onclick*="\'' + value + '\'"]');
-      if (pill) {
-        document.querySelectorAll('.pr-filter').forEach(b => b.classList.remove('active'));
-        pill.classList.add('active');
-        showPrSkeleton();
-        setTimeout(() => {
-          _filteredPurchased = value === 'all' ? _allPurchased : _allPurchased.filter(p => p.resources?.type === value);
-          window._prPage = 1;
-          renderPurchased(_filteredPurchased);
-        }, 300);
-      }
+      document.querySelectorAll('.pr-filter').forEach(b => b.classList.remove('active'));
+      if (pill) pill.classList.add('active');
+      showPrSkeleton();
+      setTimeout(() => {
+        _filteredPurchased = value === 'all' ? _allPurchased : _allPurchased.filter(p => p.resources?.type === value);
+        window._prPage = 1;
+        renderPurchased(_filteredPurchased);
+      }, 300);
     }
     window._renderResPage = function() {
       const grid = document.getElementById('allGrid');

@@ -160,6 +160,53 @@ function loadActualContent() {
       if (!isOpen) this.classList.add('open');
     });
   });
+
+  // Mobile category dropdown
+  const catNav = document.querySelector('.faq-cat-nav');
+  if (catNav) {
+    const cats = [
+      { label: 'General',     icon: 'fa-info-circle',   value: '#cat-general' },
+      { label: 'Buying',      icon: 'fa-shopping-cart', value: '#cat-buying' },
+      { label: 'Selling',     icon: 'fa-store',         value: '#cat-selling' },
+      { label: 'Payments',    icon: 'fa-credit-card',   value: '#cat-payments' },
+      { label: 'Withdrawals', icon: 'fa-wallet',        value: '#cat-withdraw' },
+      { label: 'Account',     icon: 'fa-user-circle',   value: '#cat-account' },
+    ];
+    const wrapper = document.createElement('div');
+    wrapper.className = 'faq-cat-dropdown';
+    wrapper.innerHTML = `
+      <div class="faq-dd-trigger">
+        <span class="faq-dd-label"><i class="fas fa-th-list"></i> Browse Categories</span>
+        <i class="fas fa-chevron-down faq-dd-arrow"></i>
+      </div>
+      <ul class="faq-dd-list">
+        ${cats.map(c => `<li class="faq-dd-item" data-target="${c.value}"><i class="fas ${c.icon}"></i> ${c.label}</li>`).join('')}
+      </ul>`;
+    catNav.appendChild(wrapper);
+
+    const trigger = wrapper.querySelector('.faq-dd-trigger');
+    const list    = wrapper.querySelector('.faq-dd-list');
+    const arrow   = wrapper.querySelector('.faq-dd-arrow');
+
+    trigger.addEventListener('click', () => {
+      const open = list.classList.toggle('open');
+      arrow.style.transform = open ? 'rotate(180deg)' : 'rotate(0deg)';
+    });
+    wrapper.querySelectorAll('.faq-dd-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const target = document.querySelector(item.dataset.target);
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        list.classList.remove('open');
+        arrow.style.transform = 'rotate(0deg)';
+      });
+    });
+    document.addEventListener('click', e => {
+      if (!wrapper.contains(e.target)) {
+        list.classList.remove('open');
+        arrow.style.transform = 'rotate(0deg)';
+      }
+    });
+  }
 }
 
 function faqItems(items) {
