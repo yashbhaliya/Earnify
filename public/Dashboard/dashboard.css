@@ -256,6 +256,10 @@
   display: none;
 }
 
+#cdWrap-dashFilter {
+  display: none;
+}
+
 /* ══════════════════════════════════════
    PURCHASES TABLE WRAPPER
 ══════════════════════════════════════ */
@@ -728,60 +732,61 @@
     flex-shrink: 0;
   }
 
-  .dash-section-head > .dash-filter-select-wrap {
+  .dash-section-head > #cdWrap-dashFilter {
     order: 3;
     flex-basis: 100%;
+    display: inline-flex;
   }
 
-  .dash-filters {
-    display: none;
-  }
-
-  .dash-filter-select-wrap {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    border-radius: 10px;
-    padding: 0 14px;
-    height: 42px;
-
+  #cdWrap-dashFilter .cd-btn {
     width: 100%;
     box-sizing: border-box;
-    position: relative;
   }
 
-  .dash-filter-select-wrap .fa-filter {
-    font-size: 0.8rem;
-    color: #667eea;
-    flex-shrink: 0;
-    pointer-events: none;
-  }
 
-  .dash-filter-select-wrap .fa-chevron-down {
-    font-size: 0.72rem;
-    color: #94a3b8;
-    flex-shrink: 0;
-    pointer-events: none;
-  }
 
-  .dash-filter-select {
-    flex: 1;
-    border: none;
-    outline: none;
-    background: transparent;
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: #0f172a;
-    font-family: inherit;
-    cursor: pointer;
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    min-width: 0;
-    height: 100%;
-    padding: 0;
-    line-height: 1.4;
-  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   /* No horizontal scroll — card layout */
   .purchases-grid {
@@ -1495,6 +1500,11 @@ html.dark-mode .empty-state p {
 body.dark-mode .empty-icon,
 html.dark-mode .empty-icon {
   background: rgba(124,106,247,0.12) !important;
+}
+
+body.dark-mode .empty-icon img,
+html.dark-mode .empty-icon img {
+  filter: invert(1) brightness(1.8) !important;
 }
 
 /* Detail modal */

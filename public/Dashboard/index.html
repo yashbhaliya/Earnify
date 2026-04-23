@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -362,7 +362,7 @@
           <button class="dash-filter-btn" onclick="filterPurchases('exam',this)">📝 Exam</button>
           <button class="dash-filter-btn" onclick="filterPurchases('freelance',this)">💼 Services</button>
         </div>
-        <div class="dash-filter-select-wrap cd-wrap" id="cdWrap-dashFilter">
+        <div class="cd-wrap" id="cdWrap-dashFilter">
           <button class="cd-btn" onclick="cdToggle('dashFilter')" type="button">
             <i class="fas fa-filter" style="font-size:0.78rem;color:#667eea;"></i>
             <span class="cd-label" id="cdLabel-dashFilter">All Types</span>
@@ -716,7 +716,7 @@
     if (!valid.length) {
       container.innerHTML = `
           <div class="empty-state">
-            <div class="empty-icon">🛒</div>
+            <div class="empty-icon"><img src="/file/empty-cart.png" alt="empty cart" style="width:48px;height:48px;object-fit:contain;"></div>
             <h2>No Purchases Yet</h2>
             <p>You haven't made any purchases. Browse our resources to get started!</p>
             <a href="../#resources" class="empty-cta"><i class="fas fa-shopping-bag"></i> Browse Resources</a>
@@ -869,7 +869,7 @@
   }
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
-  /* ── Logout ── */
+  /* -- Logout -- */
   function logout() {
     ['currentUser', 'userLoggedIn', 'adminToken'].forEach(k => localStorage.removeItem(k));
     window.location.href = '../';

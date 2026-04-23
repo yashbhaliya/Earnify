@@ -299,10 +299,10 @@ function displayResources(resources, userPurchases = []) {
 
   if (!resources || resources.length === 0) {
     grid.innerHTML = q
-      ? `<div style="text-align:center;color:#666;grid-column:1/-1;padding:40px 20px;">
-           <div style="font-size:48px;margin-bottom:12px;">🔍</div>
-           <p style="font-size:16px;font-weight:600;">No results for "${q}"</p>
-           <p style="font-size:13px;color:#94a3b8;margin-top:6px;">Try a different keyword or clear the search.</p>
+      ? `<div class="no-results-state" style="grid-column:1/-1;">
+           <div class="no-results-icon"><img src="/file/search-icon.png" alt="search" style="width:38px;height:38px;object-fit:contain;"></div>
+           <p class="no-results-title">No results for "${q}"</p>
+           <p class="no-results-sub">Try a different keyword or clear the search.</p>
          </div>`
       : '<p style="text-align:center;color:#666;grid-column:1/-1;">No resources available yet.</p>';
     const pag = document.querySelector('.pagination');
