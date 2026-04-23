@@ -97,6 +97,10 @@ body {
   border-top: 1px solid #e2e8f0;
 }
 
+html.dark-mode .sidebar-footer {
+  border-top-color: #30363d !important;
+}
+
 .admin-badge {
   display: flex;
   align-items: center;
