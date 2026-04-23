@@ -2426,10 +2426,7 @@ html.dark-mode body .empty-state p {
   color: #8b949e !important;
 }
 
-body.dark-mode .empty-icon,
-html.dark-mode body .empty-icon {
-  background: linear-gradient(135deg, #1c2333, #161b22) !important;
-}
+
 
 /* ── Modals ── */
 body.dark-mode .modal-content,
