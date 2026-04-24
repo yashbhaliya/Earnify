@@ -440,7 +440,7 @@ async function loadResources(type) {
 
     if (resources.length === 0) {
       const emptyStates = {
-        all:       { icon: '<img src="/file/all.jpg" style="width:52px;height:52px;border-radius:10px;object-fit:cover;">', title: 'No Resources Yet', text: 'Click the buttons above to add your first resource!' },
+        all:       { icon: '<img src="/file/empty-resources.png" style="width:80px;height:80px;object-fit:contain;">', title: 'No Resources Yet', text: 'Click the buttons above to add your first resource!' },
         pdf:       { icon: '<img src="/file/pdf.jpg" style="width:52px;height:52px;border-radius:10px;object-fit:cover;">', title: 'No PDF Notes', text: 'Go to "All Resources" tab to add PDF notes' },
         excel:     { icon: '<img src="/file/excel.jpg" style="width:52px;height:52px;border-radius:10px;object-fit:cover;">', title: 'No Excel Templates', text: 'Go to "All Resources" tab to add Excel templates' },
         exam:      { icon: '<img src="/file/exam.jpg" style="width:52px;height:52px;border-radius:10px;object-fit:cover;">', title: 'No Exam Materials', text: 'Go to "All Resources" tab to add exam materials' },

@@ -1671,7 +1671,7 @@
     if (Object.keys(customerStats).length === 0) {
       content.innerHTML = `
         <div style="text-align:center;padding:50px 20px;border-radius:12px;">
-          <div style="font-size:52px;margin-bottom:14px;">📭</div>
+          <div style="margin-bottom:14px;"><img src="/file/empty-statistic.png" class="empty-state-img" style="width:60px;height:60px;object-fit:contain;"></div>
           <h3 style="margin:0 0 8px;font-size:18px;">No Records Found</h3>
           <p style="margin:0;font-size:14px;">No purchases found for the selected period.</p>
         </div>`;
@@ -1742,7 +1742,7 @@
     const contentND = document.getElementById('analyticsContent');
     if (contentND) contentND.innerHTML = `
       <div style="text-align:center;padding:50px 20px;border-radius:12px;">
-        <div style="font-size:52px;margin-bottom:14px;">🔐</div>
+        <div style="margin-bottom:14px;"><img src="/file/empty-statistic.png" class="empty-state-img" style="width:80px;height:80px;object-fit:contain;"></div>
         <h3 style="margin:0 0 8px;font-size:18px;">Please Login</h3>
         <p style="margin:0;font-size:14px;">You need to be logged in to view your sales statistics.</p>
       </div>`;
@@ -1776,7 +1776,7 @@
     const contentErr = document.getElementById('analyticsContent');
     if (contentErr) contentErr.innerHTML = `
       <div style="text-align:center;padding:50px 20px;border-radius:12px;">
-        <div style="font-size:52px;margin-bottom:14px;">⚠️</div>
+        <div style="margin-bottom:14px;"><img src="/file/empty-statistic.png" class="empty-state-img" style="width:80px;height:80px;object-fit:contain;"></div>
         <h3 style="margin:0 0 8px;font-size:18px;">Error Loading Data</h3>
         <p style="margin:0;font-size:14px;">Unable to load statistics. Please check your connection and refresh.</p>
       </div>`;

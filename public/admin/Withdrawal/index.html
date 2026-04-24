@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
   <meta charset="UTF-8">
@@ -280,7 +280,9 @@
     .empty-state {
       text-align: center; padding: 60px 20px;
     }
-    .empty-icon { font-size: 56px; opacity: .4; margin-bottom: 14px; }
+    .empty-icon { font-size: 56px; margin-bottom: 14px; }
+    .empty-icon img { width:80px;height:80px;object-fit:contain; }
+    body.dark-mode .empty-icon img { filter: invert(1) brightness(2); }
     .empty-state h3 { font-size: 18px; color: #1e293b; margin-bottom: 6px; }
     .empty-state p  { color: #94a3b8; font-size: 14px; }
 
@@ -848,7 +850,7 @@
       </div>
       <div id="historyContainer" style="display:none;">
         <div class="empty-state">
-          <div class="empty-icon">📭</div>
+          <div class="empty-icon"><img src="/file/empty-withdrwal.png" class="empty-state-img" style="width:80px;height:80px;object-fit:contain;"></div>
           <h3>No Withdrawals Yet</h3>
           <p>Your withdrawal requests will appear here</p>
         </div>
@@ -1160,7 +1162,7 @@
       if (!list.length) {
         container.innerHTML = `
           <div class="empty-state">
-            <div class="empty-icon">📭</div>
+            <div class="empty-icon"><img src="/file/empty-withdrwal.png" class="empty-state-img" style="width:80px;height:80px;object-fit:contain;"></div>
             <h3>No Withdrawals Yet</h3>
             <p>Your withdrawal requests will appear here</p>
           </div>`;
@@ -1179,7 +1181,7 @@
       if (!list.length) {
         container.innerHTML = `
           <div class="empty-state">
-            <div class="empty-icon">📭</div>
+            <div class="empty-icon"><img src="/file/empty-withdrwal.png" class="empty-state-img" style="width:80px;height:80px;object-fit:contain;"></div>
             <h3>No Withdrawals Yet</h3>
             <p>Your withdrawal requests will appear here</p>
           </div>`;

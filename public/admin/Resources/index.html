@@ -1072,7 +1072,7 @@
         </div>
         <div class="resource-grid" id="allGrid">
           <div class="empty-state">
-            <div class="empty-icon">📦</div>
+            <div class="empty-icon"><img src="/file/empty-resources.png" style="width:80px;height:80px;object-fit:contain;"></div>
             <h3>No Resources Yet</h3>
             <p>Click the buttons above to add your first resource!</p>
           </div>
@@ -1737,7 +1737,7 @@
 
       if (!valid.length) {
         const isDark = document.body.classList.contains('dark-mode');
-        grid.innerHTML = `<div style="text-align:center;padding:60px 20px;"><div style="font-size:48px;margin-bottom:12px;">🛒</div><div style="font-size:16px;font-weight:700;color:${isDark?'#e6edf3':'#1e293b'};margin-bottom:6px;">No Purchases Yet</div><div style="font-size:13px;color:${isDark?'#484f58':'#94a3b8'};">Resources you purchase will appear here.</div></div>`;
+        grid.innerHTML = `<div style="text-align:center;padding:60px 20px;"><div style="margin-bottom:12px;"><img src="/file/empty-cart.png" class="empty-state-img" style="width:80px;height:80px;object-fit:contain;"></div><div style="font-size:16px;font-weight:700;color:${isDark?'#e6edf3':'#1e293b'};margin-bottom:6px;">No Purchases Yet</div><div style="font-size:13px;color:${isDark?'#484f58':'#94a3b8'};">Resources you purchase will appear here.</div></div>`;
         if (pagEl) pagEl.innerHTML = '';
         return;
       }

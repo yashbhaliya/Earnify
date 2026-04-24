@@ -8740,3 +8740,8 @@ html.dark-mode .shimmer-table-row td {
   background: #161b22 !important;
   border-bottom-color: #21293d !important;
 }
+
+/* ── Dark mode: empty-resources img fix ── */
+body.dark-mode .empty-state-img {
+  filter: invert(1) brightness(2);
+}

@@ -3901,3 +3901,8 @@ body.dark-mode .detail-resources .resource-tag {
   color: #a78bfa !important;
   border-color: #30363d !important;
 }
+
+/* ── Dark mode: empty-statistic img fix ── */
+body.dark-mode .empty-state-img {
+  filter: invert(1) brightness(2);
+}

@@ -4284,3 +4284,18 @@
 
 
 
+
+/* ── Dark mode: empty-icon fix ── */
+body.dark-mode .empty-icon {
+  background: linear-gradient(135deg, #1e2a3a 0%, #2d3a4a 100%) !important;
+  box-shadow: 0 0 0 2px rgba(124,106,247,0.2);
+}
+body.dark-mode .empty-icon img {
+  filter: invert(1) brightness(2);
+  border-radius: 0 !important;
+}
+
+/* ── Dark mode: empty-cart / inline empty-state img fix ── */
+body.dark-mode .empty-state-img {
+  filter: invert(1) brightness(2);
+}
