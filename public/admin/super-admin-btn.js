@@ -45,7 +45,7 @@
       const btn = document.createElement('a');
       btn.textContent = '🛡️ Super Admin Panel';
       btn.className = 'super-admin-btn logout-link';
-      btn.style.cssText = 'background:linear-gradient(135deg,#667eea 0%,#764ba2 100%)!important;border-radius:10px;color:#fff!important;border-color:transparent!important;display:block;text-align:center;cursor:pointer;text-decoration:none;gap:5px';
+      btn.style.cssText = 'background:linear-gradient(135deg,#667eea 0%,#764ba2 100%)!important;border-radius:10px;color:#fff!important;border:none!important;outline:none!important;box-shadow:none!important;display:block;text-align:center;cursor:pointer;text-decoration:none;gap:5px';
       btn.onclick = function(e) {
         e.preventDefault();
         // Persist current UI theme before redirecting to dashboard.

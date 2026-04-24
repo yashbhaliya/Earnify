@@ -8745,3 +8745,17 @@ html.dark-mode .shimmer-table-row td {
 body.dark-mode .empty-state-img {
   filter: invert(1) brightness(2);
 }
+
+/* ── Dark mode: logout button fix ── */
+body.dark-mode .logout-link {
+  background: #1c2333 !important;
+  color: #e6edf3 !important;
+  border-color: #ef4444 !important;
+  box-shadow: none !important;
+}
+body.dark-mode .logout-link:hover {
+  background: rgba(239,68,68,0.15) !important;
+  color: #f87171 !important;
+  border-color: #dc2626 !important;
+  box-shadow: none !important;
+}
